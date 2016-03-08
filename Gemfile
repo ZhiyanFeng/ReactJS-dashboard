@@ -20,10 +20,7 @@ gem 'protected_attributes'
 gem "active_model_serializers", '~> 0.9.0'
 gem "rpush"
 gem "twilio-ruby"
-gem 'event-calendar', :require => 'event_calendar'
 gem "httparty"
-gem "font-awesome-rails"
-gem 'link_thumbnailer'
 
 group :development, :test do
 	gem "rspec-rails"
@@ -41,7 +38,6 @@ end
 gem "unicorn"
 gem 'unicorn-worker-killer'
 gem 'newrelic_rpm'
-gem "capistrano", "~> 2.15.5"
 gem 'net-ssh', '~>2.7.0'
 gem 'geocoder'
 gem 'sidekiq'

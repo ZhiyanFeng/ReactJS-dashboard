@@ -13,7 +13,6 @@
 
 # Ignore the database.yml because users have different passwords
 #/home/david/work/expresso/config/database.yml
-config/database.yml
 
 # Ignore the assets folder
 app/assets/*

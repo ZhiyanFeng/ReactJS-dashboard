@@ -1,0 +1,28 @@
+include ActionController::HttpAuthentication::Token::ControllerMethods
+
+module Api
+  module Arcee
+    class EventsController < ApplicationController
+      class Event < ::Event
+        # Note: this does not take into consideration the create/update actions for changing released_on
+        
+        # Sub class to override column name in response
+        #def as_json(options = {})
+        #  super.merge(released_on: created_at.to_date)
+        #end
+      end
+
+      before_filter :set_headers
+      
+      respond_to :json
+      
+      def show
+        result = Event.find(params[:id])
+        #Notification.did_view(params[:user_id], 4, params[:id])
+
+        render json: result
+      end 
+      
+    end
+  end
+end

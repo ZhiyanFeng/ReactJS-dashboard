@@ -1,0 +1,384 @@
+<%= stylesheet_link_tag "dashboard_reports", :media => "all" %>
+<input type="hidden" id="org_id" value="<%=cookies[:org_id]%>" />
+<input type="hidden" id="org_name" value="<%=@org_name%>" />
+<input type="hidden" id="org_profile" value="<%=@profile_thumb%>" />
+<input type="hidden" id="user_id" value="<%=cookies[:user_id]%>" />
+<input type="hidden" id="is_root" value="<%=cookies[:is_root]%>" />
+<input type="hidden" id="is_admin" value="<%=cookies[:is_admin]%>" />
+<input type="hidden" id="admin_location" value="<%=cookies[:user_location_id]%>" />
+<input type="hidden" id="api_key" value="<%=cookies[:api_key]%>" />
+<input type="hidden" id="asset_root" value="<%=ENV['ASSET_ROOT']%>" />
+<div class="page-content">
+
+  <!-- BEGIN STYLE CUSTOMIZER -->
+  
+  <!-- END STYLE CUSTOMIZER -->
+
+  <!-- BEGIN PREVIEW ANNOUNCEMENT MODAL -->
+  <div id="playback_quiz_modal" data-backdrop="static" class="modal fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      <h4 class="modal-title"><%=ENV_VARS['messages']['menu5']['modal1Title']%></h4>
+    </div>
+    <div class="modal-body" style="height: 516px;">
+      
+    </div>  
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-md-4" style="text-align: left;">
+          <button type="button" id="previous-playback" class="btn default" onclick="ReportModule.previousPlayback();"><%=ENV_VARS['messages']['menu5']['modal1ButtonText1']%></button>
+        </div>
+        <div class="col-md-8" style="text-align: right;">
+          <button type="button" id="next-playback" class="btn default" onclick="ReportModule.nextPlayback();"><%=ENV_VARS['messages']['menu5']['modal1ButtonText2']%></button>
+          <button type="button" class="btn default" data-dismiss="modal"><%=ENV_VARS['messages']['menu5']['modal1ButtonText3']%></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END PREVIEW ANNOUNCEMENT MODAL -->
+
+  <!-- BEGIN CONFIRM DELETE ANNOUNCEMENT MODAL -->
+  <div id="confirm_empty_quiz_modal" data-backdrop="static" class="modal fade" tabindex="-1" data-focus-on="input:first">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      <h4 class="modal-title"><%=ENV_VARS['messages']['menu5']['modal2Title']%></h4>
+    </div>
+    <div class="modal-body">
+      <p><%=ENV_VARS['messages']['menu5']['modal2Text1']%></p>
+    </div>  
+    <div class="modal-footer">
+      <button type="button" class="btn blue" data-dismiss="modal"><%=ENV_VARS['messages']['menu5']['modal2ButtonText1']%></button>
+    </div>
+  </div>
+  <!-- END CONFIRM DELETE ANNOUNCEMENT MODAL -->
+
+  <!-- BEGIN CONFIRM DELETE ANNOUNCEMENT MODAL -->
+  <div id="cannot_playback" data-backdrop="static" class="modal fade" tabindex="-1" data-focus-on="input:first">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      <h4 class="modal-title"><%=ENV_VARS['messages']['menu5']['modal3Title']%></h4>
+    </div>
+    <div class="modal-body">
+      <p><%=ENV_VARS['messages']['menu5']['modal3Text1']%></p>
+    </div>  
+    <div class="modal-footer">
+      <button type="button" class="btn blue" data-dismiss="modal"><%=ENV_VARS['messages']['menu5']['modal3ButtonText1']%></button>
+    </div>
+  </div>
+  <!-- END CONFIRM DELETE ANNOUNCEMENT MODAL -->
+
+  <!-- BEGIN PREVIEW User MODAL -->
+  <div id="report_by_user_modal" data-backdrop="static" class="modal wide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      <h4 class="modal-title"><%=ENV_VARS['messages']['menu5']['modal4Title']%></h4>
+    </div>
+    <div class="modal-body" style="height: 516px;" id="user_report_table_wrapper">
+      <table class="table table-striped row-bordered table-hover" id="user_report_table">
+        <thead>
+          <tr>
+            <td><%=ENV_VARS['messages']['menu5']['table3Col1']%></td>
+            <td><%=ENV_VARS['messages']['menu5']['table3Col2']%></td>
+            <td><%=ENV_VARS['messages']['menu5']['table3Col3']%></td>
+            <td><%=ENV_VARS['messages']['menu5']['table3Col4']%></td>
+            <td><%=ENV_VARS['messages']['menu5']['table3Col5']%></td>
+            <td><%=ENV_VARS['messages']['menu5']['table3Col6']%></td>
+            <td><%=ENV_VARS['messages']['menu5']['table3Col7']%></td>
+          </tr>
+        </thead>
+        <tbody id="user_report_table_body">
+          
+        </tbody>
+      </table>
+    </div>  
+    <div class="modal-footer">
+      <div class="form-actions">
+        <button type="button" class="btn default" data-dismiss="modal"><%=ENV_VARS['messages']['menu5']['modal4ButtonText2']%></button>
+      </div>
+    </div>
+  </div>
+  <!-- END PREVIEW QUIZ MODAL -->
+
+  <!-- BEGIN PREVIEW QUIZ MODAL -->
+  <div id="report_by_quiz_modal" data-backdrop="static" class="modal wide fade">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      <h4 class="modal-title"><%=ENV_VARS['messages']['menu5']['modal5Title']%></h4>
+    </div>
+    <div class="modal-body" style="height: 516px;">
+      <div class="row">
+        <div class="col-md-5" id="left-preview">
+        </div>
+        <div class="col-md-7" id="right-preview">
+          <div class="row">
+            <div id="answer_distribution_pie" class="chart" style="height: 425px;">
+            </div>
+          </div>
+          <div class="row">
+            <div id="answer_distribution_data" style="text-align:center;">
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <a class="icon-btn tooltips" data-original-title="<%=ENV_VARS['messages']['menu5']['boxDetail1']%>">
+                  <i id="question_reach"></i>
+                  <div><%=ENV_VARS['messages']['menu5']['boxMessage1']%></div>
+                </a>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <a class="icon-btn tooltips" data-original-title="<%=ENV_VARS['messages']['menu5']['boxDetail2']%>">
+                  <i id="question_average_time"></i>
+                  <div><%=ENV_VARS['messages']['menu5']['boxMessage2']%></div>
+                </a>
+              </div>
+              <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <a class="icon-btn" onclick="ReportModule.shareQuestionStats();">
+                  <i class="icon-share"></i>
+                  <div><%=ENV_VARS['messages']['menu5']['boxMessage3']%></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align: left;">
+          <button type="button" id="previous-preview" class="btn default" onclick="ReportModule.previousQuestion();"><%=ENV_VARS['messages']['menu5']['modal5ButtonText1']%></button>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6" style="text-align: right;">
+          <button type="button" id="next-preview" class="btn default" onclick="ReportModule.nextQuestion();"><%=ENV_VARS['messages']['menu5']['modal5ButtonText2']%></button>
+          <button type="button" class="btn default" data-dismiss="modal"><%=ENV_VARS['messages']['menu5']['modal5ButtonText3']%></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- END PREVIEW QUIZ MODAL -->
+
+  <!-- BEGIN PAGE HEADER-->
+  <!-- END PAGE HEADER-->
+  <!-- BEGIN PAGE CONTENT-->
+  <div class="row">
+    <div class="col-lg-6 col-md-16 col-sm-12 col-xs-12">
+      <div class="portlet light bordered">
+        <div class="portlet-body">
+          <table class="table table-striped row-bordered table-hover" id="result_by_quiz_table">
+            <thead>
+              
+              <th>
+              </th>
+
+              
+              <th>
+                <div class="caption font-blue-hoki">
+                  <i class="icon-calculator font-blue-hoki"></i>
+                  <span class="caption-subject bold uppercase"> <%=ENV_VARS['messages']['menu5']['table1Col1']%></span>
+                </div>
+              </th>
+              
+              <th>
+                <%=ENV_VARS['messages']['menu5']['table1Col2']%>
+              </th>
+              <th>
+                <%=ENV_VARS['messages']['menu5']['table1Col3']%>
+              </th>
+            </thead>
+            <tbody id="result_by_quiz_table_body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-16 col-sm-12 col-xs-12">
+      <div class="portlet light bordered">
+        <div class="portlet-body">
+          <table class="table table-striped row-bordered table-hover" id="result_by_user_table">
+            <thead>
+              <th>
+              </th>
+              <th>
+                <div class="caption font-blue-hoki">
+                  <i class="icon-user font-blue-hoki"></i>
+                  <span class="caption-subject bold uppercase"> <%=ENV_VARS['messages']['menu5']['table2Col1']%></span>
+                </div>
+              </th>
+              <th>
+                <%=ENV_VARS['messages']['menu5']['table2Col2']%>
+              </th>
+              <th>
+                <%=ENV_VARS['messages']['menu5']['table2Col3']%>
+              </th>
+            </thead>
+            <tbody id="result_by_user_table_body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 display-hide" id="report-statistics">
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 display-hide" id="user-statistics">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12" id="us-profile">
+          <h3 id="us-profile-name"></h3>
+          <div id="us-profile-img">
+            <img />
+          </div>
+          <div class="row">
+            <div id="answer_distribution_data" style="text-align:center;">
+              <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <a class="icon-btn tooltips" data-original-title="The percentage of the quizzes out of all the quizzes this user has passed.">
+                  <i id="user_report_compliance"></i>
+                  <div><%=ENV_VARS['messages']['menu5']['table4Title']%></div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-6 col-xs-12">
+          <table class="table table-striped row-bordered table-hover" id="us-table">
+            <thead>
+              <th><%=ENV_VARS['messages']['menu5']['table4Col1']%></th>
+              <th><%=ENV_VARS['messages']['menu5']['table4Col2']%></th>
+              <th><%=ENV_VARS['messages']['menu5']['table4Col3']%></th>
+              <th><%=ENV_VARS['messages']['menu5']['table4Col4']%></th>
+              <th><%=ENV_VARS['messages']['menu5']['table4Col5']%></th>
+              <th><%=ENV_VARS['messages']['menu5']['table4Col6']%></th>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="placeholder-text" class="row main-content-div">
+    <div class="col-md-12">
+      <div class="portlet light">
+        <div class="portlet-body">
+          <div class="overlay">
+            <div class="overlay-text">
+              <%=ENV_VARS['messages']['menu5']['footerMessage']%> <i class="icon-arrow-up font-blue-hoki"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!--<div class="row main-content-div" style="min-height: 500px;">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+      <div class="full-height-content full-height-content-scrollable">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="reports-col">
+            
+          </div>
+          <!--<div class="col-lg-2 col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+              <div class="col-lg-12 col-md-4 col-sm-4 col-xs-12">
+                <div class="dashboard-stat blue-hoki">
+                  <div class="visual">
+                    <i class="fa fa-comments"></i>
+                  </div>
+                  <div class="details">
+                    <div class="number">
+                      2
+                    </div>
+                    <div class="desc">
+                      Quizzes
+                    </div>
+                  </div>
+                  <a class="more" href="#">
+                  View stats <i class="m-icon-swapdown m-icon-white"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-4 col-sm-4 col-xs-12">
+                <div class="dashboard-stat blue-hoki">
+                  <div class="visual">
+                    <i class="fa fa-comments"></i>
+                  </div>
+                  <div class="details">
+                    <div class="number">
+                       43
+                    </div>
+                    <div class="desc">
+                       Attempts
+                    </div>
+                  </div>
+                  <a class="more" href="#">
+                  View stats <i class="m-icon-swapdown m-icon-white"></i>
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-12 col-md-4 col-sm-4 col-xs-12">
+                <div class="dashboard-stat blue-hoki">
+                  <div class="visual">
+                    <i class="fa fa-comments"></i>
+                  </div>
+                  <div class="details">
+                    <div class="number">
+                       20
+                    </div>
+                    <div class="desc">
+                       Completed
+                    </div>
+                  </div>
+                  <a class="more" href="#">
+                  View stats <i class="m-icon-swapdown m-icon-white"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>-->
+        <!--</div>
+      </div>
+    </div>
+  </div>-->
+
+</div>
+<!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>-->
+<%= javascript_include_tag "dashboard_reports" %>
+
+<script>
+var QuizTable = $('#result_by_quiz_table');
+var UserTable = $('#result_by_user_table');
+var IndividualReportTable = $('#us-table');
+var ReportByUserTable = $('#user_report_table');
+
+
+
+// DOM LOADING TABLE IMPL
+var users_loaded = $.Deferred();
+var quizzes_loaded = $.Deferred();;
+
+
+jQuery(document).ready(function() {
+  el = $('.main-content-div');
+  App.blockUI({
+    target: el,
+    boxed: true,
+    message: 'Loading...',
+    overlayColor: '#223A44'
+  });
+  //App.init();
+  Layout.init();
+  Metronic.init(); // init metronic core components
+  ReportModule.init();
+
+  return $.Deferred(function (def) {
+
+    // resolve the passed def
+    // this is the callback when i.e. users_loaded.resolve() is called
+    $.when(users_loaded, quizzes_loaded).done(function() {
+      Metronic.initUniform();
+      def.resolve();
+    });
+  });
+
+});
+
+
+</script>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+  <meta charset="utf-8" />
+  <title><%= full_title(yield(:title)) %></title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="" name="description" />
+  <meta content="" name="author" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <%= stylesheet_link_tag "dashboard", :media => "all" %>
+  <%= javascript_include_tag "dashboard" %>
+  <%= stylesheet_link_tag "chosen.min" if params[:action] == 'settings' %>
+<!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body data-controller="<%= controller_name %>" data-action="<%= action_name %>" class="page-header-fixed">
+    <!--Dialog Confirm-->
+
+    <div id="dialog-confirm"></div>
+    <div id="dialog-ok"></div>
+    <div id="overlay-back"></div> 
+    <div id="overlay"></div> 
+    
+  <input type="hidden" name="session[org_id]" value="">
+  
+  <!-- BEGIN HEADER -->
+  <div class="header navbar navbar-inverse navbar-fixed-top">
+
+    <!-- BEGIN TOP NAVIGATION BAR -->
+    <div class="navbar-inner">
+      <div class="container-fluid">
+        <!-- BEGIN LOGO -->
+        <a class="brand" href="/">
+          <%= image_tag("coffee-brand-white.png", alt: "Coffee Enterprise", size: "261x48") %>
+        </a>
+        <!-- END LOGO -->
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+          <%= image_tag("menu-toggler.png", alt: "Menu Togger") %>
+        </a>          
+        <!-- END RESPONSIVE MENU TOGGLER -->            
+        <!-- BEGIN TOP NAVIGATION MENU -->              
+        <ul class="nav pull-right">
+          <li class="dropdown user">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <span class="username"><%= @organization.name %></span>
+            <img id="profile_image" src="<%= @profile_url %>" />
+            </a>
+            <ul class="dropdown-menu">
+              
+              <li class="left-dropdown"><a href="/dashboard/profile/"><img class="profile_image" src="<%= @profile_url %>" /></a></li>
+              <li class="right-dropdown">
+                  <ul class="right-dropdown user">
+                      <li>&nbsp;</li>
+                    <!--  <li><a href="/dashboard/chat/"><i class="icon-comments"></i> Chat</a></li>-->
+                      <li><a href="/dashboard/profile/"><i class="icon-user"></i>Profile</a></li>
+                      <!--<li><a href="/dashboard/settings/"><i class="icon-cog"></i> Settings</a></li>-->
+                      <!--<li><a href="page_calendar.html"><i class="icon-calendar"></i> My Calendar</a></li>
+                      <li><a href="inbox.html"><i class="icon-envelope"></i> My Inbox</a></li>
+                      <li><a href="#"><i class="icon-tasks"></i> My Tasks</a></li>-->
+                      <!--<li class="divider"></li>-->
+                      <!--<li><a href="extra_lock.html"><i class="icon-lock"></i> Lock Screen</a></li>-->
+                      <li><a href="/logout/"><i class="icon-signout"></i> Log Out</a></li>
+                  </ul>
+              </li>
+
+           
+            </ul>
+          </li>
+          <!-- END USER LOGIN DROPDOWN -->
+        </ul>
+        <!-- END TOP NAVIGATION MENU --> 
+      </div>
+    </div>
+    <!-- END TOP NAVIGATION BAR -->
+  </div>
+  <!-- END HEADER -->
+  <!-- BEGIN CONTAINER -->
+  <div class="page-container">
+    <!-- BEGIN SIDEBAR -->
+    <div class="page-sidebar-wrapper">
+    <div class="page-sidebar nav-collapse collapse">
+      <!-- BEGIN SIDEBAR MENU -->        
+      <ul class="page-sidebar-menu">
+
+       <!-- <li class="schedule_<%= active_sidenav('schedules') %>">
+         
+         <!--<a href="/dashboard/schedules/">-->
+         <!-- <span style="
+              color: rgba(230, 127, 46, 1);
+              font-size: 0.7em;
+              position: absolute;
+              padding: 0px 0px 0px 109px;"><i>Coming Soon!</i></span>
+         <a href="#">
+
+          <i class="icon-calendar"></i> 
+          <span class="title">Schedules</span>
+          </a>
+        </li>-->
+        
+        <li class="start <%= active_sidenav('home') %>">
+          <a href="/dashboard/">
+          <i class="icon-home"></i> 
+          <span class="title">Dashboard</span>
+          <!--<span class="selected"></span>-->
+          </a>
+        </li>
+        <!--<li class="<%= active_sidenav('schedules') %>">
+          <a href="/dashboard/schedules/">
+          <i class="icon-calendar"></i> 
+          <span class="title">Schedules</span>
+          </a>
+        </li>-->
+        <li class="<%= active_sidenav('announcements') %>">
+          <a href="/dashboard/announcements/">
+          <i class="icon-bullhorn"></i> 
+          <span class="title">Announcements</span>
+          </a>
+        </li>
+        <li class="<%= active_sidenav('trainings') %>">
+          <a href="/dashboard/trainings/">
+          <i class="icon-check-square-o"></i> 
+          <span class="title">Trainings</span>
+          </a>
+        </li>
+        <li class="<%= active_sidenav('quizzes') %>">
+          <a href="/dashboard/quizzes/">
+          
+          <i class="icon-caret-square-o-right"></i> 
+          <span class="title">Quizzes</span>
+          </a>
+        </li>
+        <li class="<%= active_sidenav('reports') %>">
+          <a href="/dashboard/reports/">
+          <i class="icon-list-ul"></i> 
+          <span class="title">Reports</span>
+          </a>
+        </li>
+        
+        <li class="last <%= active_sidenav('settings') %>">
+
+         <a href="/dashboard/settings/">
+          <!-- <span style="
+              color: rgba(230, 127, 46, 1);
+              font-size: 0.7em;
+              padding-right: 2px;
+              float: right;
+              vertical-align: top;
+          "><i>Coming Soon!</i></span>-->
+         <!-- <a href="#">-->
+          <i class="icon-users"></i> 
+          <span class="title">Settings</span>
+          </a>
+        </li>
+
+        <!--<li class="<%= active_sidenav('reports') %>">-->
+          <!--<a href="/dashboard/reports/">-->
+           <!--<span style="
+             color: rgba(230, 127, 46, 1);
+              font-size: 0.7em;
+              position: absolute;
+              padding: 0px 0px 0px 146px;
+          "><i>Coming Soon!</i></span>
+          <a href="#">
+          <i class="icon-calendar"></i> 
+          <span class="title">Schedules</span>
+          </a>
+        </li>-->
+      </ul>
+      <!-- END SIDEBAR MENU -->
+    </div>
+    </div>
+    <!-- END SIDEBAR -->
+    <!-- BEGIN PAGE -->
+    <div class="page-content fill-height">
+
+      <%= yield %>
+    </div>
+    <!-- END PAGE -->
+  </div>
+  <!-- END CONTAINER -->
+  <!-- BEGIN FOOTER -->
+  <div class="clearfix"></div>
+  <div class="footer">
+    <div class="footer-inner">
+    &copy; 2014 Coffee Enterprise 
+    <!--| <a href="/terms" target="_blank">Terms of Use</a>-->
+     
+    </div>
+    <div class="footer-tools">
+      <span class="go-top">
+      <i class="icon-chevron-up"></i>
+      </span>
+    </div>
+  </div>
+  <!-- END FOOTER -->
+</body>
+<!-- END BODY -->
+</html>

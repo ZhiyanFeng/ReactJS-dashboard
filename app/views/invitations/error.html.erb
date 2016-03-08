@@ -1,0 +1,58 @@
+<body class="login" style="background-color: #FFFFFF !important; max-height: 100%; width: 100%">
+<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+<div class="menu-toggler sidebar-toggler">
+</div>
+<!-- END SIDEBAR TOGGLER BUTTON -->
+<!-- BEGIN LOGO -->
+<div class="logo">
+  <a href="/"><img src="https://s3.amazonaws.com/coffeemobileassets/coffe_logo_inverse.png" /></a>
+</div>
+<!-- END LOGO -->
+<!-- BEGIN LOGIN -->
+<center>
+  <span id="ios_download" style="display: none;">
+    <a href="https://itunes.apple.com/ca/app/coffee-enterprise/id730422337?mt=8"><img style="max-height: 48px; width: auto;" class="responsive" src="https://s3.amazonaws.com/coffeemobileassets/download-apple.png"></a>
+  </span>
+  <span id="android_download" style="display: none;">
+    <a href="https://play.google.com/store/apps/details?id=com.coffeeenterprise&amp;hl=en"><img style="max-height: 48px; width: auto;" class="responsive" src="https://s3.amazonaws.com/coffeemobileassets/download-android.png"></a>
+  </span>
+</center>
+<div style="max-width: 400px; margin: 40px auto 0px auto; padding: 0px 20px;">
+  <img src="https://s3.amazonaws.com/coffeemobile/splash.png" style="width: 100%;" /> 
+</div>
+<div style="position: absolute; width: 100%; background-color: #364150; color: #FFFFFF; bottom: 38px;">
+  <div style="max-width: 400px; margin: 0px auto 0px auto; padding: 0px 20px 20px 20px; text-align: center;">
+    <h3>Sorry, the link has expired. Click below to sign up again.</h3>
+    <br>
+    <a href="/login" style="display:inline-block;padding:14px 32px;background:#4bb1bd;border-radius:4px;font-weight:normal;letter-spacing:1px;font-size:20px;line-height:26px;color:white;text-decoration:none">Sign Up</a>
+  </div>
+</div>
+<div class="copyright" style="width: 100%;background-color: #364150;position: absolute;bottom: 0px; margin: 0px;">
+   2014 © Coffee Enterprise. All Rights Reserved
+</div>
+
+<!-- END LOGIN -->
+<%= javascript_include_tag "login_page" %>
+<script>
+jQuery(document).ready(function() {     
+  Metronic.init(); // init metronic core components
+  Layout.init(); // init current layout
+  Login.init();
+  DetectIphone();
+});
+
+function DetectIphone() {
+   var uagent = navigator.userAgent.toLowerCase();
+   console.log(uagent);
+   if(uagent.search("iphone") > -1 || uagent.search("ipad") > -1) {
+      $("#ios_download").show();
+   } else if(uagent.search("android") > -1) {
+      $("#android_download").show();
+   } else {
+      $("#ios_download").show();
+      $("#android_download").show();
+   }
+}
+</script>
+<!-- END JAVASCRIPTS -->
+</body>

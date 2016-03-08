@@ -1,0 +1,32 @@
+# == Schema Information
+#
+# Table name: events
+#
+#  id            :integer          not null, primary key
+#  org_id        :integer          not null
+#  owner_id      :integer          not null
+#  event_start   :timestamp        not null
+#  event_end     :timestamp
+#  event_poi     :string(255)
+#  event_address :string(255)      not null
+#  event_lat     :float            not null
+#  event_lng     :float            not null
+#  event_open    :boolean          default(TRUE)
+#  is_valid      :boolean          default(TRUE)
+#  created_at    :timestamp
+#  updated_at    :timestamp
+#
+
+class Event < ActiveRecord::Base
+  belongs_to :owner, :class_name => "User", :foreign_key => "owner_id"
+  #belongs_to :attachment, :foreign_key => "source_id"
+    
+  attr_accessible :org_id, :owner_id, :event_start, 
+  :event_end, :event_poi, :event_address, :event_lat, :event_lng, 
+  :event_open, :is_valid
+
+  validates_presence_of :org_id, :on => :create
+  validates_presence_of :owner_id, :on => :create
+  #validates_presence_of :image_type, :on => :create
+
+end

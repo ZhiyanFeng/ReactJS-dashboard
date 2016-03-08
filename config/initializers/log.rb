@@ -1,0 +1,1 @@
+APILogger = ActiveSupport::TaggedLogging.new(Logger.new(Rails.root.join('log/api.log'), 100, 50.megabytes))

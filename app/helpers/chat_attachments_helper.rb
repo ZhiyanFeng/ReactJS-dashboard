@@ -1,0 +1,2 @@
+module ChatAttachmentsHelper
+end

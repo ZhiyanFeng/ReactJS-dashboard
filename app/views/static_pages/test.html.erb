@@ -1,0 +1,63 @@
+<% provide(:title, 'Terms of Service') %>
+<!-- BEGIN PAGE CONTAINER -->  
+<div class="page-container">
+	<div class="container">
+		<div class="row margin-bottom-40 margin-top-50">
+			<ul>
+				<li>
+					<input id="url" class="col-md-7" placeholder="URL" type="text" on />
+				</li>
+				<li>
+
+				</li>
+				<li>
+					<label>Title:<span id="page_title"></span></label>
+				</li>
+				<li>
+					<label>Image:<image id="page_image" src="" alt="image" width="100px" /></label>					
+				</li>
+
+				<li>
+
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<%= javascript_include_tag 'dashboard' %>
+<script>
+$("#url").change(function() {
+	$.ajax({
+	    url: "http://localhost:3000/api/systems/fetch_url_meta",
+	    type: "POST",
+		data: { 
+            "url":$("#url").val()
+        },
+		dataType: "json"
+	}).done(function (response) {
+	    /*var div = document.createElement("div"),
+	        responseText = response.results[0],
+	        title, metas, meta, name, description, i;
+	    div.innerHTML = responseText;
+	    title = div.getElementsByTagName("title");
+	    title = title.length ? title[0].innerHTML : undefined;
+	    metas = div.getElementsByTagName("meta");
+	    for (i = 0; i < metas.length; i++) {
+	        name = metas[i].getAttribute("name");
+	        if (name === "description") {
+	            meta = metas[i];
+	            description = meta.getAttribute("content");
+	            break;
+	        }
+	    }
+	    console.log("Title:", title);
+	    console.log("Description:", description);*/
+		console.log("response:", response);
+		$("#page_title").html(response.title);
+		console.log("response:", response.images[0]);
+		$("#page_image").attr("src", response.images[0].src);
+	}).fail(function (jqXHR, textStatus, errorThrown) {
+	    console.log("AJAX ERROR:", textStatus, errorThrown);
+	});
+});
+</script>

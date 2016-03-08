@@ -1,0 +1,2 @@
+module ChatParticipantsHelper
+end

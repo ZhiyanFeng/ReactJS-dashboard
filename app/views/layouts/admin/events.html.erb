@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= full_title(yield(:title)) %></title>
+  <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <%= stylesheet_link_tag "scaffolds", :media => "all" %>
+    <%= stylesheet_link_tag "bootstrap", :media => "all" %>
+    <%= stylesheet_link_tag "jquery-ui", :media => "all" %>
+    <%= stylesheet_link_tag "custom", :media => "all" %>
+    
+    <%= javascript_include_tag "jquery" %>
+    <%= javascript_include_tag "jquery-ui" %>
+    <%= javascript_include_tag "jquery-autosize" %>
+
+    <%= javascript_include_tag 'jquery-ui-timepicker-addon' %>
+    <%= javascript_include_tag 'jquery-ui-sliderAccess' %>
+    <%= stylesheet_link_tag 'jquery-ui-timepicker-addon', :media => "all" %>
+    
+    <%= csrf_meta_tags %>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body data-spy="scroll">
+
+    <div class="navbar navbar-fixed-top">
+     <div class="navbar-inner">
+      <div class="container">
+        <div class="row-fluid">
+          <div class="span12">
+            <a class="home left" href="/" >
+              <%= image_tag("../coffee-brand-new.png", alt: "Coffee Enterprise") %>
+            </a>
+          </div>
+        </div>
+        <div class="row-fluid">
+          <div class="nav-page span12">
+            <ul class="pull-right">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row-fluid">
+      </div>
+    </div>
+  </div>
+  <div class="wrapper container">
+    <div class="maincontent">
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="container-fluid">
+            <div class="row-fluid">
+              <div class="span2">
+                <ol class="submenu">
+                  <li>
+                    <%= link_to 'Dashboard', "/dashboard", class: "db-home-button" %>
+                    <!--<a class="db-home-button" href="/">Dashboard</a>-->
+                  </li>
+                  <li>
+                    <%= link_to 'Campaigns', "/dashboard/campaigns", class: "db-campaigns-button" %>
+                    <!--<a class="db-campaigns-button" href="campaign">Campaigns</a>-->
+                  </li>
+                  <li>
+                    <%= link_to 'Analytics', "/dashboard/analytics", class: "db-analytics-button" %>
+                    <!--<a class="db-analytics-button" href="analytics">Analytics</a>-->
+                  </li>
+                  <li>
+                    <%= link_to 'Awards', "/dashboard/awards", class: "db-awards-button" %>
+                    <!--<a class="db-awards-button" href="awards">Awards</a>-->
+                  </li>
+                  <li>
+                    <%= link_to 'Polls', "/dashboard/polls", class: "db-polls-button" %>
+                    <!--<a class="db-polls-button" href="polls">Polls</a>-->
+                  </li>
+                  <li>
+                    <%= link_to 'Events', "/dashboard/events", class: "db-events-button active" %>
+                    <!--<a class="db-event-button" href="events">Events</a>-->
+                  </li>
+                  <li>
+                    <%= link_to 'Announcements', "/dashboard/announcements", class: "db-announcements-button" %>
+                    <!--<a class="db-announcements-button" href="announcements">Announcements</a>-->
+                  </li>
+                  <li>
+                    <%= link_to 'Profile', "/dashboard/profile", class: "db-profile-button" %>
+                    <!--<a class="db-profile-button" href="profile">Profile</a>-->
+                  </li>
+                  <li>
+                    <%= link_to 'Settings', "/dashboard/settings", class: "db-settings-button" %>
+                    <!--<a class="db-settings-button" href="settings">Settings</a>-->
+                  </li>
+                </ol>
+              </div>
+              <div class="span10">
+                <%= yield %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="push"></div>
+</div>
+
+<div class="footer">
+  <div class="container">
+    <div class="row-fluid container">
+      <div class="span8">
+        <%= image_tag("../coffee-mono-grey.png", alt: "Coffee Mobile", class: "footer-logo") %>
+      </div>  
+      <div class="span4">
+        <div class="connectBtns">
+         <ol>
+          <li>
+           <%= link_to image_tag("../coffee-facebook-icon.png", alt: "Facebook Connect"), 'http://www.facebook.com/' %>
+         </li>
+         <li>
+           <%= link_to image_tag("../coffee-twitter-icon.png", alt: "Twitter Connect"), 'https://www.twitter.com' %>
+         </li>
+         <li>
+           <%= link_to image_tag("../coffee-app-icon.png", alt: "iPhone Support"), 'http://www.apple.com/' %>
+         </li>
+         <li>
+           <%= link_to image_tag("../coffee-android-icon.png", alt: "Andriod Support"), 'http://www.andriod.com/' %>
+         </li>
+       </ol>  
+     </div>
+   </div>
+ </div>
+ <div class="row-fluid">
+  <hr />
+</div>
+<div class="row-fluid container">
+  <div class="span8">
+    <div class="span4">
+      <ol>
+        <li>
+          <a href="#">Product Features</a>
+        </li>
+        <li>
+          <a href="#">Social</a>
+        </li>
+        <li>
+          <a href="#">Chat</a>
+        </li>
+        <li>
+          <a href="#">Profile</a>
+        </li>
+        <li>
+          <a href="#">Corporate</a>
+        </li>
+        <li>
+          <a href="#">Events</a>
+        </li>
+        <li>
+          <a href="#">Challenges</a>
+        </li>
+      </ol>
+    </div>
+    <div class="span4">
+      <ol>
+        <li>
+          <a href="#">Company Features</a>
+        </li>
+        <li>
+          <a href="#">Go Mobile</a>
+        </li>
+        <li>
+          <a href="#">Dashboard</a>
+        </li>
+        <li>
+          <a href="#">Analytics</a>
+        </li>
+        <li>
+          <a href="#">Corporate Notifications</a>
+        </li>
+        <li>
+          <a href="#">Events</a>
+        </li>
+        <li>
+          <a href="#">Implementation</a>
+        </li>
+      </ol>
+    </div>
+    <div class="span4">
+      <ol>
+        <li>
+          <a href="#">For IT & Security</a>
+        </li>
+        <li>
+          <a href="#">SSL/TLS Secure Connections</a>
+        </li>
+        <li>
+          <a href="#">Customer Data Protection</a>
+        </li>
+        <li>
+          <a href="#">Intrusion Detection</a>
+        </li>
+        <li>
+          <a href="#">Seemless Integration</a>
+        </li>
+        <li>
+          <a href="#"></a>
+        </li>
+        <li>
+          <a href="#"></a>
+        </li>
+      </ol>
+    </div>
+  </div>
+  <div class="span4">
+    <div class="span1"></div>
+    <div class="span10"></div>
+  </div>
+</div>
+<div class="row-fluid">
+  <hr />
+</div>
+<div class="row-fluid">
+  <div class="span7">
+    <ul>
+      <li>Copyright &copy; 2013 Coffee Enterprise &mdash; <a href="http://www.coffeemobile.com/" title="Coffee Mobile">Coffee Mobile</a></li>
+    </ul>
+  </div>
+  <div class="span5">
+    <a href="/terms" title="Term of Use">Term of Use</a>
+    <a href="/policy" title="Privacy Statement">Privacy Statement</a>
+  </div>
+</div>
+</div>
+</div>
+<% flash.each do |name, msg| %>
+<%= content_tag :div, msg, :id => "flash_#{name}" %>
+<% end %>
+<%= debug(params) if Rails.env.development? %>
+<div class="container clearfix">
+  <% flash.each do |name, msg| %>
+  <%= content_tag :div, msg, :id => "flash_#{name}" %>
+  <% end %>
+</body>
+</html>
+

@@ -1,0 +1,51 @@
+<% provide(:title, 'Password Reset') %>
+<body class="login" style="background-image:url('http://www.coffeemobile.com/wp-content/uploads/2014/07/42-19753635.psd_.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center right; height: 100%;">
+<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+<div class="menu-toggler sidebar-toggler">
+</div>
+<!-- END SIDEBAR TOGGLER BUTTON -->
+<!-- BEGIN LOGO -->
+<div class="logo">
+	<a href="/"><img src="https://s3.amazonaws.com/coffeemobileassets/coffe_logo_inverse.png" /></a>
+</div>
+<!-- END LOGO -->
+<!-- BEGIN LOGIN -->
+<div style="max-width: 400px; margin: 40px auto 0px auto; padding: 0px 20px;">
+	<img src="http://www.coffeemobile.com/wp-content/uploads/2014/07/validated.png" style="width: 100%;" />	
+</div>
+<div style="position: absolute; width: 100%; background-color: white; bottom: 68px;">
+	<div style="max-width: 400px; margin: 0px auto 0px auto; padding: 20px 20px 40px 20px; text-align: center;">
+		<h3>Password Reset</h3>
+		<br>
+		<p>Your password has been successfully updated. You can now use the new password to login to the dashboard from the <a href="/login">login</a> page, or on the mobile application.</p>
+	</div>
+</div>
+<div class="copyright" style="width: 100%;background-color: #364150;position: absolute;bottom: 0px;">
+	 2014 © Coffee Enterprise. All Rights Reserved
+</div>
+
+<!-- END LOGIN -->
+<%= javascript_include_tag "login_page" %>
+<script>
+jQuery(document).ready(function() {     
+	Metronic.init(); // init metronic core components
+	Layout.init(); // init current layout
+	Login.init();
+	DetectIphone();
+});
+
+function DetectIphone() {
+   var uagent = navigator.userAgent.toLowerCase();
+   console.log(uagent);
+   if(uagent.search("iphone") > -1 || uagent.search("ipad") > -1) {
+      $("#ios_download").show();
+   } else if(uagent.search("android") > -1) {
+   		$("#android_download").show();
+   } else {
+      $("#ios_download").show();
+      $("#android_download").show();
+   }
+}
+</script>
+<!-- END JAVASCRIPTS -->
+</body>

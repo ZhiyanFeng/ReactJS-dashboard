@@ -1,0 +1,91 @@
+<%= stylesheet_link_tag "dashboard_profile", :media => "all" %>
+<input type="hidden" id="org_id" value="<%=cookies[:org_id]%>" />
+<input type="hidden" id="org_name" value="<%=@org_name%>" />
+<input type="hidden" id="org_profile" value="<%=@profile_thumb%>" />
+<input type="hidden" id="user_id" value="<%=cookies[:user_id]%>" />
+<input type="hidden" id="api_key" value="<%=cookies[:api_key]%>" />
+<input type="hidden" id="asset_root" value="<%=ENV['ASSET_ROOT']%>" />
+<div class="page-content">
+  <div id="profile_upload_modal" class="modal fade" data-backdrop="static" tabindex="-1" data-focus-on="input:first">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+      <h4 class="modal-title">Profile Image</h4>
+    </div>
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <form action="/api/images/drop_profile" class="dropzone" id="profile-image-dropzone">
+              <input type="hidden" id="image_type" name="reference" value="org_profile" />
+              <input type="hidden" id="image_type" name="org_id" value="<%= cookies[:org_id]%>" />
+              <input type="hidden" id="owner_id" name="owner_id" value="<%= cookies[:user_id]%>" />
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="form-actions">
+        <button type="button" class="btn default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEGIN STYLE CUSTOMIZER -->
+  
+  <!-- END STYLE CUSTOMIZER -->
+  <!-- BEGIN PAGE HEADER-->
+  
+  <!-- END PAGE HEADER-->
+  <!-- BEGIN PAGE CONTENT-->
+  <div class="row main-content-div" style="min-height: 600px;">
+    <div class="full-height-content full-height-content-scrollable">
+      <div class="full-height-content-body">
+        <!-- SIDEBAR USERPIC -->
+        <div>
+          <div class="profile-userpic center-cropped" style="background-image: url('<%=@profile_full%>')" id="organization-profile-image">
+          </div>
+          <!-- END SIDEBAR USERPIC -->
+          <!-- SIDEBAR USER TITLE -->
+          <div class="profile-usertitle">
+            <div class="profile-usertitle-name">
+               <%=@org_name%>
+            </div>
+            <div class="profile-usertitle-job">
+               <small>
+                <%=raw @org_address%>
+              </small>
+            </div>
+          </div>
+          <!-- END SIDEBAR USER TITLE -->
+          <!-- SIDEBAR BUTTONS -->
+          <div class="profile-userbuttons">
+            <button type="button" href="#profile_upload_modal" data-toggle="modal" class="btn btn-circle green-haze btn-sm">
+              Change Profile Image
+            </button>
+          </div>
+      <!-- END SIDEBAR BUTTONS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!--<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>-->
+<script>
+  var temp_img = null;
+</script>
+<%= javascript_include_tag "dashboard_profile" %>
+
+<script>
+
+jQuery(document).ready(function() {
+  //App.init();
+  Layout.init();
+  Metronic.init(); // init metronic core components
+  FormDropzone.init(); // init metronic core components
+  ProfileModule.init(); // init metronic core components
+});
+
+
+</script>

@@ -1,0 +1,64 @@
+<h1>Listing post_types</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>base_type</th>
+      <th>description</th>
+      <th>image_count</th>
+      <th>includes_video</th>
+      <th>includes_event</th>
+      <th>includes_survey</th>
+      <th>includes_shift</th>
+      <th>includes_layover</th>
+      <th>includes_schedule</th>
+      <th>includes_audio</th>
+      <th>includes_url</th>
+      <th>includes_pdf</th>
+      <th>includes_safety_course</th>
+      <th>allow_comments</th>
+      <th>allow_likes</th>
+      <th>allow_flags</th>
+      <th>allow_delete</th>
+      <th>is_valid</th>
+      <th>created_at</th>
+      <th>updated_at</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @post_types.each do |post_type| %>
+      <tr>
+        <td><%= post_type.id %></td>
+        <td><%= post_type.base_type %></td>
+        <td><%= post_type.description %></td>
+        <td><%= post_type.image_count %></td>
+        <td><%= post_type.includes_video %></td>
+        <td><%= post_type.includes_event %></td>
+        <td><%= post_type.includes_survey %></td>
+        <td><%= post_type.includes_shift %></td>
+        <td><%= post_type.includes_layover %></td>
+        <td><%= post_type.includes_schedule %></td>
+        <td><%= post_type.includes_audio %></td>
+        <td><%= post_type.includes_url %></td>
+        <td><%= post_type.includes_pdf %></td>
+        <td><%= post_type.includes_safety_course %></td>
+        <td><%= post_type.allow_comments %></td>
+        <td><%= post_type.allow_likes %></td>
+        <td><%= post_type.allow_flags %></td>
+        <td><%= post_type.allow_delete %></td>
+        <td><%= post_type.is_valid %></td>
+        <td><%= post_type.created_at %></td>
+        <td><%= post_type.updated_at %></td>
+        <td><%= link_to 'Show', post_type %></td>
+        <td><%= link_to 'Edit', edit_post_type_path(post_type) %></td>
+        <td><%= link_to 'Destroy', post_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Post type', new_post_type_path %>

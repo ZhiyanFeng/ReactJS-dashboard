@@ -1,0 +1,13 @@
+# Sample configuration file for Sidekiq.
+# Options here can still be overridden by cmd line args.
+#   sidekiq -C config.yml
+---
+:logfile: /var/log/sidekiq.log
+:verbose: false
+:concurrency:  25
+:daemon: true
+:queues:
+  - [high, 9]
+  - [often, 7]
+  - [default, 5]
+  - [seldom, 3]

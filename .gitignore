@@ -22,7 +22,6 @@ app/assets/*
 /tmp
 
 /.idea/*
-/config/environment.rb
 /vendor
 
 # Elastic Beanstalk Files

@@ -10,29 +10,29 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['RDS_DB_NAME'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
-  port: <%= ENV['RDS_PORT'] %>
+  database: expresso_test
+  host: main-database.cx04pnrh1sfk.us-west-2.rds.amazonaws.com
+  port: 5432
   pool: 5
-  username: <%= ENV['RDS_USERNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
+  username: barista
+  password: c3chensi
 
 staging:
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['RDS_DB_NAME'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
-  port: <%= ENV['RDS_PORT'] %>
+  database: expresso_test
+  host: main-database.cx04pnrh1sfk.us-west-2.rds.amazonaws.com
+  port: 5432
   pool: 5
-  username: <%= ENV['RDS_USERNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
+  username: barista
+  password: c3chensi
 
 production:
   adapter: postgresql
   encoding: unicode
-  database: <%= ENV['RDS_DB_NAME'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
-  port: <%= ENV['RDS_PORT'] %>
+  database: expresso_test
+  host: main-database.cx04pnrh1sfk.us-west-2.rds.amazonaws.com
+  port: 5432
   pool: 5
-  username: <%= ENV['RDS_USERNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
+  username: barista
+  password: c3chensi

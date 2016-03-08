@@ -25,3 +25,8 @@ app/assets/*
 /.idea/*
 /config/environment.rb
 /vendor
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

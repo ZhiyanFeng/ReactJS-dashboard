@@ -1,0 +1,9 @@
+development:
+  host: 'localhost'
+  port: '6379'
+test:
+  host: 'localhost'
+  port: '6379'
+production:
+  host: 'your.redis.node.will.go.here.usw2.cache.amazonaws.com'
+  port: '6379'

@@ -43,7 +43,7 @@ gem 'net-ssh', '~>2.7.0'
 gem 'geocoder'
 gem 'sidekiq'
 gem 'capistrano-sidekiq', group: :development
-gem 'sinatra', require: false
+gem 'sinatra'
 gem 'slim'
 
 gem 'plivo'

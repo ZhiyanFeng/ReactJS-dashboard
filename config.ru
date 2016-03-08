@@ -8,7 +8,7 @@ if Object.const_defined?(:Encoding) && !ENV['LANG'] && !ENV['RUBYOPT'].include?(
 
 end
 
-ENV['RAILS_ENV']="staging"
+ENV['RAILS_ENV']="test"
 
 # This file is used by Rack-based servers to start the application.
 

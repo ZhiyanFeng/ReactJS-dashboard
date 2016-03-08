@@ -21,7 +21,7 @@ app/assets/*
 /tmp
 
 /.idea/*
-/vendor/bundle/gems/*
+/vendor/bundle/gems/*.*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

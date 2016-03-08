@@ -121,7 +121,7 @@ module Api
           :referral_link => params[:referral_link],
           :referral_platform => params[:referral_platform].present? ? params[:referral_platform] : "DIRECT",
           :referral_code => params[:referral_code].present? ? params[:referral_code] : @user.get_referral_code,
-          :referral_code => params[:referral_target_id]
+          :referral_target_id => params[:referral_target_id]
         )
         if @referral.save
           render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }

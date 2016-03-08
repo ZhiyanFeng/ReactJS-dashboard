@@ -2,9 +2,9 @@ module Api
   module Bumblebee
     class SystemsController < ApplicationController
       http_basic_authenticate_with :name => "theboat", :password => "bigcheese", :except => [:fetch_url_meta]
-      
+
       before_filter :set_headers
-      
+
       respond_to :json
 
       def fetch_url_meta
@@ -20,7 +20,7 @@ module Api
           result.save
         end
       end
-      
+
       def push_apns_insert
         n = Rpush::Apns::Notification.new
         n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
@@ -29,7 +29,7 @@ module Api
         n.data = {:foo => :bar}
         n.save!
       end
-      
+
        def push_gcm_insert
           n = Rpush::Gcm::Notification.new
           n.app = Rpush::Gcm::App.find_by_name("coffee_enterprise")
@@ -37,7 +37,7 @@ module Api
           n.data = {:category => "open_app", :action => "join", :org_id => 13, :source => 4, :source_id => 114, :sender => "Daniel Chan", :content => null, :recipient => "家园"}
           n.save!
       end
-      
+
       def create_gcm_service
         app = Rpush::Gcm::App.new
         app.name = "coffee_enterprise"
@@ -45,7 +45,7 @@ module Api
         app.connections = 1
         app.save
 
-        render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }      
+        render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
       end
 
       def create_apns_service
@@ -61,7 +61,7 @@ module Api
       end
 
       def setup_groups
-        
+
         @apikey = ApiKey.new(:app_version => "1.0.0", :app_platform => "TEST")
         self.create_source
         self.create_image_type
@@ -69,13 +69,13 @@ module Api
         self.create_user
         self.create_organization
         @apikey.save
-        
+
         respond_to do |format|
           format.html { render json: @apikey, status: 200 }
           format.json { render json: @apikey, status: 200 }
         end
       end
-      
+
       def broadcast
         @messions = Mession.where("is_active")
         @messions.each do |p|
@@ -104,7 +104,7 @@ module Api
                 :org_id => 1,
                 :source => 1,
                 :source_id => 7,
-                
+
               }
               n.save!
             end
@@ -117,169 +117,7 @@ module Api
 
         render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
       end
-      
-      def demo
-        @posts = []
-        @post = {
-          'org_id' => 1,
-          'title' => "Patronpaint Training Video One",
-          'content' => "Please take the quiz after the training to ensure best results.",
-          'comments_count' => 0,
-          'likes_count' => 0,
-          'settings' => {
-            'includes_image' => true,
-            'includes_video' => false,
-            'includes_survey' => false,
-            'includes_shift' => false,
-            'is_overlay' => true,
-            'allow_comments' => false,
-            'allow_likes' => false,
-            'allow_flags' => false,
-            'allow_delete' => false
-          },
-          'image' => {
-            'thumb_url' => "http://192.155.94.183/assets/placeholder.png",
-            'gallery_url' => "http://192.155.94.183/assets/placeholder.png",
-            'full_url' => "http://192.155.94.183/assets/placeholder.png"
-          }
-        }
-        
-        @posts.insert(0,@post)
-        
-        @post = {
-          'org_id' => 1,
-          'title' => "Patronpaint Training Video One",
-          'content' => "",
-          'comments_count' => 0,
-          'likes_count' => 0,
-          'settings' => {
-            'includes_image' => false,
-            'includes_video' => true,
-            'includes_survey' => false,
-            'includes_shift' => false,
-            'is_overlay' => false,
-            'allow_comments' => false,
-            'allow_likes' => false,
-            'allow_flags' => false,
-            'allow_delete' => false
-          },
-          'video' => {
-            'host' => "youtube",
-            'video_url' => "http://youtu.be/xllZ21L9RU0"
-          }
-        }
-        
-        @posts.insert(1,@post)
-        
-        @post = {
-          'org_id' => 1,
-          'title' => "Patronpaint Training Video One",
-          'content' => "",
-          'comments_count' => 0,
-          'likes_count' => 0,
-          'settings' => {
-            'includes_image' => false,
-            'includes_video' => true,
-            'includes_survey' => false,
-            'includes_shift' => false,
-            'is_overlay' => false,
-            'allow_comments' => false,
-            'allow_likes' => false,
-            'allow_flags' => false,
-            'allow_delete' => false
-          },
-          'video' => {
-            'host' => "youtube",
-            'video_url' => "http://youtu.be/UbroWiPMR8g"
-          }
-        }
-        
-        @posts.insert(2,@post)
-        
-        @post = {
-          'org_id' => 1,
-          'title' => "Patronpaint Training Video One",
-          'content' => "",
-          'comments_count' => 0,
-          'likes_count' => 0,
-          'settings' => {
-            'includes_image' => true,
-            'includes_video' => false,
-            'includes_survey' => false,
-            'includes_shift' => false,
-            'is_overlay' => false,
-            'allow_comments' => false,
-            'allow_likes' => false,
-            'allow_flags' => false,
-            'allow_delete' => false
-          },
-          'image' => {
-            'thumb_url' => "http://coffeemobile.com/assets/coffee-main-hero.jpg",
-            'gallery_url' => "http://coffeemobile.com/assets/coffee-main-hero.jpg",
-            'full_url' => "http://coffeemobile.com/assets/coffee-main-hero.jpg"
-          }
-        }
-        
-        @posts.insert(3,@post)
-        
-        @post = {
-          'org_id' => 1,
-          'title' => "Patronpaint Training Video One",
-          'content' => "Quiz",
-          'comments_count' => 0,
-          'likes_count' => 0,
-          'settings' => {
-            'includes_image' => false,
-            'includes_video' => false,
-            'includes_survey' => true,
-            'includes_shift' => false,
-            'is_overlay' => false,
-            'allow_comments' => false,
-            'allow_likes' => false,
-            'allow_flags' => false,
-            'allow_delete' => false
-          },
-          'survey' => {
-            'item' => {
-              'question' => "Where are you from?",
-              'answers' => {
-                'unique' => "Canada",
-                'unique' => "United States",
-                'unique_input' => "Other"
-              }
-            }
-          }
-        }
-        
-        @posts.insert(4,@post)
-        
-        @post = {
-          'org_id' => 1,
-          'title' => "Patronpaint Training Video One",
-          'content' => "Thank you for your time.",
-          'comments_count' => 0,
-          'likes_count' => 0,
-          'settings' => {
-            'includes_image' => true,
-            'includes_video' => false,
-            'includes_survey' => false,
-            'includes_shift' => false,
-            'is_overlay' => true,
-            'allow_comments' => false,
-            'allow_likes' => false,
-            'allow_flags' => false,
-            'allow_delete' => false
-          },
-          'image' => {
-            'thumb_url' => "http://coffeemobile.com/assets/sub-employee-announcement-f332c4df0a8853bdadeb876220d69130.png",
-            'gallery_url' => "http://coffeemobile.com/assets/sub-employee-announcement-f332c4df0a8853bdadeb876220d69130.png",
-            'full_url' => "http://coffeemobile.com/assets/sub-employee-announcement-f332c4df0a8853bdadeb876220d69130.png"
-          }
-        }
-        
-        @posts.insert(5,@post)
-        render json: @posts
-      end
+
 
       def add_type
         if(params[:table] == "post_type")
@@ -300,7 +138,7 @@ module Api
         else
         end
       end
-      
+
       def add_source
         @source = Source.new(:table_name => params[:table])
         @source.save
@@ -327,7 +165,7 @@ module Api
         @source = Source.new(:table_name => "schedule")
         @source.save
       end
-      
+
       def create_organization
         @organization = Organization.new(
           :name => "The V2 Test Organization",
@@ -347,7 +185,7 @@ module Api
           :email => "ios@coffeemobile.com"
         )
         @user.save
-        
+
         @user = User.new(
           :password => "1234qwer",
           :first_name => "daniel",
@@ -356,98 +194,98 @@ module Api
         )
         @user.save
       end
-      
+
       def create_image_type
         ActiveRecord::Base.connection.execute("TRUNCATE TABLE image_types RESTART IDENTITY")
         @imagetype = ImageType.new(
-          :base_type => "image",  
-          :description => "organization_profile",  
+          :base_type => "image",
+          :description => "organization_profile",
           :allow_comments => false,
-          :allow_likes => false, 
-          :allow_flags => false, 
+          :allow_likes => false,
+          :allow_flags => false,
           :allow_delete => false,
           :allow_enlarge => false
         )
         @imagetype.save
-        
+
         @imagetype = ImageType.new(
-          :base_type => "image", 
-          :description => "user_profile",  
+          :base_type => "image",
+          :description => "user_profile",
           :allow_comments => false,
-          :allow_likes => false, 
-          :allow_flags => false, 
+          :allow_likes => false,
+          :allow_flags => false,
           :allow_delete => false,
           :allow_enlarge => false
         )
         @imagetype.save
-        
+
         @imagetype = ImageType.new(
-          :base_type => "image", 
-          :description => "announcement_image",  
+          :base_type => "image",
+          :description => "announcement_image",
           :allow_comments => false,
-          :allow_likes => false, 
-          :allow_flags => false, 
+          :allow_likes => false,
+          :allow_flags => false,
           :allow_delete => false,
           :allow_enlarge => false
         )
         @imagetype.save
-        
+
         @imagetype = ImageType.new(
-          :base_type => "image", 
-          :description => "post_image",  
+          :base_type => "image",
+          :description => "post_image",
           :allow_comments => false,
-          :allow_likes => false, 
-          :allow_flags => false, 
+          :allow_likes => false,
+          :allow_flags => false,
           :allow_delete => false,
           :allow_enlarge => false
         )
         @imagetype.save
-        
+
         @imagetype = ImageType.new(
-          :base_type => "image", 
-          :description => "user_gallery",  
+          :base_type => "image",
+          :description => "user_gallery",
           :allow_comments => false,
-          :allow_likes => false, 
-          :allow_flags => false, 
+          :allow_likes => false,
+          :allow_flags => false,
           :allow_delete => false,
           :allow_enlarge => false
         )
         @imagetype.save
-        
+
         @imagetype = ImageType.new(
-          :base_type => "image", 
-          :description => "org_gallery",  
+          :base_type => "image",
+          :description => "org_gallery",
           :allow_comments => false,
-          :allow_likes => false, 
-          :allow_flags => false, 
+          :allow_likes => false,
+          :allow_flags => false,
           :allow_delete => false,
           :allow_enlarge => false
         )
         @imagetype.save
-        
+
         @imagetype = ImageType.new(
-          :base_type => "image",  
-          :description => "organization_cover",  
+          :base_type => "image",
+          :description => "organization_cover",
           :allow_comments => false,
-          :allow_likes => false, 
-          :allow_flags => false, 
+          :allow_likes => false,
+          :allow_flags => false,
           :allow_delete => false,
           :allow_enlarge => false
         )
         @imagetype.save
-        
+
         @imagetype = ImageType.new(
-          :base_type => "image", 
-          :description => "user_cover",  
+          :base_type => "image",
+          :description => "user_cover",
           :allow_comments => false,
-          :allow_likes => false, 
-          :allow_flags => false, 
+          :allow_likes => false,
+          :allow_flags => false,
           :allow_delete => false,
           :allow_enlarge => false
         )
         @imagetype.save
       end
-      
+
       def create_post_type
         ActiveRecord::Base.connection.execute("TRUNCATE TABLE post_types RESTART IDENTITY")
         @posttype = PostType.new(
@@ -467,7 +305,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "announcement",
           :description => "announcement_with_image",
@@ -485,7 +323,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "announcement",
           :description => "announcement_with_video",
@@ -503,7 +341,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "announcement",
           :description => "announcement_with_9_images",
@@ -521,7 +359,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "post",
           :description => "basic_post",
@@ -539,7 +377,7 @@ module Api
           :allow_delete => true
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "post",
           :description => "post_with_image",
@@ -557,7 +395,7 @@ module Api
           :allow_delete => true
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "post",
           :description => "post_with_9_images",
@@ -575,7 +413,7 @@ module Api
           :allow_delete => true
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "post",
           :description => "post_with_video",
@@ -593,7 +431,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "post",
           :description => "post_with_event",
@@ -611,7 +449,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "announcement",
           :description => "announcement_with_event",
@@ -629,7 +467,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "training",
           :description => "basic_training",
@@ -647,7 +485,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "training",
           :description => "training_with_image",
@@ -665,7 +503,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "training",
           :description => "training_with_video",
@@ -683,7 +521,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "quiz",
           :description => "basic_quiz",
@@ -701,7 +539,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "quiz",
           :description => "quiz_with_image",
@@ -719,7 +557,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "announcement",
           :description => "announcement_with_shift",
@@ -737,7 +575,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "announcement",
           :description => "announcement_with_schedule",
@@ -755,7 +593,7 @@ module Api
           :allow_delete => false
         )
         @posttype.save
-        
+
         @posttype = PostType.new(
           :base_type => "announcement",
           :description => "announcement_with_schedule_image",

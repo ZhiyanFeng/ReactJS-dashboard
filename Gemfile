@@ -20,6 +20,7 @@ gem 'protected_attributes'
 gem "active_model_serializers", '~> 0.9.0'
 gem "rpush"
 gem "twilio-ruby"
+gem 'event-calendar', :require => 'event_calendar'
 gem "httparty"
 
 group :development, :test do

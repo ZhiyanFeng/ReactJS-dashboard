@@ -1,9 +1,9 @@
 class Video < ActiveRecord::Base
   #validates_presence_of :title
-  scope :finished, :conditions => { :encoded_state => "finished" }
+  #scope :finished, :conditions => { :encoded_state => "finished" }
 
 
-  has_attached_file :video, 
+  has_attached_file :video,
   :url => "videos/:id.:basename.:extension",
   :path => "videos/:id.:basename.:extension",
   :storage => :s3
@@ -34,7 +34,7 @@ class Video < ActiveRecord::Base
   def encode!(options = {})
     begin
       zen = Zencoder.new(
-        "s3://" + zencoder_setting["s3_output"]["bucket"] + "/videos/", 
+        "s3://" + zencoder_setting["s3_output"]["bucket"] + "/videos/",
          zencoder_setting["settings"]["notification_url"],
          "http://s3.amazonaws.com/" + zencoder_setting["s3_output"]["bucket"] + "/thumbnails"
       )
@@ -49,10 +49,10 @@ class Video < ActiveRecord::Base
       #  nil
       #end
       #response = Zencoder::Job.create({ :input => "s3://" + zencoder_setting["s3_input"]["bucket"] + "/" + self.id.to_s + "." + self.video_file_name })
-      #zen = Zencoder::Job.create({ 
+      #zen = Zencoder::Job.create({
       #  :input => "s3://coffeemobile_development/videos/" + self.id.to_s + "." + self.video_file_name,
-      #  :outputs => [{ 
-      #    :label => self.video_file_name, 
+      #  :outputs => [{
+      #    :label => self.video_file_name,
       #    :url => "s3://coffeemobile_encoded/videos/" + self.id.to_s + ".mp4"
       #  }]
       #})

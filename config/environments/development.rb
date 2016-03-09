@@ -28,8 +28,7 @@ Expresso::Application.configure do
   # Do not compress assets
   config.assets.compress = true
   config.assets.compile = true
-  config.serve_static_assets = false
-  
+
   config.eager_load = false
 
   # Expands the lines which load the assets
@@ -60,7 +59,7 @@ Expresso::Application.configure do
     :storage => :s3,
     :s3_credentials => "#{config.root}/config/s3.yml"
   }
-  
+
   ENV['S3_KEY'] = "AKIAJ5DWZZYJIDXW3W2A"
   ENV['S3_SECRET'] = "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"
   ENV['S3_ASSET_URL'] = ":s3_domain_url"

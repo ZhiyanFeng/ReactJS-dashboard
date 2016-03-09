@@ -14,7 +14,7 @@ test:
   database: <%= ENV['RDS_DB_NAME'] %>
   host: <%= ENV['RDS_HOST_NAME'] %>
   port: <%= ENV['RDS_PORT'] %>
-  pool: 5
+  pool: 25
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>
 
@@ -24,7 +24,7 @@ staging:
   database: <%= ENV['RDS_DB_NAME'] %>
   host: <%= ENV['RDS_HOST_NAME'] %>
   port: <%= ENV['RDS_PORT'] %>
-  pool: 5
+  pool: 25
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>
 
@@ -34,6 +34,6 @@ production:
   database: <%= ENV['RDS_DB_NAME'] %>
   host: <%= ENV['RDS_HOST_NAME'] %>
   port: <%= ENV['RDS_PORT'] %>
-  pool: 5
+  pool: 25
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>

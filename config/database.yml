@@ -2,7 +2,7 @@ development:
   adapter: postgresql
   encoding: unicode
   database: <%= ENV['RDS_DB_NAME'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
+  host: <%= ENV['RDS_HOST_NAME'] %>
   port: <%= ENV['RDS_PORT'] %>
   pool: 5
   username: <%= ENV['RDS_USERNAME'] %>
@@ -12,7 +12,7 @@ test:
   adapter: postgresql
   encoding: unicode
   database: <%= ENV['RDS_DB_NAME'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
+  host: <%= ENV['RDS_HOST_NAME'] %>
   port: <%= ENV['RDS_PORT'] %>
   pool: 5
   username: <%= ENV['RDS_USERNAME'] %>
@@ -22,7 +22,7 @@ staging:
   adapter: postgresql
   encoding: unicode
   database: <%= ENV['RDS_DB_NAME'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
+  host: <%= ENV['RDS_HOST_NAME'] %>
   port: <%= ENV['RDS_PORT'] %>
   pool: 5
   username: <%= ENV['RDS_USERNAME'] %>
@@ -32,7 +32,7 @@ production:
   adapter: postgresql
   encoding: unicode
   database: <%= ENV['RDS_DB_NAME'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
+  host: <%= ENV['RDS_HOST_NAME'] %>
   port: <%= ENV['RDS_PORT'] %>
   pool: 5
   username: <%= ENV['RDS_USERNAME'] %>

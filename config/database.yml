@@ -1,11 +1,12 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: expresso_development
-  host: localhost
+  database: <%= ENV['RDS_DB_NAME'] %>
+  host: <%= ENV['RDS_HOSTNAME'] %>
+  port: <%= ENV['RDS_PORT'] %>
   pool: 5
-  username: daniel
-  password: c3chensi
+  username: <%= ENV['RDS_USERNAME'] %>
+  password: <%= ENV['RDS_PASSWORD'] %>
 
 test:
   adapter: postgresql

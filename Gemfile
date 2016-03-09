@@ -49,6 +49,7 @@ gem 'slim'
 gem 'plivo'
 
 gem 'obscenity'
+gem 'responders', '~> 2.0'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

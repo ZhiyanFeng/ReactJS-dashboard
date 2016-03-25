@@ -42,8 +42,8 @@ class User < ActiveRecord::Base
 	has_many :likes
   has_many :flags, :through => :flags
   has_many :posts
-  
-  attr_accessible :status, :user_group, :location, :gender, :first_name, 
+
+  attr_accessible :status, :user_group, :location, :gender, :first_name,
   :last_name, :email, :password, :chat_handle, :active_org,
   :push_count, :is_admin, :validated, :access_key_count, :cover_id,
   :profile_id, :phone_number, :is_active, :password_reset_token, :password_reset_sent_at,
@@ -140,9 +140,9 @@ class User < ActiveRecord::Base
   def process_tags(tags)
     t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
     t_token = '81eaed486465b41042fd32b61e5a1b14'
-    
+
     @client = Twilio::REST::Client.new t_sid, t_token
-    
+
     if Rails.env.production?
       @host = "http://goo.gl/isddrw"
     elsif Rails.env.staging?
@@ -152,7 +152,7 @@ class User < ActiveRecord::Base
     else
       @host = "http://goo.gl/isddrw"
     end
-    
+
     if self[:active_org] != 1
       @organization = Organization.where(:id => self[:active_org]).first
       network_name = @organization[:name]
@@ -194,7 +194,7 @@ class User < ActiveRecord::Base
           n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
           n.device_token = @mession.push_id
           n.alert = "Your access to " + @location[:location_name] + " has been revolked."
-          #n.attributes_for_device  
+          #n.attributes_for_device
           n.data = {
             :cat => "open_app",
             :oid => self.active_org
@@ -203,7 +203,7 @@ class User < ActiveRecord::Base
         rescue
 
         ensure
-          
+
         end
         @mession.update_attribute(:is_active, false)
       end
@@ -227,7 +227,7 @@ class User < ActiveRecord::Base
           n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
           n.device_token = @mession.push_id
           n.alert = "Your access to " + @organization[:name] + " has been revolked."
-          #n.attributes_for_device	
+          #n.attributes_for_device
           n.data = {
             :cat => "open_app",
             :oid => self.active_org
@@ -236,7 +236,7 @@ class User < ActiveRecord::Base
         rescue
 
         ensure
-          
+
         end
         @mession.update_attribute(:is_active, false)
       end
@@ -244,7 +244,7 @@ class User < ActiveRecord::Base
       self.update_attributes!(:active_org => 0)
     end
   end
-  
+
   def send_password_reset
     #generate_token(:password_reset_token)
     self.update_attributes(
@@ -261,10 +261,10 @@ class User < ActiveRecord::Base
       :password_reset_token => SecureRandom.urlsafe_base64,
       :password_reset_sent_at => Time.zone.now
     )
-    
+
     t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
     t_token = '81eaed486465b41042fd32b61e5a1b14'
-    
+
     @client = Twilio::REST::Client.new t_sid, t_token
 
     if Rails.env.production?
@@ -276,9 +276,9 @@ class User < ActiveRecord::Base
     else
       @host = "http://localhost:3000"
     end
-    
+
     message = @client.account.messages.create(
-      :body => "To reset your Coffee Mobile password, click #{@host}/reset_password/#{self.password_reset_token}",
+      :body => "To reset your Shyft password, click #{@host}/reset_password/#{self.password_reset_token}",
       :to => self[:phone_number],
       :from => "+16137028842"
     )
@@ -301,13 +301,13 @@ class User < ActiveRecord::Base
   def is_admin
     return self.is_admin?
   end
-  
+
   #def indicate(user_id)
   #  self.gallery_image.each do |p|
   #    p.setup
   #  end
   #end
-  
+
   def leave_org
     transaction do
       if UserPrivilege.exists?(:org_id => self[:active_org], :owner_id => self[:id], :is_valid => true)
@@ -328,7 +328,7 @@ class User < ActiveRecord::Base
       end
     end
   end
-  
+
   def has_liked(obj, id)
     if Like.exists?(:owner_id => self.id, :source => Source.id_from_name(obj), :source_id => id)
       return true
@@ -336,7 +336,7 @@ class User < ActiveRecord::Base
       return false
     end
   end
-  
+
   def has_flagged(obj, id)
     if Flag.exists?(:owner_id => self.id, :source => Source.id_from_name(obj), :source_id => id)
       return true
@@ -348,7 +348,7 @@ class User < ActiveRecord::Base
   def create_chat_handle
     self.chat_handle = SecureRandom.hex
     @host = "http://chat.coffeemobile.com:9090"
-    url = "#{ @host }/plugins/userService/userservice?type=add&secret=scottyvmcsexy&username=" + 
+    url = "#{ @host }/plugins/userService/userservice?type=add&secret=scottyvmcsexy&username=" +
     self.chat_handle + "&password=3635durocher&name=" + self.email
     require 'open-uri'
     body = open(url).read
@@ -545,12 +545,12 @@ class User < ActiveRecord::Base
         elsif type == "safety_quiz"
           @counter.update_attribute(:safety_quiz, @counter[:safety_quiz] + 1)
         else
-          
+
         end
       end
     end
   end
-  
+
   def self.notification_broadcast(sender_id, org_id, type, event, message, source, source_id, created_at = nil, location=nil, user_group=nil)
     if type == "post" || type == "safety_course"
       #if location > 0 && user_group > 0
@@ -608,7 +608,7 @@ class User < ActiveRecord::Base
         elsif type == "safety_quiz"
           @counter.update_attribute(:safety_quiz, @counter[:safety_quiz] + 1)
         else
-          
+
         end
       end
     end
@@ -655,7 +655,7 @@ class User < ActiveRecord::Base
           :org_id => @organization[:id],
           :owner_id => @user[:id],
           :title => "Welcome to " + @organization[:name],
-          :content => "You have successfully created the network. Please contact hello@coffeemobile.com for questions or assistance.", 
+          :content => "You have successfully created the network. Please contact hello@coffeemobile.com for questions or assistance.",
           :post_type => 1
         )
         @post.basic_hello
@@ -763,6 +763,6 @@ class User < ActiveRecord::Base
     count = 0
     count = ScheduleElement.where("coverer_id = #{self[:id]} AND name = 'shift' AND is_valid = 't'").count
     self.shift_count = count
-    self.shyft_score = self.shyft_score 
+    self.shyft_score = self.shyft_score
   end
 end

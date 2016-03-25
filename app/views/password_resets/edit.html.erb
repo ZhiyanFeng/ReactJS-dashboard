@@ -1,84 +1,99 @@
 <% provide(:title, 'Reset Password') %>
-<body class="login">
-<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-<div class="menu-toggler sidebar-toggler">
-</div>
-<!-- END SIDEBAR TOGGLER BUTTON -->
-<!-- BEGIN LOGO -->
-<div class="logo">
-	<a href="/"><img src="https://s3.amazonaws.com/coffeemobile/logo-small.png" /></a>
-</div>
-<!-- END LOGO -->
-<!-- BEGIN LOGIN -->
-<div class="content">
-	<!-- BEGIN FORGOT PASSWORD FORM -->
-	<form accept-charset="UTF-8" class="edit-password-form" action="#" >
-		<!-- BEGIN NAME -->
-		<input type="hidden" id="reset_id" value="<%=params[:id]%>">
-		<div style="">
-			<h3>Password Reset</h3>
-      <div class="form-group">
-        <label class="control-label visible-ie8 visible-ie9">Password</label>
-        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Password" name="password"/>
-      </div>
-      <div class="form-group">
-        <label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
-        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Re-type Your Password" name="rpassword"/>
-      </div>
-      <p class="hint">
-        Please make sure you password a combination of characters, numbers and symbols of at least 6 characters long.
-      </p>
-			<div class="form-group">
-				<button type="submit" id="register-submit-btn" class="btn btn-success uppercase pull-right">Next</button>
-			</div>
-		</div>
-		<!-- END NAME -->
-	</form>
-</div>
-<div class="copyright">
-	 2014 © Coffee Enterprise. All Rights Reserved
-</div>
-<!-- END LOGIN -->
-<%= javascript_include_tag "login_page" %>
-<script>
-jQuery(document).ready(function() {     
-	Metronic.init(); // init metronic core components
-	Layout.init(); // init current layout
-	Login.init();
-});
-</script>
-<!-- END JAVASCRIPTS -->
-</body>
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
 
-<script>
-/*$('#finish_reset').click(function() {
-   	if( !$("#password").val()
-	|| !$("#confirm_password").val() ) {
-			if ( !$("#password").val()) {
-				$("#password").attr("style", "border: 1px solid #b94a48; background-color: #eed3d7;");
-			} else {
-				$("#password").attr("style", "border: 1px solid #dedede; background-color: #efefef;");
-			}
+    <head>
+        <meta charset="utf-8" />
+        <title>Password Reset</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/uniform.default.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN THEME GLOBAL STYLES -->
+        <link href="https://s3.amazonaws.com/shyftassets/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/plugins.min.css" rel="stylesheet" type="text/css" />
+        <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="https://s3.amazonaws.com/shyftassets/coming-soon.min.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL STYLES -->
+        <!-- BEGIN THEME LAYOUT STYLES -->
+        <!-- END THEME LAYOUT STYLES -->
+        <link rel="shortcut icon" href="https://s3.amazonaws.com/coffeemobileassets/images/Shyft_Icon.png" /> </head>
+    <!-- END HEAD -->
 
-			 if ( !$("#confirm_password").val()) {
-				$("#confirm_password").attr("style", "border: 1px solid #b94a48; background-color: #eed3d7;");
-			} else {
-				$("#confirm_password").attr("style", "border: 1px solid #dedede; background-color: #efefef;");
-			}
-		} else if ($("#password").val() != $("#confirm_password").val()) {
-			alert("Error: The passwords do not match.");
-			$("#password").attr("style", "border: 1px solid #b94a48; background-color: #eed3d7;");
-			$("#confirm_password").attr("style", "border: 1px solid #b94a48; background-color: #eed3d7;");
-			$("#password").focus();
-		} else if ($("#password").val().length < 6) {
-			$("#password").attr("style", "border: 1px solid #b94a48; background-color: #eed3d7;");
-			$("#confirm_password").attr("style", "border: 1px solid #b94a48; background-color: #eed3d7;");
-			alert("Error: Password must contain at least six characters!");
-			$("#password").focus();
-		} else {
-			$(".edit_password").submit();
-			//console.log("All Good");
-		}
-	});*/
-</script>
+    <body class="" style="background-color: #00bbc7;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 coming-soon-header">
+                    <a class="brand" href="index.html">
+                        <img src="https://www.myshyft.com/assets/img/main_logo.png" style="height: 60px; width: auto;" alt="logo" /> </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 coming-soon-content">
+                  <form accept-charset="UTF-8" class="edit-password-form" action="#" >
+                    <!-- BEGIN NAME -->
+                    <input type="hidden" id="reset_id" value="<%=params[:id]%>">
+                    <div>
+                      <h1>Password Reset</h1>
+                      <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">Password</label>
+                        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Password" name="password"/>
+                      </div>
+                      <div class="form-group">
+                        <label class="control-label visible-ie8 visible-ie9">Re-type Your Password</label>
+                        <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Re-type Your Password" name="rpassword"/>
+                      </div>
+                      <p class="hint">
+                        Please make sure you password a combination of characters, numbers and symbols of at least 6 characters long.
+                      </p>
+                      <div class="form-group">
+                        <button type="submit" id="register-submit-btn" class="btn btn-success uppercase pull-right">Next</button>
+                      </div>
+                      <br>
+                    </div>
+                    <!-- END NAME -->
+                  </form>
+                </div>
+
+            </div>
+            <!--/end row-->
+            <div class="row">
+                <div class="col-md-12 coming-soon-footer"> 2016 &copy; Shyft Technologies Inc. </div>
+            </div>
+        </div>
+
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/jquery.min.js"></script>
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/jquery-migrate.min.js"></script>
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/bootstrap.min.js"></script>
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/jquery.blockui.min.js"></script>
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/jquery.uniform.min.js"></script>
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/jquery.validate.min.js"></script>
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/metronic.js"></script>
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/layout.js"></script>
+        <script src="https://s3.amazonaws.com/shyftassets/login_page/login.js"></script>
+        <script>
+        jQuery(document).ready(function() {
+          Metronic.init(); // init metronic core components
+          Layout.init(); // init current layout
+          Login.init();
+        });
+        </script>
+    </body>
+</html>
 

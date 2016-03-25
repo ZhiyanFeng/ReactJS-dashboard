@@ -1,51 +1,60 @@
-<% provide(:title, 'Password Reset') %>
-<body class="login" style="background-image:url('http://www.coffeemobile.com/wp-content/uploads/2014/07/42-19753635.psd_.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center right; height: 100%;">
-<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-<div class="menu-toggler sidebar-toggler">
-</div>
-<!-- END SIDEBAR TOGGLER BUTTON -->
-<!-- BEGIN LOGO -->
-<div class="logo">
-	<a href="/"><img src="https://s3.amazonaws.com/coffeemobileassets/coffe_logo_inverse.png" /></a>
-</div>
-<!-- END LOGO -->
-<!-- BEGIN LOGIN -->
-<div style="max-width: 400px; margin: 40px auto 0px auto; padding: 0px 20px;">
-	<img src="http://www.coffeemobile.com/wp-content/uploads/2014/07/validated.png" style="width: 100%;" />	
-</div>
-<div style="position: absolute; width: 100%; background-color: white; bottom: 68px;">
-	<div style="max-width: 400px; margin: 0px auto 0px auto; padding: 20px 20px 40px 20px; text-align: center;">
-		<h3>Password Reset</h3>
-		<br>
-		<p>Your password has been successfully updated. You can now use the new password to login to the dashboard from the <a href="/login">login</a> page, or on the mobile application.</p>
-	</div>
-</div>
-<div class="copyright" style="width: 100%;background-color: #364150;position: absolute;bottom: 0px;">
-	 2014 © Coffee Enterprise. All Rights Reserved
-</div>
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
 
-<!-- END LOGIN -->
-<%= javascript_include_tag "login_page" %>
-<script>
-jQuery(document).ready(function() {     
-	Metronic.init(); // init metronic core components
-	Layout.init(); // init current layout
-	Login.init();
-	DetectIphone();
-});
+    <head>
+        <meta charset="utf-8" />
+        <title>Password Reset</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/uniform.default.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <!-- BEGIN PAGE LEVEL PLUGINS -->
+        <!-- END PAGE LEVEL PLUGINS -->
+        <!-- BEGIN THEME GLOBAL STYLES -->
+        <link href="https://s3.amazonaws.com/shyftassets/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="https://s3.amazonaws.com/shyftassets/plugins.min.css" rel="stylesheet" type="text/css" />
+        <!-- END THEME GLOBAL STYLES -->
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="https://s3.amazonaws.com/shyftassets/coming-soon.min.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL STYLES -->
+        <!-- BEGIN THEME LAYOUT STYLES -->
+        <!-- END THEME LAYOUT STYLES -->
+        <link rel="shortcut icon" href="https://s3.amazonaws.com/coffeemobileassets/images/Shyft_Icon.png" /> </head>
+    <!-- END HEAD -->
 
-function DetectIphone() {
-   var uagent = navigator.userAgent.toLowerCase();
-   console.log(uagent);
-   if(uagent.search("iphone") > -1 || uagent.search("ipad") > -1) {
-      $("#ios_download").show();
-   } else if(uagent.search("android") > -1) {
-   		$("#android_download").show();
-   } else {
-      $("#ios_download").show();
-      $("#android_download").show();
-   }
-}
-</script>
-<!-- END JAVASCRIPTS -->
-</body>
+    <body class="" style="background-color: #00bbc7;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 coming-soon-header">
+                    <a class="brand" href="index.html">
+                        <img src="https://www.myshyft.com/assets/img/main_logo.png" style="height: 60px; width: auto;" alt="logo" /> </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 coming-soon-content">
+                    <h1>Password Reset</h1>
+                    <p> Your password has been successfully updated. </p>
+                    <br>
+                </div>
+
+            </div>
+            <!--/end row-->
+            <div class="row">
+                <div class="col-md-12 coming-soon-footer"> 2016 &copy; Shyft Technologies Inc. </div>
+            </div>
+        </div>
+    </body>
+</html>

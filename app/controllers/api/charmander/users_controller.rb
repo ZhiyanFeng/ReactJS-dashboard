@@ -208,7 +208,7 @@ module Api
 
         result = {}
         #result["server_sync_time"] = DateTime.now.iso8601(3)
-        result["flash_alert"] = { "uid" => "16818e151fc45d95ae3634a50da9d783", "message" => "Having trouble getting your shifts covered? <u>Shyft</u> works well with lots of coworkers on your network, <b>invite some coworkers</b> and see your shifts covered instantly!", "button" => "INVITE COWORKERS", "target" => "contact_invite"}
+        #result["flash_alert"] = { "uid" => "16818e151fc45d95ae3634a50da9d783", "message" => "Having trouble getting your shifts covered? <u>Shyft</u> works well with lots of coworkers on your network, <b>invite some coworkers</b> and see your shifts covered instantly!", "button" => "INVITE COWORKERS", "target" => "contact_invite"}
         result["server_sync_time"] = Time.now.utc
         result["subscriptions"] ||= Array.new
         result["shifts"] ||= Array.new

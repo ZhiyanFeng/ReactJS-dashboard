@@ -14,7 +14,7 @@ test:
   database: <%= ENV['RDS_DB_NAME'] %>
   host: <%= ENV['RDS_HOST_NAME'] %>
   port: <%= ENV['RDS_PORT'] %>
-  pool: 25
+  pool: 10
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>
 

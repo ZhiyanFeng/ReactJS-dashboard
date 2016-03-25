@@ -3,7 +3,7 @@
 #   sidekiq -C config.yml
 ---
 :logfile: /var/log/sidekiq.log
-:pidfile: ./tmp/pids/sidekiq.pid
+:pidfile: /var/app/support/pids/sidekiq.pid
 :verbose: false
 :concurrency:  25
 :daemon: true

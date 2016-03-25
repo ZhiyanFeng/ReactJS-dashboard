@@ -86,7 +86,7 @@ module Api
                 end
                 @post.compose_v_four(image, video, event, poll, nil, nil, nil, push_notification)
 
-                if (!params[:make_private].present? || @user[:system_user] == true) && push_notification == true
+                if ((!params[:make_private].present? || params[:make_private] == "false") || @user[:system_user] == true) && push_notification == true
                   @channel.subscribers_push(post_base_type, @post)
                 end
               else

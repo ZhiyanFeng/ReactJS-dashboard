@@ -190,14 +190,14 @@ class ChannelSerializer < ActiveModel::Serializer
   def posts
     if object.channel.channel_type.include? "_feed"
       if object.params_sync_new
-        @posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND is_valid").order('created_at DESC').limit(25)
+        @posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND is_valid").order('created_at DESC').limit(10)
       elsif object.params_sync_fresh
-        @posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND is_valid").order('created_at DESC').limit(25)
+        @posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND is_valid").order('created_at DESC').limit(10)
       else
         if object.subscription_last_synchronize > Time.now - 48.hours
-          @posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND updated_at > '#{object.params_sync_time}'").order('created_at DESC').limit(25)
+          @posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND updated_at > '#{object.params_sync_time}'").order('created_at DESC').limit(10)
         else
-          @posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND is_valid").order('created_at DESC').limit(25)
+          @posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND is_valid").order('created_at DESC').limit(10)
           #@posts = Post.where("(z_index < 9999 OR owner_id = #{object.user_id}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{object.channel.id} AND updated_at > '#{object.params_sync_time}' AND is_valid").order('created_at DESC').limit(16)
         end
       end

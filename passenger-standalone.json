@@ -1,5 +1,5 @@
 {
-  "max_pool_size": {{env `PASSENGER_MAX_POOL`}},
+  "max_pool_size": 3,
   "pool_idle_time": 15,
-  "min_instances": {{env `PASSENGER_MIN_POOL`}}
+  "min_instances": 1
 }

@@ -81,11 +81,18 @@ class PostSignupWorker
 
           @client = Twilio::REST::Client.new t_sid, t_token
 
-          message = @client.account.messages.create(
-            :body => message_body,
-            :to => @user[:phone_number],
-            :from => "+16473602178"
-          )
+          begin
+            message = @client.account.messages.create(
+              :body => message_body,
+              :to => "+"+@user[:phone_number],
+              :from => "+16473602178"
+            )
+          rescue Twilio::REST::RequestError => e
+            ErrorLog.create(
+              :file => "post_signup_worker.rb",
+              :function => "perform",
+              :error => "#{e}")
+          end
         end
       else
         ErrorLog.create(

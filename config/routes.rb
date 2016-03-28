@@ -23,7 +23,7 @@ Expresso::Application.routes.draw do
   get "password_resets_sent" => "password_resets#sent", :as => "password_resets_sent"
   match "/reset_password/:id", :as => :reset_password, :via => :get, :controller => :password_resets, :action => :reset_password
   match "/admin_activation/:id", :as => :activate_admin, :via => :get, :controller => :channels, :action => :activate_admin
-  root :to => "sessions#new"
+  root :to => "errors#404"
 
   get "test" => "static_pages#test", :as => "test"
 

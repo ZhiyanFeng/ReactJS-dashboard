@@ -36,6 +36,9 @@ class User < ActiveRecord::Base
   belongs_to :cover_image, :class_name => "Image", :foreign_key => "cover_id"
   #has_many :gallery_image, -> { where('images.image_type IN (2,4,5) AND is_valid').order('created_at desc') }, :class_name => "Image", :foreign_key => "owner_id"
   #has_many :user_privileges, :conditions => proc {"owner_id = #{self.id} AND org_id = #{self.active_org}"}, :class_name => "UserPrivilege", :foreign_key => "owner_id"
+  has_one :mession, -> { where ["messions.is_active = 't'"] }, :class_name => "Mession", :foreign_key => "user_id"
+  #has_one :mession, :class_name => "Mession", :foreign_key => "user_id", -> ["messions.is_active = ?", true]
+  has_many :subscription, :class_name => "Subscription", :foreign_key => "user_id"
   has_many :user_privileges, :class_name => "UserPrivilege", :foreign_key => "owner_id"
 	has_many :likes
   has_many :posts, :through => :likes
@@ -347,20 +350,21 @@ class User < ActiveRecord::Base
 
   def create_chat_handle
     self.chat_handle = SecureRandom.hex
-    @host = "http://chat.coffeemobile.com:9090"
-    url = "#{ @host }/plugins/userService/userservice?type=add&secret=scottyvmcsexy&username=" +
-    self.chat_handle + "&password=3635durocher&name=" + self.email
-    require 'open-uri'
-    body = open(url).read
+    #@host = "http://chat.coffeemobile.com:9090"
+    #url = "#{ @host }/plugins/userService/userservice?type=add&secret=scottyvmcsexy&username=" +
+    #self.chat_handle + "&password=3635durocher&name=" + self.email
+    #require 'open-uri'
+    #body = open(url).read
 
-    @output = Nokogiri::XML(body)
+    #@output = Nokogiri::XML(body)
     ##Rails.logger.debug(@output)
-    if @output.xpath('result').text == "ok"
-      true
-    else
-      errors.add(:xmpp, 'Cannot create xmpp handle')
-      false
-    end
+    #if @output.xpath('result').text == "ok"
+    #  true
+    #else
+    #  errors.add(:xmpp, 'Cannot create xmpp handle')
+    #  false
+    #end
+    true
   end
 
   def change_password(new_password)

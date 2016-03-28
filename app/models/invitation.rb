@@ -1,12 +1,12 @@
 class Invitation < ActiveRecord::Base
   self.primary_key = :id
-  attr_accessible :org_id, 
-  :owner_id, 
-  :email, 
-  :phone_number, 
-  :first_name, 
-  :last_name, 
-  :location, 
+  attr_accessible :org_id,
+  :owner_id,
+  :email,
+  :phone_number,
+  :first_name,
+  :last_name,
+  :location,
   :user_group,
   :registeration_step,
   :invite_url,
@@ -55,7 +55,7 @@ class Invitation < ActiveRecord::Base
       setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
     end
     transaction do
-      
+
     end
   end
 
@@ -156,7 +156,7 @@ class Invitation < ActiveRecord::Base
         @location = Location.new(
           :org_id => 1,
           :owner_id => 134,
-          :location_name => params[:LocationName], 
+          :location_name => params[:LocationName],
           :address => params[:Address],
           :city => params[:City],
           :province => params[:Province],
@@ -172,9 +172,9 @@ class Invitation < ActiveRecord::Base
             :org_id => @location[:org_id],
             :location => @location[:id],
             :owner_id => 134,
-            :title => "Welcome to Coffee Mobile",
-            #:content => "Thank you for using Coffee Mobile as your at work social network. You have successfully created your location, you can start inviting your coworkers from the contact menu. Please contact hello@coffeemobile.com for assistance.", 
-            :content => "Begin trading shifts and messaging coworkers today! You now have an exclusive private network for your work location. Click on the 'Contacts' tab, then the '+' button to invite 10 staff members. Have fun!. \nPlease contact hello@coffeemobile.com for assistance.",
+            :title => "Welcome to Shyft",
+            #:content => "Thank you for using Coffee Mobile as your at work social network. You have successfully created your location, you can start inviting your coworkers from the contact menu. Please contact hello@coffeemobile.com for assistance.",
+            :content => "Begin trading shifts and messaging coworkers today! You now have an exclusive private network for your work location. Click on the 'Contacts' tab, then the '+' button to invite staff members. Have fun!. \nPlease contact hello@myshyft.com for assistance.",
             :post_type => 1
           )
           @post.save!
@@ -331,7 +331,7 @@ class Invitation < ActiveRecord::Base
         @location = Location.new(
           :org_id => 1,
           :owner_id => 134,
-          :location_name => params[:LocationName], 
+          :location_name => params[:LocationName],
           :address => params[:Address],
           :city => params[:City],
           :province => params[:Province],
@@ -348,7 +348,7 @@ class Invitation < ActiveRecord::Base
             :location => @location[:id],
             :owner_id => 134,
             :title => "Welcome to Coffee Mobile",
-            #:content => "Thank you for using Coffee Mobile as your at work social network. You have successfully created your location, you can start inviting your coworkers from the contact menu. Please contact hello@coffeemobile.com for assistance.", 
+            #:content => "Thank you for using Coffee Mobile as your at work social network. You have successfully created your location, you can start inviting your coworkers from the contact menu. Please contact hello@coffeemobile.com for assistance.",
             :content => "Begin trading shifts and messaging coworkers today! You now have an exclusive private network for your work location. Click on the 'Contacts' tab, then the '+' button to invite 10 staff members. Have fun!. \nPlease contact hello@coffeemobile.com for assistance.",
             :post_type => 1
           )
@@ -413,9 +413,9 @@ class Invitation < ActiveRecord::Base
     transaction do
       if params[:NewNetwork] == "true"
         @organization = Organization.create!(
-          :name => params[:NetworkName], 
+          :name => params[:NetworkName],
           :unit_number => params[:UnitNumber].present? ? params[:UnitNumber] : nil,
-          :street_number => params[:StreetNumber], 
+          :street_number => params[:StreetNumber],
           :address => params[:Address],
           :city => params[:City],
           :province => params[:Province],
@@ -428,7 +428,7 @@ class Invitation < ActiveRecord::Base
           :owner_id => 0,
           :location_name => "First Location",
           :unit_number => params[:UnitNumber].present? ? params[:UnitNumber] : nil,
-          :street_number => params[:StreetNumber], 
+          :street_number => params[:StreetNumber],
           :address => params[:Address],
           :city => params[:City],
           :province => params[:Province],
@@ -478,7 +478,7 @@ class Invitation < ActiveRecord::Base
             :org_id => @organization[:id],
             :owner_id => @user[:id],
             :title => "Welcome to " + @organization[:name],
-            #:content => "You have successfully created your network. Please contact hello@coffeemobile.com for assistance.", 
+            #:content => "You have successfully created your network. Please contact hello@coffeemobile.com for assistance.",
             :content => "Begin trading shifts and messaging coworkers today! You now have an exclusive private network for your work location. Click on the 'Contacts' tab, then the '+' button to invite 10 staff members. Have fun!. \n\nPlease contact hello@coffeemobile.com for assistance.",
             :post_type => 1
           )
@@ -511,7 +511,7 @@ class Invitation < ActiveRecord::Base
           :org_id => @organization[:org_id],
           :owner_id => @user[:id],
           :title => "New Member!",
-          :content => "Hello, I am the newest member of " + @organization[:name] + ".", 
+          :content => "Hello, I am the newest member of " + @organization[:name] + ".",
           :post_type => type
         )
         if type == 6
@@ -558,7 +558,7 @@ class Invitation < ActiveRecord::Base
             :org_id => @organization[:id],
             :owner_id => @user[:id],
             :title => "Welcome to " + @organization[:name],
-            :content => "You have successfully created your network. Please contact hello@coffeemobile.com for assistance.", 
+            :content => "You have successfully created your network. Please contact hello@coffeemobile.com for assistance.",
             :post_type => 1
           )
         end
@@ -590,7 +590,7 @@ class Invitation < ActiveRecord::Base
           :org_id => @organization[:org_id],
           :owner_id => @user[:id],
           :title => "New Member!",
-          :content => "Hello, I am the newest member of " + @organization[:name] + ".", 
+          :content => "Hello, I am the newest member of " + @organization[:name] + ".",
           :post_type => type
         )
         if type == 6
@@ -615,8 +615,8 @@ class Invitation < ActiveRecord::Base
 
   def attach_images
     @image = Image.new(
-      :org_id => self.org_id, 
-      :owner_id => self.owner_id, 
+      :org_id => self.org_id,
+      :owner_id => self.owner_id,
       :image_type => 2
     )
     @image.save
@@ -626,14 +626,14 @@ class Invitation < ActiveRecord::Base
 
   def attach_image(image)
     @image = Image.new(
-      :org_id => self.org_id, 
-      :owner_id => self.owner_id, 
+      :org_id => self.org_id,
+      :owner_id => self.owner_id,
       :image_type => 4
     )
     @image.save
     @image.update_attribute(:avatar, image)
     @image.update_attribute(:is_valid, true)
-    Follower.follow(3, @image[:id], self.owner_id) 
+    Follower.follow(3, @image[:id], self.owner_id)
     if !@attachment = self.attached
       temp = '{"objects":[{"source":3, "source_id":' + @image.id.to_s + '}]}'
       @attachment = Attachment.new(

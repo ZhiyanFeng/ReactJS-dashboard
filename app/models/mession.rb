@@ -43,7 +43,7 @@ class Mession < ActiveRecord::Base
     end
   end
 
-  def tracked_subscriber_push(action, message, source=nil, source_id=nil, user_object=nil)
+  def subscriber_push(action, message, source=nil, source_id=nil, sound=nil, user_object=nil)
     begin
       user_object.update_attribute(:push_count, user_object[:push_count] + 1)
       if self.push_to == "GCM"
@@ -101,7 +101,7 @@ class Mession < ActiveRecord::Base
     end
   end
 
-  def subscriber_push(action, message, source=nil, source_id=nil, sound=nil, user_object=nil, channel_id)
+  def tracked_subscriber_push(action, message, source=nil, source_id=nil, user_object=nil, channel_id)
     user_object.update_attribute(:push_count, user_object[:push_count] + 1)
     if self.push_to == "GCM"
       begin

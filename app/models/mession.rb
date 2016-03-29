@@ -43,7 +43,7 @@ class Mession < ActiveRecord::Base
     end
   end
 
-  def subscriber_push(action, message, source=nil, source_id=nil, sound=nil, user_object=nil)
+  def tracked_subscriber_push(action, message, source=nil, source_id=nil, user_object=nil)
     begin
       user_object.update_attribute(:push_count, user_object[:push_count] + 1)
       if self.push_to == "GCM"
@@ -52,17 +52,15 @@ class Mession < ActiveRecord::Base
         n.registration_ids = self.push_id
         #n.attributes_for_device =
         channel_id = 0
-        begin
-          @post = Post.find(source_id)
-          if @post[:channel_id].present?
-            channel_id = @post[:channel_id]
-          elsif @post[:location].present? && @post[:location] > 0
-            channel_id = Channel.where(:channel_type => "location_feed", :channel_frequency => @post[:location].to_s)
-          else
-            channel_id = 0
-          end
-        rescue
+        @post = Post.find(source_id)
+        if @post[:channel_id].present?
+          channel_id = @post[:channel_id]
+        elsif @post[:location].present? && @post[:location] > 0
+          channel_id = Channel.where(:channel_type => "location_feed", :channel_frequency => @post[:location].to_s)
+        else
+          channel_id = 0
         end
+
         if channel_id > 0
           n.data = {
             :action => action, # Take out in future
@@ -100,6 +98,74 @@ class Mession < ActiveRecord::Base
     rescue => e
 
     ensure
+    end
+  end
+
+  def subscriber_push(action, message, source=nil, source_id=nil, sound=nil, user_object=nil, channel_id)
+    user_object.update_attribute(:push_count, user_object[:push_count] + 1)
+    if self.push_to == "GCM"
+      begin
+        n = Rpush::Gcm::Notification.new
+        n.app = Rpush::Gcm::App.find_by_name("coffee_enterprise")
+        n.registration_ids = self.push_id
+        if channel_id > 0
+          n.data = {
+            :action => action, # Take out in future
+            :category => action, # Take out in future
+            :cat => action,
+            :message => message, # Take out in future
+            :msg => message,
+            :org_id => self.org_id, # Take out in future
+            :oid => self.org_id,
+            :source => source, # Take out in future
+            :source_id => source_id, # Take out in future
+            :sid => source_id,
+            :channel_id => channel_id, # Take out in future
+            :cid => channel_id
+          }
+          n.save!
+          return 1
+        end
+      rescue Exception => error
+        ErrorLog.create(
+          :file => "mession.rb",
+          :function => "tracked_subscriber_push",
+          :error => "Unable to push to gcm: #{error}")
+        if error.includes? "Device token is invalid"
+          return -1
+        else
+          return -2
+        end
+      end
+    end
+
+    if self.push_to == "APNS"
+      begin
+        n = Rpush::Apns::Notification.new
+        n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
+        n.device_token = self.push_id
+        n.alert = message.truncate(100)
+        n.badge = user_object[:push_count]
+        n.data = {
+          :act => action, # Take out in future
+          :cat => action,
+          :oid => self.org_id,
+          :src => source,
+          :sid => source_id
+        }
+        n.save!
+        return 1
+      rescue Exception => error
+        ErrorLog.create(
+          :file => "mession.rb",
+          :function => "tracked_subscriber_push",
+          :error => "Unable to push to apns: #{error}")
+        if error.includes? "Device token is invalid"
+          return -1
+        else
+          return -2
+        end
+      end
     end
   end
 

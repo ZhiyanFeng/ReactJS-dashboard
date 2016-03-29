@@ -37,8 +37,11 @@ class UserPrivilege < ActiveRecord::Base
 
   def search_category_feed
     @location = Location.find(location_id)
-    if @location[:category] == "Cocktail Bar"
-      channel = Channel.where("channel_name ='server_problems' AND channel_type = 'organization_feed'").first
+    if @location[:category] == "Cocktail Bar" || @location[:category] == "Restaurant" ||
+      @location[:category] == "Irish Pub" || @location[:category] == "American Restaurant" ||
+      @location[:category] == "Wings Joint" || @location[:category] == "Pizza Place" ||
+      @location[:category] == "BBQ Joint" || @location[:category] == "Fast Food Restaurant"
+      channel = Channel.find(5866)
       if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
         region_subscription = Subscription.create(
           :user_id => self[:owner_id],

@@ -375,7 +375,7 @@ module Api
           end
         end
 
-        #channel.recount
+        channel.recount
         render json: { "eXpresso" => { "code" => 1, "message" => "#{opt_out} opt outs | #{opt_in} opt ins | #{channel.member_count} members total " } }
       end
 

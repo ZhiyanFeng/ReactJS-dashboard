@@ -87,7 +87,8 @@ module Api
                 @post.compose_v_four(image, video, event, poll, nil, nil, nil, push_notification)
 
                 if ((!params[:make_private].present? || params[:make_private] == "false") || @user[:system_user] == true) && push_notification == true
-                  @channel.subscribers_push(post_base_type, @post)
+                  #@channel.subscribers_push(post_base_type, @post)
+                  @channel.tracked_subscriber_push(@post)
                 end
               else
                 render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot process posts" } }
@@ -161,7 +162,8 @@ module Api
                 render json: @post, serializer: SyncFeedSerializer
                 @post.process_attachments(params[:attachments], @user[:id]) if params[:attachments].present?
                 @user.process_tags(params[:tags]) if params[:tags].present?
-                @channel.subscribers_push(post_base_type, @post)
+                #@channel.subscribers_push(post_base_type, @post)
+                @channel.tracked_subscriber_push(@post)
               else
                 render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot process posts" } }
               end

@@ -6,7 +6,7 @@ class TrackedPushNotificationWorker
     response = 0
     if post_archtype
       message = "#{@user[:first_name]} #{@user[:last_name]} posted a shift trade request. Interested in helping out?"
-      response = @mession.tracked_tracked_subscriber_push("open_app", message, 4, post[:id], user[:id], post[:channel_id])
+      response = @mession.tracked_subscriber_push("open_app", message, 4, post[:id], user[:id], post[:channel_id])
     elsif base_type == "announcement"
       message = @user[:first_name] + " " + @user[:last_name] + " announced: " + post[:content]
       response = @mession.tracked_subscriber_push("open_detail", message, 4, post[:id], user[:id], post[:channel_id])

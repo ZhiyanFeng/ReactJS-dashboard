@@ -93,22 +93,12 @@ class Channel < ActiveRecord::Base
       targets.each do |user|
         TrackedPushNotificationWorker.perform_async(user_object,post_object,@cpr)
       end
-    rescue
+    rescue Exception => error
       ErrorLog.create(
         :file => "channel.rb",
-        :function => "subscriber_push_batched",
+        :function => "tracked_subscriber_push",
         :error => "Exception: #{error}")
     end
-
-    begin
-      BatchPushNotificationWorker.perform_async(post_object)
-      rescue Exception => error
-        ErrorLog.create(
-          :file => "channel.rb",
-          :function => "subscriber_push",
-          :error => "Exception: #{error}")
-      ensure
-      end
   end
 
   def subscribers_push_old(base_type, post_object)

@@ -12,21 +12,21 @@ class ChrisSignupWorker
 
       begin
         message = @client.account.messages.create(
-          :body => "Sweet, you're now a valued Shyft-er! Be a part of our community, get access to new features and help us improve Shyft by clicking here: https://www.myshyft.com",
+          :body => "Thanks for signing up with Shyft! Be a part of our team with ShyftLyfe and get early access to new features! Sign up here: http://bit.ly/ShyftLyfe",
           :to => "+"+@user[:phone_number],
           :from => "+16473602178"
         )
       rescue Twilio::REST::RequestError => e
         ErrorLog.create(
-          :file => "post_signup_worker.rb",
+          :file => "chris_signup_worker.rb",
           :function => "perform",
           :error => "#{e}")
       end
     else
       ErrorLog.create(
-        :file => "post_signup_worker.rb",
+        :file => "chris_signup_worker.rb",
         :function => "perform",
-        :error => "PostSignupWorker cannot find user with id #{user_id}")
+        :error => "ChrisSignupWorker cannot find user with id #{user_id}")
     end
 
   end

@@ -79,6 +79,7 @@ class Channel < ActiveRecord::Base
     if post_object.archtype.present? && post_object.archtype == "shift_trade"
       post_archtype = true
     end
+    poster_name = post_object.owner[:first_name] + " " + post_object.owner[:last_name]
 
     begin
       targets = User.joins(:subscription, :mession).where("subscriptions.channel_id = #{post_object[:channel_id]} AND subscriptions.user_id != #{post_object[:owner_id]} AND subscriptions.is_valid AND subscriptions.is_active AND messions.is_active AND subscriptions.subscription_mute_notifications = 'f'")
@@ -97,6 +98,7 @@ class Channel < ActiveRecord::Base
           post_object[:id],
           post_object[:content],
           post_object[:channel_id],
+          poster_name,
           @cpr[:id],
           post_archtype,
           base_type

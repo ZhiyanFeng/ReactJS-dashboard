@@ -81,22 +81,18 @@ class Channel < ActiveRecord::Base
     end
 
     begin
-      targets = User.joins(:subscription, :mession).where("subscriptions.channel_id = #{post_object[:channel_id]} AND subscriptions.user_id != #{post_object[:owner_id]} AND subscriptions.is_valid AND subscriptions.is_active AND messions.is_active AND subscriptions.subscription_mute_notifications = 'f'")
+      @targets = User.joins(:subscription, :mession).where("subscriptions.channel_id = #{post_object[:channel_id]} AND subscriptions.user_id != #{post_object[:owner_id]} AND subscriptions.is_valid AND subscriptions.is_active AND messions.is_active AND subscriptions.subscription_mute_notifications = 'f'")
       @cpr = ChannelPushReport.create(
         :channel_id => post_object[:channel_id],
-        :target_number => targets.count,
+        :target_number => @targets.count,
         :attempted => 0,
         :success => 0,
         :failed_due_to_missing_id => 0,
         :failed_due_to_other => 0
       )
-      targets.each do |user|
+      @targets.each do |@user|
         TrackedPushNotificationWorker.perform_async(
-          user[:id],
-          user[:first_name],
-          user[:last_name],
-          user.mession[:push_to],
-          user.mession[:push_id],
+          @user
           post_object[:id],
           post_object[:content],
           post_object[:channel_id],

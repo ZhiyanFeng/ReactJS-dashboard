@@ -39,6 +39,10 @@ class TrackedPushNotificationWorker
       begin
         cpr = ChannelPushReport.find(cpr_id)
         cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :success => cpr[:success] + 1)
+        ErrorLog.create(
+          :file => "tracked_subscriber_push.rb",
+          :function => "perform",
+          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
       rescue Exception => error
         ErrorLog.create(
           :file => "tracked_subscriber_push.rb",
@@ -49,6 +53,10 @@ class TrackedPushNotificationWorker
       begin
         cpr = ChannelPushReport.find(cpr_id)
         cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
+        ErrorLog.create(
+          :file => "tracked_subscriber_push.rb",
+          :function => "perform",
+          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
       rescue Exception => error
         ErrorLog.create(
           :file => "tracked_subscriber_push.rb",
@@ -59,6 +67,10 @@ class TrackedPushNotificationWorker
       begin
         cpr = ChannelPushReport.find(cpr_id)
         cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_missing_id => cpr[:failed_due_to_missing_id] + 1)
+        ErrorLog.create(
+          :file => "tracked_subscriber_push.rb",
+          :function => "perform",
+          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
       rescue Exception => error
         ErrorLog.create(
           :file => "tracked_subscriber_push.rb",
@@ -69,6 +81,10 @@ class TrackedPushNotificationWorker
       begin
         cpr = ChannelPushReport.find(cpr_id)
         cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
+        ErrorLog.create(
+          :file => "tracked_subscriber_push.rb",
+          :function => "perform",
+          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
       rescue Exception => error
         ErrorLog.create(
           :file => "tracked_subscriber_push.rb",

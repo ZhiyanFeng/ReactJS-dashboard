@@ -2,7 +2,7 @@ class TrackedPushNotificationWorker
   include Sidekiq::Worker
   sidekiq_options queue: "default"
   # sidekiq_options retry: false
-  def perform(user_id,mession_id,post_id,post_content,post_channel_id,cpr_id,post_archtype,base_type)
+  def perform(user_id,mession_id,post_id,post_content,post_channel_id,cpr,post_archtype,base_type)
     response = 0
     @user = User.find(user_id)
     @mession = Mession.find(mession_id)

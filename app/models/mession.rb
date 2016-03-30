@@ -101,13 +101,13 @@ class Mession < ActiveRecord::Base
     end
   end
 
-  def tracked_subscriber_push(action, message, source=nil, source_id=nil, user_object=nil, channel_id, push_to, push_id)
+  def tracked_subscriber_push(action, message, source=nil, source_id=nil, user_id, channel_id, mession_object)
     user_object.update_attribute(:push_count, user_object[:push_count] + 1)
-    if push_to == "GCM"
+    if mession_object[:push_to] == "GCM"
       begin
         n = Rpush::Gcm::Notification.new
         n.app = Rpush::Gcm::App.find_by_name("coffee_enterprise")
-        n.registration_ids = push_id
+        n.registration_ids = mession_object[:push_id]
         if channel_id > 0
           n.data = {
             :action => action, # Take out in future
@@ -139,11 +139,11 @@ class Mession < ActiveRecord::Base
       end
     end
 
-    if push_to == "APNS"
+    if mession_object[:push_to] == "APNS"
       begin
         n = Rpush::Apns::Notification.new
         n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
-        n.device_token = push_id
+        n.device_token = mession_object[:push_id]
         n.alert = message.truncate(100)
         n.badge = user_object[:push_count]
         n.data = {

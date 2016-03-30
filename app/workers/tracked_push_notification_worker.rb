@@ -42,6 +42,8 @@ class TrackedPushNotificationWorker
       @cpr.update_attributes(:attempted => @cpr[:attempted] + 1, :failed_due_to_other => @cpr[:failed_due_to_other] + 1)
     elsif response == -2
       @cpr.update_attributes(:attempted => @cpr[:attempted] + 1, :failed_due_to_missing_id => @cpr[:failed_due_to_missing_id] + 1)
+    else
+      @cpr.update_attributes(:attempted => @cpr[:attempted] + 1, :failed_due_to_other => @cpr[:failed_due_to_other] + 1)
     end
   end
 

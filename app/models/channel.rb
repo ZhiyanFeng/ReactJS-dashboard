@@ -90,9 +90,9 @@ class Channel < ActiveRecord::Base
         :failed_due_to_missing_id => 0,
         :failed_due_to_other => 0
       )
-      @targets.each do |@user|
+      @targets.each do |user|
         TrackedPushNotificationWorker.perform_async(
-          @user,
+          user,
           post_object[:id],
           post_object[:content],
           post_object[:channel_id],

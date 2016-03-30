@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160329205710) do
+ActiveRecord::Schema.define(version: 20160306200357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -65,20 +65,6 @@ ActiveRecord::Schema.define(version: 20160329205710) do
     t.boolean  "is_valid",                                     default: true, null: false
     t.datetime "created_at",                     precision: 6
     t.datetime "updated_at",                     precision: 6
-  end
-
-  create_table "availabilities_tables", force: :cascade do |t|
-  end
-
-  create_table "channel_push_reports", force: :cascade do |t|
-    t.integer  "channel_id"
-    t.integer  "target_number"
-    t.integer  "attempted"
-    t.integer  "success"
-    t.integer  "failed_due_to_missing_id"
-    t.integer  "failed_due_to_other"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "channels", force: :cascade do |t|

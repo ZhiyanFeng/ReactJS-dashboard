@@ -101,7 +101,7 @@ class Mession < ActiveRecord::Base
     end
   end
 
-  def tracked_subscriber_push(action, message, source=nil, source_id=nil, user_id, channel_id, mession_object)
+  def tracked_subscriber_push(action, message, source=nil, source_id=nil, user_object, channel_id, mession_object)
     user_object.update_attribute(:push_count, user_object[:push_count] + 1)
     if mession_object[:push_to] == "GCM"
       begin

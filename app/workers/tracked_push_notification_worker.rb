@@ -84,7 +84,7 @@ class TrackedPushNotificationWorker
         ErrorLog.create(
           :file => "tracked_subscriber_push.rb",
           :function => "perform",
-          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
+          :error => "TRACKING SUCCESS #{cpr[:attempted]}!")
       rescue Exception => error
         ErrorLog.create(
           :file => "tracked_subscriber_push.rb",

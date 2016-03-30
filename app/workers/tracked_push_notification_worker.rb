@@ -11,7 +11,7 @@ class TrackedPushNotificationWorker
       message = user_first_name + " " + user_last_name + " announced: " + post[:content]
       response = Mession.tracked_subscriber_push("open_detail", message, 4, post[:id], user_id, post[:channel_id], user_push_to, user_push_id)
     elsif base_type == "post"
-      message = user_first_name + " " + user_last_name + " posted: " + post[:content]
+      message = user_first_name + " " + user_last_name + " posted: "
       response = Mession.tracked_subscriber_push("open_detail", message, 4, post[:id], user_id, post[:channel_id], user_push_to, user_push_id)
     elsif base_type == "training"
       message = user_first_name + " " + user_last_name + " posted a training: " + post_title

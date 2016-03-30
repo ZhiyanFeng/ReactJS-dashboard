@@ -74,7 +74,7 @@ class Channel < ActiveRecord::Base
     end
   end
 
-  def tracked_subscriber_push(post_object)
+  def tracked_subscriber_push(base_type, post_object)
     post_archtype = false
     if post_object.archtype.present? && post_object.archtype == "shift_trade"
       post_archtype = true
@@ -91,7 +91,7 @@ class Channel < ActiveRecord::Base
         :failed_due_to_other => 0
       )
       targets.each do |user|
-        TrackedPushNotificationWorker.perform_async(user,post_object,@cpr,post_archtype)
+        TrackedPushNotificationWorker.perform_async(user,post_object,@cpr,post_archtype,base_type)
       end
     rescue Exception => error
       ErrorLog.create(

@@ -236,7 +236,8 @@ class UserPrivilege < ActiveRecord::Base
             :channel_id => location_channel[:id]
           )
           @post.save
-          location_channel.subscribers_push("post", @post)
+          #location_channel.subscribers_push("post", @post)
+          location_channel.tracked_subscriber_push("post", @post)
         rescue
 
         end

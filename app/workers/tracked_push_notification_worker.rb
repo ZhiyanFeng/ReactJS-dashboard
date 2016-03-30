@@ -2,7 +2,7 @@ class TrackedPushNotificationWorker
   include Sidekiq::Worker
   sidekiq_options queue: "default"
   # sidekiq_options retry: false
-  def perform(user,post,cpr_id,post_archtype)
+  def perform(user,post,cpr_id,post_archtype,base_type)
     response = 0
     if post_archtype
       message = "#{@user[:first_name]} #{@user[:last_name]} posted a shift trade request. Interested in helping out?"

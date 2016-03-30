@@ -92,7 +92,7 @@ class Channel < ActiveRecord::Base
       )
       @targets.each do |@user|
         TrackedPushNotificationWorker.perform_async(
-          @user
+          @user,
           post_object[:id],
           post_object[:content],
           post_object[:channel_id],

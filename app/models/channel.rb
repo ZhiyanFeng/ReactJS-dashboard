@@ -97,7 +97,7 @@ class Channel < ActiveRecord::Base
           post_object[:id],
           post_object[:content],
           post_object[:channel_id],
-          @cpr,
+          @cpr[:id],
           post_archtype,
           base_type
         )

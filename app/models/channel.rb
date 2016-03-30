@@ -91,7 +91,7 @@ class Channel < ActiveRecord::Base
         :failed_due_to_other => 0
       )
       targets.each do |user|
-        TrackedPushNotificationWorker.perform_async(user,post_object,@cpr,post_archtype,base_type)
+        TrackedPushNotificationWorker.perform_async(user[:id],user[:first_name],user[:last_name],user.mession[:push_to],user.mession[:push_id],post_object,@cpr,post_archtype,base_type)
       end
     rescue Exception => error
       ErrorLog.create(

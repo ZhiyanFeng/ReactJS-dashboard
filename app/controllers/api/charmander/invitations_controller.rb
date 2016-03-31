@@ -57,7 +57,7 @@ module Api
         t_token = '81eaed486465b41042fd32b61e5a1b14'
 
         @client = Twilio::REST::Client.new t_sid, t_token
-
+        number = number.gsub(/[\+\-\(\)\s]/,'')
         message = @client.account.messages.create(
           :body => "#{code} is your Shyft verification code, please enter it within the next 30 mins.",
           #:to => "+"+number,

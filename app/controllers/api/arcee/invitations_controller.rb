@@ -3,10 +3,10 @@ include ActionController::HttpAuthentication::Token::ControllerMethods
 module Api
   module Arcee
     class InvitationsController < ApplicationController
-      
+
       before_filter :restrict_access, :set_headers, :except => [:invite_from_website, :text_download_link]
       before_filter :fetch_invitation, :except => [:seek_domain]
-      
+
       respond_to :json
 
       def fetch_invitation
@@ -18,7 +18,7 @@ module Api
       def send_pass_invitation_code
         t_sid = 'ACaedd1f0a0b5d4aa375ba808f19e4f743'
         t_token = '5838441e69773157d73ede30ab695457'
-        
+
         @client = Twilio::REST::Client.new t_sid, t_token
         code = 999 + Random.rand(10000-1000)
         message = @client.account.messages.create(
@@ -26,7 +26,7 @@ module Api
           :to => params[:number],
           :from => "+16473605128"
         )
-        if message 
+        if message
           render json: { "code" => code }
         else
           render json: { "code" => -1 }
@@ -36,9 +36,9 @@ module Api
       def text_download_link
         t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
         t_token = '81eaed486465b41042fd32b61e5a1b14'
-        
+
         @client = Twilio::REST::Client.new t_sid, t_token
-        
+
         if Rails.env.production?
           @host = "http://goo.gl/isddrw"
         elsif Rails.env.staging?
@@ -48,25 +48,25 @@ module Api
         else
           @host = "http://goo.gl/isddrw"
         end
-        
+
         message = @client.account.messages.create(
           :body => "Welcome to Coffee Mobile, Please download the app at #{@host}.",
           :to => params[:phone_number],
           :from => "+16137028842"
         )
-        if message 
+        if message
           render json: { "eXpresso" => { "code" => 1 } }
         else
           render json: { "eXpresso" => { "code" => -1 } }
         end
-     end 
+     end
 
       def invite_from_website
         t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
         t_token = '81eaed486465b41042fd32b61e5a1b14'
-        
+
         @client = Twilio::REST::Client.new t_sid, t_token
-        
+
         if Rails.env.production?
           @host = "http://goo.gl/isddrw"
         elsif Rails.env.staging?
@@ -76,24 +76,24 @@ module Api
         else
           @host = "http://goo.gl/isddrw"
         end
-        
+
         message = @client.account.messages.create(
           :body => "Welcome to Coffee Mobile, Please download the app at #{@host}.",
           :to => params[:phone_number],
           :from => "+16137028842"
         )
-        if message 
+        if message
           redirect_to "http://www.coffeemobile.com"
         else
           redirect_to "http://www.coffeemobile.com"
         end
-      end 
+      end
 
       def resend_invitation
         @invitation = Invitation.where(:id => params[:id], :org_id => params[:org_id], :email => params[:email]).first
 
         @organization = Organization.find(params[:org_id])
-        
+
         if NotificationsMailer.invitation_email(params[:email], @organization[:name], @invitation).deliver
           render json: { "eXpresso" => { "code" => 1, "message" => "Invitation sent." } }
         else
@@ -3127,7 +3127,7 @@ module Api
           false
         end
       end
-      
+
     end
   end
 end

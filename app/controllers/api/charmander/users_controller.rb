@@ -387,11 +387,13 @@ module Api
           message_body = "#{@user[:first_name]} #{@user[:last_name]} has invited you to download the app they use to trade shifts and chat. Download Shyft here: #{@host}"
         end
 
+        phone_number = params[:phone].gsub(/[\+\-\(\)\s]/,'')
+
         begin
           message = @client.account.messages.create(
             :body => message_body,
             #:body => "#{@user.first_name} #{@user.last_name} has invited you to download the app they use to trade shifts and chat. Download Shyft here: #{@host}",
-            :to => params[:phone].size > 10 ? "+"+ params[:phone] : params[:phone],
+            :to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
             :from => "+16473602178"
           )
           if message

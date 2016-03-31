@@ -81,11 +81,12 @@ class PostSignupWorker
 
           @client = Twilio::REST::Client.new t_sid, t_token
 
+          phone_number = @user[:phone_number].gsub(/[\+\-\(\)\s]/,'')
           begin
             message = @client.account.messages.create(
               :body => message_body,
               #:to => "+"+@user[:phone_number],
-              :to => @user[:phone_number].size > 10 ? "+"+ @user[:phone_number] : @user[:phone_number],
+              :to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
               :from => "+16473602178"
             )
           rescue Twilio::REST::RequestError => e

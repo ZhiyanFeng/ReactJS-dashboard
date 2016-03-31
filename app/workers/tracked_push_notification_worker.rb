@@ -36,63 +36,25 @@ class TrackedPushNotificationWorker
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     end
     if response == 1
-      begin
-        #cpr = ChannelPushReport.find(cpr_id)
-        #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :success => cpr[:success] + 1)
-        ChannelPushReport.increment_counter(:attempted,cpr_id)
-        ChannelPushReport.increment_counter(:success,cpr_id)
-        ErrorLog.create(
-          :file => "tracked_subscriber_push.rb",
-          :function => "perform",
-          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
-      rescue Exception => error
-        ErrorLog.create(
-          :file => "tracked_subscriber_push.rb",
-          :function => "perform",
-          :error => "Exception: #{error}")
-      end
+      #cpr = ChannelPushReport.find(cpr_id)
+      #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :success => cpr[:success] + 1)
+      ChannelPushReport.increment_counter(:attempted,cpr_id)
+      ChannelPushReport.increment_counter(:success,cpr_id)
     elsif response == -1
-      begin
-        cpr = ChannelPushReport.find(cpr_id)
-        cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
-        ErrorLog.create(
-          :file => "tracked_subscriber_push.rb",
-          :function => "perform",
-          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
-      rescue Exception => error
-        ErrorLog.create(
-          :file => "tracked_subscriber_push.rb",
-          :function => "perform",
-          :error => "Exception: #{error}")
-      end
+      #cpr = ChannelPushReport.find(cpr_id)
+      #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
+      ChannelPushReport.increment_counter(:attempted,cpr_id)
+      ChannelPushReport.increment_counter(:failed_due_to_other,cpr_id)
     elsif response == -2
-      begin
-        cpr = ChannelPushReport.find(cpr_id)
-        cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_missing_id => cpr[:failed_due_to_missing_id] + 1)
-        ErrorLog.create(
-          :file => "tracked_subscriber_push.rb",
-          :function => "perform",
-          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
-      rescue Exception => error
-        ErrorLog.create(
-          :file => "tracked_subscriber_push.rb",
-          :function => "perform",
-          :error => "Exception: #{error}")
-      end
+      #cpr = ChannelPushReport.find(cpr_id)
+      #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_missing_id => cpr[:failed_due_to_missing_id] + 1)
+      ChannelPushReport.increment_counter(:attempted,cpr_id)
+      ChannelPushReport.increment_counter(:failed_due_to_missing_id,cpr_id)
     else
-      begin
-        cpr = ChannelPushReport.find(cpr_id)
-        cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
-        ErrorLog.create(
-          :file => "tracked_subscriber_push.rb",
-          :function => "perform",
-          :error => "TRACKING SUCCESS #{cpr[:attempted]}")
-      rescue Exception => error
-        ErrorLog.create(
-          :file => "tracked_subscriber_push.rb",
-          :function => "perform",
-          :error => "Exception: #{error}")
-      end
+      #cpr = ChannelPushReport.find(cpr_id)
+      #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
+      ChannelPushReport.increment_counter(:attempted,cpr_id)
+      ChannelPushReport.increment_counter(:failed_due_to_other,cpr_id)
     end
   end
 

@@ -391,7 +391,7 @@ module Api
           message = @client.account.messages.create(
             :body => message_body,
             #:body => "#{@user.first_name} #{@user.last_name} has invited you to download the app they use to trade shifts and chat. Download Shyft here: #{@host}",
-            :to => "+"+params[:phone],
+            :to => params[:phone].size > 10 ? "+"+ params[:phone] : params[:phone],
             :from => "+16473602178"
           )
           if message

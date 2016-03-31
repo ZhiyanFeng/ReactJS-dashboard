@@ -60,7 +60,8 @@ module Api
 
         message = @client.account.messages.create(
           :body => "#{code} is your Shyft verification code, please enter it within the next 30 mins.",
-          :to => "+"+number,
+          #:to => "+"+number,
+          :to => number.size > 10 ? "+"+ number : number,
           :from => "+16137028842"
         )
         if message

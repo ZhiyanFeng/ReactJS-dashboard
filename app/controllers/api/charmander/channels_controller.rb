@@ -142,11 +142,15 @@ module Api
         if params[:subscriber_ids].present?
           if Channel.exists?(:id => params[:id])
             @channel = Channel.find(params[:id])
-            if @channel.add_subscribers(params[:subscriber_ids])
-              @channel.recount
-              render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+            if @channel[:channel_type] == "location_feed"
+              render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, you cannot add a user to a location. But you can send them an invitation to join the location instead.", "error" => "Could not add the users" } }
             else
-              render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, there was an error adding users to the channel. The Coffee team has been notified, please try again later.", "error" => "Could not add the users" } }
+              if @channel.add_subscribers(params[:subscriber_ids])
+                @channel.recount
+                render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+              else
+                render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, there was an error adding users to the channel. The Coffee team has been notified, please try again later.", "error" => "Could not add the users" } }
+              end
             end
           else
             render json: { "eXpresso" => { "code" => -1, "message" => "The group you are trying to add user(s) to does not exist.", "error" => "Could not find channel with id #{params[:id]}." } }

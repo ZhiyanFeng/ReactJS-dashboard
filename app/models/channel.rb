@@ -109,6 +109,8 @@ class Channel < ActiveRecord::Base
         :file => "channel.rb",
         :function => "tracked_subscriber_push",
         :error => "Exception: #{error}")
+    ensure
+      SlackChannelPushReporterWorker.perform_async(@cpr[:id])
     end
   end
 

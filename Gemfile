@@ -47,6 +47,7 @@ gem 'sinatra'
 gem 'slim'
 
 gem 'plivo'
+gem 'slack-notifier'
 
 gem 'obscenity'
 gem 'responders', '~> 2.0'

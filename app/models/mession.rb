@@ -102,7 +102,8 @@ class Mession < ActiveRecord::Base
   end
 
   def tracked_subscriber_push(action, message, source=nil, source_id=nil, user_object, channel_id, mession_object)
-    user_object.update_attribute(:push_count, user_object[:push_count] + 1)
+    #user_object.update_attribute(:push_count, user_object[:push_count] + 1)
+    ChannelPushReport.increment_counter(:push_count,user_object[:id])
     if mession_object[:push_to] == "GCM"
       begin
         n = Rpush::Gcm::Notification.new

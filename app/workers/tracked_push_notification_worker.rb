@@ -40,12 +40,12 @@ class TrackedPushNotificationWorker
       #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :success => cpr[:success] + 1)
       ChannelPushReport.increment_counter(:attempted,cpr_id)
       ChannelPushReport.increment_counter(:success,cpr_id)
-    elsif response == -1
+    elsif response == 2
       #cpr = ChannelPushReport.find(cpr_id)
       #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
       ChannelPushReport.increment_counter(:attempted,cpr_id)
       ChannelPushReport.increment_counter(:failed_due_to_other,cpr_id)
-    elsif response == -2
+    elsif response == 3
       #cpr = ChannelPushReport.find(cpr_id)
       #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_missing_id => cpr[:failed_due_to_missing_id] + 1)
       ChannelPushReport.increment_counter(:attempted,cpr_id)

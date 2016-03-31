@@ -71,7 +71,8 @@ class User < ActiveRecord::Base
     if params[:Email].present?
       setup_email = params[:Email]
     else
-      setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+      #setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+      setup_email = params[:PhoneNumber].gsub(/\W/,'') + "@coffeemobile.com"
     end
     @user = User.new(
       :first_name => params[:FirstName],

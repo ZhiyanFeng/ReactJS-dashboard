@@ -104,7 +104,8 @@ module Api
 
       def create
         if params[:phone_number].present?
-          phone_number = params[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+          #phone_number = params[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+          phone_number = params[:phone_number].gsub(/\W/,'')
           @user = User.where("phone_number = ? AND is_valid", phone_number).first
         elsif
           @user = User.where("lower(email) = ? AND is_valid", params[:email].downcase).first

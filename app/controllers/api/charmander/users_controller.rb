@@ -387,7 +387,9 @@ module Api
           message_body = "#{@user[:first_name]} #{@user[:last_name]} has invited you to download the app they use to trade shifts and chat. Download Shyft here: #{@host}"
         end
 
-        phone_number = params[:phone].gsub(/[\+\-\(\)\s]/,'')
+        #phone_number = params[:phone].gsub(/[\+\-\(\)\s]/,'')
+        phone_number = params[:phone].gsub(/\W/,'')
+
 
         begin
           message = @client.account.messages.create(

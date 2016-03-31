@@ -52,7 +52,8 @@ class Invitation < ActiveRecord::Base
     if params[:Email].present?
       setup_email = params[:Email]
     else
-      setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+      #setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+      setup_email = params[:PhoneNumber].gsub(/\W/,'') + "@coffeemobile.com"
     end
     transaction do
 
@@ -63,7 +64,8 @@ class Invitation < ActiveRecord::Base
     if params[:Email].present?
       setup_email = params[:Email]
     else
-      setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+      #setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+      setup_email = params[:PhoneNumber].gsub(/\W/,'') + "@coffeemobile.com"
     end
     transaction do
       if Location.exists?(:four_sq_id => params[:LocationUniqueID])
@@ -72,7 +74,8 @@ class Invitation < ActiveRecord::Base
           :first_name => params[:FirstName],
           :last_name => params[:LastName],
           :email => setup_email,
-          :phone_number => params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,''),
+          #:phone_number => params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,''),
+          :phone_number => params[:PhoneNumber].gsub(/\W/,''),
           :active_org => 1,
           :password => params[:Password],
           :user_group => 0,
@@ -239,7 +242,8 @@ class Invitation < ActiveRecord::Base
     if params[:Email].present?
       setup_email = params[:Email]
     else
-      setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+      #setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+      setup_email = params[:PhoneNumber].gsub(/\W/,'') + "@coffeemobile.com"
     end
     transaction do
       if Location.exists?(:four_sq_id => params[:LocationUniqueID])
@@ -248,7 +252,8 @@ class Invitation < ActiveRecord::Base
           :first_name => params[:FirstName],
           :last_name => params[:LastName],
           :email => setup_email,
-          :phone_number => params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,''),
+          #:phone_number => params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,''),
+          :phone_number => params[:PhoneNumber].gsub(/\W/,''),
           :active_org => @location[:org_id],
           :password => params[:Password],
           :user_group => 0,

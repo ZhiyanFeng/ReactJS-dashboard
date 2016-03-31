@@ -8,6 +8,6 @@ FactoryGirl.define do
     f.last_name { Faker::Name.last_name }
     f.active_org { 1 }
     f.validation_hash { SecureRandom.hex(24) }
-    f.phone_number { (Faker::PhoneNumber.cell_phone).gsub(/[\+\-\(\)\s]/,'') }
+    f.phone_number { (Faker::PhoneNumber.cell_phone).gsub(/\W/,'') }
 	end
 end

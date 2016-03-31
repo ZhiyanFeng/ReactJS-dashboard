@@ -56,7 +56,8 @@ class PlivoCallbackController < ApplicationController
 
   # Sanitize phone number to remove brackets, dashes, plus signs from the input
   def process_phone_numbers(number)
-    return number.gsub(/[\+\-\(\)\s]/,'')
+    #return number.gsub(/[\+\-\(\)\s]/,'')
+    return number.gsub(/\W/,'')
   end
 
   def sms_to_plivo(message, to, from)

@@ -81,7 +81,8 @@ class PostSignupWorker
 
           @client = Twilio::REST::Client.new t_sid, t_token
 
-          phone_number = @user[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+          #phone_number = @user[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+          phone_number = @user[:phone_number].gsub(/\W/,'')
           begin
             message = @client.account.messages.create(
               :body => message_body,

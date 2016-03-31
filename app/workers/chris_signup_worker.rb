@@ -10,7 +10,8 @@ class ChrisSignupWorker
 
       @client = Twilio::REST::Client.new t_sid, t_token
 
-      phone_number = @user[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+      #phone_number = @user[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+      phone_number = @user[:phone_number].gsub(/\W/,'')
       begin
         message = @client.account.messages.create(
           :body => "Thanks for signing up with Shyft! Be a part of our team with ShyftLyfe and get early access to new features! Sign up here: http://bit.ly/ShyftLyfe",

@@ -176,7 +176,8 @@ module Api
           network_name = @location[:location_name]
         end
 
-        phone_number = params[:phone].gsub(/[\+\-\(\)\s]/,'')
+        #phone_number = params[:phone].gsub(/[\+\-\(\)\s]/,'')
+        phone_number = params[:phone].gsub(/\W/,'')
         message = @client.account.messages.create(
           #:body => "#{@user.first_name} #{@user.last_name} has invited you to download the app they’re using to trade shifts and message coworkers. It’s called Coffee Mobile, download here: #{@host}",
           :body => "#{@user.first_name} #{@user.last_name} requested you to cover a shift at #{network_name} on their workplace mobile app Coffee Mobile, download it help them out here. #{@host}",

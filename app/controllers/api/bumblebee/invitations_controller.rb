@@ -84,7 +84,8 @@ module Api
       end
 
       def verify_cell_number
-        phone_number = params[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+        #phone_number = params[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+        phone_number = params[:phone_number].gsub(/\W/,'')
         if User.exists?(:phone_number => phone_number)
           render json: { "eXpresso" => { "code" => -101, "message" => "Phone number already registered" } }
         elsif Invitation.exists?(:phone_number => phone_number, :is_valid => true)
@@ -146,7 +147,8 @@ module Api
             if params[:Email].present?
               setup_email = params[:Email]
             else
-              setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+              #setup_email = params[:PhoneNumber].gsub(/[\+\-\(\)\s]/,'') + "@coffeemobile.com"
+              setup_email = params[:PhoneNumber].gsub(/\W/,'') + "@coffeemobile.com"
             end
             @user = User.where(['email = ? OR phone_number = ?', setup_email, @invitation[:phone_number]]).first
             #@user = User.where(:email => @invitation[:email]).first

@@ -16,7 +16,8 @@ module Api
       end
 
       def verify_cell_number
-        phone_number = params[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+        #phone_number = params[:phone_number].gsub(/[\+\-\(\)\s]/,'')
+        phone_number = params[:phone_number].gsub(/\W/,'')
         if User.exists?(:phone_number => phone_number)
           render json: { "eXpresso" => { "code" => -101, "message" => "Phone number already registered" } }
         elsif Invitation.exists?(:phone_number => phone_number, :is_valid => true)
@@ -57,11 +58,12 @@ module Api
         t_token = '81eaed486465b41042fd32b61e5a1b14'
 
         @client = Twilio::REST::Client.new t_sid, t_token
-        number = number.gsub(/[\+\-\(\)\s]/,'')
+        #number = number.gsub(/[\+\-\(\)\s]/,'')
+        phone_number = number.gsub(/\W/,'')
         message = @client.account.messages.create(
           :body => "#{code} is your Shyft verification code, please enter it within the next 30 mins.",
           #:to => "+"+number,
-          :to => number.size > 10 ? "+"+ number : number,
+          :to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
           :from => "+16137028842"
         )
         if message

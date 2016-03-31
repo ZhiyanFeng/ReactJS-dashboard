@@ -37,8 +37,10 @@ class TrackedPushNotificationWorker
     end
     if response == 1
       begin
-        cpr = ChannelPushReport.find(cpr_id)
-        cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :success => cpr[:success] + 1)
+        #cpr = ChannelPushReport.find(cpr_id)
+        #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :success => cpr[:success] + 1)
+        ChannelPushReport.increment_counter(:attempted,cpr_id)
+        ChannelPushReport.increment_counter(:success,cpr_id)
         ErrorLog.create(
           :file => "tracked_subscriber_push.rb",
           :function => "perform",

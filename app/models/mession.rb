@@ -131,7 +131,7 @@ class Mession < ActiveRecord::Base
           :file => "mession.rb",
           :function => "tracked_subscriber_push",
           :error => "Unable to push to gcm: #{error}")
-        if error.include? "Device token is invalid"
+        if error.to_s.include? "Device token is invalid"
           return 2
         else
           return 3
@@ -160,7 +160,7 @@ class Mession < ActiveRecord::Base
           :file => "mession.rb",
           :function => "tracked_subscriber_push",
           :error => "Unable to push to apns: #{error}")
-        if error.include? "Device token is invalid"
+        if error.to_s.include? "Device token is invalid"
           return 2
         else
           return 3

@@ -91,6 +91,7 @@ class Channel < ActiveRecord::Base
         :failed_due_to_missing_id => 0,
         :failed_due_to_other => 0
       )
+      last_user_id = targets.last[:id]
       targets.each do |user|
         TrackedPushNotificationWorker.perform_async(
           user[:id],
@@ -101,7 +102,8 @@ class Channel < ActiveRecord::Base
           poster_name,
           @cpr[:id],
           post_archtype,
-          base_type
+          base_type,
+          last_user_id
         )
       end
     rescue Exception => error
@@ -109,8 +111,6 @@ class Channel < ActiveRecord::Base
         :file => "channel.rb",
         :function => "tracked_subscriber_push",
         :error => "Exception: #{error}")
-    ensure
-      SlackChannelPushReporterWorker.perform_async(@cpr[:id])
     end
   end
 

@@ -352,7 +352,7 @@ class Invitation < ActiveRecord::Base
             :org_id => @location[:org_id],
             :location => @location[:id],
             :owner_id => 134,
-            :title => "Welcome to Coffee Mobile",
+            :title => "Welcome to Shyft",
             #:content => "Thank you for using Coffee Mobile as your at work social network. You have successfully created your location, you can start inviting your coworkers from the contact menu. Please contact hello@coffeemobile.com for assistance.",
             :content => "Begin trading shifts and messaging coworkers today! You now have an exclusive private network for your work location. Click on the 'Contacts' tab, then the '+' button to invite 10 staff members. Have fun!. \nPlease contact hello@coffeemobile.com for assistance.",
             :post_type => 1

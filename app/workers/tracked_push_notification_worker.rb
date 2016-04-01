@@ -36,29 +36,17 @@ class TrackedPushNotificationWorker
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     end
     if response == 1
-      #cpr = ChannelPushReport.find(cpr_id)
-      #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :success => cpr[:success] + 1)
-      ChannelPushReport.increment_counter(:attempted,cpr_id)
       ChannelPushReport.increment_counter(:success,cpr_id)
+      ChannelPushReport.increment_counter(:attempted,cpr_id)
     elsif response == 2
-      #cpr = ChannelPushReport.find(cpr_id)
-      #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
-      ChannelPushReport.increment_counter(:attempted,cpr_id)
       ChannelPushReport.increment_counter(:failed_due_to_other,cpr_id)
+      ChannelPushReport.increment_counter(:attempted,cpr_id)
     elsif response == 3
-      #cpr = ChannelPushReport.find(cpr_id)
-      #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_missing_id => cpr[:failed_due_to_missing_id] + 1)
-      ChannelPushReport.increment_counter(:attempted,cpr_id)
       ChannelPushReport.increment_counter(:failed_due_to_missing_id,cpr_id)
-    else
-      #cpr = ChannelPushReport.find(cpr_id)
-      #cpr.update_attributes!(:attempted => cpr[:attempted] + 1, :failed_due_to_other => cpr[:failed_due_to_other] + 1)
       ChannelPushReport.increment_counter(:attempted,cpr_id)
+    else
       ChannelPushReport.increment_counter(:failed_due_to_other,cpr_id)
-    end
-    @cpr = ChannelPushReport.find(cpr_id)
-    if @cpr[:attempted] == @cpr[:target_number]
-      SlackChannelPushReporterWorker.perform_async(cpr_id)
+      ChannelPushReport.increment_counter(:attempted,cpr_id)
     end
   end
 

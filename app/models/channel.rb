@@ -92,7 +92,7 @@ class Channel < ActiveRecord::Base
         :failed_due_to_other => 0
       )
       last_user_id = targets.last[:id]
-      targets.each do |user|
+      targets.each_with_index do |user,idx|
         TrackedPushNotificationWorker.perform_async(
           user[:id],
           user.mession[:id],
@@ -104,6 +104,10 @@ class Channel < ActiveRecord::Base
           post_archtype,
           base_type
         )
+        if idx == targets.size - 1
+          #SlackChannelPushReporterWorker.perform_async(cpr_id)
+          SlackChannelPushReporterWorker.perform_in(1.minutes, @cpr[:id])
+        end
       end
     rescue Exception => error
       ErrorLog.create(

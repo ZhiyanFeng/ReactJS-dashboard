@@ -4,6 +4,7 @@ class ChannelPushReport < ActiveRecord::Base
     :attempted,
     :success,
     :failed_due_to_missing_id,
-    :failed_due_to_other
+    :failed_due_to_other,
+    :is_sent
 
 end

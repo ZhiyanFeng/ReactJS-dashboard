@@ -2,7 +2,7 @@ class TrackedPushNotificationWorker
   include Sidekiq::Worker
   sidekiq_options queue: "default"
   # sidekiq_options retry: false
-  def perform(user_id,mession_id,post_id,post_content,post_channel_id,poster_name,cpr_id,post_archtype,base_type,last_user_id)
+  def perform(user_id,mession_id,post_id,post_content,post_channel_id,poster_name,cpr_id,post_archtype,base_type)
     response = 0
     @user = User.find(user_id)
     @mession = Mession.find(mession_id)
@@ -56,7 +56,8 @@ class TrackedPushNotificationWorker
       ChannelPushReport.increment_counter(:attempted,cpr_id)
       ChannelPushReport.increment_counter(:failed_due_to_other,cpr_id)
     end
-    if @user[:id] == last_user_id
+    @cpr = ChannelPushReport.find(cpr_id)
+    if @cpr[:attempted] == @cpr[:target_number]
       SlackChannelPushReporterWorker.perform_async(cpr_id)
     end
   end

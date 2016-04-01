@@ -102,8 +102,7 @@ class Channel < ActiveRecord::Base
           poster_name,
           @cpr[:id],
           post_archtype,
-          base_type,
-          last_user_id
+          base_type
         )
       end
     rescue Exception => error

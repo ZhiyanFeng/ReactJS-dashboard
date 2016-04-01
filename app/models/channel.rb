@@ -106,7 +106,7 @@ class Channel < ActiveRecord::Base
         )
         if idx == targets.size - 1
           #SlackChannelPushReporterWorker.perform_async(cpr_id)
-          SlackChannelPushReporterWorker.perform_in(1.minutes, @cpr[:id])
+          SlackChannelPushReporterWorker.perform_in(1.minutes, @cpr[:id],post_object[:title],post_object[:content])
         end
       end
     rescue Exception => error

@@ -35,7 +35,11 @@ class Like < ActiveRecord::Base
             baseType = PostType.find_post_type(target.post_type)
             mession = Mession.where(:user_id => target.owner_id, :is_active => true).first
             commentor = User.find(self.owner_id)
-            message = commentor[:first_name] + " " + commentor[:last_name] + " has liked your post."
+            if target[:title] == "Shift Trade"
+              message = commentor[:first_name] + " " + commentor[:last_name] + " has liked your shift trade post."
+            else
+              message = commentor[:first_name] + " " + commentor[:last_name] + " has liked your post."
+            end
             mession.push("open_detail", message, baseType, target.id, false, false)
           end
           #if Source.name_from_id(self.source) == "post"

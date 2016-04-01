@@ -57,30 +57,63 @@ class Follower < ActiveRecord::Base
             @notification.save
           end
         else
-          if target_obj[:title] == "Shift Trade"
-            @notification = Notification.new(
-              :source => source,
-              :source_id => target_obj[:id],
-              :notify_id => u[:user_id],
-              :sender_id => generated_obj[:owner_id],
-              :recipient_id => target_obj[:owner_id],
-              :org_id => target_obj[:org_id],
-              :event => action,
-              :message => self.create_shift_comment_message(generated_obj[:owner_id],u[:user_id],target_obj[:owner_id])
-            )
-            @notification.save
+          if action == "comment"
+            if target_obj[:title] == "Shift Trade"
+              @notification = Notification.new(
+                :source => source,
+                :source_id => target_obj[:id],
+                :notify_id => u[:user_id],
+                :sender_id => generated_obj[:owner_id],
+                :recipient_id => target_obj[:owner_id],
+                :org_id => target_obj[:org_id],
+                :event => action,
+                :message => self.create_shift_comment_message(generated_obj[:owner_id],u[:user_id],target_obj[:owner_id])
+              )
+              @notification.save
+            else
+              @notification = Notification.new(
+                :source => source,
+                :source_id => target_obj[:id],
+                :notify_id => u[:user_id],
+                :sender_id => generated_obj[:owner_id],
+                :recipient_id => target_obj[:owner_id],
+                :org_id => target_obj[:org_id],
+                :event => action,
+                :message => self.create_post_comment_message(generated_obj[:owner_id],u[:user_id],target_obj[:owner_id])
+              )
+              @notification.save
+            end
+          elsif action == "like"
+            if target_obj[:title] == "Shift Trade"
+              @notification = Notification.new(
+                :source => source,
+                :source_id => target_obj[:id],
+                :notify_id => u[:user_id],
+                :sender_id => generated_obj[:owner_id],
+                :recipient_id => target_obj[:owner_id],
+                :org_id => target_obj[:org_id],
+                :event => action,
+                :message => self.create_shift_like_message(generated_obj[:owner_id],u[:user_id],target_obj[:owner_id])
+              )
+              @notification.save
+            else
+              @notification = Notification.new(
+                :source => source,
+                :source_id => target_obj[:id],
+                :notify_id => u[:user_id],
+                :sender_id => generated_obj[:owner_id],
+                :recipient_id => target_obj[:owner_id],
+                :org_id => target_obj[:org_id],
+                :event => action,
+                :message => self.create_post_like_message(generated_obj[:owner_id],u[:user_id],target_obj[:owner_id])
+              )
+              @notification.save
+            end
           else
-            @notification = Notification.new(
-              :source => source,
-              :source_id => target_obj[:id],
-              :notify_id => u[:user_id],
-              :sender_id => generated_obj[:owner_id],
-              :recipient_id => target_obj[:owner_id],
-              :org_id => target_obj[:org_id],
-              :event => action,
-              :message => self.create_post_comment_message(generated_obj[:owner_id],u[:user_id],target_obj[:owner_id])
-            )
-            @notification.save
+            ErrorLog.create(
+              :file => "follower.rb",
+              :function => "self.notify",
+              :error => "Unable to determine which kind of message to create")
           end
         end
       else
@@ -203,6 +236,26 @@ class Follower < ActiveRecord::Base
     elsif gender == 3
       "their "
     end
+  end
+
+  def self.create_post_like_message(liker_id,recipient_id,poster_id)
+    liker = User.find(liker_id)
+    if recipient_id == poster_id
+      message = "#{liker[:first_name]} #{liker[:last_name]} liked your post."
+    else
+      message = "#{liker[:first_name]} #{liker[:last_name]} liked a post you are following."
+    end
+    return message
+  end
+
+  def self.create_shift_like_message(liker_id,recipient_id,poster_id)
+    liker = User.find(liker_id)
+    if recipient_id == poster_id
+      message = "#{liker[:first_name]} #{liker[:last_name]} liked your shift trade."
+    else
+      message = "#{liker[:first_name]} #{liker[:last_name]} liked a shift trade post you are following."
+    end
+    return message
   end
 
   def self.create_post_comment_message(commenter_id,recipient_id,poster_id)

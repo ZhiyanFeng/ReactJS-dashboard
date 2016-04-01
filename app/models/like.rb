@@ -16,7 +16,7 @@ class Like < ActiveRecord::Base
   belongs_to :posts
   belongs_to :users
   belongs_to :owner, :class_name => "User", :foreign_key => "owner_id"
-  
+
   attr_accessible :owner_id, :source, :source_id
 
   validates_presence_of :owner_id, :on => :create
@@ -30,6 +30,7 @@ class Like < ActiveRecord::Base
         @user = User.find(self[:owner_id])
         @user.update_attributes(:shyft_score => @user[:shyft_score] + 1)
         if push
+          Follower.notify(type, "like", self, target)
           if Mession.exists?(['user_id = ? AND is_active AND push_id IS NOT NULL', target.owner_id]) && target.owner_id != self.owner_id
             baseType = PostType.find_post_type(target.post_type)
             mession = Mession.where(:user_id => target.owner_id, :is_active => true).first
@@ -37,15 +38,15 @@ class Like < ActiveRecord::Base
             message = commentor[:first_name] + " " + commentor[:last_name] + " has liked your post."
             mession.push("open_detail", message, baseType, target.id, false, false)
           end
-          if Source.name_from_id(self.source) == "post"
-            Follower.notify(type, "like", self, target)
-          elsif Source.name_from_id(self.source) == "image"
-            Follower.notify(type, "like", self, target)
-          elsif Source.name_from_id(self.source) == "comment"
-            Follower.notify(type, "like", self, target)
-          else
-            Follower.notify(type, "like", self, target)
-          end
+          #if Source.name_from_id(self.source) == "post"
+            #Follower.notify(type, "like", self, target)
+          #elsif Source.name_from_id(self.source) == "image"
+          #  Follower.notify(type, "like", self, target)
+          #elsif Source.name_from_id(self.source) == "comment"
+          #  Follower.notify(type, "like", self, target)
+          #else
+          #  Follower.notify(type, "like", self, target)
+          #end
         #target.update_attribute(:likes_count, target.likes_count + 1)
         end
         if Source.name_from_id(self.source) == "post"
@@ -60,7 +61,7 @@ class Like < ActiveRecord::Base
       end
     end
   end
-  
+
   def destroy_like
     if Source.name_from_id(self.source) == "post"
       return post_unlike(self.source_id)
@@ -73,7 +74,7 @@ class Like < ActiveRecord::Base
       return post_unlike(self.source_id)
     end
   end
-  
+
   def post_like(id)
     if Post.exists?(:id => id)
       @post = Post.find(id)
@@ -87,7 +88,7 @@ class Like < ActiveRecord::Base
       return false
     end
   end
-  
+
   def image_like(id)
     if Image.exists?(:id => id)
       @image = Image.find(id)
@@ -101,7 +102,7 @@ class Like < ActiveRecord::Base
       return false
     end
   end
-  
+
   def comment_like(id)
     if Comment.exists?(:id => id)
       @comment = Comment.find(id)
@@ -115,7 +116,7 @@ class Like < ActiveRecord::Base
       return false
     end
   end
-  
+
   def post_unlike(id)
     if Post.exists?(:id => id)
       @post = Post.find(id)
@@ -129,7 +130,7 @@ class Like < ActiveRecord::Base
       return false
     end
   end
-  
+
   def image_unlike(id)
     if Image.exists?(:id => id)
       @image = Image.find(id)
@@ -143,7 +144,7 @@ class Like < ActiveRecord::Base
       return false
     end
   end
-  
+
   def comment_unlike(id)
     if Comment.exists?(:id => id)
       @comment = Comment.find(id)
@@ -157,5 +158,5 @@ class Like < ActiveRecord::Base
       return false
     end
   end
-  
+
 end

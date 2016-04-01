@@ -38,7 +38,7 @@ class Follower < ActiveRecord::Base
     followers = Follower.where(:source => source, :source_id => target_obj[:id], :is_valid => true).where.not(:user_id => generated_obj[:owner_id])
     followers.each do |u|
       if Mession.exists?(:user_id => u[:user_id])
-        @mession = Mession.where(:user_id => u[:user_id],:is_active => true).order("created_at DESC").first
+        @mession = Mession.where(:user_id => u[:user_id]).order("created_at DESC").first
         if !@mession[:build].present? || @mession[:build].to_i <= 16030201
           if target_obj[:title] != "Shift Trade"
             message = type

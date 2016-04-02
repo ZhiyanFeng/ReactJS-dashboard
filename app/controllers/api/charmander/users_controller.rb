@@ -242,13 +242,8 @@ module Api
 
         # -- START FETCH CONTACT INFORMATION -- #
         if fetch_all || params[:options][:contacts].present?
-          #subscription_list = Subscription.where(:user_id => @user[:id], :is_active => true, :is_valid => true).pluck('DISTINCT channel_id')
-          #channel_list = Channel.where("id IN (#{subscription_list.join(", ")}) AND (channel_type = 'location_feed' OR channel_type = 'organization_feed') AND is_active AND is_valid").pluck(:id)
-          #contact_ids = Subscription.where("channel_id IN (#{channel_list.join(", ")}) AND user_id != #{@user[:id]} AND is_valid").pluck('DISTINCT user_id')
           location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
           if location_list.count > 0
-            #contact_ids = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid").pluck('DISTINCT owner_id')
-            #if contact_ids.present?
               if fetch_fresh
                 #@contacts = User.where("id IN (#{contact_ids.join(", ")}) AND is_valid")
                 @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")

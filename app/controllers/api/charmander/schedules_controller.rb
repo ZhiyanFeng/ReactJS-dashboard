@@ -5,7 +5,7 @@ module Api
     class SchedulesController < ApplicationController
       class Schedule < ::Schedule
         # Note: this does not take into consideration the create/update actions for changing released_on
-        
+
         # Sub class to override column name in response
         #def as_json(options = {})
         #  super.merge(released_on: created_at.to_date)
@@ -13,16 +13,16 @@ module Api
       end
 
       before_filter :set_headers
-      
+
       respond_to :json
-      
+
       def make_schedule
         if web_access
           @post = Post.new(
             :org_id => params[:org_id],
             :owner_id => params[:user_id],
             :title => params[:name],
-            :content => "The team manager has posted a new schedule, click below to import it to your calendar.", 
+            :content => "The team manager has posted a new schedule, click below to import it to your calendar.",
             :post_type => PostType.reference_by_description(params[:reference])
           )
           image = params[:file].presence ? params[:file] : nil
@@ -90,7 +90,8 @@ module Api
               else
                 #message = "#{@user.first_name} #{@user.last_name} posted schedule for #{start_human} ~ #{end_human}"
                 if @channel = Channel.find(params[:channel_id])
-                  @channel.subscribers_push("schedule", @post)
+                  #@channel.subscribers_push("schedule", @post)
+                  @channel.tracked_subscriber_push("schedule",@post)
                 end
                 #User.location_broadcast(@user[:id], @user[:location], "post", "schedule", message, 4, @post[:id], created_at = nil, user_group=nil) if @user[:location] != 0
                 #def self.location_broadcast(sender_id, location, type, event, message, source, source_id, created_at = nil, user_group=nil)

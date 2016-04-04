@@ -325,32 +325,46 @@ class Mession < ActiveRecord::Base
 
   def push_no_content(message, action)
     if self.push_to == "GCM"
-      n = Rpush::Gcm::Notification.new
-      n.app = Rpush::Gcm::App.find_by_name("coffee_enterprise")
-      n.registration_ids = self.push_id
-      n.data = {
-        :category => action,
-        :message => message,
-        :org_id => 1,
-        :source => 4,
-        :source_id => 21887,
-        :channel_id => 1
-      }
-      n.save!
+      begin
+        n = Rpush::Gcm::Notification.new
+        n.app = Rpush::Gcm::App.find_by_name("coffee_enterprise")
+        n.registration_ids = self.push_id
+        n.data = {
+          :category => action,
+          :message => message,
+          :org_id => 1,
+          :source => 4,
+          :source_id => 21887,
+          :channel_id => 1
+        }
+        n.save!
+      rescue Exception => error
+        ErrorLog.create(
+          :file => "mession.rb",
+          :function => "push_no_content",
+          :error => "Unable to push to gcm: #{error}")
+      end
     end
 
     if self.push_to == "APNS"
-      n = Rpush::Apns::Notification.new
-      n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
-      n.device_token = self.push_id
-      n.alert = message
-      n.data = {
-        :cat => action,
-        :oid => 1,
-        :src => 4,
-        :sid => 21887
-      }
-      n.save!
+      begin
+        n = Rpush::Apns::Notification.new
+        n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
+        n.device_token = self.push_id
+        n.alert = message
+        n.data = {
+          :cat => action,
+          :oid => 1,
+          :src => 4,
+          :sid => 21887
+        }
+        n.save!
+      rescue Exception => error
+        ErrorLog.create(
+          :file => "mession.rb",
+          :function => "push_no_content",
+          :error => "Unable to push to apns: #{error}")
+      end
     end
   end
 

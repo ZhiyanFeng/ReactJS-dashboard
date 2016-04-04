@@ -15,9 +15,11 @@ class PostSignupWorker
 
         if mession_id.to_i == 0
           Rails.logger.debug "mession_id is 0"
-          if Mession.exists?(:user_id => user_id, :is_active => true)
-            mession_id = Mession.where(:user_id => user_id, :is_active => true).pluck(:id).first
-            Rails.logger.debug "PostSignupWorker new mession_id found #{mession_id}"
+          #if Mession.exists?(:user_id => user_id, :is_active => true)
+          if Mession.exists?(["user_id = ? AND is_active AND push_id IS NOT NULL", user_id])
+            #mession_id = Mession.where(:user_id => user_id, :is_active => true).pluck(:id).first
+            mession_id = Mession.where(["user_id = ? AND is_active AND push_id IS NOT NULL", user_id]).order("created_at DESC").pluck(:id).first
+            #Rails.logger.debug "PostSignupWorker new mession_id found #{mession_id}"
           else
             mession_id = 0
           end

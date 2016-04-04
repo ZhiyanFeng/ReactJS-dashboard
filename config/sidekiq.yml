@@ -5,7 +5,7 @@
 :logfile: /var/log/sidekiq.log
 :pidfile: /var/app/support/pids/sidekiq.pid
 :verbose: false
-:concurrency:  5
+:concurrency:  4
 :daemon: true
 :queues:
   - [high, 9]

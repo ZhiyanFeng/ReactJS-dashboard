@@ -5,7 +5,7 @@ module Api
     class SubscriptionsController < ApplicationController
       class Subscription < ::Subscription
         # Note: this does not take into consideration the create/update actions for changing released_on
-        
+
         # Sub class to override column name in response
         #def as_json(options = {})
         #  super.merge(thumb_url: self.thumb_url, gallery_url: self.gallery_url, full_url: self.full_url)
@@ -14,7 +14,7 @@ module Api
 
       before_filter :restrict_access, :set_headers
       before_filter :fetch_subscription, :except => [:setup_existing_subscriptions]
-      
+
       respond_to :json
 
       def fetch_subscription
@@ -87,7 +87,7 @@ module Api
         result = {}
         result["server_sync_time"] = DateTime.now.iso8601(3)
         result["posts"] ||= Array.new
-        @posts = Post.where("post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{@subscription[:channel_id]} AND id < #{params[:post_id]} AND is_valid").order('created_at DESC').limit(15)
+        @posts = Post.where("post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{@subscription[:channel_id]} AND id < #{params[:post_id]} AND z_index < 9999 AND is_valid").order('created_at DESC').limit(15)
         @posts.each do |p|
           p.check_user(params[:user_id])
         end

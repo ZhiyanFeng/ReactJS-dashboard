@@ -17,8 +17,10 @@ class MessionSuccessSerializer < ActiveModel::Serializer
   def privilege
     #ps = object.user.user_privileges.where(:is_valid => true)
     #UserPrivilegeSerializer.new(object.user.user_privileges.first)
-    ps = object.user.user_privileges
-    UserPrivilegeSerializer.new(ps.first)
+    if object.user.location == 0
+      ps = object.user.user_privileges
+      UserPrivilegeSerializer.new(ps.first)
+    end
   end
 
   def user

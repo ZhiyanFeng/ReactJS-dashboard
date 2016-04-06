@@ -74,7 +74,14 @@ module Api
       end
 
       def complete_signup_without_location
-        @user = User.create_new_user(params, 0)
+        begin
+          @user = User.create_new_user(params, 0)
+        rescue => e
+          ErrorLog.create(
+            :file => "invitations_controller.rb",
+            :function => "complete_signup_without_location",
+            :error => "#{e}")
+        end
         if @user
           coffee_channel = Channel.where(:channel_type => "coffee_feed").first
           if !Subscription.exists?(:user_id => @user[:id], :channel_id => coffee_channel[:id])

@@ -100,10 +100,11 @@ module Api
       def remove_subscriber
         if Channel.exists?(:id => params[:id])
           @channel = Channel.find(params[:id])
+          @sub = Subscription.where(:channel_id => @channel[:id], :user_id => params[:user_id], :is_valid => true, :is_active => true).first
           if @channel[:channel_type] == "location_feed"
             @key = UserPrivilege.where(:location_id => @channel[:channel_frequency].to_i, :owner_id => params[:user_id], :is_valid => true).first
           end
-          if @channel[:owner_id].to_i == params[:user_id].to_i || (@channel[:channel_type] == "location_feed" && @key[:is_admin] == true)
+          if @channel[:owner_id].to_i == params[:user_id].to_i || (@channel[:channel_type] == "location_feed" && @key[:is_admin] == true) || @sub[:is_admin] == true
             if @channel[:owner_id].to_i == params[:remove_id].to_i
               render json: { "eXpresso" => { "code" => -1, "message" => "You cannot remove the group owner from the group.", "error" => "User with ID #{params[:remove]} is the channel owner." } }
             else

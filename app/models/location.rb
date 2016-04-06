@@ -100,7 +100,6 @@
 
         @location
       else
-        Rails.logger.debug("101010101010101010101")
         false
       end
     end

@@ -128,6 +128,7 @@ Expresso::Application.routes.draw do
         post :verify_cell_number, :on => :collection
         post :re_verify_cell_number, :on => :collection
         post :complete_signup, :on => :member
+        post :complete_signup_without_location, :on => :member
       end
 
       resources :locations do

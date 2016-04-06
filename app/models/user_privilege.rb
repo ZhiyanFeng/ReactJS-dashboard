@@ -138,7 +138,7 @@ class UserPrivilege < ActiveRecord::Base
     transaction do
       coffee_channel = Channel.where(:channel_type => "coffee_feed").first
       if !Subscription.exists?(:user_id => self[:owner_id], :channel_id => coffee_channel[:id])
-        coffee_channel = Channel.where(:channel_type => "coffee_feed").first
+        #coffee_channel = Channel.where(:channel_type => "coffee_feed").first
         coffee_subscription = Subscription.create(
           :user_id => self[:owner_id],
           :channel_id => coffee_channel[:id],
@@ -176,7 +176,7 @@ class UserPrivilege < ActiveRecord::Base
       # the official coffee feed where everyone subscribes to
       coffee_channel = Channel.where(:channel_type => "coffee_feed").first
       if !Subscription.exists?(:user_id => self[:owner_id], :channel_id => coffee_channel[:id])
-        coffee_channel = Channel.where(:channel_type => "coffee_feed").first
+        #coffee_channel = Channel.where(:channel_type => "coffee_feed").first
         coffee_subscription = Subscription.create(
           :user_id => self[:owner_id],
           :channel_id => coffee_channel[:id],

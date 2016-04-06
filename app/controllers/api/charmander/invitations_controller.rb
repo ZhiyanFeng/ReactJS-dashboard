@@ -73,6 +73,29 @@ module Api
         end
       end
 
+      def complete_signup_without_location
+        @user = User.create_new_user(params, 0)
+        if @user
+          coffee_channel = Channel.where(:channel_type => "coffee_feed").first
+          if !Subscription.exists?(:user_id => @user[:id], :channel_id => coffee_channel[:id])
+            coffee_subscription = Subscription.create(
+              :user_id => @user[:id],
+              :channel_id => coffee_channel[:id],
+              :is_active => is_active
+            )
+            coffee_channel.recount
+            render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+          else
+            @subscription = Subscription.exists?(:user_id => @user[:id], :channel_id => coffee_channel[:id]).first
+            @subscription.update_attributes(:is_valid => true, :is_active => true)
+            coffee_channel.recount
+            render json: { "eXpresso" => { "code" => 1, "message" => "Success, but coffee subscriptions exists." } }
+          end
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => "Could not create your account at this time." } }
+        end
+      end
+
       def complete_signup
         if Location.exists?(:four_sq_id => params[:LocationUniqueID])
           @location = Location.where(:four_sq_id => params[:LocationUniqueID]).first

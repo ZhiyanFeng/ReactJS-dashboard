@@ -26,7 +26,11 @@ module Api
       end
 
       def refresh_subscription
-        @posts = Post.where("(z_index < 9999 OR owner_id = #{params[:user_id]}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{@subscription[:channel_id]} AND updated_at > '#{@subscription[:subscription_last_synchronize]}'").order('created_at DESC')
+        if @subscription[:subscription_last_synchronize].present?
+          @posts = Post.where("(z_index < 9999 OR owner_id = #{params[:user_id]}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{@subscription[:channel_id]} AND updated_at > '#{@subscription[:subscription_last_synchronize]}'").order('created_at DESC')
+        else
+          @posts = Post.where("(z_index < 9999 OR owner_id = #{params[:user_id]}) AND post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{@subscription[:channel_id]}").order('created_at DESC').limit(15)
+        end
         @subscription.update_attribute(:subscription_last_synchronize, Time.now)
         render json: @posts, each_serializer: SyncFeedSerializer
       end

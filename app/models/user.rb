@@ -110,10 +110,10 @@ class User < ActiveRecord::Base
             @mession.subscriber_push("open_invites", message, 4, 7367, nil, @refer)
           end
         rescue => e
-          Rails.logger.debug("============ERROR START============")
-          Rails.logger.debug(e.message)
-          Rails.logger.debug(e.backtrace.join("\n"))
-          Rails.logger.debug("============ERROR END============")
+          ErrorLog.create(
+            :file => "user.rb",
+            :function => "self.create_new_user",
+            :error => "#{e}")
         ensure
         end
       end

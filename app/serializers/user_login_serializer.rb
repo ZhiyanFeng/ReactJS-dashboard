@@ -4,20 +4,21 @@ class UserLoginSerializer < ActiveModel::Serializer
   has_one :cover_image, serializer: CoverImageSerializer
   attributes :id,
   :active_org,
-  :first_name, 
-  :last_name, 
-  :email, 
+  :first_name,
+  :last_name,
+  :email,
+  :phone_number,
   :gender,
-  :chat_handle, 
+  :chat_handle,
   :referral_code,
   :user_group_id,
-  :user_group, 
+  :user_group,
   :position,
   :location_id,
   :location,
   :status
   #:profile_image
-  
+
   #def profile_image
     #Image.find(object.profile_id)
     #ProfileImageSerializer.new(object.profile_image)

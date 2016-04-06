@@ -81,7 +81,7 @@ module Api
             coffee_subscription = Subscription.create(
               :user_id => @user[:id],
               :channel_id => coffee_channel[:id],
-              :is_active => is_active
+              :is_active => true
             )
             coffee_channel.recount
             render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }

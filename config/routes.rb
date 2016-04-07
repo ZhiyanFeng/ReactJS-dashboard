@@ -101,6 +101,7 @@ Expresso::Application.routes.draw do
         get :fix_channel_posts, :on => :collection
         get :fix_channel_chats, :on => :collection
         post :set_require_shift_approval, :on => :member
+        post :fetch_location_member_count, :on => :collection
         get :recount_geo_region_channel, :on => :member
         get :recount_branded_geo_region_channel, :on => :member
         get :recount_location_region_channel, :on => :member

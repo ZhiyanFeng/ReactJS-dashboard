@@ -6,7 +6,7 @@ class PostInviteWorker
 
     phone_number = referral_target_id.gsub(/\W/,'')
 
-    if User.exists?(["phone_number like ?"], phone_number)
+    if User.exists?(["phone_number like '%?%'"], phone_number)
       return
     else
       @user = User.find(user_id)
@@ -17,7 +17,7 @@ class PostInviteWorker
 
       begin
         message = @client.account.messages.create(
-          :body => "Thanks for signing up with Shyft! Be a part of our team with ShyftLyfe and get early access to new features! Sign up here: http://bit.ly/ShyftLyfe",
+          :body => content,
           #:to => "+"+@user[:phone_number],
           :to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
           :from => "+16473602178"

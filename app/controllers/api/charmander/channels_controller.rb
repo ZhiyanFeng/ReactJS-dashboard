@@ -33,6 +33,15 @@ module Api
         end
       end
 
+      def fetch_location_member_count
+        @locations = Location.where(["google_map_id in (?)"], params[:google_map_ids])
+        if @location.size > 0
+          render json: @locations, each_serializer: LocationSearchResultSerializer
+        else
+          render json: { "eXpresso" => { "code" => 1, "message" => "Empty result set" } }
+        end
+      end
+
       def send_admin_claim(uid, lid, email)
         t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
         t_token = '81eaed486465b41042fd32b61e5a1b14'

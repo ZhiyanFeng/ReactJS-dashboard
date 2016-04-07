@@ -34,11 +34,11 @@ module Api
       end
 
       def fetch_location_member_count
-        @locations = Location.where(["google_map_id in (?)", params[:google_map_ids]])
+        @locations = Location.where(["google_map_id in (#{params[:google_map_ids]})"])
         if @locations.size > 0
           render json: @locations, each_serializer: LocationSearchResultSerializer
         else
-          render json: { "eXpresso" => { "code" => 1, "message" => "Empty result set" } }
+          render json: { "eXpresso" => { "code" => -1, "message" => "Empty result set" } }
         end
       end
 

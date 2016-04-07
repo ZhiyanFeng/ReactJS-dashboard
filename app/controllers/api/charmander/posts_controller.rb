@@ -188,14 +188,16 @@ module Api
             if @last_post.present?
               @user = User.find(@last_post[:owner_id])
               @channel.update_attribute(:channel_latest_content, "#{@user[:first_name]} #{@user[:last_name]}: #{@last_post[:content]}")
-              Subscription.where(:channel_id => @channel[:id], :is_valid => true).each do |s|
-                s.touch
-              end
+              #Subscription.where(:channel_id => @channel[:id], :is_valid => true).each do |s|
+              #  s.touch
+              #end
+              Subscription.where(:channel_id => @channel[:id], :is_valid => true).update_all(:updated_at => Time.now)
             else
               @channel.update_attribute(:channel_latest_content, "")
-              Subscription.where(:channel_id => @channel[:id], :is_valid => true).each do |s|
-                s.touch
-              end
+              Subscription.where(:channel_id => @channel[:id], :is_valid => true).update_all(:updated_at => Time.now)
+              #Subscription.where(:channel_id => @channel[:id], :is_valid => true).each do |s|
+              #  s.touch
+              #end
             end
             render :json => { "eXpresso" => { "code" => 1, "post" => @post } }
           else

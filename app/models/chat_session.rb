@@ -57,7 +57,6 @@ class ChatSession < ActiveRecord::Base
 			UserAnalytic.create(:action => 3,:org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 			return @session.first.first[1].to_i
 		else
-			Rails.logger.debug("missing")
 			return false
 		end
 	end

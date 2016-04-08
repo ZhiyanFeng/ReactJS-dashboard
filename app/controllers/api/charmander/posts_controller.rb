@@ -79,6 +79,7 @@ module Api
                 push_notification = true
                 @post.update_attribute(:is_valid, false) if image != nil
                 post_base_type = PostType.find_post_type(@post[:post_type])
+                UserAnalytic.create(:action => 1,:org_id => 1, :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
                 if post_base_type == "announcement"
                   render json: @post, serializer: SyncFeedSerializer
                 else
@@ -158,7 +159,7 @@ module Api
               if @post.save
                 Follower.follow(4, @post[:id], @post[:owner_id])
                 post_base_type = PostType.find_post_type(@post[:post_type])
-                #UserAnalytic.create(:action => 1,:org_id => params[:org_id], :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
+                UserAnalytic.create(:action => 1,:org_id => params[:org_id], :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
                 render json: @post, serializer: SyncFeedSerializer
                 @post.process_attachments(params[:attachments], @user[:id]) if params[:attachments].present?
                 @user.process_tags(params[:tags]) if params[:tags].present?
@@ -208,7 +209,7 @@ module Api
 
       def detail
         post = Post.where(:id => params[:id]).includes(:likes, :flags, :comments => [:likes, :flags]).first
-        #UserAnalytic.create(:action => 2,:org_id => post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
+        UserAnalytic.create(:action => 2,:org_id => post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
         if !params[:silent].present?
           Notification.did_view(params[:user_id], 4, params[:id]) unless params[:reset_count].present?
           post.add_view

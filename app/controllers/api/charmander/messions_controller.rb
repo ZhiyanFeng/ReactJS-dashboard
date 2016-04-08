@@ -144,7 +144,7 @@ module Api
               if @mession[:org_id] == 0 && params[:mession][:org_id].presence
                 @mession[:org_id] = params[:mession][:org_id]
               end
-              #UserAnalytic.create(:action => 3,:org_id => @mession[:org_id], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+              UserAnalytic.create(:action => 3,:org_id => @mession[:org_id], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
               render json: @mession, serializer: MessionSuccessSerializer
             else
               render json: { "eXpresso" => { "code" => 401, "message" => "Invalid password" } }
@@ -172,7 +172,7 @@ module Api
               )
               @mession.save
               if status == 200
-                #UserAnalytic.create(:action => 3,:org_id => @mession[:org_id], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+                UserAnalytic.create(:action => 3,:org_id => @mession[:org_id], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
                 render json: @mession, serializer: MessionSuccessSerializer
               else
                 render json: @mession, serializer: Mession210Serializer
@@ -215,7 +215,7 @@ module Api
               )
               @mession.save
               if status == 200
-                #UserAnalytic.create(:action => 3,:org_id => @mession[:org_id], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+                UserAnalytic.create(:action => 3,:org_id => @mession[:org_id], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
                 render json: @mession, serializer: MessionSuccessSerializer
               else
                 render json: @mession, serializer: Mession210Serializer

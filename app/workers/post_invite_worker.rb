@@ -20,7 +20,7 @@ class PostInviteWorker
       return
     end
 
-    if User.exists?(["phone_number like '%#{phone_number}%'"])
+    if User.where("phone_number like '%#{phone_number}%'").present?
       return
     else
       t_sid = 'AC69f03337f35ddba0403beab55af5caf3'

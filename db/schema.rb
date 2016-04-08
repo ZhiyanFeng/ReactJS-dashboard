@@ -11,12 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160306200357) do
+ActiveRecord::Schema.define(version: 20160401185100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pg_trgm"
-  enable_extension "pg_stat_statements"
 
   create_table "admin_claims", force: :cascade do |t|
     t.integer  "user_id"
@@ -65,6 +64,18 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.boolean  "is_valid",                                     default: true, null: false
     t.datetime "created_at",                     precision: 6
     t.datetime "updated_at",                     precision: 6
+  end
+
+  create_table "channel_push_reports", force: :cascade do |t|
+    t.integer  "channel_id"
+    t.integer  "target_number"
+    t.integer  "attempted"
+    t.integer  "success"
+    t.integer  "failed_due_to_missing_id"
+    t.integer  "failed_due_to_other"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_sent",                  default: false
   end
 
   create_table "channels", force: :cascade do |t|
@@ -116,8 +127,6 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.datetime "created_at",   precision: 6
     t.datetime "updated_at",   precision: 6
   end
-
-  add_index "chat_participants", ["user_id", "is_active"], name: "chatparticipants_userid_isactiv_idx", using: :btree
 
   create_table "chat_sessions", force: :cascade do |t|
     t.integer  "org_id",                                          null: false
@@ -171,14 +180,14 @@ ActiveRecord::Schema.define(version: 20160306200357) do
   end
 
   create_table "custom_groups", force: :cascade do |t|
-    t.string   "group_nickname", limit: 255,                 null: false
-    t.integer  "owner_id",                                   null: false
-    t.integer  "location_id",                                null: false
-    t.text     "members",                                    null: false
-    t.boolean  "is_valid",                   default: true
-    t.boolean  "is_public",                  default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "group_nickname", limit: 255,                               null: false
+    t.integer  "owner_id",                                                 null: false
+    t.integer  "location_id",                                              null: false
+    t.text     "members",                                                  null: false
+    t.boolean  "is_valid",                                 default: true
+    t.boolean  "is_public",                                default: false
+    t.datetime "created_at",                 precision: 6
+    t.datetime "updated_at",                 precision: 6
   end
 
   create_table "error_logs", force: :cascade do |t|
@@ -302,8 +311,6 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.datetime "updated_at", precision: 6
   end
 
-  add_index "likes", ["source", "source_id", "is_valid"], name: "likes_source_sourceid_isvalid_idx", using: :btree
-
   create_table "locations", force: :cascade do |t|
     t.integer  "org_id",                                                      null: false
     t.integer  "owner_id",                                    default: 0,     null: false
@@ -311,7 +318,7 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.string   "location_name",     limit: 255
     t.string   "unit_number",       limit: 20
     t.string   "street_number",     limit: 20
-    t.string   "address",           limit: 255
+    t.string   "address",           limit: 255,                               null: false
     t.string   "city",              limit: 155
     t.string   "province",          limit: 155
     t.string   "postal",            limit: 64
@@ -351,8 +358,6 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.string   "build",           limit: 255
   end
 
-  add_index "messions", ["user_id", "is_active", "is_valid"], name: "messions_userid_isactive_isvalid_idx", using: :btree
-
   create_table "notifications", force: :cascade do |t|
     t.integer  "notify_id",                                              null: false
     t.integer  "sender_id",                                              null: false
@@ -366,8 +371,6 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.datetime "created_at",               precision: 6
     t.datetime "updated_at",               precision: 6
   end
-
-  add_index "notifications", ["org_id", "notify_id", "viewed", "updated_at", "created_at"], name: "notifications_viewed_orgid_notifyid_updatedat_idx", order: {"created_at"=>:desc}, using: :btree
 
   create_table "organizations", force: :cascade do |t|
     t.string   "name",             limit: 255,                               null: false
@@ -490,10 +493,6 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.integer  "z_index",                                  default: 0
     t.integer  "channel_id"
   end
-
-  add_index "posts", ["channel_id", "post_type", "owner_id", "created_at", "is_valid"], name: "posts_channelid_posttype_owner_id_timestamp_isvalid_idx", order: {"created_at"=>:desc}, using: :btree
-  add_index "posts", ["post_type", "channel_id", "is_valid"], name: "posts_posttype_channelid_isvalid_idx", using: :btree
-  add_index "posts", ["post_type", "channel_id"], name: "posts_posttype_channelid_idx", using: :btree
 
   create_table "processed_contact_dumps", force: :cascade do |t|
     t.string   "phone_number",             limit: 255
@@ -683,10 +682,6 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.boolean  "is_admin",                                    default: false
   end
 
-  add_index "subscriptions", ["channel_id", "is_active", "is_valid", "is_invisible"], name: "subscriptions_channelid_isactive_isvalid_isinvisible_idx", using: :btree
-  add_index "subscriptions", ["user_id", "updated_at"], name: "subscriptions_userid_updatedat_idx", using: :btree
-  add_index "subscriptions", ["user_id", "updated_at"], name: "subscriptions_userid_updatedatdesc_idx", order: {"updated_at"=>:desc}, using: :btree
-
   create_table "urls", force: :cascade do |t|
     t.integer  "org_id",                                               null: false
     t.integer  "owner_id",                                             null: false
@@ -710,12 +705,12 @@ ActiveRecord::Schema.define(version: 20160306200357) do
   end
 
   create_table "user_group_mappings", force: :cascade do |t|
-    t.integer  "user_id",                   null: false
-    t.integer  "org_id",                    null: false
-    t.integer  "group_id",                  null: false
-    t.boolean  "is_valid",   default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "user_id",                                 null: false
+    t.integer  "org_id",                                  null: false
+    t.integer  "group_id",                                null: false
+    t.boolean  "is_valid",                 default: true
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
   end
 
   create_table "user_groups", force: :cascade do |t|
@@ -763,9 +758,6 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.boolean  "is_invisible",               default: false
   end
 
-  add_index "user_privileges", ["is_approved", "is_valid", "location_id", "is_invisible", "owner_id"], name: "userprivileges_isapproved_isvalid_locationid_isinvisible_owneri", using: :btree
-  add_index "user_privileges", ["is_approved", "location_id", "is_valid", "is_invisible", "owner_id"], name: "userprivileges_isapproved_locationid_isvalid_isinvisible_owneri", using: :btree
-
   create_table "users", force: :cascade do |t|
     t.string   "email",                  limit: 255
     t.string   "number",                 limit: 255
@@ -795,14 +787,13 @@ ActiveRecord::Schema.define(version: 20160306200357) do
     t.datetime "created_at",                         precision: 6
     t.datetime "updated_at",                         precision: 6
     t.datetime "last_seen_at"
+    t.datetime "last_engaged_at"
     t.string   "referral_code",          limit: 255
     t.integer  "shift_count",                                      default: 0
     t.integer  "cover_count",                                      default: 0
     t.integer  "shyft_score",                                      default: 0
     t.datetime "last_recount"
   end
-
-  add_index "users", ["location"], name: "users_location_idx", using: :btree
 
   create_table "videos", force: :cascade do |t|
     t.integer  "org_id",                                                          null: false

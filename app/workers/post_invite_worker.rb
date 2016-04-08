@@ -31,13 +31,13 @@ class PostInviteWorker
       begin
         message = @client.account.messages.create(
           :body => content,
-          #:to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
-          :to => '4252456668',
+          :to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
+          #:to => '4252456668',
           :from => "+16473602178"
         )
       rescue Twilio::REST::RequestError => e
         ErrorLog.create(
-          :file => "post_signup_worker.rb",
+          :file => "post_invite_worker.rb",
           :function => "perform",
           :error => "#{e}")
       end

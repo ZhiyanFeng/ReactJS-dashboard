@@ -10,9 +10,9 @@ class ReferralSend < ActiveRecord::Base
 
   def post_invitation_engagement
     if self.referral_platform == "TWILIO"
-      PostInviteWorker.perform_in(1.minutes, self[:id], 1)
-      PostInviteWorker.perform_in(2.minutes, self[:id], 24)
-      PostInviteWorker.perform_in(3.minutes, self[:id], 72)
+      PostInviteWorker.perform_in(1.hours, self[:id], 1)
+      PostInviteWorker.perform_in(1.days, self[:id], 24)
+      PostInviteWorker.perform_in(3.days, self[:id], 72)
     end
   end
 

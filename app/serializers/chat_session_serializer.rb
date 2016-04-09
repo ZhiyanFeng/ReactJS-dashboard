@@ -8,8 +8,4 @@ class ChatSessionSerializer < ActiveModel::Serializer
   :latest_message,
   :multiuser_chat,
   :updated_at
-
-  def title
-    "Chat~~ PEWPEW"
-  end
 end

@@ -5,6 +5,7 @@ class SyncChatSerializer < ActiveModel::Serializer
   :message_count,
   :participant_count,
   :latest_message,
+  :title,
   :multiuser_chat,
   :updated_at
 end

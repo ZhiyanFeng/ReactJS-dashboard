@@ -115,6 +115,7 @@ Expresso::Application.routes.draw do
         post :messages, :on => :member
         post :reset_counter, :on => :member
         post :add_participants, :on => :member
+        post :change_title, :on => :member
       end
 
       resources :contact_dumps do

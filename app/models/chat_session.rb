@@ -18,7 +18,7 @@ class ChatSession < ActiveRecord::Base
 	has_many :participants, :class_name => "ChatParticipant", :foreign_key => "session_id"
 
 	attr_accessible :org_id, :message_count, :participant_count, :multiuser_chat,
-	:latest_message, :is_active, :is_valid, :is_admin_session
+	:latest_message, :is_active, :is_valid, :is_admin_session, :title
 
 	#validates_presence_of :org_id, :on => :create
 

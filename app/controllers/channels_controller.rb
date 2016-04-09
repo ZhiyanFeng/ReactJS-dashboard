@@ -25,6 +25,21 @@ class ChannelsController < ApplicationController
           @subscription.update_attribute(:is_admin, true)
           @user = User.find(@claim[:user_id])
           @user.update_attribute(:email,@claim[:email])
+          @channel = Channel.find(@claim[:ref_id])
+          if @channel[:channel_type] == "location_feed"
+            begin
+              location_id = @channel[:channel_frequency].to_i
+              if UserPrivilege.exists?(:owner_id => @claim[:user_id], :location_id => location_id, :is_valid => true, :is_approved => true)
+                @privilege = UserPrivilege.where(:owner_id => @claim[:user_id], :location_id => location_id, :is_valid => true, :is_approved => true)
+                @privilege.update_attribute(:is_admin, true)
+              end
+            rescue => e
+              ErrorLog.create(
+                :file => "channels_controller.rb",
+                :function => "activate_admin",
+                :error => "#{e}")
+            end
+          end
           NotificationsMailer.admin_claim_success_email(@user[:first_name],@claim[:email])
           render "static_pages/admin_claim_success", :layout => false
         else

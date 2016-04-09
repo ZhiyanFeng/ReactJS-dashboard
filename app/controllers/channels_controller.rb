@@ -30,7 +30,7 @@ class ChannelsController < ApplicationController
             begin
               location_id = @channel[:channel_frequency].to_i
               if UserPrivilege.exists?(:owner_id => @claim[:user_id], :location_id => location_id, :is_valid => true, :is_approved => true)
-                @privilege = UserPrivilege.where(:owner_id => @claim[:user_id], :location_id => location_id, :is_valid => true, :is_approved => true)
+                @privilege = UserPrivilege.where(:owner_id => @claim[:user_id], :location_id => location_id, :is_valid => true, :is_approved => true).first
                 @privilege.update_attribute(:is_admin, true)
               end
             rescue => e

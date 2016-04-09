@@ -22,6 +22,7 @@ module Api
         if ChatSession.exists?(:id => params[:id])
           @session = ChatSession.find(params[:id])
           @session.update_attribute(:title, params[:title])
+          render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
         else
           render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, your action could not be completed at this time.", "error" => "Cannot find chat session with id #{params[:id]}" } }
         end

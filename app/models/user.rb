@@ -660,7 +660,7 @@ class User < ActiveRecord::Base
           :org_id => @organization[:id],
           :owner_id => @user[:id],
           :title => "Welcome to " + @organization[:name],
-          :content => "You have successfully created the network. Please contact hello@coffeemobile.com for questions or assistance.",
+          :content => "You have successfully created the network. Please contact hello@myshyft.com for questions or assistance.",
           :post_type => 1
         )
         @post.basic_hello

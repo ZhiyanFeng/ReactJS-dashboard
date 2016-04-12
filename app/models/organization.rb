@@ -29,8 +29,8 @@ class Organization < ActiveRecord::Base
   has_many :users, :through => :user_privileges
   has_many :posts
   #has_many :keys, :class_name => "Access_Key", :foreign_key => "org_id"
-  
-  attr_accessible :name, :street_number, :address, :city, :province, :postal, :country, :status, 
+
+  attr_accessible :name, :street_number, :address, :city, :province, :postal, :country, :status,
   :description, :profile_id, :validation_hash, :has_validated, :email_domain, :unit_number, :profanity_filter
 
   before_create :prep_record
@@ -39,7 +39,7 @@ class Organization < ActiveRecord::Base
   #validates_presence_of :address, :on => :create
   #validates_presence_of :city, :on => :create
   #validates_presence_of :country, :on => :create
-  
+
   def profile_url
     image_url = "http://66.228.58.218/assets/coffee-badge.png"
     if self.profile_id.presence
@@ -48,7 +48,7 @@ class Organization < ActiveRecord::Base
     end
     return image_url
   end
-  
+
   def prep_record
     self.validation_hash = SecureRandom.hex(24)
   end
@@ -159,7 +159,7 @@ class Organization < ActiveRecord::Base
         :org_id => @organization[:id],
         :owner_id => @user[:id],
         :title => "Welcome to " + @organization[:name],
-        :content => "You have successfully created a network. Please contact hello@coffeemobile.com for assistance.", 
+        :content => "You have successfully created a network. Please contact hello@myshyft.com for assistance.",
         :post_type => 1
       )
       if @post.basic_hello
@@ -187,7 +187,7 @@ class Organization < ActiveRecord::Base
       return @key
     end
   end
-  
+
   def complete_setup(owner_id)
     transaction do
       if save
@@ -201,7 +201,7 @@ class Organization < ActiveRecord::Base
       end
     end
   end
-  
+
   def complete_web_setup(owner_id)
     if save
       # 1. Setup owner

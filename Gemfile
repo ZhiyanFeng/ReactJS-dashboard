@@ -36,15 +36,14 @@ group :test do
   gem 'launchy'
 end
 
-gem "unicorn"
-gem 'unicorn-worker-killer'
 gem 'newrelic_rpm'
 gem 'net-ssh', '~>2.7.0'
 gem 'geocoder'
 gem 'sidekiq'
-gem 'capistrano-sidekiq', group: :development
 gem 'sinatra'
 gem 'slim'
+gem 'google_places'
+gem 'foursquare2'
 
 gem 'plivo'
 gem 'curb'

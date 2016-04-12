@@ -485,7 +485,6 @@ class Invitation < ActiveRecord::Base
             :org_id => @organization[:id],
             :owner_id => @user[:id],
             :title => "Welcome to " + @organization[:name],
-            #:content => "You have successfully created your network. Please contact hello@coffeemobile.com for assistance.",
             :content => "Begin trading shifts and messaging coworkers today! You now have an exclusive private network for your work location. Click on the 'Contacts' tab, then the '+' button to invite 10 staff members. Have fun!. \n\nPlease contact hello@myshyft.com for assistance.",
             :post_type => 1
           )

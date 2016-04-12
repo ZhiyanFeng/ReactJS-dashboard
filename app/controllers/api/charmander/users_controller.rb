@@ -104,7 +104,7 @@ module Api
               @claim.update_attributes(:verified => true, :status => "DENIED")
               render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
             else
-              render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, you do not have enough referrals that you can claim a reward for. Contact our team if this is not correct at hello@coffeemobile.com", "error" => "Not enough referral unclaimed" } }
+              render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, you do not have enough referrals that you can claim a reward for. Contact our team if this is not correct at hello@myshyft.com", "error" => "Not enough referral unclaimed" } }
             end
           else
             render json: { "eXpresso" => { "code" => -1, "message" => "The verification failed" } }

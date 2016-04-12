@@ -6,7 +6,7 @@ module Api
     class OrganizationsController < ApplicationController
       class Organization < ::Organization
         # Note: this does not take into consideration the create/update actions for changing released_on
-        
+
         # Sub class to override column name in response
         #def as_json(options = {})
         #  super.merge(released_on: created_at.to_date)
@@ -15,7 +15,7 @@ module Api
 
       before_filter :restrict_access, :set_headers, :except => [:web_create, :get_dashboard_settings_info, :get_dashboard_select_info]
       before_filter :fetch_org, :except => [:index, :list, :list_applicants, :fetch_quizzes, :seek]
-      
+
       respond_to json:
 
       def fetch_org
@@ -37,12 +37,12 @@ module Api
           render json: { "eXpresso" => { "code" => -1, "message" => "Query produced empty result." } }
         end
       end
-      
+
       def index
         @organizations = Organization.all
         render json: @organizations, each_serializer: OrganizationSerializer
       end
-      
+
       #def list
       #  @organizations = Organization.all
       #  @privileges = UserPrivilege.all(
@@ -70,30 +70,6 @@ module Api
         end
         render json: @post, serializer: PostSerializer
       end
-      
-      #def web_create
-      #    @user = User.new(params[:user])
-      #    if @user.save
-      #      @organization = Organization.new(params[:organization])
-      #      if @key = @organization.complete_web_setup(@user[:id])
-      #        @post = Post.new(
-      #          :org_id => @organization[:id],
-      #          :owner_id => @user[:id],
-      #          :title => "Welcome to " + @organization[:name],
-      #          :content => "You have successfully created a network. Please contact hello@coffeemobile.com for assistance.", 
-      #          :post_type => 2
-      #        )
-      #        @post.basic_hello
-      #        NotificationsMailer.organization_validation(@user, @organization).deliver
-      #        redirect_to registered_url
-      #      else
-      #        render json: { "eXpresso" => { "code" => -202, "message" => @organization.errors } }
-      #      end
-      #    else
-      #      redirect_to signup_url(:email => params[:user][:email], :first_name => params[:user][:first_name], :last_name => params[:user][:last_name], :code => -203), :notice => "Email address already exist"
-      #      #render json: { "eXpresso" => { "code" => -203, "message" => @user.errors } }
-      #    end
-      #end
 
       def web_create
         #response = User.setup_new_org(params)
@@ -104,7 +80,7 @@ module Api
         #  redirect_to signup_url(:email => params[:user][:email], :first_name => params[:user][:first_name], :last_name => params[:user][:last_name], :code => -203), :notice => "Email address already exist"
         #elsif response == -2
         #  render json: { "eXpresso" => { "code" => -202, "message" => "Could not complete the organization setup." } }
-        #else 
+        #else
         #  render json: { "eXpresso" => { "code" => -203, "message" => "Could not complete the setup for unknown reason." } }
         #end
         response = Organization.setup_new_org("web",params)
@@ -156,7 +132,7 @@ module Api
         @organization.update_attribute(:profile_id, params[:profile_id]) if params[:profile_id].presence
         render :json => @user, serializer: UserProfileSerializer
       end
-      
+
       def destroy
         if @organization.update(:is_valid => false)
           render json: @organization, serializer: OrganizationSerializer
@@ -164,7 +140,7 @@ module Api
           render json: @organization.errors
         end
       end
-      
+
       #def list_applicants
         #@keys = AccessKey.all(
         #  :include => [:users],
@@ -175,19 +151,19 @@ module Api
         #)
         #render json: @users, each_serializer: UserSerializer
       #end
-      
+
       def approve_applicants
         @key = UserPrivilege.where(:owner_id => @params[:user_id], :org_id => params[:id]).first
-        if @key.approve 
+        if @key.approve
 
         else
 
         end
       end
-      
+
       def reject_applicants
         @key = UserPrivilege.where(:owner_id => @params[:user_id], :org_id => params[:id]).first
-        if @key.reject 
+        if @key.reject
 
         else
 
@@ -197,18 +173,18 @@ module Api
       def get_organization_groups
         render json: @organization, serializer: OrganizationGroupSerializer
       end
-      
+
       def is_valid
         render json: @organization.is_valid
       end
-      
+
       def profile
         if @organization.gallery_image.presence
           @organization.gallery_image.each do |p|
             p.check_user(params[:id])
           end
         end
-        
+
         if @organization.profile_image.presence
           @organization.profile_image.check_user(params[:id])
         end
@@ -221,23 +197,23 @@ module Api
           :org_id => params[:id],
           :image_type => [1,3]
         )
-        
+
         @gallery.each do |p|
           p.check_user(params[:user_id])
         end
-        
+
         render json: @gallery, each_serializer: ImageSerializer
       end
 
       def fetch_quizzes
-        posts = Post.where("org_id = 1 AND post_type IN (?) AND is_valid", 
+        posts = Post.where("org_id = 1 AND post_type IN (?) AND is_valid",
 
           PostType.reference_by_base_type("quiz")
         ).order("posts.updated_at asc")
-      
+
         render :json => posts, each_serializer: QuizzesSerializer
       end
-      
+
       def fetch_post_graph_data
         result = {}
         result["total"] = 0
@@ -294,7 +270,7 @@ module Api
         comments["hourly"] = {}
 
         organization = Organization.find(params[:id])
-        
+
         user_list = User.where(:active_org => params[:id]).pluck(:id)
 
         user_query = ""
@@ -306,7 +282,7 @@ module Api
         org_age = (DateTime.now.to_i - organization[:created_at].to_i)/24/60/60
         nighty_days_ago = DateTime.now - 90.days
         end_date = DateTime.now
-        
+
         Rails.logger.debug("org_date: #{org_date}");
         Rails.logger.debug("org_age: #{org_age}");
         Rails.logger.debug("nighty_days_ago: #{nighty_days_ago}");
@@ -332,7 +308,7 @@ module Api
         like_daily_query = "SELECT date, coalesce(count,0) AS count FROM generate_series('#{start_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '#{end_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '1 day'::interval) AS date LEFT OUTER JOIN (SELECT date_trunc('day', likes.created_at) as day, count(likes.id) as count FROM likes WHERE is_valid = 't' GROUP BY day) results ON (date = results.day);"
         comment_daily_query = "SELECT date, coalesce(count,0) AS count FROM generate_series('#{start_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '#{end_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '1 day'::interval) AS date LEFT OUTER JOIN (SELECT date_trunc('day', comments.created_at) as day, count(comments.id) as count FROM comments WHERE is_valid = 't' GROUP BY day) results ON (date = results.day);"
 
-        
+
         post_data = ActiveRecord::Base.connection.execute(post_daily_query)
         post_data.each do |p|
           posts["daily"][p["date"]] = p["count"].to_i
@@ -342,7 +318,7 @@ module Api
         post_hourly_data.each do |p|
           posts["hourly"][p["date"]] = p["count"].to_i
         end
-        
+
         chat_data = ActiveRecord::Base.connection.execute(message_daily_query)
         chat_data.each do |p|
           messages["daily"][p["date"]] = p["count"].to_i
@@ -352,7 +328,7 @@ module Api
         chat_hourly_data.each do |p|
           messages["hourly"][p["date"]] = p["count"].to_i
         end
-        
+
         like_data = ActiveRecord::Base.connection.execute(like_daily_query)
         like_data.each do |p|
           likes["daily"][p["date"]] = p["count"].to_i
@@ -372,7 +348,7 @@ module Api
         comment_hourly_data.each do |p|
           comments["hourly"][p["date"]] = p["count"].to_i
         end
-        
+
         user_data = ActiveRecord::Base.connection.execute(user_daily_query)
         user_data.each do |p|
           users["daily"][p["date"]] = p["count"].to_i
@@ -382,7 +358,7 @@ module Api
         user_hourly_data.each do |p|
           users["hourly"][p["date"]] = p["count"].to_i
         end
-        
+
         result = {}
         result["users"] = users
         result["posts"] = posts
@@ -422,7 +398,7 @@ module Api
         comments["hourly"] = {}
 
         organization = Organization.find(params[:id])
-        
+
         user_list = User.where(:active_org => params[:id]).pluck(:id)
 
         user_query = ""
@@ -456,7 +432,7 @@ module Api
         #message_daily_query = "SELECT date, coalesce(count,0) AS count FROM generate_series('#{start_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '#{end_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '1 day'::interval) AS date LEFT OUTER JOIN (SELECT date_trunc('day', chat_messages.created_at) as day, count(chat_messages.id) as count FROM chat_messages WHERE sender_id IN (#{user_list.join(", ")}) GROUP BY day) results ON (date = results.day);"
         #like_daily_query = "SELECT date, coalesce(count,0) AS count FROM generate_series('#{start_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '#{end_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '1 day'::interval) AS date LEFT OUTER JOIN (SELECT date_trunc('day', likes.created_at) as day, count(likes.id) as count FROM likes WHERE owner_id IN (#{user_list.join(", ")}) GROUP BY day) results ON (date = results.day);"
         #comment_daily_query = "SELECT date, coalesce(count,0) AS count FROM generate_series('#{start_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '#{end_date.strftime "%Y-%m-%d 00:00:00"}'::TIMESTAMP WITH TIME ZONE, '1 day'::interval) AS date LEFT OUTER JOIN (SELECT date_trunc('day', comments.created_at) as day, count(comments.id) as count FROM comments WHERE owner_id IN (#{user_list.join(", ")}) GROUP BY day) results ON (date = results.day);"
-        
+
         start_date = Time.zone.parse(organization[:created_at].to_s).utc
         end_date = Time.zone.parse(params[:end_date]).utc
 
@@ -481,7 +457,7 @@ module Api
         post_hourly_data.each do |p|
           posts["hourly"][p["date"]] = p["count"].to_i
         end
-        
+
         chat_data = ActiveRecord::Base.connection.execute(message_daily_query)
         chat_data.each do |p|
           messages["daily"][p["date"]] = p["count"].to_i
@@ -491,7 +467,7 @@ module Api
         chat_hourly_data.each do |p|
           messages["hourly"][p["date"]] = p["count"].to_i
         end
-        
+
         like_data = ActiveRecord::Base.connection.execute(like_daily_query)
         like_data.each do |p|
           likes["daily"][p["date"]] = p["count"].to_i
@@ -511,7 +487,7 @@ module Api
         comment_hourly_data.each do |p|
           comments["hourly"][p["date"]] = p["count"].to_i
         end
-        
+
         user_data = ActiveRecord::Base.connection.execute(user_daily_query)
         user_data.each do |p|
           users["daily"][p["date"]] = p["count"].to_i
@@ -521,7 +497,7 @@ module Api
         user_hourly_data.each do |p|
           users["hourly"][p["date"]] = p["count"].to_i
         end
-        
+
         result = {}
         result["users"] = users
         result["posts"] = posts
@@ -538,7 +514,7 @@ module Api
       def get_dashboard_select_info
         organizations_id = AdminPrivilege.where(:owner_id => current_user[:id]).pluck("DISTINCT org_id")
         @orgs = Organization.where('id IN (?)', organizations_id)
-        
+
         result = {}
         result["organizations"] = ActiveModel::ArraySerializer.new(@orgs, each_serializer: OrganizationSerializer)
         render json: { "eXpresso" => { "code" => 1, "message" => "Data fetched successfully.", "payload" => result } }
@@ -546,13 +522,13 @@ module Api
 
       def get_dashboard_announcements_info
         @users = User.where(:active_org => params[:id], :is_valid => true)
-        @announcements = Post.where("org_id = ? AND post_type IN (?) AND is_valid AND created_at <= ?", 
-              params[:id], 
+        @announcements = Post.where("org_id = ? AND post_type IN (?) AND is_valid AND created_at <= ?",
+              params[:id],
               PostType.reference_by_base_type("announcement"),
               Time.now()
             ).order("posts.created_at desc").limit(50)
-        @newsfeeds = Post.where("org_id = ? AND post_type IN (?) AND is_valid AND created_at <= ?", 
-              params[:id], 
+        @newsfeeds = Post.where("org_id = ? AND post_type IN (?) AND is_valid AND created_at <= ?",
+              params[:id],
               PostType.reference_by_base_type("post"),
               Time.now()
             ).order("posts.created_at desc").limit(50)
@@ -570,8 +546,8 @@ module Api
 
       def get_dashboard_trainings_info
         @users = User.where(:active_org => params[:id], :is_valid => true)
-        @trainings = Post.where("org_id = ? AND (post_type IN (?) OR post_type IN (?)) AND is_valid AND created_at <= ?", 
-              params[:id], 
+        @trainings = Post.where("org_id = ? AND (post_type IN (?) OR post_type IN (?)) AND is_valid AND created_at <= ?",
+              params[:id],
               PostType.reference_by_base_type("training"),
               PostType.reference_by_base_type("safety_training"),
               Time.now()
@@ -595,8 +571,8 @@ module Api
 
       def get_dashboard_quizzes_info
         @users = User.where(:active_org => params[:id], :is_valid => true)
-        @quizzes = Post.where("org_id = ? AND (post_type IN (?) OR post_type IN (?)) AND is_valid AND created_at <= ?", 
-              params[:id], 
+        @quizzes = Post.where("org_id = ? AND (post_type IN (?) OR post_type IN (?)) AND is_valid AND created_at <= ?",
+              params[:id],
               PostType.reference_by_base_type("quiz"),
               PostType.reference_by_base_type("safety_quiz"),
               Time.now()
@@ -616,8 +592,8 @@ module Api
       def get_dashboard_reports_info
         ##UserAnalytic.create(:action => 1,:org_id => params[:id], :user_id => cookies[:user_id], :ip_address => request.remote_ip.to_s)
         @users = User.where(:active_org => params[:id], :is_valid => true)
-        @quizzes = Post.where("org_id = ? AND (post_type IN (?) OR post_type IN (?)) AND is_valid AND created_at <= ?", 
-              params[:id], 
+        @quizzes = Post.where("org_id = ? AND (post_type IN (?) OR post_type IN (?)) AND is_valid AND created_at <= ?",
+              params[:id],
               PostType.reference_by_base_type("quiz"),
               PostType.reference_by_base_type("safety_quiz"),
               Time.now()
@@ -705,7 +681,7 @@ module Api
           render json: { "eXpresso" => { "code" => 1, "message" => "Invitation bulk delete success." } }
         else
           render json: { "eXpresso" => { "code" => -129, "message" => "Invitation bulk delete failed." } }
-        end      
+        end
       end
 
       # DAVID ADDED

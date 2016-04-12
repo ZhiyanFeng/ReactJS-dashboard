@@ -208,7 +208,7 @@ class UserPrivilege < ActiveRecord::Base
         )
       end
       location_channel.recount
-      if location_starting_member_count = 0 && location_channel.member_count == 1
+      if location_starting_member_count == 0 && location_channel.member_count == 1
         Post.where(:channel_id => location_channel[:id]).update_all(:is_valid => false)
         @post = Post.new(
           :org_id => 1,

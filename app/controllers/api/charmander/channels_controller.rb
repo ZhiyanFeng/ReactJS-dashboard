@@ -82,21 +82,13 @@ module Api
         if Channel.exists?(:id => params[:id])
           @channel = Channel.find(params[:id])
           if @channel[:channel_type] == "location_feed"
-            #if UserPrivilege.exists?(:location_id => @channel[:channel_frequency].to_i, :owner_id => params[:user_id], :is_valid => true)
-            #  @user = User.find(params[:user_id])
-            #  self.send_admin_claim(params[:user_id], @channel[:id].to_i, params[:email],@user[:first_name])
-            #  self.send_admin_claim_email(params[:user_id], @channel[:channel_frequency].to_i, params[:email])
-            #  render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
-            #else
-            #  render json: { "eXpresso" => { "code" => -1, "message" => "You do not belong to this group and therefore cannot become an admin. Contact hello@coffeemobile.com if this is an error.", "error" => "User does not have the proper privilege key to proceed." } }
-            #end
             if Subscription.exists?(:channel_id => @channel[:id].to_i, :user_id => params[:user_id], :is_valid => true)
               @user = User.find(params[:user_id])
               #self.send_admin_claim(params[:user_id], @channel[:id].to_i, params[:email])
               self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name])
               render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
             else
-              render json: { "eXpresso" => { "code" => -1, "message" => "You do not belong to this group and therefore cannot become an admin. Contact hello@coffeemobile.com if this is an error.", "error" => "User does not have the proper privilege key to proceed." } }
+              render json: { "eXpresso" => { "code" => -1, "message" => "You do not belong to this group and therefore cannot become an admin. Contact hello@myshyft.com if this is an error.", "error" => "User does not have the proper privilege key to proceed." } }
             end
           else
             render json: { "eXpresso" => { "code" => -1, "message" => "The group you are trying to become and admin for does not need an admin.", "error" => "Channel with ID #{params[:id]} is not a location feed." } }
@@ -123,7 +115,7 @@ module Api
                 if @channel[:channel_type] == "location_feed"
                   @target_key = UserPrivilege.where(:location_id => @channel[:channel_frequency].to_i, :owner_id => params[:remove_id], :is_valid => true).first
                   if @target_key[:is_admin]
-                    render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, you cannot remove another admin. Please contact hello@coffeemobile.com for assitance with this action." } }
+                    render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, you cannot remove another admin. Please contact hello@myshyft.com for assitance with this action." } }
                   else
                     @target_key.update_attributes(:is_valid => false, :is_approved => false)
                     @subscription.notify_removed(@channel)

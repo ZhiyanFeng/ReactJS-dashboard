@@ -42,36 +42,7 @@ Expresso::Application.routes.draw do
   get "/505", :to => "errors#500"
 
 
-  #get "dashboard/shome" => "dashboard#system_home", :as => "shome"
-  #get "dashboard/select" => "dashboard#select", :as => "select"
-  #get "dashboard" => "dashboard#home", :as => "dashboard"
   get "dashboard", :to => "errors#404"
-  #get "dashboard/selected/:id" => "dashboard#selected", :as => "selected"
-  #get "dashboard/pick" => "dashboard#pick", :as => "pick"
-  #get "dashboard/campaigns" => "dashboard#campaigns", :as => "campaigns"
-  #get "dashboard/analytics" => "dashboard#analytics"
-  #get "dashboard/analyze" => "dashboard#analyze"
-  #get "dashboard/awards" => "dashboard#awards", :as => "awards"
-  #get "dashboard/training" => "dashboard#training", :as => "training"
-  #get "dashboard/quizzes" => "dashboard#quizzes", :as => "quizzes"
-  #get "dashboard/reports" => "dashboard#reports", :as => "reports"
-  #get "dashboard/schedules" => "dashboard#schedules", :as => "schedules"
-  #get "dashboard/schedules" => 'dashboard#schedules', :as => :schedules, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/}
-  #get "dashboard/videos" => 'videos#index', :as => "videos"
-  #get "dashboard/events" => "dashboard#events", :as => "events"
-  #get "dashboard/announcements" => "dashboard#announcements", :as => "announcements"
-  #get "dashboard/chats" => "dashboard#chats", :as => "chats"
-  #get "dashboard/profile" => "dashboard#profile", :as => "profile"
-  #get "dashboard/settings" => "dashboard#settings", :as => "settings"
-  #get "dashboard/coming" => "dashboard#coming_soon", :as => "soon"
-  #get "dashboard/users" => "dashboard#users", :as => "users"
-  #get "dashboard/groups" => "dashboard#groups", :as => "groups"
-  #get "dashboard/locations" => "dashboard#locations", :as => "locations"
-  #get "dashboard/get_environment_variables" => "dashboard#get_environment_variables", :as => "get_environment_variables"
-
-  #get "signup/:code", to: 'invitations#continue'
-  #post "signup/:code", to: 'invitations#continue'
-  #get "complete/:code", to: 'invitations#complete_setup'
 
   get "home" => "static_pages#home", :as => "home"
   get "terms" => "static_pages#terms", :as => "terms"
@@ -79,7 +50,6 @@ Expresso::Application.routes.draw do
   get "validated" => "static_pages#validated", :as => "validated"
   get "audio_upload" => "static_pages#audio_upload", :as => "audio_upload"
   get "forgot" => "users#forgot_password", :as => "forgot"
-  #get "login" => "sessions#new", :as => "login"
   get "logout" => "sessions#destroy", :as => "logout"
   get "signup" => 'invitations#continue', :as => "signup"
   post "register" => "invitations#send_invite", :as => "register"

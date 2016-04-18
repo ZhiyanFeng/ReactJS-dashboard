@@ -241,9 +241,9 @@ class Follower < ActiveRecord::Base
   def self.create_post_like_message(liker_id,recipient_id,poster_id)
     liker = User.find(liker_id)
     if recipient_id == poster_id
-      message = "#{liker[:first_name]} #{liker[:last_name]} liked your post."
+      message = "#{liker[:first_name]} #{liker[:last_name]} has liked your post 👍"
     else
-      message = "#{liker[:first_name]} #{liker[:last_name]} liked a post you are following."
+      message = "#{liker[:first_name]} #{liker[:last_name]} liked a post you are following 👍"
     end
     return message
   end
@@ -251,9 +251,9 @@ class Follower < ActiveRecord::Base
   def self.create_shift_like_message(liker_id,recipient_id,poster_id)
     liker = User.find(liker_id)
     if recipient_id == poster_id
-      message = "#{liker[:first_name]} #{liker[:last_name]} liked your shift trade."
+      message = "#{liker[:first_name]} #{liker[:last_name]} has liked your Shift 👍"
     else
-      message = "#{liker[:first_name]} #{liker[:last_name]} liked a shift trade post you are following."
+      message = "#{liker[:first_name]} #{liker[:last_name]} liked a shift trade post you are following 👍"
     end
     return message
   end
@@ -261,9 +261,9 @@ class Follower < ActiveRecord::Base
   def self.create_post_comment_message(commenter_id,recipient_id,poster_id)
     commenter = User.find(commenter_id)
     if recipient_id == poster_id
-      message = "#{commenter[:first_name]} #{commenter[:last_name]} commented on your post."
+      message = "#{commenter[:first_name]} #{commenter[:last_name]} just commented on your post 💬"
     else
-      message = "#{commenter[:first_name]} #{commenter[:last_name]} commented on a post you are following."
+      message = "#{commenter[:first_name]} #{commenter[:last_name]} just commented on a post you are following 💬"
     end
     return message
   end
@@ -271,69 +271,69 @@ class Follower < ActiveRecord::Base
   def self.create_shift_comment_message(commenter_id,recipient_id,poster_id)
     commenter = User.find(commenter_id)
     if recipient_id == poster_id
-      message = "#{commenter[:first_name]} #{commenter[:last_name]} commented on your shift trade."
+      message = "#{commenter[:first_name]} #{commenter[:last_name]} just commented on your shift post 💬"
     else
-      message = "#{commenter[:first_name]} #{commenter[:last_name]} commented on a shift trade post you are following."
+      message = "#{commenter[:first_name]} #{commenter[:last_name]} just commented on a shift post you are following 💬"
     end
     return message
   end
 
   def self.create_shift_covered_message_for_poster(shift)
     coverer = User.find(shift[:coverer_id])
-    message = "#{coverer[:first_name]} #{coverer[:last_name]} agreed to cover your shift, that was easy."
+    message = "Hey! #{coverer[:first_name]} #{coverer[:last_name]} agreed to cover your shift, that was easy 👍"
     return message
   end
 
   def self.create_shift_covered_message_for_coverer(shift)
     poster = User.find(shift[:owner_id])
-    message = "#{approver[:first_name]} #{approver[:last_name]} approved your shift trade with #{poster[:first_name]} #{poster[:last_name]}."
+    message = "Hey! #{approver[:first_name]} #{approver[:last_name]} just approved your shift swap with #{poster[:first_name]} #{poster[:last_name]} 🙋"
     return message
   end
 
   def self.create_shift_covered_message_for_others(shift)
     poster = User.find(shift[:owner_id])
     coverer = User.find(shift[:coverer_id])
-    message = "#{coverer[:first_name]} #{coverer[:last_name]} agreed to cover the shift for #{poster[:first_name]} #{poster[:last_name]}."
+    message = "FYI #{coverer[:first_name]} #{coverer[:last_name]} just agreed to cover that shift for #{poster[:first_name]} #{poster[:last_name]}."
     return message
   end
 
   def self.create_shift_pending_message_for_poster(shift)
     coverer = User.find(shift[:coverer_id])
-    message = "#{coverer[:first_name]} #{coverer[:last_name]} agreed to cover your shift! Your manager had been notified to approve it."
+    message = "Hey! #{coverer[:first_name]} #{coverer[:last_name]} just agreed to cover your shift! Your manager has been notified to approve it 🙋"
     return message
   end
 
   def self.create_shift_pending_message_for_coverer(shift)
     poster = User.find(shift[:owner_id])
-    message = "Your shift trade with #{poster[:first_name]} #{poster[:last_name]} is pending manager approval."
+    message = "Your shift trade with #{poster[:first_name]} #{poster[:last_name]} is pending manager approval 🙋"
     return message
   end
 
   def self.create_shift_pending_message_for_others(shift)
     poster = User.find(shift[:owner_id])
     coverer = User.find(shift[:coverer_id])
-    message = "#{coverer[:first_name]} #{coverer[:last_name]} agreed to cover the shift for #{poster[:first_name]} #{poster[:last_name]}. It is now pending approval from your manager."
+    message = "FYI #{coverer[:first_name]} #{coverer[:last_name]} agreed to cover the shift for #{poster[:first_name]} #{poster[:last_name]}. It is now pending approval from your manager."
     return message
   end
 
   def self.create_shift_pending_message_for_managers(shift)
     poster = User.find(shift[:owner_id])
     coverer = User.find(shift[:coverer_id])
-    message = "#{coverer[:first_name]} #{coverer[:last_name]} agreed to cover the shift for #{poster[:first_name]} #{poster[:last_name]}. It is now pending your approval."
+    message = "Approval needed: #{coverer[:first_name]} #{coverer[:last_name]} has agreed to cover a shift for #{poster[:first_name]} #{poster[:last_name]}. Are you able to approve this swap?"
     return message
   end
 
   def self.create_shift_approved_message_for_poster(shift)
     coverer = User.find(shift[:coverer_id])
     approver = User.find(shift[:approver_id])
-    message = "#{approver[:first_name]} #{approver[:last_name]} approved your shift trade with #{coverer[:first_name]} #{coverer[:last_name]}."
+    message = "Hey! #{approver[:first_name]} #{approver[:last_name]} just approved your shift swap with #{coverer[:first_name]} #{coverer[:last_name]} 🙋"
     return message
   end
 
   def self.create_shift_approved_message_for_coverer(shift)
     poster = User.find(shift[:owner_id])
     approver = User.find(shift[:approver_id])
-    message = "#{approver[:first_name]} #{approver[:last_name]} approved your shift trade with #{poster[:first_name]} #{poster[:last_name]}."
+    message = "Hey! #{approver[:first_name]} #{approver[:last_name]} just approved your shift swap with #{poster[:first_name]} #{poster[:last_name]} 🙋"
     return message
   end
 
@@ -341,21 +341,21 @@ class Follower < ActiveRecord::Base
     poster = User.find(shift[:owner_id])
     coverer = User.find(shift[:coverer_id])
     approver = User.find(shift[:approver_id])
-    message = "#{approver[:first_name]} #{approver[:last_name]} approved the shift trade between #{poster[:first_name]} #{poster[:last_name]} and #{coverer[:first_name]} #{coverer[:last_name]}. Hourray!"
+    message = "FYI #{approver[:first_name]} #{approver[:last_name]} just approved the shift swap between #{poster[:first_name]} #{poster[:last_name]} and #{coverer[:first_name]} #{coverer[:last_name]}. Hourray!"
     return message
   end
 
   def self.create_shift_rejected_message_for_poster(shift)
     coverer = User.find(shift[:coverer_id])
     approver = User.find(shift[:approver_id])
-    message = "#{approver[:first_name]} #{approver[:last_name]} rejected your shift trade with #{coverer[:first_name]} #{coverer[:last_name]}."
+    message = "🙍 #{approver[:first_name]} #{approver[:last_name]} just rejected your shift swap with #{coverer[:first_name]} #{coverer[:last_name]}. Try reposting?"
     return message
   end
 
   def self.create_shift_rejected_message_for_coverer(shift)
     poster = User.find(shift[:owner_id])
     approver = User.find(shift[:approver_id])
-    message = "#{approver[:first_name]} #{approver[:last_name]} rejected your shift trade with #{poster[:first_name]} #{poster[:last_name]}."
+    message = "🙍 #{approver[:first_name]} #{approver[:last_name]} just rejected your shift swap with #{poster[:first_name]} #{poster[:last_name]} Good try!💁"
     return message
   end
 
@@ -363,7 +363,7 @@ class Follower < ActiveRecord::Base
     poster = User.find(shift[:owner_id])
     coverer = User.find(shift[:coverer_id])
     approver = User.find(shift[:approver_id])
-    message = "#{approver[:first_name]} #{approver[:last_name]} rejected the shift trade between #{poster[:first_name]} #{poster[:last_name]} and #{coverer[:first_name]} #{coverer[:last_name]}. Sorry! :("
+    message = "🙍 #{approver[:first_name]} #{approver[:last_name]} just rejected the shift swap between #{poster[:first_name]} #{poster[:last_name]} and #{coverer[:first_name]} #{coverer[:last_name]}. Tough break."
     return message
   end
 

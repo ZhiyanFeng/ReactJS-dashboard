@@ -102,6 +102,20 @@ module Api
         render json: { "eXpresso" => { "code" => 1, "message" => "done" } }
       end
 
+      def sms_login_send
+        if params[:phone_number].present?
+          phone_number = params[:phone_number].gsub(/\W/,'')
+          if User.exists?(["phone_number like ?", "%#{phone_number}%"])
+            @user = User.where("phone_number = ? AND is_valid", phone_number).first
+            code = 999 + Random.rand(10000 - 1000)
+            send_sms_login_code(code, @user[:phone_number])
+            render json: { "eXpresso" => { "code" => 1, "message" => "Done" } }
+          else
+            render json: { "eXpresso" => { "code" => -1, "message" => "Could not send the login code" } }
+          end
+        end
+      end
+
       def create
         if params[:phone_number].present?
           #phone_number = params[:phone_number].gsub(/[\+\-\(\)\s]/,'')
@@ -264,6 +278,27 @@ module Api
           render json: { "eXpresso" => { "code" => 1, "message" => "Up to date" } }
         else
           render json: { "eXpresso" => { "code" => -207, "message" => "Update required" } }
+        end
+      end
+
+      private
+
+      def send_sms_login_code(code, phone_number)
+        t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
+        t_token = '81eaed486465b41042fd32b61e5a1b14'
+
+        @client = Twilio::REST::Client.new t_sid, t_token
+        begin
+          message = @client.account.messages.create(
+            :body => "Your Shyft login code is #{code}. Please enter it now. Email hello@myshyft.com for assitance.",
+            :to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
+            :from => "+16282225566"
+          )
+        rescue Twilio::REST::RequestError => e
+          ErrorLog.create(
+            :file => "messions_controller.rb",
+            :function => "send_sms_login_code",
+            :error => "Error #{e} on line #{__LINE__}")
         end
       end
 

@@ -215,7 +215,7 @@ module Api
 
           if self_assembled_channel.setup_subscriptions_to_custom_channel(params[:participants], message)
             self_assembled_channel.create_welcome_message
-            if @subscription = Subscription.find_by_channel_id(self_assembled_channel[:id])
+            if @subscription = Subscription.where(:channel_id => self_assembled_channel[:id], :user_id => @user[:id]).first
               #@subscription.check_parameters(Time.now.utc, true, true)
               @subscription.update_attribute(:is_admin, true)
               @subscription.check_parameters(Time.now.utc, true, true)

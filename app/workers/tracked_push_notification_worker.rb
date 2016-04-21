@@ -7,7 +7,8 @@ class TrackedPushNotificationWorker
     @user = User.find(user_id)
     @mession = Mession.find(mession_id)
     if post_archtype
-      message = "#{poster_name} posted a shift trade request. Interested in helping out?"
+      #message = "#{poster_name} posted a shift trade request. Interested in helping out?"
+      message = "Hey! #{poster_name} just posted a shift. Are you able to cover it 📆🔁🙋?"
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "announcement"
       message = poster_name + " announced: " + post_content
@@ -29,7 +30,7 @@ class TrackedPushNotificationWorker
       message = poster_name + " posted a quiz: " + post_title
       response = @mession.tracked_subscriber_push("open_quiz", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "shift"
-      message = "#{poster_name} posted a shift trade request. Interested in helping out?"
+      message = "Hey! #{poster_name} just posted a shift. Are you able to cover it 📆🔁🙋?"
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     else
       message = poster_name + " posted: " + post_content

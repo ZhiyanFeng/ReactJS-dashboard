@@ -23,9 +23,11 @@ class TrackedPushNotificationWorker
     elsif base_type == "schedule"
       if post_content.present?
         #message = post_content
-        message = poster_name + " just posted a schedule"
+        #message = poster_name + " just posted a schedule"
+        message = t('push.schedule') % {:name => poster_name}
       else
-        message = poster_name + " just posted a schedule"
+        #message = poster_name + " just posted a schedule"
+        message = t('push.schedule') % {:name => poster_name}
       end
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "quiz"

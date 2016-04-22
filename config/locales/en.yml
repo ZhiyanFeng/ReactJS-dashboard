@@ -22,3 +22,4 @@
 en:
   push:
     schedule: "%{name} just posted a schedule 📆"
+    post: "%{name} just posted: %{content}"

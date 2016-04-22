@@ -23,3 +23,5 @@ en:
   push:
     schedule: "%{name} just posted a schedule 📆"
     post: "%{name} just posted: %{content}"
+    announcement: "%{name} just posted an annoucnement. Let them know you read it by tapping the checkmark ✔️🙋"
+    shift: "🙋 Hey! %{name} just posted a shift. Are you able to cover it?"

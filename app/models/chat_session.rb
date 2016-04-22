@@ -53,10 +53,15 @@ class ChatSession < ActiveRecord::Base
 		connection = ActiveRecord::Base.connection()
 		@session = connection.execute(query)
 
-		if @session.first
+    if @session.present?
+		#if @session.first
 			#UserAnalytic.create(:action => 3,:org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 			return @session.first.first[1].to_i
 		else
+      ErrorLog.create(
+        :file => "chat_session.rb",
+        :function => "self.session_exists",
+        :error => "Exception: @session was not present")
 			return false
 		end
 	end

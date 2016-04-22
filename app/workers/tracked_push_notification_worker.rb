@@ -11,19 +11,21 @@ class TrackedPushNotificationWorker
       message = "Hey! #{poster_name} just posted a shift. Are you able to cover it 📆🔁🙋?"
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "announcement"
-      message = poster_name + " announced: " + post_content
+      #message = poster_name + " announced: " + post_content
+      message = poster_name + " just posted an annoucnement. Let them know you read it by tapping the checkmark ✔️🙋"
       response = @mession.tracked_subscriber_push("open_detail", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "post"
-      message = poster_name + " posted: " + post_content
+      message = poster_name + " just posted: " + post_content
       response = @mession.tracked_subscriber_push("open_detail", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "training"
       message = poster_name + " posted a training: " + post_title
       response = @mession.tracked_subscriber_push("open_training", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "schedule"
       if post_content.present?
-        message = post_content
+        #message = post_content
+        message = poster_name + " just posted a schedule"
       else
-        message = poster_name + " posted a schedule"
+        message = poster_name + " just posted a schedule"
       end
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "quiz"

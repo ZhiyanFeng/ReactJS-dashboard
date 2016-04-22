@@ -16,7 +16,7 @@ class TrackedPushNotificationWorker
       response = @mession.tracked_subscriber_push("open_detail", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "post"
       #message = poster_name + " just posted: " + post_content
-      message = t('push.post') % {:name => poster_name, :content => post_content}
+      message = I18n.t('push.post') % {:name => poster_name, :content => post_content}
       response = @mession.tracked_subscriber_push("open_detail", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "training"
       message = poster_name + " posted a training: " + post_title
@@ -25,10 +25,10 @@ class TrackedPushNotificationWorker
       if post_content.present?
         #message = post_content
         #message = poster_name + " just posted a schedule"
-        message = t('push.schedule') % {:name => poster_name}
+        message = I18n.t('push.schedule') % {:name => poster_name}
       else
         #message = poster_name + " just posted a schedule"
-        message = t('push.schedule') % {:name => poster_name}
+        message = I18n.t('push.schedule') % {:name => poster_name}
       end
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "quiz"

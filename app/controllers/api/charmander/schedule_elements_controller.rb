@@ -31,7 +31,8 @@ module Api
         if result == "success"
           if Mession.exists?(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:owner_id]])
             @coverer = User.find(params[:user_id])
-            @message = "Hey! " + @coverer[:first_name] + " " + @coverer[:last_name] + " just agreed to cover your shift, that was easy 👍"
+            #@message = "Hey! " + @coverer[:first_name] + " " + @coverer[:last_name] + " just agreed to cover your shift, that was easy 👍"
+            @message = I18n.t('push.shift.cover') % {:name => @coverer[:first_name] + " " + @coverer[:last_name]}
             #UserAnalytic.create(:action => 7, :org_id => @post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
             mession = Mession.where(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:owner_id]]).first
             mession.target_push('open_app', @message, nil, @post[:id], 'silent.mp3', nil)
@@ -40,7 +41,8 @@ module Api
         elsif result == "pending"
           if Mession.exists?(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:owner_id]])
             @coverer = User.find(params[:user_id])
-            @message = "Hey! " + @coverer[:first_name] + " " + @coverer[:last_name] + " just agreed to cover your shift! Your manager has been notified to approve it 🙋"
+            #@message = "Hey! " + @coverer[:first_name] + " " + @coverer[:last_name] + " just agreed to cover your shift! Your manager has been notified to approve it 🙋"
+            @message = I18n.t('push.shift.pending') % {:name => @coverer[:first_name] + " " + @coverer[:last_name]}
             #UserAnalytic.create(:action => 7, :org_id => @post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
             mession = Mession.where(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:owner_id]]).first
             mession.target_push('open_app', @message, nil, nil, 'silent.mp3', nil)
@@ -72,7 +74,8 @@ module Api
           @coverer = User.find(@schedule_element[:coverer_id])
           @approver = User.find(params[:user_id])
           if Mession.exists?(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:owner_id]])
-            @message = "Hey! " + @approver[:first_name] + " " + @approver[:last_name] + " just approved your shift swap with #{@coverer[:first_name]} #{@coverer[:last_name]} 🙋"
+            #@message = "Hey! " + @approver[:first_name] + " " + @approver[:last_name] + " just approved your shift swap with #{@coverer[:first_name]} #{@coverer[:last_name]} 🙋"
+            @message = I18n.t('push.shift.approve') % {:approver_name => @approver[:first_name] + " " + @approver[:last_name], :user_name => @coverer[:first_name] + " " + @coverer[:last_name]}
             #UserAnalytic.create(:action => 7, :org_id => @post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
             mession = Mession.where(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:owner_id]]).first
             mession.target_push('open_app', @message, nil, nil, 'silent.mp3', nil)
@@ -80,7 +83,8 @@ module Api
 
           if Mession.exists?(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:coverer_id]])
             @approver = User.find(params[:user_id])
-            @message = "Hey! " + @approver[:first_name] + " " + @approver[:last_name] + " just approved your shift swap with #{@poster[:first_name]} #{@poster[:last_name]} 🙋"
+            #@message = "Hey! " + @approver[:first_name] + " " + @approver[:last_name] + " just approved your shift swap with #{@poster[:first_name]} #{@poster[:last_name]} 🙋"
+            @message = I18n.t('push.shift.approve') % {:approver_name => @approver[:first_name] + " " + @approver[:last_name], :user_name => @poster[:first_name] + " " + @poster[:last_name]}
             #UserAnalytic.create(:action => 7, :org_id => @post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
             mession = Mession.where(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:coverer_id]]).first
             mession.target_push('open_app', @message, nil, nil, 'silent.mp3', nil)
@@ -115,7 +119,8 @@ module Api
           @coverer = User.find(@schedule_element[:coverer_id])
           @approver = User.find(params[:user_id])
           if Mession.exists?(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:owner_id]])
-            @message = "🙍 " + @approver[:first_name] + " " + @approver[:last_name] + " just rejected your shift swap with #{@coverer[:first_name]} #{@coverer[:last_name]}. Try reposting?"
+            #@message = "🙍 " + @approver[:first_name] + " " + @approver[:last_name] + " just rejected your shift swap with #{@coverer[:first_name]} #{@coverer[:last_name]}. Try reposting?"
+            @message = I18n.t('push.shift.reject') % {:approver_name => @approver[:first_name] + " " + @approver[:last_name], :user_name => @coverer[:first_name] + " " + @coverer[:last_name]}
             #UserAnalytic.create(:action => 7, :org_id => @post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
             mession = Mession.where(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:owner_id]]).first
             mession.target_push('open_app', @message, nil, nil, 'silent.mp3', nil)
@@ -123,7 +128,8 @@ module Api
 
           if Mession.exists?(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:coverer_id]])
             @approver = User.find(params[:user_id])
-            @message = "🙍 " + @approver[:first_name] + " " + @approver[:last_name] + " just rejected your shift swap with #{@poster[:first_name]} #{@poster[:last_name]}. Good try!💁"
+            #@message = "🙍 " + @approver[:first_name] + " " + @approver[:last_name] + " just rejected your shift swap with #{@poster[:first_name]} #{@poster[:last_name]}. Good try!💁"
+            @message = I18n.t('push.shift.reject') % {:approver_name => @approver[:first_name] + " " + @approver[:last_name], :user_name => @poster[:first_name] + " " + @poster[:last_name]}
             #UserAnalytic.create(:action => 7, :org_id => @post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
             mession = Mession.where(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:coverer_id]]).first
             mession.target_push('open_app', @message, nil, nil, 'silent.mp3', nil)

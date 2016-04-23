@@ -36,9 +36,11 @@ class Like < ActiveRecord::Base
             mession = Mession.where(:user_id => target.owner_id, :is_active => true).first
             liker = User.find(self.owner_id)
             if target[:title] == "Shift Trade"
-              message = liker[:first_name] + " " + liker[:last_name] + " has liked your Shift 👍"
+              #message = liker[:first_name] + " " + liker[:last_name] + " has liked your Shift 👍"
+              message = I18n.t('push.like.shift') % {:name => liker[:first_name] + " " + liker[:last_name]}
             else
-              message = liker[:first_name] + " " + liker[:last_name] + " has liked your Post 👍"
+              #message = liker[:first_name] + " " + liker[:last_name] + " has liked your Post 👍"
+              message = I18n.t('push.like.post') % {:name => liker[:first_name] + " " + liker[:last_name]}
             end
             mession.push("open_detail", message, baseType, target.id, false, false)
           end

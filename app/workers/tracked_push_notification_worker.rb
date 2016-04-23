@@ -9,7 +9,7 @@ class TrackedPushNotificationWorker
     if post_archtype
       #message = "#{poster_name} posted a shift trade request. Interested in helping out?"
       #message = "🙋 Hey! #{poster_name} just posted a shift. Are you able to cover it?"
-      message = I18n.t('push.shift') % {:name => poster_name}
+      message = I18n.t('push.shift.post') % {:name => poster_name}
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "announcement"
       #message = poster_name + " announced: " + post_content
@@ -38,7 +38,7 @@ class TrackedPushNotificationWorker
       response = @mession.tracked_subscriber_push("open_quiz", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "shift"
       #message = "Hey! #{poster_name} just posted a shift. Are you able to cover it 📆🔁🙋?"
-      message = I18n.t('push.shift') % {:name => poster_name}
+      message = I18n.t('push.shift.post') % {:name => poster_name}
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     else
       #message = poster_name + " posted: " + post_content

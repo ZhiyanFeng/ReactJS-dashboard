@@ -25,3 +25,6 @@ en:
     post: "%{name} just posted: %{content}"
     announcement: "%{name} just posted an annoucnement. Let them know you read it by tapping the checkmark ✔️🙋"
     shift: "🙋 Hey! %{name} just posted a shift. Are you able to cover it?"
+    comment:
+      post: "%{name} just commented on your post 💬"
+      shift: "%{name} just commented on your shift post 💬"

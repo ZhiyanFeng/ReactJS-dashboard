@@ -27,11 +27,11 @@ en:
     post: "%{name} just posted: %{content}"
     announcement: "%{name} just posted an annoucnement. Let them know you read it by tapping the checkmark ✔️🙋"
     shift:
-      post: "🙋 Hey! %{name} just posted a shift. Are you able to cover it?"
-      cover: "Hey! %{name} just agreed to cover your shift, that was easy 👍"
-      pending: "Hey! %{name} just agreed to cover your shift! Your manager has been notified to approve it 🙋"
-      approve: "Hey! %{approver_name} just approved your shift swap with %{user_name} 🙋"
-      reject: "🙍 %{approver_name} just rejected your shift swap with %{user_name}. Try reposting?"
+      post: "🔁 Hey! %{name} just posted a shift. Are you able to cover it?"
+      cover: "Hey! %{name} just agreed to cover your shift, that was easy 🔁"
+      pending: "Hey! %{name} just agreed to cover your shift! Your manager has been notified to approve it 🔁"
+      approve: "Hey! %{approver_name} just approved your shift swap with %{user_name} 🔁"
+      reject: "🔁 %{approver_name} just rejected your shift swap with %{user_name}. Try reposting?"
     comment:
       post: "%{name} just commented on your post 💬"
       shift: "%{name} just commented on your shift post 💬"

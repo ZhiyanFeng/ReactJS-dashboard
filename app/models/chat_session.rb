@@ -53,7 +53,7 @@ class ChatSession < ActiveRecord::Base
 		connection = ActiveRecord::Base.connection()
 		@session = connection.execute(query)
 
-    if @session.present?
+    if @session.first.present?
 		#if @session.first
 			#UserAnalytic.create(:action => 3,:org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 			return @session.first.first[1].to_i

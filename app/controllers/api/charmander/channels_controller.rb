@@ -165,7 +165,7 @@ module Api
       def list_subscribers
         if Subscription.exists?(:id => params[:subscription_id], :user_id => params[:user_id], :is_valid => true)
           if @channel = Channel.find(params[:id])
-            @subscribers = Subscription.where(:channel_id => params[:id], :is_valid => true, :is_active => true, :is_invisible => false)
+            @subscribers = Subscription.where(:channel_id => params[:id], :is_valid => true, :is_active => true, :is_invisible => false).limit(500)
             render json: @subscribers, each_serializer: ChannelSubscribersSerializer
           else
             render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, there was an error retrieving the user list. The Coffee team has been notified, please try again later.", "error" => "Cannot find channel with id #{params[:id]}." } }

@@ -42,8 +42,6 @@ gem 'geocoder'
 gem 'sidekiq'
 gem 'sinatra'
 gem 'slim'
-gem 'google_places'
-gem 'foursquare2'
 
 gem 'plivo'
 gem 'curb'

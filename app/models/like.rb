@@ -34,11 +34,13 @@ class Like < ActiveRecord::Base
           if Mession.exists?(['user_id = ? AND is_active AND push_id IS NOT NULL', target.owner_id]) && target.owner_id != self.owner_id
             baseType = PostType.find_post_type(target.post_type)
             mession = Mession.where(:user_id => target.owner_id, :is_active => true).first
-            commentor = User.find(self.owner_id)
+            liker = User.find(self.owner_id)
             if target[:title] == "Shift Trade"
-              message = commentor[:first_name] + " " + commentor[:last_name] + " has liked your shift trade post."
+              #message = liker[:first_name] + " " + liker[:last_name] + " has liked your Shift 👍"
+              message = I18n.t('push.like.shift') % {:name => liker[:first_name] + " " + liker[:last_name]}
             else
-              message = commentor[:first_name] + " " + commentor[:last_name] + " has liked your post."
+              #message = liker[:first_name] + " " + liker[:last_name] + " has liked your Post 👍"
+              message = I18n.t('push.like.post') % {:name => liker[:first_name] + " " + liker[:last_name]}
             end
             mession.push("open_detail", message, baseType, target.id, false, false)
           end

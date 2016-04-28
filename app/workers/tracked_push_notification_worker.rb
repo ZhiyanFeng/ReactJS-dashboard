@@ -7,32 +7,42 @@ class TrackedPushNotificationWorker
     @user = User.find(user_id)
     @mession = Mession.find(mession_id)
     if post_archtype
-      message = "#{poster_name} posted a shift trade request. Interested in helping out?"
+      #message = "#{poster_name} posted a shift trade request. Interested in helping out?"
+      #message = "🙋 Hey! #{poster_name} just posted a shift. Are you able to cover it?"
+      message = I18n.t('push.shift.post') % {:name => poster_name}
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "announcement"
-      message = poster_name + " announced: " + post_content
+      #message = poster_name + " announced: " + post_content
+      #message = poster_name + " just posted an annoucnement. Let them know you read it by tapping the checkmark ✔️🙋"
+      message = I18n.t('push.announcement') % {:name => poster_name}
       response = @mession.tracked_subscriber_push("open_detail", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "post"
-      message = poster_name + " posted: " + post_content
+      #message = poster_name + " just posted: " + post_content
+      message = I18n.t('push.post') % {:name => poster_name, :content => post_content}
       response = @mession.tracked_subscriber_push("open_detail", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "training"
       message = poster_name + " posted a training: " + post_title
       response = @mession.tracked_subscriber_push("open_training", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "schedule"
       if post_content.present?
-        message = post_content
+        #message = post_content
+        #message = poster_name + " just posted a schedule"
+        message = I18n.t('push.schedule') % {:name => poster_name}
       else
-        message = poster_name + " posted a schedule"
+        #message = poster_name + " just posted a schedule"
+        message = I18n.t('push.schedule') % {:name => poster_name}
       end
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "quiz"
       message = poster_name + " posted a quiz: " + post_title
       response = @mession.tracked_subscriber_push("open_quiz", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "shift"
-      message = "#{poster_name} posted a shift trade request. Interested in helping out?"
+      #message = "Hey! #{poster_name} just posted a shift. Are you able to cover it 📆🔁🙋?"
+      message = I18n.t('push.shift.post') % {:name => poster_name}
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     else
-      message = poster_name + " posted: " + post_content
+      #message = poster_name + " posted: " + post_content
+      message = I18n.t('push.post') % {:name => poster_name, :content => post_content}
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     end
     if response == 1

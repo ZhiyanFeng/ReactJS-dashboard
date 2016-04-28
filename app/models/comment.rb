@@ -59,9 +59,11 @@ class Comment < ActiveRecord::Base
             mession = Mession.where(:user_id => target.owner_id, :is_active => true).first
             commentor = User.find(self.owner_id)
             if target[:title] == "Shift Trade"
-              message = commentor[:first_name] + " " + commentor[:last_name] + " has commented on your shift trade."
+              #message = commentor[:first_name] + " " + commentor[:last_name] + " just commented on your shift post 💬"
+              message = I18n.t('push.comment.shift') % {:name => commentor[:first_name] + " " + commentor[:last_name]}
             else
-              message = commentor[:first_name] + " " + commentor[:last_name] + " has commented on your post."
+              #message = commentor[:first_name] + " " + commentor[:last_name] + " just commented on your post 💬"
+              message = I18n.t('push.comment.post') % {:name => commentor[:first_name] + " " + commentor[:last_name]}
             end
             mession.push("open_detail", message, baseType, target.id, false, false)
           end

@@ -283,7 +283,8 @@ class User < ActiveRecord::Base
 
     message = @client.account.messages.create(
       :body => "To reset your Shyft password, click #{@host}/reset_password/#{self.password_reset_token}",
-      :to => self[:phone_number],
+      #:to => self[:phone_number],
+      :to => self[:phone_number].size > 10 ? "+"+ self[:phone_number] : self[:phone_number],
       :from => "+16137028842"
     )
   end

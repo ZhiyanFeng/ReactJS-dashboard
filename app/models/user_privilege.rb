@@ -36,45 +36,56 @@ class UserPrivilege < ActiveRecord::Base
   after_create :search_region_feed, :search_category_feed
 
   def search_category_feed
-    @location = Location.find(location_id)
-    if @location[:category] == "Cocktail Bar" || @location[:category] == "Restaurant" ||
-      @location[:category] == "Irish Pub" || @location[:category] == "American Restaurant" ||
-      @location[:category] == "Wings Joint" || @location[:category] == "Pizza Place" ||
-      @location[:category] == "BBQ Joint" || @location[:category] == "Fast Food Restaurant"
-      channel = Channel.find(5866)
-      if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
-        region_subscription = Subscription.create(
-          :user_id => self[:owner_id],
-          :channel_id => channel[:id],
-          :is_active => true
-        )
-      else
-        region_subscription = Subscription.where(:user_id => self[:owner_id],:channel_id => channel[:id]).first
-        region_subscription.update_attributes(:is_valid => true, :is_active => true)
+    begin
+      @location = Location.find(location_id)
+      if @location[:category] == "Cocktail Bar" || @location[:category] == "Restaurant" ||
+        @location[:category] == "Irish Pub" || @location[:category] == "American Restaurant" ||
+        @location[:category] == "Wings Joint" || @location[:category] == "Pizza Place" ||
+        @location[:category] == "BBQ Joint" || @location[:category] == "Fast Food Restaurant"
+        if Channel.exists?(:id => 5866)
+          channel = Channel.find(5866)
+          if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
+            region_subscription = Subscription.create(
+              :user_id => self[:owner_id],
+              :channel_id => channel[:id],
+              :is_active => true
+            )
+          else
+            region_subscription = Subscription.where(:user_id => self[:owner_id],:channel_id => channel[:id]).first
+            region_subscription.update_attributes(:is_valid => true, :is_active => true)
+          end
+          channel.recount
+        end
+      elsif @location[:category] == "Medical Center" || @location[:category] == "Acupuncturist" ||
+        @location[:category] == "Alternative Healer" || @location[:category] == "Chiropractor" ||
+        @location[:category] == "Dentist's Office" || @location[:category] == "Doctor's Office" ||
+        @location[:category] == "Emergency Room" || @location[:category] == "Eye Doctor" ||
+        @location[:category] == "Hospital" || @location[:category] == "Laboratory" ||
+        @location[:category] == "Maternity Clinic" || @location[:category] == "Mental Health Office" ||
+        @location[:category] == "Rehab Center" || @location[:category] == "Urgent Care Center" ||
+        @location[:category] == "Veterinarian" || @location[:category] == "College Lab" ||
+        @location[:category] == "Animal Shelter" || @location[:category] == "Funeral Home" ||
+        @location[:category] == "Assisted Living"
+        if Channel.exists?(:id => 6841)
+          channel = Channel.find(6841)
+          if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
+            region_subscription = Subscription.create(
+              :user_id => self[:owner_id],
+              :channel_id => channel[:id],
+              :is_active => true
+            )
+          else
+            region_subscription = Subscription.where(:user_id => self[:owner_id],:channel_id => channel[:id]).first
+            region_subscription.update_attributes(:is_valid => true, :is_active => true)
+          end
+          channel.recount
+        end
       end
-      channel.recount
-    elsif @location[:category] == "Medical Center" || @location[:category] == "Acupuncturist" ||
-      @location[:category] == "Alternative Healer" || @location[:category] == "Chiropractor" ||
-      @location[:category] == "Dentist's Office" || @location[:category] == "Doctor's Office" ||
-      @location[:category] == "Emergency Room" || @location[:category] == "Eye Doctor" ||
-      @location[:category] == "Hospital" || @location[:category] == "Laboratory" ||
-      @location[:category] == "Maternity Clinic" || @location[:category] == "Mental Health Office" ||
-      @location[:category] == "Rehab Center" || @location[:category] == "Urgent Care Center" ||
-      @location[:category] == "Veterinarian" || @location[:category] == "College Lab" ||
-      @location[:category] == "Animal Shelter" || @location[:category] == "Funeral Home" ||
-      @location[:category] == "Assisted Living"
-      channel = Channel.find(6841)
-      if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
-        region_subscription = Subscription.create(
-          :user_id => self[:owner_id],
-          :channel_id => channel[:id],
-          :is_active => true
-        )
-      else
-        region_subscription = Subscription.where(:user_id => self[:owner_id],:channel_id => channel[:id]).first
-        region_subscription.update_attributes(:is_valid => true, :is_active => true)
-      end
-      channel.recount
+    rescue => e
+      ErrorLog.create(
+        :file => "user_privilege.rb",
+        :function => "search_category_feed",
+        :error => "#{e}")
     end
   end
 
@@ -218,7 +229,8 @@ class UserPrivilege < ActiveRecord::Base
           #:title => "Welcome to Shyft",
           #:content => "Begin trading shifts and messaging coworkers today! You now have an exclusive private network for your work location. Click on the 'Contacts' tab, then the '+' button to invite 10 staff members. Have fun!. \nPlease contact hello@myshyft.com for assistance.",
           :title => "Welcome to your Shyft Channel - Earn 25$!",
-          :content => "This is the main feed for your work location to swap shifts. Use the + button to post a shift, or make a post. You can set up private groups, post schedules, chat, have fun and communicate with your team! Your channel settings are in the top right corner (gear button). Earn 25$ - We want to send your location a gift! Grow this location to 10 team members and Shyft will send a $25 gift card of your choice (Starbucks, Best Buy, Etc.) to your store. All you have to do is invite your team, and submit your store name and address to hello@myshyft.com for our review! *New employee signups only - Ends April 16th at 12:00PM EST* #ShyftLife 📱🔁📆🙋",
+          #:content => "This is the main feed for your work location to swap shifts. Use the + button to post a shift, or make a post. You can set up private groups, post schedules, chat, have fun and communicate with your team! Your channel settings are in the top right corner (gear button). Earn 25$ - We want to send your location a gift! Grow this location to 10 team members and Shyft will send a $25 gift card of your choice (Starbucks, Best Buy, Etc.) to your store. All you have to do is invite your team, and submit your store name and address to hello@myshyft.com for our review! *New employee signups only - Ends April 16th at 12:00PM EST* \n\n#ShyftLife 📱🔁📆🙋",
+          :content => "This is the main feed for your work location to swap shifts. Use the + button to post a shift, or make a post. You can set up private groups, post schedules, chat, have fun and communicate with your team! Your channel settings are in the top right corner (gear button). Earn 25$ - We want to send your location a gift! Grow this location to 10 team members and Shyft will send a $25 gift card of your choice to your store. All you have to do is invite your team, and submit your store name and address to hello@myshyft.com for our review! ​*New employee signups only - Ends #{(Date.today+5.days).to_formatted_s(:long_ordinal)} at 12:00PM EST* \n\n#ShyftLife 📱🔁📆🙋",
           :post_type => 1
         )
         @post.save

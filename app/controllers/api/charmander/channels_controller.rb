@@ -165,7 +165,7 @@ module Api
       def list_subscribers
         if Subscription.exists?(:id => params[:subscription_id], :user_id => params[:user_id], :is_valid => true)
           if @channel = Channel.find(params[:id])
-            @subscribers = Subscription.where(:channel_id => params[:id], :is_valid => true, :is_active => true, :is_invisible => false)
+            @subscribers = Subscription.where(:channel_id => params[:id], :is_valid => true, :is_active => true, :is_invisible => false).limit(500)
             render json: @subscribers, each_serializer: ChannelSubscribersSerializer
           else
             render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, there was an error retrieving the user list. The Coffee team has been notified, please try again later.", "error" => "Cannot find channel with id #{params[:id]}." } }
@@ -215,7 +215,7 @@ module Api
 
           if self_assembled_channel.setup_subscriptions_to_custom_channel(params[:participants], message)
             self_assembled_channel.create_welcome_message
-            if @subscription = Subscription.find_by_channel_id(self_assembled_channel[:id])
+            if @subscription = Subscription.where(:channel_id => self_assembled_channel[:id], :user_id => @user[:id]).first
               #@subscription.check_parameters(Time.now.utc, true, true)
               @subscription.update_attribute(:is_admin, true)
               @subscription.check_parameters(Time.now.utc, true, true)

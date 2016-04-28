@@ -49,7 +49,6 @@ Expresso::Application.routes.draw do
   get "validated" => "static_pages#validated", :as => "validated"
   get "audio_upload" => "static_pages#audio_upload", :as => "audio_upload"
   get "forgot" => "users#forgot_password", :as => "forgot"
-  #get "login" => "sessions#new", :as => "login"
   get "logout" => "sessions#destroy", :as => "logout"
   get "signup" => 'invitations#continue', :as => "signup"
   post "register" => "invitations#send_invite", :as => "register"

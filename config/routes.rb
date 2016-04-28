@@ -109,6 +109,7 @@ Expresso::Application.routes.draw do
 
       resources :messions do
         post :sms_login_send, :on => :collection
+        post :sms_login_validate, :on => :collection
         post :send_referral_message, :on => :member
         post :send_custom_noification, :on => :collection
         put :activate, :on => :member

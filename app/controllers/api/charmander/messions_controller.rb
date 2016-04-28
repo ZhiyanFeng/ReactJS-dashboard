@@ -109,10 +109,23 @@ module Api
             @user = User.where("phone_number = ? AND is_valid", phone_number).first
             code = 999 + Random.rand(10000 - 1000)
             send_sms_login_code(code, @user[:phone_number])
-            render json: { "eXpresso" => { "code" => 1, "message" => code } }
+            @sms = SmsLogin.create(
+              :user_id => @user[:id],
+              :validation_code => code,
+              :validation_entered => "",
+              :is_used => false,
+              :is_valid => true
+            )
+            render json: { "eXpresso" => { "code" => 1, "message" => "Success", "response" => code, "response_id" => @sms[:id]  } }
           else
             render json: { "eXpresso" => { "code" => -1, "message" => "Could not send the login code" } }
           end
+        end
+      end
+
+      def sms_login_validate
+        if params[:phone_number].present?
+
         end
       end
 

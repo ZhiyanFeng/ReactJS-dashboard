@@ -116,7 +116,7 @@ module Api
               :is_used => false,
               :is_valid => true
             )
-            render json: { "eXpresso" => { "code" => 1, "message" => "Success", "response" => code, "response_id" => @sms[:id]  } }
+            render json: { "eXpresso" => { "code" => 1, "message" => "Success", "sms_code" => code, "sms_id" => @sms[:id]  } }
           else
             render json: { "eXpresso" => { "code" => -1, "message" => "Could not send the login code" } }
           end
@@ -124,9 +124,7 @@ module Api
       end
 
       def sms_login_validate
-        if params[:phone_number].present?
 
-        end
       end
 
       def create

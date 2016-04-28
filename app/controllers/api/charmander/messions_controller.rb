@@ -124,7 +124,25 @@ module Api
       end
 
       def sms_login_validate
+        if SmsLogin.exists?(:id => params[:sms_id])
+          @sms = SmsLogin.find(params[:sms_id])
+          @user = User.find(@sms[:user_id])
 
+          @mession = Mession.create(
+            :user_id => @user[:id],
+            :org_id => 1,
+            :device => params[:mession][:device],
+            :device_id => params[:mession][:device_id],
+            :push_to => params[:mession][:push_to],
+            :push_id => params[:mession][:push_id]
+          )
+          render json: @mession, serializer: MessionSuccessSerializer
+        else
+          ErrorLog.create(
+            :file => "messions_controller.rb on line #{__LINE__}",
+            :function => "sms_login_validate",
+            :error => "Cannot find SmsLogin with id #{params[:sms_id]}")
+        end
       end
 
       def create

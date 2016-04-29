@@ -29,7 +29,6 @@ class Gratitude < ActiveRecord::Base
       if save
         @user = User.find(self[:owner_id])
         @user.update_attributes(:shyft_score => @user[:shyft_score] + 5)
-
         if push
           @channel = Channel.find(target[:channel_id])
           @channel.tracked_subscriber_tip_push("gratitude", target, self.amount)

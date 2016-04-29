@@ -273,7 +273,7 @@ module Api
       end
 
       def tip
-        post = Post.find(params[:post_id])
+        post = Post.find(params[:id])
         if params[:dont_push].present?
           push = false
         else

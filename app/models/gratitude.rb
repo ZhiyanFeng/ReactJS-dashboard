@@ -32,7 +32,7 @@ class Gratitude < ActiveRecord::Base
 
         if push
           @channel = Channel.find(target[:channel_id])
-          @channel.tracked_subscriber_push("gratitude", post)
+          @channel.tracked_subscriber_tip_push("gratitude", target, self.amount)
         end
       end
     end

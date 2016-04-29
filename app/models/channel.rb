@@ -96,7 +96,7 @@ class Channel < ActiveRecord::Base
           post_object[:channel_id],
           poster_name,
           @cpr[:id],
-          post_archtype,
+          nil,
           base_type
         )
         if idx == targets.size - 1

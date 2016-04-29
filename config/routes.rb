@@ -121,6 +121,7 @@ Expresso::Application.routes.draw do
       resources :posts do
         post :compose, :on => :collection
         get :destroy_post, :on => :member
+        post :tip, :on => :member
         post :comment, :on => :member
         post :like, :on => :member
         post :unlike, :on => :member

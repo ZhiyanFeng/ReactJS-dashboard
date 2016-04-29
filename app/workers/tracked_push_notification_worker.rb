@@ -40,6 +40,9 @@ class TrackedPushNotificationWorker
       #message = "Hey! #{poster_name} just posted a shift. Are you able to cover it 📆🔁🙋?"
       message = I18n.t('push.shift.post') % {:name => poster_name}
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
+    elsif base_type == "gratitude"
+      message = I18n.t('push.gratitude.shift') % {:owner => poster_name, :amount => post_content}
+      response = @mession.tracked_subscriber_push("open_detail", message, 4, post_id, @user, post_channel_id, @mession)
     else
       #message = poster_name + " posted: " + post_content
       message = I18n.t('push.post') % {:name => poster_name, :content => post_content}

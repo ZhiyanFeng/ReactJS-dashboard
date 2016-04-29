@@ -22,6 +22,22 @@ module Api
         end
       end
 
+      #def tip
+        #@post = Post.find(params[:post_id])
+        #@gratitude = Gratitude.new(
+        #  :amount => params[:amount],
+        #  :owner_id => params[:user_id],
+        #  :source => 4,
+        #  :source_id => post[:id]
+        #)
+        #if @gratitude.create_gratitude
+        #  @post.touch
+        #  render json: { "code" => -188, "message" => "Shift deleted by owner." }
+        #else
+        #  render json: { "code" => -1, "message" => @schedule_element.errors }
+        #end
+      #end
+
       def cover
         @post = Post.find(params[:post_id])
         @post.touch

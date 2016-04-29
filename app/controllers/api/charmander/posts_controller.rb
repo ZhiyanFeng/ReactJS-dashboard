@@ -272,6 +272,26 @@ module Api
         render json: @like, serializer: LikeSerializer
       end
 
+      def tip
+        post = Post.find(params[:post_id])
+        if params[:dont_push].present?
+          push = false
+        else
+          push = true
+        end
+        @gratitude = Gratitude.new(
+          :amount => params[:amount],
+          :owner_id => params[:user_id],
+          :source => 4,
+          :source_id => post[:id]
+        )
+        if @gratitude.create_gratitude(post, push)
+          render json: { "code" => 1, "message" => "Success" }
+        else
+          render json: { "code" => -1, "message" => "Could not tip this shift at the moment" }
+        end
+      end
+
       def unlike
         post = Post.find(params[:id])
         if Like.exists?(:owner_id => params[:user_id], :source => 4, :source_id => params[:id], :is_valid => true)

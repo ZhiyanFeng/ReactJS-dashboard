@@ -74,6 +74,43 @@ class Channel < ActiveRecord::Base
     end
   end
 
+  def tracked_subscriber_tip_push(base_type, post_object, amount)
+    poster_name = post_object.owner[:first_name] + " " + post_object.owner[:last_name]
+    begin
+      targets = User.joins(:subscription, :mession).where("subscriptions.channel_id = #{post_object[:channel_id]} AND subscriptions.user_id != #{post_object[:owner_id]} AND subscriptions.is_valid AND subscriptions.is_active AND messions.is_active AND subscriptions.subscription_mute_notifications = 'f'")
+      @cpr = ChannelPushReport.create(
+        :channel_id => post_object[:channel_id],
+        :target_number => targets.count,
+        :attempted => 0,
+        :success => 0,
+        :failed_due_to_missing_id => 0,
+        :failed_due_to_other => 0
+      )
+      last_user_id = targets.last[:id]
+      targets.each_with_index do |user,idx|
+        TrackedPushNotificationWorker.perform_async(
+          user[:id],
+          user.mession[:id],
+          post_object[:id],
+          amount,
+          post_object[:channel_id],
+          poster_name,
+          @cpr[:id],
+          post_archtype,
+          base_type
+        )
+        if idx == targets.size - 1
+          SlackChannelPushReporterWorker.perform_in(1.minutes, @cpr[:id],post_object[:title],"Tip for shift: #{amount}")
+        end
+      end
+    rescue Exception => error
+      ErrorLog.create(
+        :file => "channel.rb on line #{__LINE__}",
+        :function => "tracked_subscriber_tip_push",
+        :error => "Exception: #{error}")
+    end
+  end
+
   def tracked_subscriber_push(base_type, post_object)
     post_archtype = false
     if post_object.archtype.present? && post_object.archtype == "shift_trade"
@@ -111,7 +148,7 @@ class Channel < ActiveRecord::Base
       end
     rescue Exception => error
       ErrorLog.create(
-        :file => "channel.rb",
+        :file => "channel.rb on line #{__LINE__}",
         :function => "tracked_subscriber_push",
         :error => "Exception: #{error}")
     end

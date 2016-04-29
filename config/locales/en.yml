@@ -35,6 +35,8 @@ en:
     comment:
       post: "%{name} just commented on your post 💬"
       shift: "%{name} just commented on your shift post 💬"
+    gratitude:
+      shift: "%{owner}'s shift just received a $%{amount} tip 👍"
     like:
       post: "%{name} has liked your post 👍"
       shift: "%{name} has liked your shift post 👍"

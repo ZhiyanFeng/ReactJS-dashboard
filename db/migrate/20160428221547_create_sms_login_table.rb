@@ -1,6 +1,6 @@
 class CreateSmsLoginTable < ActiveRecord::Migration
   def up
-    create_table    :sms_login_tables do |t|
+    create_table    :sms_logins do |t|
       t.integer   :user_id
       t.integer   :validation_code
       t.integer   :validation_entered
@@ -12,6 +12,6 @@ class CreateSmsLoginTable < ActiveRecord::Migration
   end
 
   def down
-    drop_table :sms_login_tables
+    drop_table :sms_logins
   end
 end

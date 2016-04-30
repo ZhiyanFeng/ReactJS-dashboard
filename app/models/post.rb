@@ -117,7 +117,7 @@ class Post < ActiveRecord::Base
         json['objects'].push(shift)
         self.update_attribute(:location, @user[:location])
 
-        if tip_amount.present? && tip_amount > 0
+        if tip_amount.present? && tip_amount.to_f > 0
           @gratitude = Gratitude.new(
             :amount => tip_amount,
             :shift_id => @shift[:id],

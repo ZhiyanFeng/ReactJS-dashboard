@@ -50,9 +50,10 @@ class ShiftSerializer < ActiveModel::Serializer
   end
 
   def tip_amount
-    50
-    #if Gratitude.exists?(:shift_id => object.id)
-
-    #end
+    if Gratitude.exists?(:shift_id => object.id)
+      Gratitude.where(:shift_id => object.id, :is_valid => true).sum(:amount)
+    else
+      0
+    end
   end
 end

@@ -88,16 +88,10 @@ class Post < ActiveRecord::Base
   #end
 
   def process_gratitude(amount)
-    @gratitude = Gratitude.new(
-      :amount => amount,
-      :owner_id => self[:owner_id],
-      :source => 4,
-      :source_id => self[:id]
-    )
-    @gratitude.create_gratitude(self, false)
+
   end
 
-  def process_attachments(attachments = nil, user_id = nil)
+  def process_attachments(attachments = nil, user_id = nil, tip_amount = nil)
     @user = User.find(user_id)
     json = {}
     json['objects'] = []
@@ -122,10 +116,18 @@ class Post < ActiveRecord::Base
         shift['source_id'] = @shift.id
         json['objects'].push(shift)
         self.update_attribute(:location, @user[:location])
-        #message = "#{@user[:first_name]} #{@user[:last_name]} posted a shift trade request. Interested in helping out?"
-        #User.location_broadcast(@user[:id], @user[:location], "post", "shift_trade", message, 4, self[:id], created_at = nil, user_group=nil) if @user[:location] != 0
+
+        if tip_amount.present? && tip_amount > 0
+          @gratitude = Gratitude.new(
+            :amount => tip_amount,
+            :shift_id => @shift[:id],
+            :owner_id => self[:owner_id],
+            :source => 4,
+            :source_id => self[:id]
+          )
+          @gratitude.create_gratitude(self, false)
+        end
       end
-      #Rails.logger.debug(json['objects'])
     end
     @attachment = Attachment.new(
       :json => json.to_json.to_s

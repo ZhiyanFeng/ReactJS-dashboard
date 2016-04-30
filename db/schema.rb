@@ -11,11 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160429202152) do
+ActiveRecord::Schema.define(version: 20160430012627) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "pg_trgm"
 
   create_table "admin_claims", force: :cascade do |t|
     t.integer  "user_id"
@@ -23,10 +22,10 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.integer  "ref_id"
     t.string   "email",           limit: 255
     t.string   "activation_code", limit: 255
-    t.boolean  "is_active",                   default: true
-    t.boolean  "is_valid",                    default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean  "is_active",                                 default: true
+    t.boolean  "is_valid",                                  default: true
+    t.datetime "created_at",                  precision: 6
+    t.datetime "updated_at",                  precision: 6
   end
 
   create_table "admin_privileges", force: :cascade do |t|
@@ -79,30 +78,30 @@ ActiveRecord::Schema.define(version: 20160429202152) do
   end
 
   create_table "channels", force: :cascade do |t|
-    t.string   "channel_type",                 limit: 255,                 null: false
-    t.text     "channel_frequency",                                        null: false
+    t.string   "channel_type",                 limit: 255,                               null: false
+    t.string   "channel_frequency",            limit: 255,                               null: false
     t.string   "channel_profile_id",           limit: 255
     t.text     "channel_latest_content"
-    t.integer  "channel_content_count",                    default: 0
-    t.integer  "owner_id",                                 default: 0
-    t.integer  "member_count",                             default: 0
-    t.boolean  "is_active",                                default: true
+    t.integer  "channel_content_count",                                  default: 0
+    t.integer  "owner_id",                                               default: 0
+    t.integer  "member_count",                                           default: 0
+    t.boolean  "is_active",                                              default: true
     t.string   "become_active_when",           limit: 255
-    t.boolean  "allow_view",                               default: true
-    t.boolean  "allow_post",                               default: true
-    t.boolean  "allow_comment",                            default: true
-    t.boolean  "allow_like",                               default: true
-    t.boolean  "is_public",                                default: true
-    t.boolean  "is_valid",                                 default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean  "allow_view",                                             default: true
+    t.boolean  "allow_post",                                             default: true
+    t.boolean  "allow_comment",                                          default: true
+    t.boolean  "allow_like",                                             default: true
+    t.boolean  "is_public",                                              default: true
+    t.boolean  "is_valid",                                               default: true
+    t.datetime "created_at",                               precision: 6
+    t.datetime "updated_at",                               precision: 6
     t.string   "channel_name",                 limit: 255
-    t.boolean  "allow_shift_trade",                        default: true
-    t.boolean  "allow_schedule",                           default: true
-    t.boolean  "allow_announcement",                       default: true
-    t.boolean  "allow_view_profile",                       default: true
-    t.boolean  "allow_view_covered_shifts",                default: false
-    t.boolean  "shift_trade_require_approval",             default: false
+    t.boolean  "allow_shift_trade",                                      default: true
+    t.boolean  "allow_schedule",                                         default: true
+    t.boolean  "allow_announcement",                                     default: true
+    t.boolean  "allow_view_profile",                                     default: true
+    t.boolean  "allow_view_covered_shifts",                              default: false
+    t.boolean  "shift_trade_require_approval",                           default: false
   end
 
   create_table "chat_messages", force: :cascade do |t|
@@ -146,8 +145,8 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.integer  "referred_count_required_for_claim"
     t.string   "status",                            limit: 255
     t.float    "claim_amount"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                    precision: 6
+    t.datetime "updated_at",                                    precision: 6
     t.string   "claim_id",                          limit: 255
     t.string   "email",                             limit: 255
     t.string   "verification_code",                 limit: 255
@@ -175,9 +174,9 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.text     "last_name"
     t.text     "emails"
     t.text     "social_links"
-    t.boolean  "processed",     default: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean  "processed",                   default: false
+    t.datetime "created_at",    precision: 6
+    t.datetime "updated_at",    precision: 6
   end
 
   create_table "custom_groups", force: :cascade do |t|
@@ -195,8 +194,8 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.string   "file",       limit: 255
     t.string   "function",   limit: 255
     t.string   "error",      limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             precision: 6
+    t.datetime "updated_at",             precision: 6
   end
 
   create_table "events", force: :cascade do |t|
@@ -240,8 +239,8 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.integer  "user_id"
     t.text     "flash_message_uid"
     t.boolean  "clicked"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",        precision: 6
+    t.datetime "updated_at",        precision: 6
   end
 
   create_table "followers", force: :cascade do |t|
@@ -261,6 +260,7 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.boolean  "is_valid",   default: true
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "shift_id"
   end
 
   create_table "image_types", force: :cascade do |t|
@@ -516,8 +516,8 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.string   "last_name",                limit: 255
     t.text     "emails"
     t.text     "social_links"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                           precision: 6
+    t.datetime "updated_at",                           precision: 6
   end
 
   create_table "referral_accepts", force: :cascade do |t|
@@ -527,9 +527,9 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.string   "referral_platform",     limit: 255
     t.string   "referral_code",         limit: 255
     t.integer  "referral_credit_given"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "claimed",                           default: false
+    t.datetime "created_at",                        precision: 6
+    t.datetime "updated_at",                        precision: 6
+    t.boolean  "claimed",                                         default: false
   end
 
   create_table "referral_sends", force: :cascade do |t|
@@ -539,8 +539,8 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.string   "referral_platform",  limit: 255
     t.string   "referral_code",      limit: 255
     t.string   "referral_target_id", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     precision: 6
+    t.datetime "updated_at",                     precision: 6
   end
 
   create_table "rpush_apps", force: :cascade do |t|
@@ -650,13 +650,13 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.string   "device",     limit: 255
     t.string   "browser",    limit: 255
     t.string   "version",    limit: 255
-    t.boolean  "is_active",              default: true
-    t.boolean  "is_valid",               default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean  "is_active",                            default: true
+    t.boolean  "is_valid",                             default: true
+    t.datetime "created_at",             precision: 6
+    t.datetime "updated_at",             precision: 6
   end
 
-  create_table "sms_logins", force: :cascade do |t|
+  create_table "sms_login_tables", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "validation_code"
     t.integer  "validation_entered"
@@ -669,8 +669,8 @@ ActiveRecord::Schema.define(version: 20160429202152) do
   create_table "sms_stops", force: :cascade do |t|
     t.string   "plivo_number", limit: 255
     t.string   "stop_number",  limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               precision: 6
+    t.datetime "updated_at",               precision: 6
   end
 
   create_table "sources", force: :cascade do |t|
@@ -681,26 +681,26 @@ ActiveRecord::Schema.define(version: 20160429202152) do
   end
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer  "user_id",                                                     null: false
-    t.integer  "channel_id",                                                  null: false
-    t.integer  "subscription_content_count",                  default: 0
+    t.integer  "user_id",                                                                   null: false
+    t.integer  "channel_id",                                                                null: false
+    t.integer  "subscription_content_count",                                default: 0
     t.string   "subscription_nickname",           limit: 255
     t.string   "subscription_my_alias",           limit: 255
-    t.boolean  "subscription_stick_to_top",                   default: false
-    t.boolean  "subscription_mute_notifications",             default: false
-    t.boolean  "subscription_display_nicknames",              default: true
-    t.datetime "subscription_last_synchronize"
-    t.integer  "allow_view",                                  default: 0
-    t.integer  "allow_post",                                  default: 0
-    t.integer  "allow_comment",                               default: 0
-    t.integer  "allow_like",                                  default: 0
-    t.boolean  "is_valid",                                    default: true
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.boolean  "is_active",                                   default: true
-    t.boolean  "is_coffee",                                   default: false
-    t.boolean  "is_invisible",                                default: false
-    t.boolean  "is_admin",                                    default: false
+    t.boolean  "subscription_stick_to_top",                                 default: false
+    t.boolean  "subscription_mute_notifications",                           default: false
+    t.boolean  "subscription_display_nicknames",                            default: true
+    t.datetime "subscription_last_synchronize",               precision: 6
+    t.integer  "allow_view",                                                default: 0
+    t.integer  "allow_post",                                                default: 0
+    t.integer  "allow_comment",                                             default: 0
+    t.integer  "allow_like",                                                default: 0
+    t.boolean  "is_valid",                                                  default: true
+    t.datetime "created_at",                                  precision: 6
+    t.datetime "updated_at",                                  precision: 6
+    t.boolean  "is_active",                                                 default: true
+    t.boolean  "is_coffee",                                                 default: false
+    t.boolean  "is_invisible",                                              default: false
+    t.boolean  "is_admin",                                                  default: false
   end
 
   create_table "urls", force: :cascade do |t|
@@ -807,13 +807,12 @@ ActiveRecord::Schema.define(version: 20160429202152) do
     t.boolean  "is_visible",                                       default: true
     t.datetime "created_at",                         precision: 6
     t.datetime "updated_at",                         precision: 6
-    t.datetime "last_seen_at"
-    t.datetime "last_engaged_at"
+    t.datetime "last_seen_at",                       precision: 6
     t.string   "referral_code",          limit: 255
     t.integer  "shift_count",                                      default: 0
     t.integer  "cover_count",                                      default: 0
     t.integer  "shyft_score",                                      default: 0
-    t.datetime "last_recount"
+    t.datetime "last_recount",                       precision: 6
   end
 
   create_table "videos", force: :cascade do |t|

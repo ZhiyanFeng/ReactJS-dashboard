@@ -162,8 +162,10 @@ module Api
                 UserAnalytic.create(:action => 1,:org_id => params[:org_id], :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
                 render json: @post, serializer: SyncFeedSerializer
                 if params[:attachments].present?
-                  if @post.process_attachments(params[:attachments], @user[:id])
-                    @post.process_gratitude(params[:tip_amount]) if params[:tip_amount].present?
+                  if params[:tip_amount].present?
+                    @post.process_attachments(params[:attachments], @user[:id], params[:tip_amount])
+                  else
+                    @post.process_attachments(params[:attachments], @user[:id])
                   end
                 end
                 @user.process_tags(params[:tags]) if params[:tags].present?
@@ -286,6 +288,7 @@ module Api
         end
         @gratitude = Gratitude.new(
           :amount => params[:amount],
+          :shift_id => params[:shift_id],
           :owner_id => params[:user_id],
           :source => 4,
           :source_id => post[:id]

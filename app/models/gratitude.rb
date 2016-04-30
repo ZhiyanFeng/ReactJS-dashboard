@@ -7,7 +7,7 @@ class Gratitude < ActiveRecord::Base
 
   attr_accessor :user_id
 
-  attr_accessible :owner_id, :amount, :source, :source_id, :is_valid
+  attr_accessible :owner_id, :amount, :source, :source_id, :shift_id, :is_valid
 
   validates_presence_of :amount, :on => :create
   validates_presence_of :owner_id, :on => :create

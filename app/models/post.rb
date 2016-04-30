@@ -45,9 +45,9 @@ class Post < ActiveRecord::Base
   :post_type,
   :comments_count,
   :channel_id,
-  :likes_count, 
+  :likes_count,
   :views_count,
-  :allow_comment, 
+  :allow_comment,
   :allow_like,
   :z_index,
   :is_valid
@@ -57,9 +57,9 @@ class Post < ActiveRecord::Base
   validates_presence_of :title, :on => :create
   #validates_presence_of :content, :on => :create
   validates_presence_of :post_type, :on => :create
-  
+
   def check_user(id)
-    self.user_id = id 
+    self.user_id = id
   end
 
   def set_archtype(type)
@@ -73,7 +73,7 @@ class Post < ActiveRecord::Base
   def add_view
     self.update_attribute(:views_count, self[:views_count] + 1)
   end
-  
+
   #def indicate(user_id, type)
   #  user = User.find(user_id)
   #  if type == "post" || type == "announcement" || type == "training"
@@ -83,9 +83,19 @@ class Post < ActiveRecord::Base
   #    self.liked = Like.exists?(:owner_id => user_id, :source => 7, :source_id => self.id) ? true : false
   #    self.flagged = Flag.exists?(:owner_id => user_id, :source => 7, :source_id => self.id) ? true : false
   #  else
-  #  
+  #
   #  end
   #end
+
+  def process_gratitude(amount)
+    @gratitude = Gratitude.new(
+      :amount => amount,
+      :owner_id => self[:owner_id],
+      :source => 4,
+      :source_id => self[:id]
+    )
+    @gratitude.create_gratitude(self, false)
+  end
 
   def process_attachments(attachments = nil, user_id = nil)
     @user = User.find(user_id)
@@ -123,17 +133,17 @@ class Post < ActiveRecord::Base
     @attachment.save
     self.update_attribute(:attachment_id, @attachment.id)
   end
-  
-  def compose(image = nil, 
-    video = nil, 
-    event = nil, 
-    poll = nil, 
-    schedule = nil, 
+
+  def compose(image = nil,
+    video = nil,
+    event = nil,
+    poll = nil,
+    schedule = nil,
     safety_course = nil,
     created_at = nil, push_notification = nil)
     #transaction do
       @postType = PostType.find(self.post_type)
-      
+
       self.attach_image(image) if @postType[:image_count] > 0
       #self.attach_video(video) if @postType[:includes_video] == true
       self.attach_video(video) if @postType[:includes_video] == true
@@ -141,7 +151,7 @@ class Post < ActiveRecord::Base
       self.attach_poll(poll) if @postType[:includes_survey] == true
       self.attach_schedule(schedule) if @postType[:includes_schedule] == true
       self.attach_safety_course(safety_course) if @postType[:includes_safety_course] == true
-      
+
       self.update_attribute(:is_valid, true)
       if self.save
         #basetype=PostType.find_post_type(self[:post_type])
@@ -172,16 +182,16 @@ class Post < ActiveRecord::Base
     #end
   end
 
-  def compose_v_four(image = nil, 
-    video = nil, 
-    event = nil, 
-    poll = nil, 
-    schedule = nil, 
+  def compose_v_four(image = nil,
+    video = nil,
+    event = nil,
+    poll = nil,
+    schedule = nil,
     safety_course = nil,
     created_at = nil, push_notification = nil)
     #transaction do
       @postType = PostType.find(self.post_type)
-      
+
       self.attach_image(image) if @postType[:image_count] > 0
       #self.attach_video(video) if @postType[:includes_video] == true
       self.attach_video(video) if @postType[:includes_video] == true
@@ -189,7 +199,7 @@ class Post < ActiveRecord::Base
       self.attach_poll(poll) if @postType[:includes_survey] == true
       self.attach_schedule(schedule) if @postType[:includes_schedule] == true
       self.attach_safety_course(safety_course) if @postType[:includes_safety_course] == true
-      
+
       self.update_attribute(:is_valid, true)
       if self.save
         #basetype=PostType.find_post_type(self[:post_type])
@@ -202,7 +212,7 @@ class Post < ActiveRecord::Base
 
   def compose_with_attachment_id(attachment_id, created_at = nil, push_notification = nil)
     @postType = PostType.find(self.post_type)
-    #transaction do      
+    #transaction do
       self.update_attribute(:attachment_id, attachment_id)
       self.update_attribute(:is_valid, true)
       @attachment = Attachment.find(attachment_id)
@@ -223,12 +233,12 @@ class Post < ActiveRecord::Base
       rescue
         Rails.logger.debug("Failed to load attachment")
       end
-      
+
       if self.save
         #basetype=PostType.find_post_type(self[:post_type])
         basetype = @postType[:base_type]
         Follower.follow(4, self[:id], self[:owner_id])
-        User.notification_broadcast(self[:owner_id], self[:org_id], basetype, "new", "", 4, self[:id], created_at, self[:location], self[:user_group])   
+        User.notification_broadcast(self[:owner_id], self[:org_id], basetype, "new", "", 4, self[:id], created_at, self[:location], self[:user_group])
         if push_notification
           #Mession.broadcast(self[:org_id], "refresh", "newsfeed", 4, self[:id], self[:owner_id], self[:owner_id], nil, nil) if basetype == "post"
           #Mession.broadcast(self[:org_id], "refresh", "announcement", 4, self[:id], self[:owner_id], self[:owner_id], nil, nil) if basetype == "announcement"
@@ -240,14 +250,14 @@ class Post < ActiveRecord::Base
           Mession.broadcast(self[:org_id], "open_app", "quiz", 8, self[:id], self[:org_id], self[:org_id], self[:title], created_at, self[:location], self[:user_group]) if basetype == "quiz"
           Mession.broadcast(self[:org_id], "open_app", "safety_training", 9, self[:id], self[:org_id], self[:org_id], self[:title], created_at, self[:location], self[:user_group]) if basetype == "safet_training"
           Mession.broadcast(self[:org_id], "open_app", "safety_quiz", 8, self[:id], self[:org_id], self[:org_id], self[:title], created_at, self[:location], self[:user_group]) if basetype == "safety_quiz"
-        #User.notification_broadcast(self[:owner_id], self[:org_id], basetype, "new", "", 4, self[:id])   
+        #User.notification_broadcast(self[:owner_id], self[:org_id], basetype, "new", "", 4, self[:id])
         end
       end
     #end
 
   end
 
-  
+
   def attached
     if self.attachment_id.presence
       return Attachment.find(attachment_id)
@@ -255,17 +265,17 @@ class Post < ActiveRecord::Base
       return false
     end
   end
-  
+
   def attach_image(image)
     @image = Image.new(
-      :org_id => self.org_id, 
-      :owner_id => self.owner_id, 
+      :org_id => self.org_id,
+      :owner_id => self.owner_id,
       :image_type => 4
     )
     @image.save
     @image.update_attribute(:avatar, image)
     @image.update_attribute(:is_valid, true)
-    Follower.follow(3, @image[:id], self.owner_id) 
+    Follower.follow(3, @image[:id], self.owner_id)
     if !@attachment = self.attached
       temp = '{"objects":[{"source":3, "source_id":' + @image.id.to_s + '}]}'
       @attachment = Attachment.new(
@@ -278,12 +288,12 @@ class Post < ActiveRecord::Base
     @attachment.save
     self.update_attribute(:attachment_id, @attachment.id)
   end
-  
+
   def attach_video(video)
     host = video[:video_host] == "Youtube" ? 2 : 1
     @video = Video.new(
-      :org_id => self.org_id, 
-      :owner_id => self.owner_id, 
+      :org_id => self.org_id,
+      :owner_id => self.owner_id,
       :video_id => video[:video_id],
       :video_url => video[:video_url],
       :video_host => host,
@@ -311,8 +321,8 @@ class Post < ActiveRecord::Base
 
   def replace_video(video)
     @video = Video.new(
-      :org_id => self.org_id, 
-      :owner_id => self.owner_id, 
+      :org_id => self.org_id,
+      :owner_id => self.owner_id,
       :video_id => video[:video_id],
       :video_url => video[:video_url],
       :video_host => video[:video_host],
@@ -325,24 +335,24 @@ class Post < ActiveRecord::Base
       temp = '{"objects":[{"source":6, "source_id":' + @video.id.to_s + '}]}'
       @attachment = Attachment.new(
         :json => temp
-      )    
+      )
       @attachment.save
       self.update_attribute(:attachment_id, @attachment.id)
     else
       Rails.logger.debug(@video.errors.inspect)
     end
   end
-  
+
   def attach_event(event)
     @event = Event.new(
-      :org_id => self.org_id, 
-      :owner_id => self.owner_id, 
-      :event_start => event[:event_start], 
-      :event_end => event[:event_end], 
-      :event_poi => event[:event_poi], 
-      :event_address => event[:event_address], 
+      :org_id => self.org_id,
+      :owner_id => self.owner_id,
+      :event_start => event[:event_start],
+      :event_end => event[:event_end],
+      :event_poi => event[:event_poi],
+      :event_address => event[:event_address],
       :event_lat => event[:event_lat],
-      :event_lng => event[:event_lng], 
+      :event_lng => event[:event_lng],
       :event_open => true
     )
     @event.save
@@ -359,7 +369,7 @@ class Post < ActiveRecord::Base
     @attachment.save
     self.update_attribute(:attachment_id, @attachment.id)
   end
-  
+
   def attach_poll(poll)
     @poll = Poll.new(
       :org_id => self.org_id,
@@ -396,7 +406,7 @@ class Post < ActiveRecord::Base
     end
     @poll.update_attribute(:question_count, q_count)
     @poll.save
-    
+
     if !@attachment = self.attached
       temp = '{"objects":[{"source":8, "source_id":' + @poll.id.to_s + '}]}'
       @attachment = Attachment.new(
@@ -409,7 +419,7 @@ class Post < ActiveRecord::Base
     @attachment.save
     self.update_attribute(:attachment_id, @attachment.id)
   end
-  
+
   def attach_schedule(schedule)
     if lines = schedule.split(/\r?\n/)
       @schedule = Schedule.new(
@@ -468,13 +478,13 @@ class Post < ActiveRecord::Base
     @attachment.save
     self.update_attribute(:attachment_id, @attachment.id)
   end
-  
+
   def post_with_image(file)
     transaction do
       if save
         @image = Image.new(
-          :org_id => self.org_id, 
-          :owner_id => self.owner_id, 
+          :org_id => self.org_id,
+          :owner_id => self.owner_id,
           :image_type => 4
         )
         @image.save
@@ -490,7 +500,7 @@ class Post < ActiveRecord::Base
       end
     end
   end
-  
+
   def basic_hello
     transaction do
       if save
@@ -504,7 +514,7 @@ class Post < ActiveRecord::Base
       end
     end
   end
-  
+
   def hello_with_image(image_id)
     transaction do
       if save
@@ -518,10 +528,10 @@ class Post < ActiveRecord::Base
       end
     end
   end
-  
+
   def basic_comment(post_id)
     if Post.exists?(:id => post_id)
-      @post = Post.find(post_id)  
+      @post = Post.find(post_id)
       transaction do
         if save
           @post.update_attribute(:comments_count, @post.comments_count + 1)
@@ -532,13 +542,13 @@ class Post < ActiveRecord::Base
       return false
     end
   end
-  
+
   def announcement_with_image(file)
     transaction do
       if save
         @image = Image.new(
-          :org_id => self.org_id, 
-          :owner_id => self.owner_id, 
+          :org_id => self.org_id,
+          :owner_id => self.owner_id,
           :image_type => 3
         )
         @image.save
@@ -553,13 +563,13 @@ class Post < ActiveRecord::Base
       end
     end
   end
-  
+
   def post_with_video(video)
     transaction do
       if save
         @video = Video.new(
-          :org_id => self.org_id, 
-          :owner_id => self.owner_id, 
+          :org_id => self.org_id,
+          :owner_id => self.owner_id,
           :video_id => video[:video_id],
           :video_url => video[:video_url],
           :video_host => video[:video_host],
@@ -575,17 +585,17 @@ class Post < ActiveRecord::Base
       end
     end
   end
-  
+
   def post_with_event(event)
     transaction do
       if save
         @event = Event.new(
-          :org_id => self.org_id, 
-          :owner_id => self.owner_id, 
-          :event_start => event[:event_start], 
-          :event_end => event[:event_end], 
-          :event_poi => event[:event_poi], 
-          :event_address => event[:event_address], 
+          :org_id => self.org_id,
+          :owner_id => self.owner_id,
+          :event_start => event[:event_start],
+          :event_end => event[:event_end],
+          :event_poi => event[:event_poi],
+          :event_address => event[:event_address],
           :event_lat => event[:event_lat],
           :event_lng => event[:event_lng],
           :event_open => true
@@ -600,7 +610,7 @@ class Post < ActiveRecord::Base
       end
     end
   end
-  
+
   def destroy_comment
     self.update_attribute(:is_valid, false)
     if Post.exists?(:id => self.post_reference)

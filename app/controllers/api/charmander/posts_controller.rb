@@ -161,8 +161,13 @@ module Api
                 post_base_type = PostType.find_post_type(@post[:post_type])
                 UserAnalytic.create(:action => 1,:org_id => params[:org_id], :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
                 render json: @post, serializer: SyncFeedSerializer
-                @post.process_attachments(params[:attachments], @user[:id]) if params[:attachments].present?
+                if params[:attachments].present?
+                  if @post.process_attachments(params[:attachments], @user[:id])
+                    @post.process_gratitude(params[:tip_amount]) if params[:tip_amount].present?
+                  end
+                end
                 @user.process_tags(params[:tags]) if params[:tags].present?
+
                 #@channel.subscribers_push(post_base_type, @post)
                 @channel.tracked_subscriber_push(post_base_type,@post)
               else

@@ -8,6 +8,7 @@ class ShiftSerializer < ActiveModel::Serializer
   :coverer,
   :coverer_id,
   :trade_status,
+  :tip_amount,
   :start_at,
   :end_at
 
@@ -46,5 +47,12 @@ class ShiftSerializer < ActiveModel::Serializer
     else
       nil
     end
+  end
+
+  def tip_amount
+    50
+    #if Gratitude.exists?(:shift_id => object.id)
+
+    #end
   end
 end

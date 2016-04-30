@@ -287,7 +287,7 @@ module Api
           push = true
         end
         @gratitude = Gratitude.new(
-          :amount => params[:amount],
+          :amount => params[:tip_amount],
           :shift_id => params[:shift_id],
           :owner_id => params[:user_id],
           :source => 4,

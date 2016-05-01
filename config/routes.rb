@@ -145,6 +145,7 @@ Expresso::Application.routes.draw do
       end
 
       resources :schedule_elements do
+        post :update_tip, :on => :member
         post :cover, :on => :member
         post :approve, :on => :member
         post :reject, :on => :member

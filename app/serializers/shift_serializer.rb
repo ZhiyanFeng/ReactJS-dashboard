@@ -9,6 +9,7 @@ class ShiftSerializer < ActiveModel::Serializer
   :coverer_id,
   :trade_status,
   :tip_amount,
+  :tipping_user,
   :start_at,
   :end_at
 

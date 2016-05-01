@@ -56,4 +56,8 @@ class ShiftSerializer < ActiveModel::Serializer
       0
     end
   end
+
+  def tipping_user
+    "Daniel Chen"
+  end
 end

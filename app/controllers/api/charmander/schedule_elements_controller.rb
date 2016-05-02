@@ -26,7 +26,11 @@ module Api
         if Gratitude.exists?(:shift_id => params[:id], :is_valid => true)
           @tip = Gratitude.where(:shift_id => params[:id], :is_valid => true).first
           if @tip[:owner_id].to_i == params[:user_id].to_i
-            @tip.update_attribute(:amount, params[:tip_amount])
+            if params[:tip_amount].to_i == 0
+              @tip.update_attributes(:amount => params[:tip_amount], :is_valid => false)
+            else
+              @tip.update_attribute(:amount, params[:tip_amount])
+            end
             #render json: { "eXpresso" => { "code" => 1, "message" => "The tip for this shift has been changed successfully." } }
             render json: @schedule_element, serializer: ShiftSerializer
           else

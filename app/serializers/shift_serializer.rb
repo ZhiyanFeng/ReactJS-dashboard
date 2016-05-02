@@ -59,6 +59,21 @@ class ShiftSerializer < ActiveModel::Serializer
   end
 
   def tipping_user
-    "Daniel Chen"
+    if Gratitude.exists?(:shift_id => object.id, :is_valid => true)
+      @tip = Gratitude.where(:shift_id => object.id, :is_valid => true).first
+      @user = User.find(@tip[:user_id])
+      @user[:first_name] + " " + @user[:last_name]
+    else
+      0
+    end
+  end
+
+  def tipping_user_id
+    if Gratitude.exists?(:shift_id => object.id, :is_valid => true)
+      @tip = Gratitude.where(:shift_id => object.id, :is_valid => true).first
+      @tip[:user_id]
+    else
+      0
+    end
   end
 end

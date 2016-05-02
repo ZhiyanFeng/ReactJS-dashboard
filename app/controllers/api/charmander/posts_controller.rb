@@ -294,7 +294,9 @@ module Api
           :source_id => post[:id]
         )
         if @gratitude.create_gratitude(post, push)
-          render json: { "code" => 1, "message" => "Success" }
+          #render json: { "code" => 1, "message" => "Success" }
+          @schedule_element = ScheduleElement.find(params[:shift_id])
+          render json: @schedule_element, serializer: ShiftSerializer
         else
           render json: { "code" => -1, "message" => "Could not tip this shift at the moment" }
         end

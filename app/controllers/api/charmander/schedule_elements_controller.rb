@@ -27,7 +27,7 @@ module Api
           @tip = Gratitude.where(:shift_id => params[:id], :is_valid => true).first
           if @tip[:owner_id] == params[:user_id]
             @tip.update_attribute(:amount, params[:tip_amount])
-            render json: { "code" => 11, "message" => "The tip for this shift has been changed successfully." }
+            render json: { "code" => 1, "message" => "The tip for this shift has been changed successfully." }
           else
             render json: { "code" => -1, "message" => "Sorry, only the original tipper may edit the tip amount." }
           end

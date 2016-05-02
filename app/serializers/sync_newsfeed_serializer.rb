@@ -14,17 +14,18 @@ class SyncNewsfeedSerializer < ActiveModel::Serializer
   :allow_like,
   :created_at,
   :updated_at,
+  :sorted_at,
   :attachment,
   :owner,
   :is_valid
-  
+
   def attachment
     if object.attachment_id.presence
       @attachments = Attachment.find(object.attachment_id)
-      @attachments.to_objs      
+      @attachments.to_objs
     end
   end
-  
+
   def liked
     result = false
     if object.likes.presence
@@ -37,7 +38,7 @@ class SyncNewsfeedSerializer < ActiveModel::Serializer
     end
     result
   end
-  
+
   def flagged
     result = false
     if object.flags.presence
@@ -54,5 +55,5 @@ class SyncNewsfeedSerializer < ActiveModel::Serializer
   def owner
     OwnerSerializer.new(object.owner)
   end
-  
+
 end

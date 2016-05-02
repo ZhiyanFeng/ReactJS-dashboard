@@ -15,22 +15,23 @@ class SyncFeedSerializer < ActiveModel::Serializer
   :allow_like,
   :created_at,
   :updated_at,
+  :sorted_at,
   :attachment_id,
   :attachment,
   :owner,
   :is_valid
-  
+
   def attachment
     if object.attachment_id.presence
       @attachments = Attachment.find(object.attachment_id)
-      @attachments.to_objs      
+      @attachments.to_objs
     end
   end
 
   def type
     PostType.find_post_type(object.post_type)
   end
-  
+
   def liked
     result = false
     if object.likes.presence
@@ -43,7 +44,7 @@ class SyncFeedSerializer < ActiveModel::Serializer
     end
     result
   end
-  
+
   def flagged
     result = false
     if object.flags.presence
@@ -60,5 +61,5 @@ class SyncFeedSerializer < ActiveModel::Serializer
   def owner
     OwnerSerializer.new(object.owner)
   end
-  
+
 end

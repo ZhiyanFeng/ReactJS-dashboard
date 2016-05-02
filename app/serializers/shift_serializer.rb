@@ -61,7 +61,7 @@ class ShiftSerializer < ActiveModel::Serializer
   def tipping_user
     if Gratitude.exists?(:shift_id => object.id, :is_valid => true)
       @tip = Gratitude.where(:shift_id => object.id, :is_valid => true).first
-      @user = User.find(@tip[:user_id])
+      @user = User.find(@tip[:owner_id])
       @user[:first_name] + " " + @user[:last_name]
     else
       0
@@ -71,7 +71,7 @@ class ShiftSerializer < ActiveModel::Serializer
   def tipping_user_id
     if Gratitude.exists?(:shift_id => object.id, :is_valid => true)
       @tip = Gratitude.where(:shift_id => object.id, :is_valid => true).first
-      @tip[:user_id]
+      @tip[:owner_id]
     else
       0
     end

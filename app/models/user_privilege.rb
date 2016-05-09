@@ -36,49 +36,68 @@ class UserPrivilege < ActiveRecord::Base
   after_create :search_region_feed, :search_category_feed
 
   def search_category_feed
+    server_life_15773_cats = ["cafe","food","restaurant","meal_takeaway","bar","bakery","night_club","lodging","Cocktail Bar","Restaurant","Irish Pub","American Restaurant","Wings Joint","Pizza Place","BBQ Joint","Fast Food Restaurant"]
+    nursing_life_6841_cats = ["hospital","Medical Center","Acupuncturist","Alternative Healer","Chiropractor","Dentist's Office","Doctor's Office","Emergency Room","Eye Doctor","Hospital","Laboratory","Maternity Clinic","Mental Health Office","Rehab Center","Urgent Care Center","Veterinarian","College Lab","Animal Shelter","Funeral Home","Assisted Living"]
     begin
       @location = Location.find(location_id)
-      if @location[:category] == "Cocktail Bar" || @location[:category] == "Restaurant" ||
-        @location[:category] == "Irish Pub" || @location[:category] == "American Restaurant" ||
-        @location[:category] == "Wings Joint" || @location[:category] == "Pizza Place" ||
-        @location[:category] == "BBQ Joint" || @location[:category] == "Fast Food Restaurant"
-        if Channel.exists?(:id => 5866)
-          channel = Channel.find(5866)
-          if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
-            region_subscription = Subscription.create(
-              :user_id => self[:owner_id],
-              :channel_id => channel[:id],
-              :is_active => true
-            )
+      if @location[:category].present?
+        categories = @location[:category].split(',')
+        if (server_life_15773_cats - categories).size < server_life_15773_cats.size
+          if Channel.exists?(:id => 15773) #Server_Life
+            channel = Channel.find(15773) #Server_Life
+            if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
+              region_subscription = Subscription.create(
+                :user_id => self[:owner_id],
+                :channel_id => channel[:id],
+                :is_active => true
+              )
+            else
+              region_subscription = Subscription.where(:user_id => self[:owner_id],:channel_id => channel[:id]).first
+              region_subscription.update_attributes(:is_valid => true, :is_active => true)
+            end
+            channel.recount
           else
-            region_subscription = Subscription.where(:user_id => self[:owner_id],:channel_id => channel[:id]).first
-            region_subscription.update_attributes(:is_valid => true, :is_active => true)
+            t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
+            t_token = '81eaed486465b41042fd32b61e5a1b14'
+
+            @client = Twilio::REST::Client.new t_sid, t_token
+            message = @client.account.messages.create(
+              :body => "Just hit the money block",
+              :to => "4252456668",
+              :from => "+16282225569"
+            )
           end
-          channel.recount
+        else
+          #This location does not belong to server life
         end
-      elsif @location[:category] == "Medical Center" || @location[:category] == "Acupuncturist" ||
-        @location[:category] == "Alternative Healer" || @location[:category] == "Chiropractor" ||
-        @location[:category] == "Dentist's Office" || @location[:category] == "Doctor's Office" ||
-        @location[:category] == "Emergency Room" || @location[:category] == "Eye Doctor" ||
-        @location[:category] == "Hospital" || @location[:category] == "Laboratory" ||
-        @location[:category] == "Maternity Clinic" || @location[:category] == "Mental Health Office" ||
-        @location[:category] == "Rehab Center" || @location[:category] == "Urgent Care Center" ||
-        @location[:category] == "Veterinarian" || @location[:category] == "College Lab" ||
-        @location[:category] == "Animal Shelter" || @location[:category] == "Funeral Home" ||
-        @location[:category] == "Assisted Living"
-        if Channel.exists?(:id => 6841)
-          channel = Channel.find(6841)
-          if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
-            region_subscription = Subscription.create(
-              :user_id => self[:owner_id],
-              :channel_id => channel[:id],
-              :is_active => true
-            )
+
+        if (nursing_life_6841_cats - categories).size < nursing_life_6841_cats.size
+          if Channel.exists?(:id => 15773) #Server_Life
+            channel = Channel.find(15773) #Server_Life
+            if !Subscription.exists?(:user_id => self[:owner_id],:channel_id => channel[:id])
+              region_subscription = Subscription.create(
+                :user_id => self[:owner_id],
+                :channel_id => channel[:id],
+                :is_active => true
+              )
+            else
+              region_subscription = Subscription.where(:user_id => self[:owner_id],:channel_id => channel[:id]).first
+              region_subscription.update_attributes(:is_valid => true, :is_active => true)
+            end
+            channel.recount
           else
-            region_subscription = Subscription.where(:user_id => self[:owner_id],:channel_id => channel[:id]).first
-            region_subscription.update_attributes(:is_valid => true, :is_active => true)
+            t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
+            t_token = '81eaed486465b41042fd32b61e5a1b14'
+
+            @client = Twilio::REST::Client.new t_sid, t_token
+            message = @client.account.messages.create(
+              :body => "Just hit the money block 2",
+              :to => "4252456668",
+              :from => "+16282225569"
+            )
           end
-          channel.recount
+        else
+          #This location does not belong to nursing life
         end
       end
     rescue => e

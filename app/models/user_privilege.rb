@@ -40,7 +40,7 @@ class UserPrivilege < ActiveRecord::Base
     nursing_life_6841_cats = ["hospital","Medical Center","Acupuncturist","Alternative Healer","Chiropractor","Dentist's Office","Doctor's Office","Emergency Room","Eye Doctor","Hospital","Laboratory","Maternity Clinic","Mental Health Office","Rehab Center","Urgent Care Center","Veterinarian","College Lab","Animal Shelter","Funeral Home","Assisted Living"]
     begin
       @location = Location.find(location_id)
-      if @location[:category].present? && !@location[:location_name].downcase.include?"mcdonald" && !@location[:location_name].downcase.include?"starbucks"
+      if @location[:category].present? && !(@location[:location_name].downcase.include?"mcdonald") && !(@location[:location_name].downcase.include?"starbucks")
         categories = @location[:category].split(',')
         if (server_life_15773_cats - categories).size < server_life_15773_cats.size
           if Channel.exists?(:id => 15773) #Server_Life

@@ -62,4 +62,28 @@ class SyncFeedSerializer < ActiveModel::Serializer
     OwnerSerializer.new(object.owner)
   end
 
+  def sorted_at
+    if object.attachment_id.present? && object.title == "Shift Trade"
+      if
+        @attachment = Attachment.where(["id = #{object.attachment_id} AND json like '{\"objects\":[{\"source\":11,\"source_id\":%%'"])
+        objArray = JSON.parse(self.json)
+        objArray["objects"].each do |p|
+          if ScheduleElement.exists?(:id => p["source_id"])
+            obj = ScheduleElement.find(p["source_id"])
+            if Gratitude.exists?(:shift_id => obj[:id], :is_valid => true) && obj[:end_at].to_time < Time.now
+              Time.now
+            else
+              object.sorted_at
+            end
+          else
+            object.sorted_at
+          end
+        end
+      else
+        object.sorted_at
+      end
+    else
+      object.sorted_at
+    end
+  end
 end

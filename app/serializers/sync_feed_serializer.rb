@@ -66,18 +66,17 @@ class SyncFeedSerializer < ActiveModel::Serializer
     if object.attachment_id.present? && object.title == "Shift Trade"
       if Attachment.exists?(["id = #{object.attachment_id} AND json like '{\"objects\":[{\"source\":11,\"source_id\":%%'"])
         @attachment = Attachment.where(["id = #{object.attachment_id} AND json like '{\"objects\":[{\"source\":11,\"source_id\":%%'"]).first
-        objArray = JSON.parse(@attachment.json)
-        objArray["objects"].each do |p|
-          if ScheduleElement.exists?(:id => p["source_id"])
-            obj = ScheduleElement.find(p["source_id"])
-            if Gratitude.exists?(:shift_id => obj[:id], :is_valid => true) && obj[:end_at].to_time < Time.now
-              Time.now
-            else
-              object.sorted_at
-            end
+        #objArray = JSON.parse(@attachment.json)
+        sid = @attachment.json.sub('{"objects":[{"source":11,"source_id":','').sub('}]}','').to_i
+        if ScheduleElement.exists?(:id => sid)
+          obj = ScheduleElement.find(sid)
+          if Gratitude.exists?(:shift_id => obj[:id], :is_valid => true) && obj[:end_at].to_time > Time.now
+            Time.now
           else
             object.sorted_at
           end
+        else
+          object.sorted_at
         end
       else
         object.sorted_at

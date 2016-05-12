@@ -64,9 +64,9 @@ class SyncFeedSerializer < ActiveModel::Serializer
 
   def sorted_at
     if object.attachment_id.present? && object.title == "Shift Trade"
-      if
-        @attachment = Attachment.where(["id = #{object.attachment_id} AND json like '{\"objects\":[{\"source\":11,\"source_id\":%%'"])
-        objArray = JSON.parse(self.json)
+      if Attachment.exists?(["id = #{object.attachment_id} AND json like '{\"objects\":[{\"source\":11,\"source_id\":%%'"])
+        @attachment = Attachment.where(["id = #{object.attachment_id} AND json like '{\"objects\":[{\"source\":11,\"source_id\":%%'"]).first
+        objArray = JSON.parse(@attachment.json)
         objArray["objects"].each do |p|
           if ScheduleElement.exists?(:id => p["source_id"])
             obj = ScheduleElement.find(p["source_id"])

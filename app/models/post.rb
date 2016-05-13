@@ -74,7 +74,7 @@ class Post < ActiveRecord::Base
     self.update_attribute(:views_count, self[:views_count] + 1)
   end
 
-  def passed_spam_check(content)
+  def self.passed_spam_check(content)
     if content.length <= 8
       false
     else

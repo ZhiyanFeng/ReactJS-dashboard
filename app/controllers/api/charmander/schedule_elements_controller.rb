@@ -18,7 +18,7 @@ module Api
       respond_to :json
 
       def cleanup
-        ShiftCleanupWorker.perform_async(true)
+        ShiftCleanupWorker.perform_async
         render json: { "code" => 1, "message" => "Shift deleted by owner." }
       end
 

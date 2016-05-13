@@ -75,7 +75,7 @@ class Post < ActiveRecord::Base
   end
 
   def self.passed_spam_check(content)
-    if content.length <= 8
+    if content.length <= 2
       false
     else
       true

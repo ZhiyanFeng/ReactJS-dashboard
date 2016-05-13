@@ -12,9 +12,15 @@ module Api
         #end
       end
 
-      before_filter :restrict_access, :set_headers, :fetch_schedule_element
+      before_filter :restrict_access, :set_headers
+      before_filter :fetch_schedule_element, :except => [:cleanup]
 
       respond_to :json
+
+      def cleanup
+        ShiftCleanupWorker.perform_async(true)
+        render json: { "code" => 1, "message" => "Shift deleted by owner." }
+      end
 
       def fetch_schedule_element
         if ScheduleElement.exists?(:id => params[:id])

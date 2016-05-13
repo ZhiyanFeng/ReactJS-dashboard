@@ -25,7 +25,7 @@ en:
   push:
     schedule: "%{name} just posted a schedule 📆"
     post: "%{name} just posted: %{content}"
-    announcement: "%{name} just posted an annoucnement. Let them know you read it by tapping the checkmark ✔️🙋"
+    announcement: "%{name} just posted an announcement. Let them know you read it by tapping the checkmark ✔️🙋"
     shift:
       post: "Hey! %{name} just posted a shift. Are you able to cover it? 🔁"
       cover: "Hey! %{name} just agreed to cover your shift, that was easy 🔁"

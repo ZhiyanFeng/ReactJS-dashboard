@@ -74,6 +74,14 @@ class Post < ActiveRecord::Base
     self.update_attribute(:views_count, self[:views_count] + 1)
   end
 
+  def passed_spam_check(content)
+    if content.length <= 8
+      false
+    else
+      true
+    end
+  end
+
   #def indicate(user_id, type)
   #  user = User.find(user_id)
   #  if type == "post" || type == "announcement" || type == "training"

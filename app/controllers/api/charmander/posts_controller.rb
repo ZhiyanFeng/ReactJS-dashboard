@@ -28,84 +28,88 @@ module Api
       end
 
       def compose
-        @user = User.find(params[:owner_id])
-        if @user[:is_valid]
-          @channel = Channel.find(params[:channel_id])
-          if !@user.hitting_post_threshold(@channel[:id])
-            @sub = Subscription.where(:user_id => @user[:id], :channel_id => @channel[:id], :is_valid => true).first
-            if @channel[:allow_post] || (@sub.present? && @sub[:allow_post] > 0)
-              if @channel[:channel_type] == "location_feed"
-                location_id = @channel[:channel_frequency].to_i
-              elsif @channel[:channel_type] == "coffee_feed"
-                location_id = 1153
-              else
-                location_id = @user[:location]
-              end
-              if Subscription.exists?(:user_id => @user[:id], :channel_id => @channel[:id], :is_valid => true) || @user[:id] == 134
-                @post = Post.new(
-                  :org_id => 1,
-                  :owner_id => params[:owner_id],
-                  :title => params[:title],
-                  :content => params[:content],
-                  :location => location_id,
-                  :channel_id => @channel[:id],
-                  :post_type => PostType.reference_by_description(params[:reference])
-                )
-                image = params[:file].presence ? params[:file] : nil
-                video = params[:video].presence ? params[:video] : nil
-                event = params[:event].presence ? params[:event] : nil
-                poll = params[:poll].presence ? params[:poll] : nil
-                if @post.save
-                  # Set visibility
-                  if params[:make_private].present? && params[:make_private].to_s == "true"
-                    @post.update_attribute(:z_index, 9999)
-                  end
-
-                  # Set allow comments
-                  if params[:allow_comment].present? && params[:allow_comment] == "false"
-                    @post.update_attribute(:allow_comment, false)
-                  end
-
-                  # Set allow likes
-                  if params[:allow_like].present? && params[:allow_like] == "false"
-                    @post.update_attribute(:allow_like, false)
-                  end
-
-                  if @user[:system_user] == true
-                    if @channel[:id] == 1
-                      @post.update_attributes(:allow_comment => false, :allow_like => false, :z_index => 0)
+        if !Post.passed_spam_check(params)
+          @user = User.find(params[:owner_id])
+          if @user[:is_valid]
+            @channel = Channel.find(params[:channel_id])
+            if !@user.hitting_post_threshold(@channel[:id])
+              @sub = Subscription.where(:user_id => @user[:id], :channel_id => @channel[:id], :is_valid => true).first
+              if @channel[:allow_post] || (@sub.present? && @sub[:allow_post] > 0)
+                if @channel[:channel_type] == "location_feed"
+                  location_id = @channel[:channel_frequency].to_i
+                elsif @channel[:channel_type] == "coffee_feed"
+                  location_id = 1153
+                else
+                  location_id = @user[:location]
+                end
+                if Subscription.exists?(:user_id => @user[:id], :channel_id => @channel[:id], :is_valid => true) || @user[:id] == 134
+                  @post = Post.new(
+                    :org_id => 1,
+                    :owner_id => params[:owner_id],
+                    :title => params[:title],
+                    :content => params[:content],
+                    :location => location_id,
+                    :channel_id => @channel[:id],
+                    :post_type => PostType.reference_by_description(params[:reference])
+                  )
+                  image = params[:file].presence ? params[:file] : nil
+                  video = params[:video].presence ? params[:video] : nil
+                  event = params[:event].presence ? params[:event] : nil
+                  poll = params[:poll].presence ? params[:poll] : nil
+                  if @post.save
+                    # Set visibility
+                    if params[:make_private].present? && params[:make_private].to_s == "true"
+                      @post.update_attribute(:z_index, 9999)
                     end
-                  end
-                  #push_notification = params[:push_notification] == "true" ? true : false
-                  push_notification = true
-                  @post.update_attribute(:is_valid, false) if image != nil
-                  post_base_type = PostType.find_post_type(@post[:post_type])
-                  UserAnalytic.create(:action => 1,:org_id => 1, :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
-                  if post_base_type == "announcement"
-                    render json: @post, serializer: SyncFeedSerializer
-                  else
-                    render json: @post, serializer: SyncFeedSerializer
-                  end
-                  @post.compose_v_four(image, video, event, poll, nil, nil, nil, push_notification)
 
-                  if ((!params[:make_private].present? || params[:make_private] == "false") || @user[:system_user] == true) && push_notification == true
-                    #@channel.subscribers_push(post_base_type, @post)
-                    @channel.tracked_subscriber_push(post_base_type,@post)
+                    # Set allow comments
+                    if params[:allow_comment].present? && params[:allow_comment] == "false"
+                      @post.update_attribute(:allow_comment, false)
+                    end
+
+                    # Set allow likes
+                    if params[:allow_like].present? && params[:allow_like] == "false"
+                      @post.update_attribute(:allow_like, false)
+                    end
+
+                    if @user[:system_user] == true
+                      if @channel[:id] == 1
+                        @post.update_attributes(:allow_comment => false, :allow_like => false, :z_index => 0)
+                      end
+                    end
+                    #push_notification = params[:push_notification] == "true" ? true : false
+                    push_notification = true
+                    @post.update_attribute(:is_valid, false) if image != nil
+                    post_base_type = PostType.find_post_type(@post[:post_type])
+                    UserAnalytic.create(:action => 1,:org_id => 1, :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
+                    if post_base_type == "announcement"
+                      render json: @post, serializer: SyncFeedSerializer
+                    else
+                      render json: @post, serializer: SyncFeedSerializer
+                    end
+                    @post.compose_v_four(image, video, event, poll, nil, nil, nil, push_notification)
+
+                    if ((!params[:make_private].present? || params[:make_private] == "false") || @user[:system_user] == true) && push_notification == true
+                      #@channel.subscribers_push(post_base_type, @post)
+                      @channel.tracked_subscriber_push(post_base_type,@post)
+                    end
+                  else
+                    render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot process posts" } }
                   end
                 else
-                  render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot process posts" } }
+                  render :json => { "eXpresso" => { "code" => -1, "error" => "Subscription is invalid" } }
                 end
               else
-                render :json => { "eXpresso" => { "code" => -1, "error" => "Subscription is invalid" } }
+                render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot post to this channel" } }
               end
             else
-              render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot post to this channel" } }
+              render :json => { "eXpresso" => { "code" => -1, "error" => "Slow down, you can post to a public channel every 5 minutes." } }
             end
           else
-            render :json => { "eXpresso" => { "code" => -1, "error" => "Slow down, you can post to a public channel every 5 minutes." } }
+            render :json => { "eXpresso" => { "code" => -1, "error" => "Not a valid user account" } }
           end
         else
-          render :json => { "eXpresso" => { "code" => -1, "error" => "Not a valid user account" } }
+          render :json => { "eXpresso" => { "code" => -1, "error" => "Your post is too short, it failed our spam check. Please use at least 8 characters." } }
         end
       end
 

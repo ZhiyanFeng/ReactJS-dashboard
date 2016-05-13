@@ -70,7 +70,7 @@ class User < ActiveRecord::Base
   def hitting_post_threshold(channel_id)
     @channel = Channel.find(channel_id)
     if @channel[:channel_type] == "organization_feed"
-      if Post.exists?(["owner_id = #{self[:id]} AND channel_id = #{channel_id} AND post_type != 19"])
+      if Post.exists?(["owner_id = #{self[:id]} AND channel_id = #{channel_id} AND post_type != 19 AND created_at > now() - interval '5 minutes'"])
         true
       else
         false

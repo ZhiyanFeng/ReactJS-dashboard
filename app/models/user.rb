@@ -67,6 +67,19 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email, :case_sensitive => false
   validates_uniqueness_of :phone_number, :allow_blank => true, :allow_nil => true
 
+  def hitting_post_threshold(channel_id)
+    @channel = Channel.find(channel_id)
+    if @channel[:channel_type] == "organization_feed"
+      if Post.exists?(["owner_id = #{self[:id]} AND channel_id = #{channel_id} AND post_type != 19"])
+        true
+      else
+        false
+      end
+    else
+      false
+    end
+  end
+
   def self.create_new_user(params, location_id)
     if params[:Email].present?
       setup_email = params[:Email]

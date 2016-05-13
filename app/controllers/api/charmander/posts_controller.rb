@@ -28,7 +28,7 @@ module Api
       end
 
       def compose
-        if !Post.passed_spam_check(params)
+        if !Post.passed_spam_check(params[:content])
           @user = User.find(params[:owner_id])
           if @user[:is_valid]
             @channel = Channel.find(params[:channel_id])

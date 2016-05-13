@@ -36,7 +36,7 @@ class UserPrivilege < ActiveRecord::Base
   after_create :search_region_feed, :search_category_feed
 
   def search_category_feed
-    server_life_15773_cats = ["cafe","food","restaurant","meal_takeaway","bar","bakery","night_club","lodging","Cocktail Bar","Restaurant","Irish Pub","American Restaurant","Wings Joint","Pizza Place","BBQ Joint","Fast Food Restaurant"]
+    server_life_15773_cats = ["food","restaurant","meal_takeaway","bar","bakery","night_club","lodging","Cocktail Bar","Restaurant","Irish Pub","American Restaurant","Wings Joint","Pizza Place","BBQ Joint","Fast Food Restaurant"]
     nursing_life_6841_cats = ["hospital","Medical Center","Acupuncturist","Alternative Healer","Chiropractor","Dentist's Office","Doctor's Office","Emergency Room","Eye Doctor","Hospital","Laboratory","Maternity Clinic","Mental Health Office","Rehab Center","Urgent Care Center","Veterinarian","College Lab","Animal Shelter","Funeral Home","Assisted Living"]
     begin
       @location = Location.find(location_id)

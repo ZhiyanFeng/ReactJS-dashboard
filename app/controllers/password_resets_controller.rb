@@ -1,8 +1,7 @@
 class PasswordResetsController < ApplicationController
-  layout 'sessions'
   def new
   end
-  
+
   def create
     if user = User.find_by_email(params[:email])
       user.send_password_reset if user
@@ -18,7 +17,7 @@ class PasswordResetsController < ApplicationController
       if @user.password_reset_sent_at < 2.hours.ago
         redirect_to password_resets_expired_path
       else
-        redirect_to password_resets_complete_path        
+        redirect_to password_resets_complete_path
       end
     else
       redirect_to root_url
@@ -37,7 +36,7 @@ class PasswordResetsController < ApplicationController
       render :edit
     end
   end
-  
+
   def reset_password
     @user = User.find_by_password_reset_token!(params[:id])
     if @user.password_reset_sent_at < 2.hours.ago
@@ -46,10 +45,10 @@ class PasswordResetsController < ApplicationController
       render :edit
     end
   end
-  
+
   def complete
   end
-  
+
   def expired
   end
 end

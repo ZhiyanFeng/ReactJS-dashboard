@@ -103,13 +103,13 @@ module Api
                 render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot post to this channel" } }
               end
             else
-              render :json => { "eXpresso" => { "code" => -1, "error" => "Post speed threshold reached", "message" => "Slow down, you can post to a public channel every 5 minutes." } }
+              render :json => { "eXpresso" => { "code" => -1, "error" => "Post speed threshold reached", "message" => I18n.t('warning.spam.speed') } }
             end
           else
             render :json => { "eXpresso" => { "code" => -1, "error" => "Not a valid user account" } }
           end
         else
-          render :json => { "eXpresso" => { "code" => -1, "error" => "Failed spam check", "message" => "Your post is too short, it failed our spam check. Please use at least 8 characters." } }
+          render :json => { "eXpresso" => { "code" => -1, "error" => "Failed spam check", "message" => I18n.t('warning.spam.length') } }
         end
       end
 

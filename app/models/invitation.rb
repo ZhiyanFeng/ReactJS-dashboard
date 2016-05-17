@@ -69,7 +69,7 @@ class Invitation < ActiveRecord::Base
     end
     transaction do
       if Location.exists?(:four_sq_id => params[:LocationUniqueID])
-        @location = Location.where(:four_sq_id => params[:LocationUniqueID]).first
+        @location = Location.where(:four_sq_id => params[:LocationUniqueID]).order('created_at DESC').first
         @user = User.new(
           :first_name => params[:FirstName],
           :last_name => params[:LastName],
@@ -113,7 +113,7 @@ class Invitation < ActiveRecord::Base
           false
         end
       elsif Location.exists?(:google_map_id => params[:LocationUniqueID])
-        @location = Location.where(:google_map_id => params[:LocationUniqueID]).first
+        @location = Location.where(:google_map_id => params[:LocationUniqueID]).order('created_at DESC').first
         @user = User.new(
           :first_name => params[:FirstName],
           :last_name => params[:LastName],

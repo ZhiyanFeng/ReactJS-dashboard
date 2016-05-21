@@ -16,6 +16,23 @@ module Api
 
       respond_to :json
 
+      def set_title
+        if Channel.exists?(:id => params[:id])
+          @channel = Channel.find(params[:id])
+          if Subscription.exists?(:channel_id => params[:id], :user_id => params[:user_id], :is_admin => true, :is_valid => true, :is_active => true)
+            if @channel.update_attribute(:channel_name, params[:channel_name])
+              render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+            else
+              render json: { "eXpresso" => { "code" => -1, "message" => "Something went wrong! We were unable to set the channel name at this time. Try again later" } }
+            end
+          else
+            render json: { "eXpresso" => { "code" => -1, "message" => "You are not an admin of the Channel, you can't do this!", "error" => "User does not have the proper admin privilege proceed." } }
+          end
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => "The group you are trying to become and admin for does not exist.", "error" => "Could not find channel with ID #{params[:id]}." } }
+        end
+      end
+
       def set_require_shift_approval
         if Channel.exists?(:id => params[:id])
           @channel = Channel.find(params[:id])

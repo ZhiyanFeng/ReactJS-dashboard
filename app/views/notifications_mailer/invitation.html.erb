@@ -1,6 +1,6 @@
 <%
 if Rails.env.production?
-  @host = "http://dashboard.coffeemobile.com"
+  @host = "http://api.coffeemobile.com"
 elsif Rails.env.staging?
   @host = "http://staging.coffeemobile.com"
 elsif Rails.env.testing?
@@ -8,7 +8,7 @@ elsif Rails.env.testing?
 elsif Rails.env.dev?
   @host = "http://dev.coffeemobile.com"
 else
-  @host = "http://dashboard.coffeemobile.com"
+  @host = "http://api.coffeemobile.com"
 end
 %>
 
@@ -81,11 +81,11 @@ end
                             <td align="center" style="font-size: 0; line-height: 0;" height="15">
                                     <span style="font-style: italic; font-size: 12px;">All Rights Reserved.</span>
                             </td>
-                             
+
                         </tr>
                         <tr style="font-family: 'Open Sans', sans-serif; color: white;">
                             <td align="center" style="font-size: 0; line-height: 0;" height="15">
-                                    <span style="font-style: italic; font-size: 12px;">550 Queen Street East #350, Toronto, Ontario</span>                              
+                                    <span style="font-style: italic; font-size: 12px;">550 Queen Street East #350, Toronto, Ontario</span>
                             </td>
                         </tr>
                         <tr>

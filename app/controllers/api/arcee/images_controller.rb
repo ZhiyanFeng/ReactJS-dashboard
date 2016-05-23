@@ -164,6 +164,12 @@ module Api
           else
             render json: @image.errors
           end
+        elsif is_equal_to(params[:reference], "channel_profile")
+          if @image.create_upload_and_set_channel_profile(params[:owner_id], params[:file], params[:channel_id])
+            render json: @image, serializer: ImageSerializer
+          else
+            render json: @image.errors
+          end
         elsif is_equal_to(params[:reference], "org_profile")
           if @image.create_upload_and_set_organization_profile(1, params[:file])
             render json: @image, serializer: ImageSerializer

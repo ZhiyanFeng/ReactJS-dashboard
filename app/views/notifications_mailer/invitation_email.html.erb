@@ -1,6 +1,6 @@
 <%
 if Rails.env.production?
-  @host = "http://dashboard.coffeemobile.com"
+  @host = "http://api.coffeemobile.com"
 elsif Rails.env.staging?
   @host = "http://staging.coffeemobile.com"
 elsif Rails.env.testing?
@@ -8,7 +8,7 @@ elsif Rails.env.testing?
 elsif Rails.env.dev?
   @host = "http://dev.coffeemobile.com"
 else
-  @host = "http://dashboard.coffeemobile.com"
+  @host = "http://api.coffeemobile.com"
 end
 %>
 

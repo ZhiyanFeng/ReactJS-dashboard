@@ -139,6 +139,20 @@ class Image < ActiveRecord::Base
     end
   end
 
+  def create_upload_and_set_channel_profile(owner, file, channel_id)
+    transaction do
+      if save
+        self.update_attribute(:image_type, 2)
+        self.update_attribute(:avatar, file)
+        self.update_attribute(:is_valid, true)
+        if Channel.exists?(:id => channel_id)
+          @channel = Channel.find(channel_id)
+          @channel.update_attribute(:profile_id, self.id)
+        end
+      end
+    end
+  end
+
   def create_upload_and_set_user_profile(owner, file)
     transaction do
       if save

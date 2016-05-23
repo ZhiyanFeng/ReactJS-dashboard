@@ -1,6 +1,6 @@
 <%
 if Rails.env.production?
-  @host = "http://dashboard.coffeemobile.com"
+  @host = "http://api.coffeemobile.com"
 elsif Rails.env.staging?
   @host = "http://staging.coffeemobile.com"
 elsif Rails.env.testing?
@@ -19,7 +19,7 @@ end
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <!-- Facebook sharing information tags -->
         <meta property="og:title" content="Email Confirmation">
-        
+
         <title>Email Confirmation</title>
 
 	</head>
@@ -29,7 +29,7 @@ end
             	<tr>
                 	<td align="center" valign="top">
                         <!-- // Begin Template Preheader \\ -->
-                        
+
                         <!-- // End Template Preheader \\ -->
                     	<table border="0" cellpadding="0" cellspacing="0" width="700" id="templateContainer">
                         	<tr>
@@ -38,11 +38,11 @@ end
                                 	<table border="0" cellpadding="0" cellspacing="0" width="700" id="templateHeader">
                                         <tr>
                                             <td class="headerContent">
-                                            
+
                                             	<!-- // Begin Module: Standard Header Image \\ -->
                                             	<img src="http://www.coffeemobile.com/wp-content/uploads/2014/06/coffee_header_logo2.png" style="max-width:450px;height:auto;margin-left: 20px;"  mc:label="header_image" mc:edit="header_image" mc:allowdesigner="" mc:allowtext="">
                                             	<!-- // End Module: Standard Header Image \\ -->
-                                            
+
                                             </td>
                                         </tr>
                                     </table>
@@ -55,13 +55,13 @@ end
                                 	<table border="0" cellpadding="10" cellspacing="0" width="700" id="templateBody">
                                     	<tr>
                                             <td valign="top" style="color:#334c58;font-family:Verdana;font-size:14px;line-height:150%;text-align:left;">
-                                
+
                                                 <!-- // Begin Module: Standard Content \\ -->
                                                 <table border="0" cellpadding="20" cellspacing="0" width="100%" class="cellbody">
                                                     <tr>
                                                         <td valign="top" style="border-radius:20px;background-color:#f7f5f2;">
                                                             <div mc:edit="std_content00">
-                                                                
+
                                                                 <span style="color:#334c58;display:block;font-family:Verdana;font-size:30px;line-height:100%;margin-bottom:10px;text-align:left;">Please confirm your email</span>
                                                                 <a href='<%= @host %>/api/users/activate/<%= @user.validation_hash%>' style="color:#FFFFFF;display:inline-block;font-family:Verdana;font-size:18px;line-height:100%;margin-bottom:20px;margin-top:20px;margin-left:25px;text-align:left;background-color:#00c4c9;padding-top:10px;padding-bottom:10px;padding-left:25px;padding-right:25px;border-radius:5px;text-decoration:none;">Click Here</a>
                                                                 <br>
@@ -76,7 +76,7 @@ end
                                                     </tr>
                                                 </table>
                                                 <!-- // End Module: Standard Content \\ -->
-                                                
+
                                             </td>
                                         </tr>
                                     </table>
@@ -86,7 +86,7 @@ end
                         	<tr>
                             	<td align="center" valign="top">
                                     <!-- // Begin Template Footer \\ -->
-                                	
+
                                     <!-- // End Template Footer \\ -->
                                 </td>
                             </tr>

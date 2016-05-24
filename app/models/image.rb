@@ -147,7 +147,7 @@ class Image < ActiveRecord::Base
         self.update_attribute(:is_valid, true)
         if Channel.exists?(:id => channel_id)
           @channel = Channel.find(channel_id)
-          @channel.update_attribute(:profile_id, self.id)
+          @channel.update_attribute(:channel_profile_id, self.id)
         end
       end
     end

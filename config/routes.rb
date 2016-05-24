@@ -36,6 +36,9 @@ Expresso::Application.routes.draw do
   resources :videos
   resources :users
 
+  get "user_search" => "users#search", :as => "user_search"
+  post "users/list_by_name" => "users#list_by_name", :as => "list_by_name"
+
   get "/404", :to => "errors#404"
   get "/422", :to => "errors#404"
   get "/500", :to => "errors#500"

@@ -23,6 +23,21 @@ class UsersController < ApplicationController
     end
   end
 
+  def search
+    respond_to do |format|
+      format.html # show.html.erb
+    end
+  end
+
+  def list_by_name
+    name = params[:user_name].split(' ')
+    @users = User.where("lower(first_name) like ? and lower(last_name) like ?","\%#{name[0]}\%","\%#{name[1]}\%")
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @users }
+    end
+  end
+
   # GET /users/new
   def new
     @user = User.new

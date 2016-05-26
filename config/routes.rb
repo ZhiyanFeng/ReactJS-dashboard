@@ -35,9 +35,16 @@ Expresso::Application.routes.draw do
   resources :subscriptions
   resources :videos
   resources :users
+  #resources :locations
 
   get "user_search" => "users#search", :as => "user_search"
+  get "location_search" => "locations#search", :as => "location_search"
   post "users/list_by_name" => "users#list_by_name", :as => "list_by_name"
+  post "locations/list_search_result" => "locations#list_search_result", :as => "list_location_search_result"
+  #get "locations/list_members" => "locations#list_members", :as => "list_location_members"
+  get "locations/make_admin" => "locations#make_admin", :as => "location_make_admin"
+  match "locations/list_members/:id", :as => :list_location_members, :via => :get, :controller => :locations, :action => :list_members
+  #match 'organizations/list/:id', :as => :organizations_list, :via => :post, :controller => :organizations, :action => :list
 
   get "/404", :to => "errors#404"
   get "/422", :to => "errors#404"

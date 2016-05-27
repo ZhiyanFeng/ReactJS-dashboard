@@ -340,6 +340,16 @@ module Api
         end
       end
 
+      def deactivate
+        if User.exists?(:id => params[:id], :is_valid => true)
+          @user = User.find(param[:id])
+          @user.update_attribute(:is_valid, false)
+          render json: { "eXpresso" => { "code" => 1, "message" => "Password successfully changed" } }
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => "User account does not exist", "error" => "Cannot find user account" } }
+        end
+      end
+
       def invite_from_contact
         t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
         t_token = '81eaed486465b41042fd32b61e5a1b14'

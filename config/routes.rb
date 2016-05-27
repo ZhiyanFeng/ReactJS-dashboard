@@ -234,6 +234,7 @@ Expresso::Application.routes.draw do
         post :safety_trainings, :on => :member
         post :safety_quizzes, :on => :member
         post :zhu_xiao_zhang_hao, :on => :member
+        get :deactivate, :on => :member
       end
 
       resources :invitations do

@@ -344,7 +344,7 @@ module Api
         if User.exists?(:id => params[:id], :is_valid => true)
           @user = User.find(params[:id])
           @user.update_attribute(:is_valid, false)
-          render json: { "eXpresso" => { "code" => 1, "message" => "Password successfully changed" } }
+          render json: { "eXpresso" => { "code" => 1, "message" => "Account successfully deleted" } }
         else
           render json: { "eXpresso" => { "code" => -1, "message" => "User account does not exist", "error" => "Cannot find user account" } }
         end

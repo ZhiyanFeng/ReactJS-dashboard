@@ -179,6 +179,7 @@ Expresso::Application.routes.draw do
         get :test_sidekiq, :on => :collection
         post :contact_dump, :on => :member
         post :flash_action, :on => :member
+        get :deactivate, :on => :member
       end
 
       resources :user_privileges do
@@ -234,7 +235,6 @@ Expresso::Application.routes.draw do
         post :safety_trainings, :on => :member
         post :safety_quizzes, :on => :member
         post :zhu_xiao_zhang_hao, :on => :member
-        get :deactivate, :on => :member
       end
 
       resources :invitations do

@@ -342,7 +342,7 @@ module Api
 
       def deactivate
         if User.exists?(:id => params[:id], :is_valid => true)
-          @user = User.find(param[:id])
+          @user = User.find(params[:id])
           @user.update_attribute(:is_valid, false)
           render json: { "eXpresso" => { "code" => 1, "message" => "Password successfully changed" } }
         else

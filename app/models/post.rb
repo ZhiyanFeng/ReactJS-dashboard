@@ -116,6 +116,7 @@ class Post < ActiveRecord::Base
         shift['source'] = 11
         @shift = ScheduleElement.create(
           :owner_id => self.owner_id,
+          :location_id => params[:location_id].prsent? ? params[:location_id] : nil,
           :schedule_id => 0,
           :name => "shift",
           :start_at => object.last['start_at'],

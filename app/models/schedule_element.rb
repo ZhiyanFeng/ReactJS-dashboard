@@ -2,6 +2,7 @@ class ScheduleElement < ActiveRecord::Base
   #default_scope :order => 'start_at DESC'
   belongs_to :owner, :class_name => "User", :foreign_key => "owner_id"
   belongs_to :coverer, :class_name => "User", :foreign_key => "coverer_id"
+  has_one :location, :class_name => "Location", :foreign_key => "location_id"
 
   default_scope { order('start_at DESC') }
 
@@ -19,7 +20,7 @@ class ScheduleElement < ActiveRecord::Base
   # 3 - approved
   # 4 - rejected
 
-  attr_accessible :name, :schedule_id, :owner_id, :coverer_id, :approver_id, :trade_status, :start_at, :end_at, :is_valid
+  attr_accessible :name, :schedule_id, :owner_id, :coverer_id, :approver_id, :trade_status, :start_at, :end_at, :location_id, :is_valid
 
   def approve(approver_id, require_approval=nil)
     if !require_approval

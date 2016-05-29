@@ -1,6 +1,7 @@
 class ShiftSerializer < ActiveModel::Serializer
 	self.root = "shift"
   attributes :id,
+  :location,
   :owner_id,
   :poster_name,
   :poster,
@@ -75,6 +76,18 @@ class ShiftSerializer < ActiveModel::Serializer
       @tip[:owner_id]
     else
       0
+    end
+  end
+
+  def location
+    if object.location_id.present?
+      if Location.exists?(:id => location_id)
+        LocationSerializer.new(object.location)
+      else
+        nil
+      end
+    else
+      nil
     end
   end
 end

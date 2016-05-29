@@ -16,7 +16,7 @@ class TwilioCallbackController < ApplicationController
 
 	def brett_response
 		# create a TwiML message
-		if params[:text].downcase == "yes"
+		if params[:Body].downcase == "yes"
 			twiml = Twilio::TwiML::Response.new do |r|
 				r.Message "Thanks for your support, we will be in touch shortly!"
 			end

@@ -15,6 +15,7 @@ Expresso::Application.routes.draw do
 
   post "zencoder-callback" => "zencoder_callback#create", :as => "zencoder_callback"
   get "twilio-callback" => "twilio_callback#sms_response", :as => "twilio_callback"
+  post "twilio-callback-brett" => "twilio_callback#brett_response", :as => "twilio_callback_brett"
   post "plivo-callback" => "plivo_callback#sms_response", :as => "plivo_callback"
 
   get "password_resets/new"

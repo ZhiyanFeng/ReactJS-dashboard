@@ -30,26 +30,31 @@ class PostSignupWorker
         if mession_id > 0
           action = "none"
           if count == 1
-            message_body = "You're kinda the only one in your network #{@user[:first_name]}. Be your locations champ by using this link to invite your team to Shyft!"
+            #message_body = "You're kinda the only one in your network #{@user[:first_name]}. Be your locations champ by using this link to invite your team to Shyft!"
+            message_body = "Hey #{@user[:first_name]}! ShyftBot here👋 ... So you're kinda the only one in your network - and you kinda need your team on the app for this whole thing to work out. Be the hero and click here to get your team on Shyft."
             action = "contact_invite"
           elsif count <= 3
-            message_body = "Nice work #{@user[:first_name]}, you're already at #{count} team members in your location. Remember, the more team members you invite, the more co-workers you can Shyft with!"
+            #message_body = "Nice work #{@user[:first_name]}, you're already at #{count} team members in your location. Remember, the more team members you invite, the more co-workers you can Shyft with!"
+            message_body = "Solid work #{@user[:first_name]}, you've grown your team to  #{count} members👌 Sometimes people need a little extra nudge though, click here if you're missing any coworkers on Shyft."
             action = "contact_invite"
           elsif count <= 6
-            message_body = "Good job #{@user[:first_name]}, your network has stepped up to #{count} users. Missing anyone? Keep up the solid Shyfting by inviting here: Use this link if you're missing anyone that needs Shyft:"
+            #message_body = "Good job #{@user[:first_name]}, your network has stepped up to #{count} users. Missing anyone? Keep up the solid Shyfting by inviting here: Use this link if you're missing anyone that needs Shyft:"
+            message_body = "Boom! Your network has grown to #{count} team members. My job is to help get your whole team on the app so you can have a cool app for work! Click here to invite your last few team members."
             action = "contact_invite"
           else
             if !@user[:profile_id].present?
-              message_body = "Hi #{@user[:first_name]}! Remember to upload a profile pic on Shyft, so your team members know how strong your selfie game is. This link will take you there: "
+              #message_body = "Hi #{@user[:first_name]}! Remember to upload a profile pic on Shyft, so your team members know how strong your selfie game is. This link will take you there: "
+              message_body = "Hi #{@user[:first_name]}! Remember to upload a profile pic on Shyft, so your team members know how strong your selfie game is. Click here."
               action = "profile"
             else
               @channels = Subscription.where(:user_id => @user[:id], :is_valid => true, :is_active => true)
               channel_id_list = @channels.pluck(:id)
               if Post.exists?("channel_id in (#{channel_id_list.join(",")}) AND is_valid = 't' AND post_type = 19")
-                message_body = "Awesome job #{@user[:first_name]}! Your network has stepped up to #{count} users. Nice Shyfting! Missing anyone though? Use this link to get them on Shyft"
+                #message_body = "Awesome job #{@user[:first_name]}! Your network has stepped up to #{count} users. Nice Shyfting! Missing anyone though? Use this link to get them on Shyft"
+                message_body = "Hey, its me again. Awesome job #{@user[:first_name]}! Since your network has stepped up to #{count} users, it might make sense to add a schedule? Click here."
                 action = "contact_invite"
               else
-                message_body = "Awesome job #{@user[:first_name]}! You guys are already at #{count} team members in your location. Use this quick link to share this weeks schedule"
+                #message_body = "Awesome job #{@user[:first_name]}! You guys are already at #{count} team members in your location. Use this quick link to share this weeks schedule"
                 action = "create_schedule"
               end
             end

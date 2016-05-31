@@ -5,7 +5,7 @@ class TwilioCallbackController < ApplicationController
 
 		# create a TwiML message
 		twiml = Twilio::TwiML::Response.new do |r|
-			r.Message "Can you message me back on my main number? This is just an outgoing number the app uses to send invites to our team on Shyft. Thanks."
+			r.Message "Hey, I am a robot so I cannot quite understand what you said💁  Want to email me at support@myshyft.com? Thanks! OR Reply STOP"
 		end
 
 		#Rails.logger.debug("twiml.text value: #{twiml.text}")

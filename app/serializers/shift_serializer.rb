@@ -81,7 +81,7 @@ class ShiftSerializer < ActiveModel::Serializer
 
   def location
     if object.location_id.present?
-      if Location.exists?(:id => location_id)
+      if Location.exists?(:id => object.location_id)
         LocationSerializer.new(object.location)
       else
         nil

@@ -1,4 +1,5 @@
 class ShiftLocationSerializer < ActiveModel::Serializer
+  self.root = false
   attributes :id,
   :location_address,
   :location_city,

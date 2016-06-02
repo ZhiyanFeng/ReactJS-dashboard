@@ -2,7 +2,7 @@ class ScheduleElement < ActiveRecord::Base
   #default_scope :order => 'start_at DESC'
   belongs_to :owner, :class_name => "User", :foreign_key => "owner_id"
   belongs_to :coverer, :class_name => "User", :foreign_key => "coverer_id"
-  has_one :location, :class_name => "Location", :foreign_key => "location_id"
+  has_many :location, :class_name => "Location", :foreign_key => "location_id"
 
   default_scope { order('start_at DESC') }
 

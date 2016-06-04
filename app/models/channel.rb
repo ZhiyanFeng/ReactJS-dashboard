@@ -134,7 +134,7 @@ class Channel < ActiveRecord::Base
           user[:id],
           user.mession[:id],
           post_object[:id],
-          post_object[:content],
+          base_type == "announcement" ? post_object[:content] : post_object[:content],
           post_object[:channel_id],
           poster_name,
           @cpr[:id],

@@ -12,9 +12,9 @@ class TrackedPushNotificationWorker
       message = I18n.t('push.shift.post') % {:name => poster_name}
       response = @mession.tracked_subscriber_push("open_app", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "announcement"
-      #message = poster_name + " announced: " + post_content
+      message = poster_name + ": " + post_content
       #message = poster_name + " just posted an annoucnement. Let them know you read it by tapping the checkmark ✔️🙋"
-      message = I18n.t('push.announcement') % {:name => poster_name}
+      #message = I18n.t('push.announcement') % {:name => poster_name}
       response = @mession.tracked_subscriber_push("open_detail", message, 4, post_id, @user, post_channel_id, @mession)
     elsif base_type == "post"
       #message = poster_name + " just posted: " + post_content

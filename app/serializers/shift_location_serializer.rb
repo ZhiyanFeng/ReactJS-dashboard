@@ -25,10 +25,16 @@ class ShiftLocationSerializer < ActiveModel::Serializer
   end
 
   def location_city
-    if object.province.present?
-      line = object.city + ", " + object.province + ", " + object.postal
-    else
-      line = object.city + ", " + object.country
+    line = ""
+    if object.city.present?
+      line = object.city
     end
+    if object.province.present?
+      line = line + ", " + object.province
+    end
+    if object.postal.present?
+      line = line + ", " + object.postal
+    end
+    line
   end
 end

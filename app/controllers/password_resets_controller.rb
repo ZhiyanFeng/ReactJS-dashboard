@@ -5,7 +5,9 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    if user = User.find_by_email(params[:email])
+    phone_number = params[:email].sub("@coffeemobile.com","")
+    #if user = User.find_by_email(params[:email])
+    if user = User.find_by_phone_number(phone_number)
       user.send_password_reset if user
       redirect_to password_resets_sent_path
     else

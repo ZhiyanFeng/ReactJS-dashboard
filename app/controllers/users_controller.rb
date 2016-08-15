@@ -35,6 +35,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
+      format.js {render :partial => "users/tb_users.js", content_type: "application/json" }
     end
   end
 
@@ -70,9 +71,11 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
+				format.js {render json: {updated: true}, content_type: "application/json" }
       else
         format.html { render action: 'edit' }
         format.json { render json: @user.errors, status: :unprocessable_entity }
+				format.js {render json: {updated: false}, content_type: "application/json" }
       end
     end
   end

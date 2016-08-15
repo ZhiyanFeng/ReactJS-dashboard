@@ -34,6 +34,7 @@ class LocationsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @locations }
+      format.js {render :partial => "locations/tb_locations.js", content_type: "application/json" }
     end
   end
 
@@ -43,6 +44,7 @@ class LocationsController < ApplicationController
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @members }
+      format.js {render :partial => "locations/tb_members.js", content_type: "application/json" }
     end
   end
 
@@ -51,13 +53,27 @@ class LocationsController < ApplicationController
     @channel = Channel.where(:channel_type => 'location_feed', :channel_frequency => params[:location_id].to_s, :is_valid => true).first
     @subscription = Subscription.where(:user_id => params[:user_id], :channel_id => @channel[:id], :is_valid => true, :is_active => true).first
 
-    if @privilege && @channel && @subscription
-      @subscription.update_attribute(:is_admin, true)
-      @privilege.update_attribute(:is_admin, true)
-      redirect_to "/locations/list_members/#{params[:location_id]}"
-    else
-      redirect_to "/locations/list_members/#{params[:location_id]}"
-    end
+		if request.format == :js
+			if @privilege && @channel && @subscription
+				@subscription.update_attribute(:is_admin, true)
+				@privilege.update_attribute(:is_admin, true)
+				respond_to do |format|
+					format.js {render json: {updated: true}, content_type: "application/json" }
+				end
+			else
+				respond_to do |format|
+					format.js {render json: {updated: false}, content_type: "application/json" }
+				end
+			end
+		else
+			if @privilege && @channel && @subscription
+				@subscription.update_attribute(:is_admin, true)
+				@privilege.update_attribute(:is_admin, true)
+				redirect_to "/locations/list_members/#{params[:location_id]}"
+			else
+				redirect_to "/locations/list_members/#{params[:location_id]}"
+			end
+		end
   end
 
   # GET /users/new

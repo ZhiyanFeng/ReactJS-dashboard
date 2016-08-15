@@ -1,0 +1,12 @@
+<% array = [] %>
+<% @locations.each do |location| %>
+	<% array.push({
+		name: location.location_name,
+		address: location.address,
+		city: "#{location.city}, #{location.province}",
+		created: location.created_at.strftime('%F %H:%M'),
+		member_count: location.member_count,
+		members: "http://toolbeam.dev/t/ltwaayvk?id=#{location.id}"
+	}) %>
+<% end %>
+<%= array.to_json.html_safe %>

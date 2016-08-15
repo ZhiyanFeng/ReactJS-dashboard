@@ -87,6 +87,7 @@ Expresso::Application.routes.draw do
         get :recount_branded_geo_region_channel, :on => :member
         get :recount_location_region_channel, :on => :member
         get :recount_category_channel, :on => :member
+        get :assign_shifs_to_channel, :on => :collection
       end
 
       resources :chat_sessions do
@@ -181,6 +182,7 @@ Expresso::Application.routes.draw do
         post :contact_dump, :on => :member
         post :flash_action, :on => :member
         get :deactivate, :on => :member
+        post :fetch_shifts, :on => :member
       end
 
       resources :user_privileges do

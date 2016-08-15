@@ -99,7 +99,7 @@ class Post < ActiveRecord::Base
 
   end
 
-  def process_attachments(attachments = nil, user_id = nil, tip_amount = nil)
+  def process_attachments(attachments = nil, user_id = nil, tip_amount = nil, channel_id = nil)
     @user = User.find(user_id)
     json = {}
     json['objects'] = []
@@ -119,6 +119,7 @@ class Post < ActiveRecord::Base
           :location_id => object.last['location_id'].present? ? object.last['location_id'] : nil,
           :schedule_id => 0,
           :name => "shift",
+          :channel_id => channel_id,
           :start_at => object.last['start_at'],
           :end_at => object.last['end_at']
         )

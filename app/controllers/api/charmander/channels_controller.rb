@@ -453,6 +453,24 @@ module Api
         render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records updated, #{counta} ambiguous records also updated" } }
       end
 
+      def assign_shifs_to_channel
+        count = 0
+        counta = 0
+        @shyfts = ScheduleElement.where(:channel_id => nil)
+        @shyfts.each do |shyft|
+          @attachment = Attachment.where("json = '{\"objects\":[{\"source\":11,\"source_id\":#{shyft[:id]}}]}'")
+          if @attachment.present?
+            shyft.update_attribute(:channel_id, @attachment.first[:id])
+            count = count + 1
+          else
+            counta = counta + 1
+          end
+        end
+
+        render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records updated, #{counta} records skipped" } }
+      end
+
+
       def fix_channel_chats
         channel_count = 0
         subscriptions_count = 0

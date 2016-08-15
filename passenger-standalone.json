@@ -1,5 +1,5 @@
 {
   "max_pool_size": 13,
   "pool_idle_time": 300,
-  "min_instances": 11
+  "min_instances": 9
 }

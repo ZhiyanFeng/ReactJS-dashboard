@@ -188,6 +188,10 @@ module Api
         end
       end
 
+      def fetch_shifts
+        UserAnalytic.create(:action => 101, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+      end
+
       def synchronize
         #Log the action
         UserAnalytic.create(:action => 4, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)

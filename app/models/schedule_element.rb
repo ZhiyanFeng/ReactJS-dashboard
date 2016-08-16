@@ -20,7 +20,7 @@ class ScheduleElement < ActiveRecord::Base
   # 3 - approved
   # 4 - rejected
 
-  attr_accessible :name, :schedule_id, :owner_id, :coverer_id, :approver_id, :trade_status, :start_at, :end_at, :location_id, :is_valid
+  attr_accessible :name, :schedule_id, :owner_id, :coverer_id, :approver_id, :trade_status, :start_at, :end_at, :location_id, :channel_id, :is_valid
 
   def approve(approver_id, require_approval=nil)
     if !require_approval

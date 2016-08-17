@@ -459,11 +459,14 @@ module Api
         @shyfts = ScheduleElement.where(:channel_id => nil)
         @shyfts.each do |shyft|
           @attachment = Attachment.where("json = '{\"objects\":[{\"source\":11,\"source_id\":#{shyft[:id]}}]}'")
-          if @attachment.present?
-            shyft.update_attribute(:channel_id, @attachment.first[:id])
-            count = count + 1
-          else
-            counta = counta + 1
+          if @attachment.first.present?
+            if @attachment.first.parent.present?
+              @post = @attachment.first.parent
+              shyft.update_attribute(:channel_id => @post[:channel_id], :post_id => @post[:id])
+              count = count + 1
+            else
+              counta = counta + 1
+            end
           end
         end
 

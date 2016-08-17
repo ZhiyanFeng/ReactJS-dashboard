@@ -171,9 +171,9 @@ module Api
                 render json: @post, serializer: SyncFeedSerializer
                 if params[:attachments].present?
                   if params[:tip_amount].present?
-                    @post.process_attachments(params[:attachments], @user[:id], params[:tip_amount], @channel[:id])
+                    @post.process_attachments(params[:attachments], @user[:id], params[:tip_amount], @channel[:id], @post[:id])
                   else
-                    @post.process_attachments(params[:attachments], @user[:id], @channel[:id])
+                    @post.process_attachments(params[:attachments], @user[:id], @channel[:id], @post[:id])
                   end
                 end
                 @user.process_tags(params[:tags]) if params[:tags].present?

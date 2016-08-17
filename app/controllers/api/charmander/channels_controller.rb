@@ -462,7 +462,7 @@ module Api
           if @attachment.first.present?
             if @attachment.first.parent.present?
               @post = @attachment.first.parent
-              shyft.update_attribute(:channel_id => @post[:channel_id], :post_id => @post[:id])
+              shyft.update_attributes(:channel_id => @post[:channel_id], :post_id => @post[:id])
               count = count + 1
             else
               counta = counta + 1

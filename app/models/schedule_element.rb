@@ -4,7 +4,7 @@ class ScheduleElement < ActiveRecord::Base
   belongs_to :coverer, :class_name => "User", :foreign_key => "coverer_id"
   belongs_to :location, :class_name => "Location", :foreign_key => "location_id"
 
-  default_scope { order('start_at DESC') }
+  #default_scope { order('start_at DESC') }
 
   has_event_calendar
 

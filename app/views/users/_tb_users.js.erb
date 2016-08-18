@@ -1,9 +1,9 @@
 <% array = [] %>
 <% @users.each do |user| %>
 	<% array.push({
-		name: "#{user.first_name} #{user.last_name}",
-		phone: user.phone_number,
-		change_email: "https://toolbeam.com/t/wdftwjtc?id=#{user.id}&user[email]=#{user.email}"
+		Name: "#{user.first_name} #{user.last_name}",
+		Phone: number_to_phone(user.phone_number, area_code: true),
+		"Update": "http://toolbeam.dev/t/ofwfbyyv?id=#{user.id}&user[email]=#{user.email}"
 	}) %>
 <% end %>
 <%= array.to_json.html_safe %>

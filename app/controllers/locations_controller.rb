@@ -58,11 +58,11 @@ class LocationsController < ApplicationController
 				@subscription.update_attribute(:is_admin, true)
 				@privilege.update_attribute(:is_admin, true)
 				respond_to do |format|
-					format.js {render json: {updated: true}, content_type: "application/json" }
+					format.js {render json: {Admin: true}, content_type: "application/json" }
 				end
 			else
 				respond_to do |format|
-					format.js {render json: {updated: false}, content_type: "application/json" }
+					format.js {render json: {Error: @user.errors}, content_type: "application/json", :status => 500 }
 				end
 			end
 		else

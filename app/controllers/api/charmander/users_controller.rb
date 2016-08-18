@@ -188,6 +188,15 @@ module Api
         end
       end
 
+      def fetch_shifts
+        UserAnalytic.create(:action => 101, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
+        @shyfts = ScheduleElement.where("start_at >= '#{params[:startDate]}' AND start_at <= '#{params[:endDate]}' AND channel_id IN (#{@subscriptions.join(", ")})")
+
+        render json: @shyfts, each_serializer: ShiftSerializer
+      end
+
       def synchronize
         #Log the action
         UserAnalytic.create(:action => 4, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)

@@ -240,6 +240,13 @@ class UserPrivilege < ActiveRecord::Base
       location_channel.recount
       if location_starting_member_count == 0 && location_channel.member_count == 1
         Post.where(:channel_id => location_channel[:id]).update_all(:is_valid => false)
+
+        begin
+          create_AB_test_post(location[:id],location_channel[:id])
+        rescue
+        ensure
+        end
+
         @post = Post.new(
           :org_id => 1,
           :location => self[:location_id],
@@ -271,6 +278,96 @@ class UserPrivilege < ActiveRecord::Base
 
         end
       end
+    end
+  end
+
+  # This is for the AB testing method
+  def create_AB_test_post(location_id, channel_id)
+    if location_id % 4 == 0
+      @post = Post.new(
+          :org_id => 1,
+          :location => location_id,
+          :owner_id => 134,
+          :channel_id => channel_id,
+          :title => "Shyft tutorial",
+          :content => "Want to get a shift covered? Tap the + Button at the bottom of this screen and select 'Shift' then try adding your details and press post! Click here for other features: http://bit.ly/LiteUserGuide",
+          #image 3
+          #:attachment_id => 82229,
+          :attachment_id => 7507,
+          :post_type => 6
+        )
+      @post.save
+    elsif location_id % 4 == 1
+      @post = Post.new(
+          :org_id => 1,
+          :location => location_id,
+          :owner_id => 134,
+          :channel_id => channel_id,
+          :title => "Shyft tutorial",
+          :content => "Managers get admin features! Click the gear button in the top right hand corner of this screen and select 'I Am A Manager'. Click here for other features: http://bit.ly/LiteUserGuide",
+          #image 4
+          #:attachment_id => 82231,
+          :attachment_id => 7508,
+          :post_type => 6
+        )
+      @post.save
+    elsif location_id % 4 == 2
+      @post = Post.new(
+          :org_id => 1,
+          :location => location_id,
+          :owner_id => 134,
+          :channel_id => channel_id,
+          :title => "Shyft tutorial",
+          :content => "Snap & Share your schedule! Select the schedule tab, then take a quick snap of your schedule, enter your details and post it! Click here for other features: http://bit.ly/LiteUserGuide",
+          #image 6
+          #:attachment_id => 82233,
+          :attachment_id => 7510,
+          :post_type => 6
+        )
+      @post.save
+    elsif location_id % 4 == 3
+      @post3 = Post.new(
+          :org_id => 1,
+          :location => location_id,
+          :owner_id => 134,
+          :channel_id => channel_id,
+          :title => "Shyft tutorial",
+          :content => "Want to get a shift covered? Tap the + Button at the bottom of this screen and select 'Shift' then try adding your details and press post! Click here for other features: http://bit.ly/LiteUserGuide",
+          #image 3
+          #:attachment_id => 82229,
+          :attachment_id => 7507,
+          :post_type => 6
+        )
+      @post3.save
+
+      @post2 = Post.new(
+          :org_id => 1,
+          :location => location_id,
+          :owner_id => 134,
+          :channel_id => channel_id,
+          :title => "Shyft tutorial",
+          :content => "",
+          #image 2
+          #:attachment_id => 82228,
+          :attachment_id => 7506,
+          :post_type => 6
+        )
+      @post2.save
+
+      @post1 = Post.new(
+          :org_id => 1,
+          :location => location_id,
+          :owner_id => 134,
+          :channel_id => channel_id,
+          :title => "Shyft tutorial",
+          :content => "",
+          #image 1
+          #:attachment_id => 82236,
+          :attachment_id => 7505,
+          :post_type => 6
+        )
+      @post1.save
+    else
     end
   end
 

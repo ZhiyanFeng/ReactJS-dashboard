@@ -4,8 +4,8 @@
 		name: "#{member.user.first_name} #{member.user.last_name}",
 		joined_date: member.created_at.strftime('%F %H:%M'),
 		is_admin: member.is_admin,
-		make_admin: "http://toolbeam.dev/t/zypguvbl?location_id=#{member.location_id}&member_id=#{member.id}&user_id=#{member.owner_id}",
-		change_email: "http://toolbeam.dev/t/ofwfbyyv?id=#{member.owner_id}&user[email]=#{member.user.email}"
+		make_admin: "https://toolbeam.com/t/zahibpar/response?location_id=#{member.location_id}&member_id=#{member.id}&user_id=#{member.owner_id}",
+		change_email: "https://toolbeam.com/t/wdftwjtc?id=#{member.owner_id}&user[email]=#{member.user.email}"
 	}) %>
 <% end %>
 <%= array.to_json.html_safe %>

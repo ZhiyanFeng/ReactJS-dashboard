@@ -1,12 +1,12 @@
 <% array = [] %>
 <% @locations.each do |location| %>
 	<% array.push({
-		name: location.location_name,
-		address: location.address,
-		city: "#{location.city}, #{location.province}",
-		created: location.created_at.strftime('%F %H:%M'),
-		member_count: location.member_count,
-		members: "http://toolbeam.dev/t/ltwaayvk?id=#{location.id}"
+		Name: location.location_name,
+		Address: location.address,
+		City: "#{location.city}, #{location.province}",
+		Created: location.created_at.strftime('%F %H:%M'),
+		"Member Count": location.member_count,
+		"Details": "http://toolbeam.dev/t/ltwaayvk/response?id=#{location.id}"
 	}) %>
 <% end %>
 <%= array.to_json.html_safe %>

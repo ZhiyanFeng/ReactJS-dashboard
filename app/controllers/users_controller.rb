@@ -71,11 +71,11 @@ class UsersController < ApplicationController
       if @user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
-				format.js {render json: {updated: true}, content_type: "application/json" }
+				format.js {render json: {Updated: true}, content_type: "application/json" }
       else
         format.html { render action: 'edit' }
         format.json { render json: @user.errors, status: :unprocessable_entity }
-				format.js {render json: {updated: false}, content_type: "application/json" }
+				format.js {render json: {Error: @user.errors}, content_type: "application/json", :status => 500 }
       end
     end
   end

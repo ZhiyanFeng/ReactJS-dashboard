@@ -230,7 +230,7 @@ class UserPrivilege < ActiveRecord::Base
         @subscription = Subscription.where(:user_id => self[:owner_id], :channel_id => location_channel[:id]).first
         @subscription.update_attributes(:is_valid => true, :is_active => true)
       else
-        #make_post = true
+        make_post = true
         location_subscription = Subscription.create(
           :user_id => self[:owner_id],
           :channel_id => location_channel[:id],

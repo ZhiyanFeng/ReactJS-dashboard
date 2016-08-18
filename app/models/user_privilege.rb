@@ -230,7 +230,7 @@ class UserPrivilege < ActiveRecord::Base
         @subscription = Subscription.where(:user_id => self[:owner_id], :channel_id => location_channel[:id]).first
         @subscription.update_attributes(:is_valid => true, :is_active => true)
       else
-        make_post = true
+        #make_post = true
         location_subscription = Subscription.create(
           :user_id => self[:owner_id],
           :channel_id => location_channel[:id],
@@ -240,12 +240,6 @@ class UserPrivilege < ActiveRecord::Base
       location_channel.recount
       if location_starting_member_count == 0 && location_channel.member_count == 1
         Post.where(:channel_id => location_channel[:id]).update_all(:is_valid => false)
-
-        begin
-          create_AB_test_post(location[:id],location_channel[:id])
-        rescue
-        ensure
-        end
 
         @post = Post.new(
           :org_id => 1,
@@ -257,6 +251,12 @@ class UserPrivilege < ActiveRecord::Base
           :post_type => 1
         )
         @post.save
+
+        begin
+          create_AB_test_post(location[:id],location_channel[:id])
+        rescue
+        ensure
+        end
       end
 
       if make_post

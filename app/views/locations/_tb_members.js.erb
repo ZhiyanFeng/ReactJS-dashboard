@@ -4,8 +4,8 @@
 		Name: "#{member.user.first_name} #{member.user.last_name}",
 		Joined: member.created_at.strftime('%F %H:%M'),
 		"Is Admin": member.is_admin,
-		"Admin": "http://toolbeam.dev/t/zypguvbl/response?location_id=#{member.location_id}&member_id=#{member.id}&user_id=#{member.owner_id}",
-		"Update": "http://toolbeam.dev/t/ofwfbyyv?id=#{member.owner_id}&user[email]=#{member.user.email}"
+		"Admin": "https://toolbeam.com/t/zahibpar/response?location_id=#{member.location_id}&member_id=#{member.id}&user_id=#{member.owner_id}",
+		"Update": "https://toolbeam.com/t/wdftwjtc?id=#{member.owner_id}&user[email]=#{member.user.email}"
 	}) %>
 <% end %>
 <%= array.to_json.html_safe %>

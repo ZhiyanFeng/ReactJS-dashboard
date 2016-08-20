@@ -18,6 +18,42 @@ module Api
 
       respond_to :json
 
+      def post_shift
+        @user = User.find(params[:owner_id])
+        if @user[:is_valid]
+          chanel_id = decide_post_channel(params[:location_id],params[:permission],params[:channel_id],params[:user_ids])
+          @post = Post.new(
+            :org_id => 1,
+            :owner_id => params[:owner_id],
+            :title => "Shift Trade",
+            :content => params[:content],
+            :channel_id => channel_id,
+            :location => params[:location_id],
+            :post_type => 21
+          )
+          if @post.save
+            Follower.follow(4, @post[:id], @post[:owner_id])
+            post_base_type = PostType.find_post_type(@post[:post_type])
+            UserAnalytic.create(:action => 101,:org_id => params[:org_id], :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
+            render json: @shift, serializer: ShiftStandaloneSerializer
+            if params[:attachments].present?
+              if params[:tip_amount].present?
+                @post.process_attachments(params[:attachments], @user[:id], params[:tip_amount], @channel[:id], @post[:id])
+              else
+                @post.process_attachments(params[:attachments], @user[:id], @channel[:id], @post[:id])
+              end
+            end
+            @user.process_tags(params[:tags]) if params[:tags].present?
+
+            #@channel.subscribers_push(post_base_type, @post)
+            @channel.tracked_subscriber_push(post_base_type,@post)
+          else
+            render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot process posts" } }
+          end
+        else
+          render :json => { "eXpresso" => { "code" => -1, "error" => I18n.t('warning.account.invalid') } }
+        end
+      end
 
       def create
         @user = User.find(params[:owner_id])
@@ -109,6 +145,48 @@ module Api
           ApiKey.exists?(access_token: token)
         end
       end
+
+      def default_channel(location_id)
+        if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
+          @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true)
+          return @channel[:id]
+        else
+          return nil
+        end
+      end
+
+      def decide_post_channel(location_id, permission, channel_id = nil, user_ids = nil)
+        if permission == "location"
+          return default_channel(location_id)
+        elsif permission == "region"
+          if Channel.exists?("channel_type = 'region_feed' AND channel_frequency like '%|#{location_id}|%' AND is_valid AND allow_shift_trade")
+            @channel = Channel.exists?("channel_type = 'region_feed' AND channel_frequency like '%|#{location_id}|%' AND is_valid AND allow_shift_trade")
+            return @channel[:id]
+          #elsif Channel.exists?("channel_type = 'region_feed' AND channel_frequency like ''")
+          else
+            return default_channel(location_id)
+          end
+        elsif permission == "channel"
+          if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
+            @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true)
+            return @channel[:id]
+          else
+            return default_channel(location_id)
+          end
+        elsif permission == "users"
+          return default_channel(location_id)
+        else
+          return default_channel(location_id)
+        end
+
+        if channel_id.present? && channel_id > 0
+          return channel_id
+        #TODO: Add clause for user id post only
+        elsif
+
+        end
+      end
+
     end
   end
 end

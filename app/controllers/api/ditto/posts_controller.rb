@@ -21,7 +21,7 @@ module Api
       def post_shift
         @user = User.find(params[:owner_id])
         if @user[:is_valid]
-          chanel_id = decide_post_channel(params[:location_id],params[:permission],params[:channel_id],params[:user_ids])
+          channel_id = decide_post_channel(params[:location_id],params[:permission],params[:channel_id],params[:user_ids])
           @post = Post.new(
             :org_id => 1,
             :owner_id => params[:owner_id],
@@ -32,23 +32,34 @@ module Api
             :post_type => 21
           )
           if @post.save
-            Follower.follow(4, @post[:id], @post[:owner_id])
-            post_base_type = PostType.find_post_type(@post[:post_type])
-            UserAnalytic.create(:action => 101,:org_id => params[:org_id], :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
-            render json: @shift, serializer: ShiftStandaloneSerializer
-            if params[:attachments].present?
-              if params[:tip_amount].present?
-                @post.process_attachments(params[:attachments], @user[:id], params[:tip_amount], @channel[:id], @post[:id])
-              else
-                @post.process_attachments(params[:attachments], @user[:id], @channel[:id], @post[:id])
-              end
+            @shift = ScheduleElement.create(
+              :owner_id => params[:owner_id],
+              :location_id => params[:location_id],
+              :schedule_id => 0,
+              :name => "shift",
+              :channel_id => channel_id,
+              :post_id => @post[:id],
+              :start_at => params[:start_at],
+              :end_at => params[:end_at]
+            )
+            if params[:tip_amount].present? && params[:tip_amount].to_f > 0
+              @gratitude = Gratitude.new(
+                :amount => params[:tip_amount],
+                :shift_id => @shift[:id],
+                :owner_id => @post[:owner_id],
+                :source => 4,
+                :source_id => @post[:id]
+              )
+              @gratitude.create_gratitude(@post, false)
             end
-            @user.process_tags(params[:tags]) if params[:tags].present?
+            Follower.follow(4, @post[:id], @post[:owner_id])
 
-            #@channel.subscribers_push(post_base_type, @post)
-            @channel.tracked_subscriber_push(post_base_type,@post)
+            UserAnalytic.create(:action => 101,:org_id => 1, :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
+
+            render json: @shift, serializer: ShiftStandaloneSerializer
+            @channel.tracked_subscriber_push("post",@post)
           else
-            render :json => { "eXpresso" => { "code" => -1, "error" => "Cannot process posts" } }
+            render :json => { "eXpresso" => { "code" => -1, "error" => I18n.t('warning.account.create_post') } }
           end
         else
           render :json => { "eXpresso" => { "code" => -1, "error" => I18n.t('warning.account.invalid') } }
@@ -145,6 +156,8 @@ module Api
           ApiKey.exists?(access_token: token)
         end
       end
+
+      def attach_shift_object(start_at, end_at, )
 
       def default_channel(location_id)
         if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)

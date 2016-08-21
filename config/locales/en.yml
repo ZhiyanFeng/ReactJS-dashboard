@@ -23,6 +23,7 @@ en:
   warning:
     account:
       invalid: "Your account is not valid. Please contact support@myshyft.com for assitance."
+      create_post: "There was a problem creating your post."
     spam:
       speed: "Slow down, you can only post to a public channel once every 5 minutes."
       length: "Your message is too short, please make it longer."

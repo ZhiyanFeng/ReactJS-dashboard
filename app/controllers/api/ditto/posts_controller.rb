@@ -157,8 +157,6 @@ module Api
         end
       end
 
-      private
-
       def default_channel(location_id)
         if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
           @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true)
@@ -167,8 +165,6 @@ module Api
           return nil
         end
       end
-
-      private
 
       def decide_post_channel(location_id, permission, channel_id = nil, user_ids = nil)
         if permission == "location"
@@ -194,12 +190,12 @@ module Api
           return default_channel(location_id)
         end
 
-        if channel_id.present? && channel_id > 0
-          return channel_id
+        #if channel_id.present? && channel_id > 0
+        #  return channel_id
         #TODO: Add clause for user id post only
-        elsif
+        #elsif
 
-        end
+        #end
       end
 
     end

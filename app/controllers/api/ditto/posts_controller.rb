@@ -22,6 +22,7 @@ module Api
         @user = User.find(params[:owner_id])
         if @user[:is_valid]
           channel_id = decide_post_channel(params[:location_id],params[:permission],params[:channel_id],params[:user_ids])
+          @channel = Channel.find(channel_id)
           @post = Post.new(
             :org_id => 1,
             :owner_id => params[:owner_id],

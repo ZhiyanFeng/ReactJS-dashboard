@@ -31,6 +31,12 @@ module Api
         render json: @shyfts, each_serializer: ShiftStandaloneSerializer
       end
 
+      def fetch_user
+        if User.exists?(:id => params[:id])
+          @user = User.find_by_id(params[:id])
+        end
+      end
+
     end
   end
 end

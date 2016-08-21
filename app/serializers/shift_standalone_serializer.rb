@@ -1,5 +1,5 @@
 class ShiftStandaloneSerializer < ActiveModel::Serializer
-  self.root = "shift"
+  self.root = "eXpresso"
   attributes :id,
   :location,
   :owner_id,

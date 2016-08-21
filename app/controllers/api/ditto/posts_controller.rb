@@ -12,8 +12,8 @@ module Api
         #end
       end
 
-      before_filter :restrict_access, :except => []
-      before_filter :validate_session, :except => []
+      before_filter :restrict_access#, :except => []
+      before_filter :validate_session#, :except => []
       before_filter :set_headers
 
       respond_to :json
@@ -157,6 +157,8 @@ module Api
         end
       end
 
+      private
+
       def default_channel(location_id)
         if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
           @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true)
@@ -165,6 +167,8 @@ module Api
           return nil
         end
       end
+
+      private
 
       def decide_post_channel(location_id, permission, channel_id = nil, user_ids = nil)
         if permission == "location"

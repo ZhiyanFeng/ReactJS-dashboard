@@ -180,7 +180,7 @@ module Api
           end
         elsif permission == "channel"
           if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
-            @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true)
+            @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true).first
             return @channel[:id]
           else
             return default_channel(location_id)

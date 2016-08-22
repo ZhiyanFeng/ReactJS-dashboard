@@ -19,6 +19,16 @@ module Api
       respond_to :json
 
       def fetch_new
+        UserAnalytic.create(:action => 4, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        _BASIC_POST_TYPE_IDS = "5,6,7,8,9"
+        _ANNOUNCEMENT_POST_TYPE_IDS = "1,2,3,4,10"
+        _TRAINING_POST_TYPE_IDS = "11,12,13,18"
+        _QUIZ_POST_TYPE_IDS = "14,15"
+        _SAFETY_TRAINING_POST_TYPE_IDS = "16"
+        _SAFETY_QUIZ_POST_TYPE_IDS = "17"
+        _SCHEDULE_POST_TYPE_IDS = "19,20"
+
         result = {}
         result["server_sync_time"] = Time.now.utc
         result["subscriptions"] ||= Array.new
@@ -29,9 +39,9 @@ module Api
         result["notifications"] ||= Array.new
         result["sessions"] ||= Array.new
 
-        @subscriptions = Subscription.where(["user_id =#{@user[:id]} AND is_valid"])
+        channel_ids = Subscription.where(["user_id =#{@user[:id]} AND is_valid"]).pluck(:channel_id)
 
-
+        shift_count = Posts.where("post_type in ()").count
       end
 
       def fetch_shifts

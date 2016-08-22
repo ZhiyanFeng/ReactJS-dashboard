@@ -43,6 +43,14 @@ module Api
               :start_at => params[:start_at],
               :end_at => params[:end_at]
             )
+            shift = {}
+            shift['source'] = 11
+            shift['source_id'] = @shift.id
+            json['objects'].push(shift)
+            @attachment = Attachment.create(
+              :json => json.to_json.to_s
+            )
+            @post.update_attribute(:attachment_id, @attachment.id)
             if params[:tip_amount].present? && params[:tip_amount].to_f > 0
               @gratitude = Gratitude.new(
                 :amount => params[:tip_amount],

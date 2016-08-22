@@ -43,6 +43,8 @@ module Api
               :start_at => params[:start_at],
               :end_at => params[:end_at]
             )
+            json = {}
+            json['objects'] = []
             shift = {}
             shift['source'] = 11
             shift['source_id'] = @shift.id

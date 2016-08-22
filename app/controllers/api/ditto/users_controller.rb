@@ -18,7 +18,19 @@ module Api
 
       respond_to :json
 
-      def load_counters
+      def fetch_new
+        result = {}
+        result["server_sync_time"] = Time.now.utc
+        result["subscriptions"] ||= Array.new
+        result["posts"] ||= Array.new
+        result["shifts"] ||= Array.new
+        result["schedules"] ||= Array.new
+        result["contacts"] ||= Array.new
+        result["notifications"] ||= Array.new
+        result["sessions"] ||= Array.new
+
+        @subscriptions = Subscription.where(["user_id =#{@user[:id]} AND is_valid"])
+
 
       end
 

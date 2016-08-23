@@ -77,6 +77,7 @@ Expresso::Application.routes.draw do
         post :fetch_shifts, :on => :member
         post :fetch_counters, :on => :member
         post :fetch_subscriptions, :on => :member
+        post :fetch_schedules, :on => :member
       end
     end
 

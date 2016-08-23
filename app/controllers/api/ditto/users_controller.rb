@@ -86,7 +86,40 @@ module Api
         render json: { "eXpresso" => result }
       end
 
+      def fetch_schedules
+        result = {}
+        result["schedules"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
 
+        channels = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc").pluck(:channel_id)
+
+        UserAnalytic.create(:action => 103, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+        if UserAnalytic.exists?(:action => 103, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 103, :user_id => @user[:id]).last[:created_at]
+          @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND updated_at > ?",
+            params[:user_id],
+            last_fetch
+          ).order("posts.updated_at desc").limit(10)
+        else
+          last_fetch = DateTime.now.iso8601(3)
+          @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
+            params[:user_id]
+          ).order("posts.updated_at desc").limit(10)
+        end
+
+        deleted_ids = Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        @schedules.each do |p|
+          p.check_user(params[:user_id])
+        end
+        @schedules.map do |schedule|
+          result["schedules"].push(SyncScheduleSerializer.new(schedule, root: false))
+        end
+
+        result["deleted_ids"].push(deleted_ids)
+
+        render json: { "eXpresso" => result }
+      end
 
       def fetch_user
         if User.exists?(:id => params[:id])

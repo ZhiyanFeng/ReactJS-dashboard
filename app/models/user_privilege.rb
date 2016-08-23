@@ -292,8 +292,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "Want to get a shift covered? Tap the + Button at the bottom of this screen and select 'Shift' then try adding your details and press post! Click here for other features: http://bit.ly/LiteUserGuide",
           #image 3
-          #:attachment_id => 82229,
-          :attachment_id => 7507,
+          :attachment_id => 82229,
+          #:attachment_id => 7507,
           :post_type => 6
         )
       @post.save
@@ -306,8 +306,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "Managers get admin features! Click the gear button in the top right hand corner of this screen and select 'I Am A Manager'. Click here for other features: http://bit.ly/LiteUserGuide",
           #image 4
-          #:attachment_id => 82231,
-          :attachment_id => 7508,
+          :attachment_id => 82231,
+          #:attachment_id => 7508,
           :post_type => 6
         )
       @post.save
@@ -320,8 +320,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "Snap & Share your schedule! Select the schedule tab, then take a quick snap of your schedule, enter your details and post it! Click here for other features: http://bit.ly/LiteUserGuide",
           #image 6
-          #:attachment_id => 82233,
-          :attachment_id => 7510,
+          :attachment_id => 82233,
+          #:attachment_id => 7510,
           :post_type => 6
         )
       @post.save
@@ -334,8 +334,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "Want to get a shift covered? Tap the + Button at the bottom of this screen and select 'Shift' then try adding your details and press post! Click here for other features: http://bit.ly/LiteUserGuide",
           #image 3
-          #:attachment_id => 82229,
-          :attachment_id => 7507,
+          :attachment_id => 82229,
+          #:attachment_id => 7507,
           :post_type => 6
         )
       @post3.save
@@ -348,8 +348,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "",
           #image 2
-          #:attachment_id => 82228,
-          :attachment_id => 7506,
+          :attachment_id => 82228,
+          #:attachment_id => 7506,
           :post_type => 6
         )
       @post2.save
@@ -362,8 +362,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "",
           #image 1
-          #:attachment_id => 82236,
-          :attachment_id => 7505,
+          :attachment_id => 82236,
+          #:attachment_id => 7505,
           :post_type => 6
         )
       @post1.save

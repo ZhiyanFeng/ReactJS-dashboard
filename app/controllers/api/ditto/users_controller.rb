@@ -27,20 +27,27 @@ module Api
 
       # GET COUNTERS
       def fetch_counters
+
+        if UserAnalytic.exists?(:action => 100, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 100, :user_id => @user[:id]).last[:created_at]
+        else
+          last_fetch = Time.now
+        end
+
         UserAnalytic.create(:action => 100, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         result ||= Array.new
 
         channel_ids = Subscription.where(["user_id =#{@user[:id]} AND is_valid"]).pluck(:channel_id)
 
-        result.push("shift_counter" => Post.where("(post_type = 21 OR title = 'Shift Trade') AND is_valid AND created_at > '#{params[:check_date]}'").count)
-        result.push("post_counter" => Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid AND created_at > '#{params[:check_date]}'").count)
-        result.push("schedule_counter" => Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND is_valid AND created_at > '#{params[:check_date]}'").count)
-        result.push("notification_counter" => Notification.where("recipient_id = #{@user[:id]} AND created_at > '#{params[:check_date]}'").count)
+        result.push("shift_counter" => Post.where("(post_type = 21 OR title = 'Shift Trade') AND is_valid AND created_at > '#{last_fetch}'").count)
+        result.push("post_counter" => Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid AND created_at > '#{last_fetch}'").count)
+        result.push("schedule_counter" => Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND is_valid AND created_at > '#{last_fetch}'").count)
+        result.push("notification_counter" => Notification.where("recipient_id = #{@user[:id]} AND created_at > '#{last_fetch}'").count)
         member_location_ids = UserPrivilege.where(:owner_id => params[:id], :is_approved => true, :is_valid => true).pluck(:location_id)
-        result.push("contact_counter" => UserPrivilege.where("location_id in (?) AND created_at > '#{params[:check_date]}'", member_location_ids).count)
+        result.push("contact_counter" => UserPrivilege.where("location_id in (?) AND created_at > '#{last_fetch}'", member_location_ids).count)
         session_ids = ChatParticipant.where(:user_id => params[:id], :is_active => true).pluck(:session_id)
-        result.push("message_counter" => ChatMessage.where("session_id in (?) AND created_at > '#{params[:check_date]}'", session_ids).count)
+        result.push("message_counter" => ChatMessage.where("session_id in (?) AND created_at > '#{last_fetch}'", session_ids).count)
 
         render json: { "eXpresso" => result }
       end
@@ -67,9 +74,9 @@ module Api
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         end
 
-        UserAnalytic.create(:action => 102, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+        deleted_ids = Subscription.where("user_id = #{@user[:id]} AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
-        deleted_ids = Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+        UserAnalytic.create(:action => 102, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         @subscriptions.each do |s|
           last_sync_time = s[:subscription_last_synchronize].present? ? s[:subscription_last_synchronize] : Time.now.utc
@@ -114,9 +121,9 @@ module Api
           ).order("posts.updated_at desc").limit(10)
         end
 
-        UserAnalytic.create(:action => 103, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
-
         deleted_ids = Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        UserAnalytic.create(:action => 103, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         @schedules.each do |p|
           p.check_user(params[:user_id])
@@ -147,9 +154,9 @@ module Api
           @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
         end
 
-        UserAnalytic.create(:action => 104, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
-
         deleted_ids = ChatSession.where("is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        UserAnalytic.create(:action => 104, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         @sessions.map do |session|
           result["sessions"].push(SyncChatSerializer.new(session, root: false))
@@ -178,9 +185,9 @@ module Api
             @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
           end
 
-          UserAnalytic.create(:action => 105, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
-
           deleted_ids = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+          UserAnalytic.create(:action => 105, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
           @contacts.map do |contact|
             result["contacts"].push(SyncContactThruPrivilegeSerializer.new(contact, root: false))
@@ -213,9 +220,9 @@ module Api
           @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
         end
 
-        UserAnalytic.create(:action => 106, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
-
         deleted_ids = Notification.where("org_id = #{@user[:active_org]} AND notify_id = #{params[:id]} AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        UserAnalytic.create(:action => 106, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         @notifications.map do |notification|
           result["notifications"].push(SyncNotificationSerializer.new(notification, root: false))
@@ -231,30 +238,25 @@ module Api
         result["posts"] ||= Array.new
         result["deleted_ids"] ||= Array.new
 
+        @subscription = Subscription.find(params[:subscription_id])
+
         if UserAnalytic.exists?(:action => 107, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 107, :user_id => @user[:id]).last[:created_at]
-          @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
+          @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid")
         else
           last_fetch = DateTime.now.iso8601(3)
-          @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
+          @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid")
         end
+
+        deleted_ids = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
         UserAnalytic.create(:action => 107, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
-        deleted_ids = Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
-
-        @subscriptions.each do |s|
-          last_sync_time = s[:subscription_last_synchronize].present? ? s[:subscription_last_synchronize] : Time.now.utc
-          new_subscription = s[:subscription_last_synchronize].present? ? false : true
-          s.check_parameters(last_sync_time, new_subscription, last_fetch)
+        @posts.each do |post|
+          post.check_user(object.user_id)
         end
-
-        @subscriptions.map do |subscription|
-          if @user[:system_user]
-            result["subscriptions"].push(SyncSubscriptionSerializerV2.new(subscription, root: false))
-          else
-            result["subscriptions"].push(SyncSubscriptionSerializerV2.new(subscription, root: false))
-          end
+        @posts.map do |post|
+          SyncFeedSerializer.new(post, scope: scope, root: false)
         end
 
         result["deleted_ids"].push(deleted_ids)

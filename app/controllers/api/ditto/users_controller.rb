@@ -25,6 +25,7 @@ module Api
       @@_SAFETY_QUIZ_POST_TYPE_IDS = "17"
       @@_SCHEDULE_POST_TYPE_IDS = "19,20"
 
+      # GET COUNTERS
       def fetch_counters
         UserAnalytic.create(:action => 100, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
@@ -44,6 +45,7 @@ module Api
         render json: { "eXpresso" => result }
       end
 
+      # GET SHIFTS
       def fetch_shifts
         UserAnalytic.create(:action => 101, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
@@ -51,6 +53,7 @@ module Api
         render json: @shyfts, each_serializer: ShiftStandaloneSerializer
       end
 
+      # GET SUBSCRIPTIONS
       def fetch_subscriptions
         result = {}
         result["subscriptions"] ||= Array.new
@@ -86,6 +89,7 @@ module Api
         render json: { "eXpresso" => result }
       end
 
+      # GET SCHEDULES
       def fetch_schedules
         result = {}
         result["schedules"] ||= Array.new
@@ -114,6 +118,96 @@ module Api
         end
         @schedules.map do |schedule|
           result["schedules"].push(SyncScheduleSerializer.new(schedule, root: false))
+        end
+
+        result["deleted_ids"].push(deleted_ids)
+
+        render json: { "eXpresso" => result }
+      end
+
+      # GET SESSIONS
+      def fetch_sessions
+        result = {}
+        result["sessions"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        session_ids = ChatParticipant.where(:user_id => params[:id], :is_active => true).pluck(:session_id)
+
+        UserAnalytic.create(:action => 104, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+        if UserAnalytic.exists?(:action => 104, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 104, :user_id => @user[:id]).last[:created_at]
+          @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active AND updated_at > ?", session_ids, last_fetch]).order("updated_at desc")
+        else
+          last_fetch = DateTime.now.iso8601(3)
+          @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
+        end
+
+        deleted_ids = ChatSession.where("is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        @sessions.map do |session|
+          result["sessions"].push(SyncChatSerializer.new(session, root: false))
+        end
+
+        result["deleted_ids"].push(deleted_ids)
+
+        render json: { "eXpresso" => result }
+      end
+
+      # GET CONTACTS
+      def fetch_contacts
+        result = {}
+        result["contacts"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
+
+        if location_list.count > 0
+          UserAnalytic.create(:action => 105, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+          if UserAnalytic.exists?(:action => 105, :user_id => @user[:id])
+            last_fetch = UserAnalytic.where(:action => 105, :user_id => @user[:id]).last[:created_at]
+            @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_approved AND updated_at > '#{last_fetch}'")
+          else
+            last_fetch = DateTime.now.iso8601(3)
+            @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
+          end
+
+          deleted_ids = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+          @contacts.map do |contact|
+            result["contacts"].push(SyncContactThruPrivilegeSerializer.new(contact, root: false))
+          end
+
+          result["deleted_ids"].push(deleted_ids)
+        end
+
+        render json: { "eXpresso" => result }
+      end
+
+      # GET NOTIFICATIONS
+      def fetch_notifications
+        result = {}
+        result["notifications"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
+
+        UserAnalytic.create(:action => 106, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+        if UserAnalytic.exists?(:action => 106, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 106, :user_id => @user[:id]).last[:created_at]
+          @notifications = Notification.where("org_id = ? AND notify_id = ? AND viewed = 'false' AND updated_at > ?",
+            @user[:active_org],
+            params[:id],
+            last_fetch
+          ).includes(:sender, :recipient).order("created_at desc")
+        else
+          last_fetch = DateTime.now.iso8601(3)
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
+        end
+
+        deleted_ids = Notification.where("org_id = #{@user[:active_org]} AND notify_id = #{params[:id]} AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        @notifications.map do |notification|
+          result["notifications"].push(SyncNotificationSerializer.new(notification, root: false))
         end
 
         result["deleted_ids"].push(deleted_ids)

@@ -74,10 +74,13 @@ Expresso::Application.routes.draw do
       end
 
       resources :users do
-        post :fetch_shifts, :on => :member
         post :fetch_counters, :on => :member
+        post :fetch_shifts, :on => :member
         post :fetch_subscriptions, :on => :member
         post :fetch_schedules, :on => :member
+        post :fetch_sessions, :on => :member
+        post :fetch_contacts, :on => :member
+        post :fetch_notifications, :on => :member
       end
     end
 

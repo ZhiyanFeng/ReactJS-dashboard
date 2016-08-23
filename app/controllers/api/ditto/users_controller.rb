@@ -221,6 +221,41 @@ module Api
         render json: { "eXpresso" => result }
       end
 
+      def fetch_posts
+        result = {}
+        result["posts"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        UserAnalytic.create(:action => 102, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+        if UserAnalytic.exists?(:action => 102, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 102, :user_id => @user[:id]).last[:created_at]
+          @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
+        else
+          last_fetch = DateTime.now.iso8601(3)
+          @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
+        end
+
+        deleted_ids = Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        @subscriptions.each do |s|
+          last_sync_time = s[:subscription_last_synchronize].present? ? s[:subscription_last_synchronize] : Time.now.utc
+          new_subscription = s[:subscription_last_synchronize].present? ? false : true
+          s.check_parameters(last_sync_time, new_subscription, last_fetch)
+        end
+
+        @subscriptions.map do |subscription|
+          if @user[:system_user]
+            result["subscriptions"].push(SyncSubscriptionSerializerV2.new(subscription, root: false))
+          else
+            result["subscriptions"].push(SyncSubscriptionSerializerV2.new(subscription, root: false))
+          end
+        end
+
+        result["deleted_ids"].push(deleted_ids)
+
+        render json: { "eXpresso" => result }
+      end
+
       def fetch_user
         if User.exists?(:id => params[:id])
           @user = User.find_by_id(params[:id])

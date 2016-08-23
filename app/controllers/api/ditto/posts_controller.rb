@@ -65,7 +65,7 @@ module Api
             end
             Follower.follow(4, @post[:id], @post[:owner_id])
 
-            UserAnalytic.create(:action => 101,:org_id => 1, :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
+            UserAnalytic.create(:action => 201,:org_id => 1, :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
 
             render json: @shift, serializer: ShiftStandaloneSerializer
             @channel.tracked_subscriber_push("post",@post)

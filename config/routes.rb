@@ -81,6 +81,7 @@ Expresso::Application.routes.draw do
         post :fetch_sessions, :on => :member
         post :fetch_contacts, :on => :member
         post :fetch_notifications, :on => :member
+        post :fetch_posts, :on => :member
       end
     end
 

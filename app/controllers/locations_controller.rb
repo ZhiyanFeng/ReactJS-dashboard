@@ -30,12 +30,28 @@ class LocationsController < ApplicationController
   end
 
   def list_search_result
-    @locations = Location.where("lower(address) like ? or lower(city) like ? or lower(location_name) like ?","\%#{params[:location_query]}\%","\%#{params[:location_query]}\%","\%#{params[:location_query]}\%")
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @locations }
-      format.js {render :partial => "locations/tb_locations.js", content_type: "application/json" }
-    end
+		if request.format == :js
+			paramLocation = params[:location_query]
+			paramLocation = paramLocation ? paramLocation.strip.downcase : ''
+			paramName = params[:name_query]
+			paramName = paramName ? paramName.strip.downcase : ''
+			if paramLocation.empty?
+				@locations = Location.where("lower(location_name) like ?","\%#{paramName}\%")
+			elsif paramName.empty?
+				@locations = Location.where("lower(address) like ? or lower(city) like ?","\%#{paramLocation}\%","\%#{paramLocation}\%")
+			else
+				@locations = Location.where("(lower(address) like ? or lower(city) like ?) and lower(location_name) like ?","\%#{paramLocation}\%","\%#{paramLocation}\%","\%#{paramName}\%")
+			end
+			respond_to do |format|
+				format.js {render :partial => "locations/tb_locations.js", content_type: "application/json" }
+			end
+		else
+			@locations = Location.where("lower(address) like ? or lower(city) like ? or lower(location_name) like ?","\%#{params[:location_query]}\%","\%#{params[:location_query]}\%","\%#{params[:location_query]}\%")
+			respond_to do |format|
+				format.html # index.html.erb
+				format.json { render json: @locations }
+			end
+		end
   end
 
   def list_members

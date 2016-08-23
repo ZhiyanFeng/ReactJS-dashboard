@@ -62,7 +62,7 @@ module Api
         UserAnalytic.create(:action => 102, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         if UserAnalytic.exists?(:action => 102, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 102, :user_id => @user[:id]).last[:created_at]
-          @subscriptions = Subscription.where(["user_id =#{@user[:id]} AND updated_at > ?", last_fetch]).order("updated_at desc")
+          @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         else
           last_fetch = DateTime.now.iso8601(3)
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
@@ -73,14 +73,14 @@ module Api
         @subscriptions.each do |s|
           last_sync_time = s[:subscription_last_synchronize].present? ? s[:subscription_last_synchronize] : Time.now.utc
           new_subscription = s[:subscription_last_synchronize].present? ? false : true
-          s.check_parameters(last_sync_time, new_subscription, fetch_fresh)
+          s.check_parameters(last_sync_time, new_subscription, last_fetch)
         end
 
         @subscriptions.map do |subscription|
           if @user[:system_user]
-            result["subscriptions"].push(SyncSystemSubscriptionSerializer.new(subscription, root: false))
+            result["subscriptions"].push(SyncSubscriptionSerializerV2.new(subscription, root: false))
           else
-            result["subscriptions"].push(SyncSubscriptionSerializer.new(subscription, root: false))
+            result["subscriptions"].push(SyncSubscriptionSerializerV2.new(subscription, root: false))
           end
         end
 

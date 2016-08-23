@@ -59,7 +59,6 @@ module Api
         result["subscriptions"] ||= Array.new
         result["deleted_ids"] ||= Array.new
 
-        UserAnalytic.create(:action => 102, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         if UserAnalytic.exists?(:action => 102, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 102, :user_id => @user[:id]).last[:created_at]
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
@@ -67,6 +66,8 @@ module Api
           last_fetch = DateTime.now.iso8601(3)
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         end
+
+        UserAnalytic.create(:action => 102, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         deleted_ids = Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
@@ -97,7 +98,6 @@ module Api
 
         channels = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc").pluck(:channel_id)
 
-        UserAnalytic.create(:action => 103, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         if UserAnalytic.exists?(:action => 103, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 103, :user_id => @user[:id]).last[:created_at]
           @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
@@ -113,6 +113,8 @@ module Api
             params[:user_id]
           ).order("posts.updated_at desc").limit(10)
         end
+
+        UserAnalytic.create(:action => 103, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         deleted_ids = Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
@@ -136,7 +138,6 @@ module Api
 
         session_ids = ChatParticipant.where(:user_id => params[:id], :is_active => true).pluck(:session_id)
 
-        UserAnalytic.create(:action => 104, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         if UserAnalytic.exists?(:action => 104, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 104, :user_id => @user[:id]).last[:created_at]
           #@sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active AND updated_at > ?", session_ids, last_fetch]).order("updated_at desc")
@@ -145,6 +146,8 @@ module Api
           last_fetch = DateTime.now.iso8601(3)
           @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
         end
+
+        UserAnalytic.create(:action => 104, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         deleted_ids = ChatSession.where("is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
@@ -166,7 +169,6 @@ module Api
         location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
 
         if location_list.count > 0
-          UserAnalytic.create(:action => 105, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
           if UserAnalytic.exists?(:action => 105, :user_id => @user[:id])
             last_fetch = UserAnalytic.where(:action => 105, :user_id => @user[:id]).last[:created_at]
             #@contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_approved AND updated_at > '#{last_fetch}'")
@@ -175,6 +177,8 @@ module Api
             last_fetch = DateTime.now.iso8601(3)
             @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
           end
+
+          UserAnalytic.create(:action => 105, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
           deleted_ids = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
@@ -196,7 +200,6 @@ module Api
 
         location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
 
-        UserAnalytic.create(:action => 106, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         if UserAnalytic.exists?(:action => 106, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 106, :user_id => @user[:id]).last[:created_at]
           @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
@@ -209,6 +212,8 @@ module Api
           last_fetch = DateTime.now.iso8601(3)
           @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
         end
+
+        UserAnalytic.create(:action => 106, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         deleted_ids = Notification.where("org_id = #{@user[:active_org]} AND notify_id = #{params[:id]} AND updated_at > '#{last_fetch}'").pluck(:id)
 
@@ -226,14 +231,15 @@ module Api
         result["posts"] ||= Array.new
         result["deleted_ids"] ||= Array.new
 
-        UserAnalytic.create(:action => 102, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
-        if UserAnalytic.exists?(:action => 102, :user_id => @user[:id])
-          last_fetch = UserAnalytic.where(:action => 102, :user_id => @user[:id]).last[:created_at]
+        if UserAnalytic.exists?(:action => 107, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 107, :user_id => @user[:id]).last[:created_at]
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         else
           last_fetch = DateTime.now.iso8601(3)
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         end
+
+        UserAnalytic.create(:action => 107, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         deleted_ids = Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 

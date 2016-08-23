@@ -100,13 +100,16 @@ module Api
         UserAnalytic.create(:action => 103, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         if UserAnalytic.exists?(:action => 103, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 103, :user_id => @user[:id]).last[:created_at]
-          @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND updated_at > ?",
-            params[:user_id],
-            last_fetch
+          @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
+            params[:user_id]
           ).order("posts.updated_at desc").limit(10)
+          #@schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND updated_at > ?",
+          #  params[:user_id],
+          #  last_fetch
+          #).order("posts.updated_at desc").limit(10)
         else
           last_fetch = DateTime.now.iso8601(3)
-          @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
+          @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
             params[:user_id]
           ).order("posts.updated_at desc").limit(10)
         end
@@ -136,7 +139,8 @@ module Api
         UserAnalytic.create(:action => 104, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         if UserAnalytic.exists?(:action => 104, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 104, :user_id => @user[:id]).last[:created_at]
-          @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active AND updated_at > ?", session_ids, last_fetch]).order("updated_at desc")
+          #@sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active AND updated_at > ?", session_ids, last_fetch]).order("updated_at desc")
+          @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
         else
           last_fetch = DateTime.now.iso8601(3)
           @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
@@ -165,7 +169,8 @@ module Api
           UserAnalytic.create(:action => 105, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
           if UserAnalytic.exists?(:action => 105, :user_id => @user[:id])
             last_fetch = UserAnalytic.where(:action => 105, :user_id => @user[:id]).last[:created_at]
-            @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_approved AND updated_at > '#{last_fetch}'")
+            #@contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_approved AND updated_at > '#{last_fetch}'")
+            @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
           else
             last_fetch = DateTime.now.iso8601(3)
             @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
@@ -194,11 +199,12 @@ module Api
         UserAnalytic.create(:action => 106, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
         if UserAnalytic.exists?(:action => 106, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 106, :user_id => @user[:id]).last[:created_at]
-          @notifications = Notification.where("org_id = ? AND notify_id = ? AND viewed = 'false' AND updated_at > ?",
-            @user[:active_org],
-            params[:id],
-            last_fetch
-          ).includes(:sender, :recipient).order("created_at desc")
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
+          #@notifications = Notification.where("org_id = ? AND notify_id = ? AND viewed = 'false' AND updated_at > ?",
+          #  @user[:active_org],
+          #  params[:id],
+          #  last_fetch
+          #).includes(:sender, :recipient).order("created_at desc")
         else
           last_fetch = DateTime.now.iso8601(3)
           @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)

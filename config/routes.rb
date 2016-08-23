@@ -68,7 +68,23 @@ Expresso::Application.routes.draw do
   get "resend" => "sessions#resend", :as => "resend"
 
   namespace :api do
-    scope module: :charmander, constraints: ApiConstraints.new(version: 3) do
+    scope module: :ditto, constraints: ApiConstraints.new(version: 4) do
+      resources :posts do
+        post :post_shift, :on => :collection
+      end
+
+      resources :users do
+        post :fetch_counters, :on => :member
+        post :fetch_shifts, :on => :member
+        post :fetch_subscriptions, :on => :member
+        post :fetch_schedules, :on => :member
+        post :fetch_sessions, :on => :member
+        post :fetch_contacts, :on => :member
+        post :fetch_notifications, :on => :member
+      end
+    end
+
+    scope module: :charmander, constraints: ApiConstraints.new(version: 3, default: true) do
       resources :channels do
         post :i_am_admin, :on => :member
         post :profile, :on => :member
@@ -182,7 +198,6 @@ Expresso::Application.routes.draw do
         post :contact_dump, :on => :member
         post :flash_action, :on => :member
         get :deactivate, :on => :member
-        post :fetch_shifts, :on => :member
       end
 
       resources :user_privileges do
@@ -256,7 +271,7 @@ Expresso::Application.routes.draw do
       end
     end
 
-    scope module: :arcee, constraints: ApiConstraints.new(version: 1, default: true) do
+    scope module: :arcee, constraints: ApiConstraints.new(version: 1) do
 
       match '/systems/channel_subscriber_push/', :as => :channel_subscriber_push, :via => :post, :controller => :systems, :action => :channel_subscriber_push
       match '/systems/setup/', :as => :initialize_test_environment, :via => :get, :controller => :systems, :action => :setup_groups

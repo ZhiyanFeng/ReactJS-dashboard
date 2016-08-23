@@ -12,12 +12,70 @@ module Api
         #end
       end
 
-      before_filter :restrict_access, :except => []
-      before_filter :validate_session, :except => []
+      before_filter :restrict_access#, :except => []
+      before_filter :validate_session#, :except => []
       before_filter :set_headers
 
       respond_to :json
 
+      def post_shift
+        @user = User.find(params[:owner_id])
+        if @user[:is_valid]
+          channel_id = decide_post_channel(params[:location_id],params[:permission],params[:channel_id],params[:user_ids])
+          @channel = Channel.find(channel_id)
+          @post = Post.new(
+            :org_id => 1,
+            :owner_id => params[:owner_id],
+            :title => "Shift Trade",
+            :content => params[:content],
+            :channel_id => channel_id,
+            :location => params[:location_id],
+            :post_type => 21
+          )
+          if @post.save
+            @shift = ScheduleElement.create(
+              :owner_id => params[:owner_id],
+              :location_id => params[:location_id],
+              :schedule_id => 0,
+              :name => "shift",
+              :channel_id => channel_id,
+              :post_id => @post[:id],
+              :start_at => params[:start_at],
+              :end_at => params[:end_at]
+            )
+            json = {}
+            json['objects'] = []
+            shift = {}
+            shift['source'] = 11
+            shift['source_id'] = @shift.id
+            json['objects'].push(shift)
+            @attachment = Attachment.create(
+              :json => json.to_json.to_s
+            )
+            @post.update_attribute(:attachment_id, @attachment.id)
+            if params[:tip_amount].present? && params[:tip_amount].to_f > 0
+              @gratitude = Gratitude.new(
+                :amount => params[:tip_amount],
+                :shift_id => @shift[:id],
+                :owner_id => @post[:owner_id],
+                :source => 4,
+                :source_id => @post[:id]
+              )
+              @gratitude.create_gratitude(@post, false)
+            end
+            Follower.follow(4, @post[:id], @post[:owner_id])
+
+            UserAnalytic.create(:action => 201,:org_id => 1, :user_id => params[:owner_id], :ip_address => request.remote_ip.to_s)
+
+            render json: @shift, serializer: ShiftStandaloneSerializer
+            @channel.tracked_subscriber_push("post",@post)
+          else
+            render :json => { "eXpresso" => { "code" => -1, "error" => I18n.t('warning.account.create_post') } }
+          end
+        else
+          render :json => { "eXpresso" => { "code" => -1, "error" => I18n.t('warning.account.invalid') } }
+        end
+      end
 
       def create
         @user = User.find(params[:owner_id])
@@ -109,6 +167,48 @@ module Api
           ApiKey.exists?(access_token: token)
         end
       end
+
+      def default_channel(location_id)
+        if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
+          @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true).first
+          return @channel[:id]
+        else
+          return nil
+        end
+      end
+
+      def decide_post_channel(location_id, permission, channel_id = nil, user_ids = nil)
+        if permission == "location"
+          return default_channel(location_id)
+        elsif permission == "region"
+          if Channel.exists?("channel_type = 'region_feed' AND channel_frequency like '%|#{location_id}|%' AND is_valid AND allow_shift_trade")
+            @channel = Channel.exists?("channel_type = 'region_feed' AND channel_frequency like '%|#{location_id}|%' AND is_valid AND allow_shift_trade")
+            return @channel[:id]
+          #elsif Channel.exists?("channel_type = 'region_feed' AND channel_frequency like ''")
+          else
+            return default_channel(location_id)
+          end
+        elsif permission == "channel"
+          if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
+            @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true).first
+            return @channel[:id]
+          else
+            return default_channel(location_id)
+          end
+        elsif permission == "users"
+          return default_channel(location_id)
+        else
+          return default_channel(location_id)
+        end
+
+        #if channel_id.present? && channel_id > 0
+        #  return channel_id
+        #TODO: Add clause for user id post only
+        #elsif
+
+        #end
+      end
+
     end
   end
 end

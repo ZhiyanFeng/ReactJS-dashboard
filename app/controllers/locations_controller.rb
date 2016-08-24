@@ -54,6 +54,16 @@ class LocationsController < ApplicationController
 		end
   end
 
+  def list_members
+    @location = Location.find(params[:id])
+    @members = UserPrivilege.where("is_valid AND location_id = #{params[:id]}")
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @members }
+      format.js {render :partial => "locations/tb_members.js", content_type: "application/json" }
+    end
+  end
+
   def make_admin
     @privilege = UserPrivilege.find(params[:member_id])
     @channel = Channel.where(:channel_type => 'location_feed', :channel_frequency => params[:location_id].to_s, :is_valid => true).first

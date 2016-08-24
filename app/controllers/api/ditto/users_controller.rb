@@ -234,59 +234,136 @@ module Api
       end
 
       def fetch_posts
-        result = {}
-        result["posts"] ||= Array.new
-        result["deleted_ids"] ||= Array.new
+        if Subscription.exists?(:id => params[:subscription_id], :is_valid => true)
+          result = {}
+          result["posts"] ||= Array.new
+          result["deleted_ids"] ||= Array.new
 
-        @subscription = Subscription.find(params[:subscription_id])
+          @subscription = Subscription.where(:id => params[:subscription_id], :is_valid => true).first
 
-        if UserAnalytic.exists?(:action => 107, :user_id => @user[:id])
-          last_fetch = UserAnalytic.where(:action => 107, :user_id => @user[:id]).last[:created_at]
-          @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
+          if UserAnalytic.exists?(:action => 107, :user_id => @user[:id])
+            last_fetch = UserAnalytic.where(:action => 107, :user_id => @user[:id]).last[:created_at]
+            @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
+          else
+            last_fetch = DateTime.now.iso8601(3)
+            @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
+          end
+
+          deleted_ids = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+          UserAnalytic.create(:action => 107, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+          @posts.each do |post|
+            post.check_user(params[:id])
+          end
+          @posts.map do |post|
+            #SyncFeedSerializer.new(post, scope: scope, root: false)
+            result["posts"].push(SyncFeedSerializer.new(post, root: false))
+          end
+
+          result["deleted_ids"].push(deleted_ids)
+
+          render json: { "eXpresso" => result }
         else
-          last_fetch = DateTime.now.iso8601(3)
-          @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('warning.fetch.posts') } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_posts",
+            :error => I18n.t('error.fetch.posts') % {:user_id => params[:id], :subscription_id => params[:subscription_id]} )
         end
+      end
 
-        deleted_ids = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+      def fetch_more_posts
+        if Subscription.exists?(:id => params[:subscription_id], :is_valid => true)
+          result = {}
+          result["posts"] ||= Array.new
 
-        UserAnalytic.create(:action => 107, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+          UserAnalytic.create(:action => 108, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
-        @posts.each do |post|
-          post.check_user(params[:id])
+          @subscription = Subscription.where(:id => params[:subscription_id], :is_valid => true).first
+
+          @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid AND id < #{params[:last_post_id]}").order("created_at DESC").limit(10)
+
+          @posts.each do |post|
+            post.check_user(params[:id])
+          end
+          @posts.map do |post|
+            #SyncFeedSerializer.new(post, scope: scope, root: false)
+            result["posts"].push(SyncFeedSerializer.new(post, root: false))
+          end
+
+          render json: { "eXpresso" => result }
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('warning.fetch.messages') } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_more_messages",
+            :error => I18n.t('error.fetch.messages') % {:user_id => params[:id], :session_id => params[:session_id]} )
         end
-        @posts.map do |post|
-          #SyncFeedSerializer.new(post, scope: scope, root: false)
-          result["posts"].push(SyncFeedSerializer.new(post, root: false))
-        end
-
-        result["deleted_ids"].push(deleted_ids)
-
-        render json: { "eXpresso" => result }
       end
 
       def fetch_messages
-        result = {}
-        result["messages"] ||= Array.new
-        result["deleted_ids"] ||= Array.new
+        if ChatParticipant.exists?(:user_id => params[:id], :session_id => params[:session_id], :is_valid => true)
+          result = {}
+          result["messages"] ||= Array.new
+          result["deleted_ids"] ||= Array.new
 
-        @participant = ChatParticipant.find(params[:participant_id])
+          @participant = ChatParticipant.where(:user_id => params[:id], :session_id => params[:session_id], :is_valid => true).first
 
-        if UserAnalytic.exists?(:action => 108, :user_id => @user[:id])
-          last_fetch = UserAnalytic.where(:action => 108, :user_id => @user[:id]).last[:created_at]
-          @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
+          if UserAnalytic.exists?(:action => 109, :user_id => @user[:id])
+            last_fetch = UserAnalytic.where(:action => 109, :user_id => @user[:id]).last[:created_at]
+            @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
+          else
+            last_fetch = DateTime.now.iso8601(3)
+            @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
+          end
+
+          deleted_ids = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+          UserAnalytic.create(:action => 109, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+          @participant.update_attribute(:unread_count, 0)
+
+          @messages.map do |message|
+            result["messages"].push(ChatMessageSerializer.new(message, root: false))
+          end
+
+          #render json: @messages, each_serializer: ChatMessageSerializer
+          result["deleted_ids"].push(deleted_ids)
+
+          render json: { "eXpresso" => result }
         else
-          last_fetch = DateTime.now.iso8601(3)
-          @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('warning.fetch.messages') } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_messages",
+            :error => I18n.t('error.fetch.messages') % {:user_id => params[:id], :session_id => params[:session_id]} )
         end
+      end
 
-        #deleted_ids = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+      def fetch_more_messages
+        if ChatParticipant.exists?(:user_id => params[:id], :session_id => params[:session_id], :is_valid => true)
+          result = {}
+          result["messages"] ||= Array.new
 
-        UserAnalytic.create(:action => 108, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+          UserAnalytic.create(:action => 110, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
-        @participant.update_attribute(:unread_count, 0)
+          @participant = ChatParticipant.where(:user_id => params[:id], :session_id => params[:session_id], :is_valid => true).first
 
-        render json: @messages, each_serializer: ChatMessageSerializer
+          @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid AND id < #{params[:last_message_id]}").order("created_at DESC").limit(10)
+
+          @messages.map do |message|
+            result["messages"].push(ChatMessageSerializer.new(message, root: false))
+          end
+
+          render json: { "eXpresso" => result }
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('warning.fetch.messages') } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_more_messages",
+            :error => I18n.t('error.fetch.messages') % {:user_id => params[:id], :session_id => params[:session_id]} )
+        end
       end
 
       def fetch_user

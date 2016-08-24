@@ -265,6 +265,30 @@ module Api
         render json: { "eXpresso" => result }
       end
 
+      def fetch_messages
+        result = {}
+        result["messages"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        @participant = ChatParticipant.find(params[:participant_id])
+
+        if UserAnalytic.exists?(:action => 108, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 108, :user_id => @user[:id]).last[:created_at]
+          @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
+        else
+          last_fetch = DateTime.now.iso8601(3)
+          @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
+        end
+
+        #deleted_ids = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        UserAnalytic.create(:action => 108, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        @participant.update_attribute(:unread_count, 0)
+
+        render json: @messages, each_serializer: ChatMessageSerializer
+      end
+
       def fetch_user
         if User.exists?(:id => params[:id])
           @user = User.find_by_id(params[:id])

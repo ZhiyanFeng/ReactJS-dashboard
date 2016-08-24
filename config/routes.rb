@@ -82,6 +82,7 @@ Expresso::Application.routes.draw do
         post :fetch_contacts, :on => :member
         post :fetch_notifications, :on => :member
         post :fetch_posts, :on => :member
+        post :fetch_messages, :on => :member
       end
     end
 

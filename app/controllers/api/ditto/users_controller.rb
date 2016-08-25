@@ -54,6 +54,10 @@ module Api
 
       # GET SHIFTS
       def fetch_shifts
+        result = {}
+        result["shifts"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
         if UserAnalytic.exists?(:action => 1010, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 1010, :user_id => @user[:id]).last[:created_at]
         else
@@ -84,10 +88,18 @@ module Api
         else
         end
 
-
         @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
         @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")})").order("start_at #{order}").limit(20)
-        render json: @shyfts, each_serializer: ShiftStandaloneSerializer
+
+        @shyfts.each do |shift|
+          shift.check_user(params[:id])
+        end
+        @shyfts.map do |shift|
+          result["shifts"].push(ShiftStandaloneSerializer.new(shift, root: false))
+        end
+
+        #render json: @shyfts, each_serializer: ShiftStandaloneSerializer
+        render json: { "eXpresso" => result }
       end
 
       # GET SUBSCRIPTIONS

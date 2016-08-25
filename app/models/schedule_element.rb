@@ -13,6 +13,8 @@ class ScheduleElement < ActiveRecord::Base
   # has_event_calendar :start_at_field  => 'custom_start_at', :end_at_field => 'custom_end_at'
   #
 
+  attr_accessor :user_id
+
   # trade_status
   # 0 - posted
   # 1 - covered
@@ -21,6 +23,10 @@ class ScheduleElement < ActiveRecord::Base
   # 4 - rejected
 
   attr_accessible :name, :schedule_id, :owner_id, :coverer_id, :approver_id, :trade_status, :start_at, :end_at, :location_id, :channel_id, :post_id, :is_valid
+
+  def check_user(id)
+    self.user_id = id
+  end
 
   def approve(approver_id, require_approval=nil)
     if !require_approval

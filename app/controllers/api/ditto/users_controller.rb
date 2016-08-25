@@ -65,9 +65,9 @@ module Api
         constructed_SQL = ""
 
         if params[:filters][:show_expired] == "true"
-          constructed_SQL = constructed_SQL + "start_at > #{Time.now} "
+          constructed_SQL = constructed_SQL + "start_at > '#{Time.now}' "
         else params[:filters][:show_expired] == "false"
-          constructed_SQL = constructed_SQL + "start_at <= #{Time.now} "
+          constructed_SQL = constructed_SQL + "start_at <= '#{Time.now}' "
         end
 
         if params[:filters][:display_my_shift_only] == "true"

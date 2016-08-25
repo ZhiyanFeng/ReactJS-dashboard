@@ -54,9 +54,37 @@ module Api
 
       # GET SHIFTS
       def fetch_shifts
-        UserAnalytic.create(:action => 101, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+        if UserAnalytic.exists?(:action => 1010, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 1010, :user_id => @user[:id]).last[:created_at]
+        else
+          last_fetch = Time.now
+        end
+
+        UserAnalytic.create(:action => 1010, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        constructed_SQL = ""
+
+        if params[:filters][:show_expired] == "true"
+          constructed_SQL = constructed_SQL + "start_at > #{Time.now} "
+        else params[:filters][:show_expired] == "false"
+          constructed_SQL = constructed_SQL + "start_at <= #{Time.now} "
+        end
+
+        if params[:filters][:display_my_shift_only] == "true"
+          constructed_SQL = constructed_SQL + "AND (owner_id = #{@user[:id]} OR coverer_id = #{@user[:id]} OR approver_id = #{@user[:id]}) "
+        else
+        end
+
+        constructed_SQL = constructed_SQL + "AND trade_status in (#{params[:filters][:status_filter_str]}) "
+
+        if params[:filters][:location].present?
+          constructed_SQL = constructed_SQL + "AND location_id in (#{params[:filters][:location]}) "
+        else
+        end
+
+
         @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
-        @shyfts = ScheduleElement.where("start_at >= '#{params[:startDate]}' AND start_at <= '#{params[:endDate]}' AND channel_id IN (#{@subscriptions.join(", ")})").order("start_at ASC").limit(20)
+        @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")})").order("start_at ASC").limit(20)
         render json: @shyfts, each_serializer: ShiftStandaloneSerializer
       end
 

@@ -66,8 +66,10 @@ module Api
 
         if params[:filters][:show_expired] == "true"
           constructed_SQL = constructed_SQL + "start_at > '#{Time.now}' "
+          order = "ASC"
         else params[:filters][:show_expired] == "false"
           constructed_SQL = constructed_SQL + "start_at <= '#{Time.now}' "
+          order = "DESC"
         end
 
         if params[:filters][:display_my_shift_only] == "true"
@@ -84,7 +86,7 @@ module Api
 
 
         @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
-        @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")})").order("start_at ASC").limit(20)
+        @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")})").order("start_at #{order}").limit(20)
         render json: @shyfts, each_serializer: ShiftStandaloneSerializer
       end
 

@@ -319,7 +319,7 @@ module Api
           end
           @posts.map do |post|
             #SyncFeedSerializer.new(post, scope: scope, root: false)
-            result["posts"].push(SyncFeedSerializer.new(post, root: false))
+            result["posts"].push(SyncFeedSerializerV2.new(post, root: false))
           end
 
           result["deleted_ids"].push(deleted_ids)

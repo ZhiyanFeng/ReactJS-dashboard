@@ -69,10 +69,10 @@ module Api
         constructed_SQL = ""
 
         if params[:filters][:show_expired] == "true"
-          constructed_SQL = constructed_SQL + "start_at > '#{Time.now}' "
+          constructed_SQL = constructed_SQL + "start_at <= '#{Time.now}' "
           order = "ASC"
         else params[:filters][:show_expired] == "false"
-          constructed_SQL = constructed_SQL + "start_at <= '#{Time.now}' "
+          constructed_SQL = constructed_SQL + "start_at > '#{Time.now}' "
           order = "DESC"
         end
 

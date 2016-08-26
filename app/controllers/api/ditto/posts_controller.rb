@@ -168,6 +168,34 @@ module Api
         end
       end
 
+      def destroy
+        if Post.exists?(:id => params[:id])
+          @post = Post.find(params[:id])
+          if @post.update(:is_valid => false) && @post[:channel_id] != 1
+            @channel = Channel.find(@post[:channel_id])
+            #CHANGE TO NONE SCHEDULE POSTS
+            @last_post = Post.where(:channel_id => @channel[:id], :is_valid => true).order("created_at DESC").first
+            if @last_post.present?
+              @user = User.find(@last_post[:owner_id])
+              @channel.update_attribute(:channel_latest_content, "#{@user[:first_name]} #{@user[:last_name]}: #{@last_post[:content]}")
+              #Subscription.where(:channel_id => @channel[:id], :is_valid => true).each do |s|
+              #  s.touch
+              #end
+              Subscription.where(:channel_id => @channel[:id], :is_valid => true).update_all(:updated_at => Time.now)
+            else
+              @channel.update_attribute(:channel_latest_content, "")
+              Subscription.where(:channel_id => @channel[:id], :is_valid => true).update_all(:updated_at => Time.now)
+              #Subscription.where(:channel_id => @channel[:id], :is_valid => true).each do |s|
+              #  s.touch
+              #end
+            end
+            render :json => { "eXpresso" => { "code" => 1, "post" => @post } }
+          else
+            render :json => { "eXpresso" => { "code" => 0, "error" => @post.errors } }
+          end
+        end
+      end
+
       def default_channel(location_id)
         if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
           @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true).first

@@ -158,16 +158,6 @@ module Api
         end
       end
 
-      private
-
-      def restrict_access
-        #X-Method: cc5f43ea7132996963e9a62fabde3c6f
-        #Authorization: Token token="cc5f43ea7132996963e9a62fabde3c6f", nonce="def"
-        authenticate_or_request_with_http_token do |token, options|
-          ApiKey.exists?(access_token: token)
-        end
-      end
-
       def destroy
         if Post.exists?(:id => params[:id])
           @post = Post.find(params[:id])
@@ -193,6 +183,16 @@ module Api
           else
             render :json => { "eXpresso" => { "code" => 0, "error" => @post.errors } }
           end
+        end
+      end
+
+      private
+
+      def restrict_access
+        #X-Method: cc5f43ea7132996963e9a62fabde3c6f
+        #Authorization: Token token="cc5f43ea7132996963e9a62fabde3c6f", nonce="def"
+        authenticate_or_request_with_http_token do |token, options|
+          ApiKey.exists?(access_token: token)
         end
       end
 

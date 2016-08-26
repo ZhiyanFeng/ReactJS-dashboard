@@ -1,4 +1,4 @@
-class SyncScheduleSerializer < ActiveModel::Serializer
+class SyncScheduleSerializerV2 < ActiveModel::Serializer
   attributes :id,
   :org_id,
   :type,
@@ -10,7 +10,18 @@ class SyncScheduleSerializer < ActiveModel::Serializer
   :updated_at,
   :attachment,
   :owner,
+  :allow_delete,
   :is_valid
+
+  def allow_delete
+    if object.user_id.to_i == object.owner_id.to_i
+      return true
+    elsif Subscription.exists?(:user_id => object[:user_id], :is_admin => true, :channel_id => object[:channel_id], :is_valid => true)
+      return true
+    else
+      return false
+    end
+  end
 
   def attachment
     if object.attachment_id.presence

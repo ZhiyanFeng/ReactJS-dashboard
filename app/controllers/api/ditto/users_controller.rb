@@ -150,16 +150,16 @@ module Api
         if UserAnalytic.exists?(:action => 1030, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 1030, :user_id => @user[:id]).last[:created_at]
           @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
-            params[:user_id]
+            params[:id]
           ).order("posts.updated_at desc").limit(10)
           #@schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND updated_at > ?",
-          #  params[:user_id],
+          #  params[:id],
           #  last_fetch
           #).order("posts.updated_at desc").limit(10)
         else
           last_fetch = DateTime.now.iso8601(3)
           @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
-            params[:user_id]
+            params[:id]
           ).order("posts.updated_at desc").limit(10)
         end
 
@@ -168,10 +168,10 @@ module Api
         UserAnalytic.create(:action => 1030, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         @schedules.each do |p|
-          p.check_user(params[:user_id])
+          p.check_user(params[:id])
         end
         @schedules.map do |schedule|
-          result["schedules"].push(SyncScheduleSerializer.new(schedule, root: false))
+          result["schedules"].push(SyncScheduleSerializerV2.new(schedule, root: false))
         end
 
         result["deleted_ids"].push(deleted_ids)

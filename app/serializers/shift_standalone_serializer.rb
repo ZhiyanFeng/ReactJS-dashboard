@@ -19,7 +19,7 @@ class ShiftStandaloneSerializer < ActiveModel::Serializer
   :comments_count
 
   def allow_delete
-    if object[:user_id] == object[:owner_id]
+    if object.user_id.to_i == object.owner_id.to_i
       return true
     elsif Subscription.exists?(:user_id => object[:user_id], :is_admin => true, :channel_id => object[:channel_id], :is_valid => true) || UserPrivilege.exists?(:owner_id => object[:user_id], :is_admin => true, :location_id => object[:location_id], :is_valid => true)
       return true

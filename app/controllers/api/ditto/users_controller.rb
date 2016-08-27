@@ -112,7 +112,7 @@ module Api
           last_fetch = UserAnalytic.where(:action => 1020, :user_id => @user[:id]).last[:created_at]
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         else
-          last_fetch = DateTime.now.iso8601(3)
+          last_fetch = Time.now.utc
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         end
 
@@ -123,7 +123,7 @@ module Api
         @subscriptions.each do |s|
           last_sync_time = s[:subscription_last_synchronize].present? ? s[:subscription_last_synchronize] : Time.now.utc
           new_subscription = s[:subscription_last_synchronize].present? ? false : true
-          s.check_parameters(last_sync_time, new_subscription, last_fetch)
+          s.check_parameters(last_fetch, new_subscription, last_fetch)
         end
 
         @subscriptions.map do |subscription|
@@ -157,7 +157,7 @@ module Api
           #  last_fetch
           #).order("posts.updated_at desc").limit(10)
         else
-          last_fetch = DateTime.now.iso8601(3)
+          last_fetch = Time.now.utc
           @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
             params[:id]
           ).order("posts.updated_at desc").limit(10)
@@ -192,7 +192,7 @@ module Api
           #@sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active AND updated_at > ?", session_ids, last_fetch]).order("updated_at desc")
           @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
         else
-          last_fetch = DateTime.now.iso8601(3)
+          last_fetch = Time.now.utc
           @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
         end
 
@@ -223,7 +223,7 @@ module Api
             #@contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_approved AND updated_at > '#{last_fetch}'")
             @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
           else
-            last_fetch = DateTime.now.iso8601(3)
+            last_fetch = Time.now.utc
             @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
           end
 
@@ -258,7 +258,7 @@ module Api
           #  last_fetch
           #).includes(:sender, :recipient).order("created_at desc")
         else
-          last_fetch = DateTime.now.iso8601(3)
+          last_fetch = Time.now.utc
           @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
         end
 
@@ -306,7 +306,7 @@ module Api
             last_fetch = UserAnalytic.where(:action => 1070, :user_id => @user[:id]).last[:created_at]
             @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
           else
-            last_fetch = DateTime.now.iso8601(3)
+            last_fetch = Time.now.utc
             @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
           end
 
@@ -375,7 +375,7 @@ module Api
             last_fetch = UserAnalytic.where(:action => 1080, :user_id => @user[:id]).last[:created_at]
             @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
           else
-            last_fetch = DateTime.now.iso8601(3)
+            last_fetch = Time.now.utc
             @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
           end
 

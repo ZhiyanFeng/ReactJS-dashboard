@@ -426,6 +426,62 @@ module Api
         end
       end
 
+      # Resets the password for the user with provided email address via email (no mobile session required)
+      # => params[:email] = email of the account to be resetted
+      # Returns error code -108 or 1 for success
+      def reset_password
+        if params[:email].present?
+          user = User.find_by_email(params[:email])
+          if user && user.send_password_reset
+            #UserAnalytic.create(:action => 10, :org_id => user[:active_org], :user_id => user[:id], :ip_address => request.remote_ip.to_s)
+            render json: { "eXpresso" => { "code" => 1, "message" => "Password successfully reset" } }
+          else
+            render json: { "eXpresso" => { "code" => -108, "message" => "Something went wrong." } }
+          end
+        elsif params[:phone_number].present?
+          user = User.find_by_phone_number(params[:phone_number])
+          if user && user.send_password_reset_via_sms
+            #UserAnalytic.create(:action => 10, :org_id => user[:active_org], :user_id => user[:id], :ip_address => request.remote_ip.to_s)
+            render json: { "eXpresso" => { "code" => 1, "message" => "Password successfully reset" } }
+          else
+            render json: { "eXpresso" => { "code" => -108 } }
+          end
+        else
+          user = false
+          render json: { "eXpresso" => { "code" => -108, "message" => "Cannot find user." } }
+        end
+      end
+      #def reset_password
+      #  user = User.find_by_email(params[:email])
+      #  if user && user.send_password_reset
+      #    render json: { "eXpresso" => { "code" => 1, "message" => "Password successfully reset" } }
+      #  else
+      #    render json: { "eXpresso" => { "code" => -108, "message" => user.errors } }
+      #  end
+      #end
+
+      # Resets the password for the user from the settings screen
+      # Called on the members objects of the User class
+      # => params[:email] = email of the user who wants to reset the password
+      # => params[:id] = id of the user who wants to reset the password
+      # => params[:password] = current password of the user who wants to reset the password for authentication
+      # => params[:new_password] = desired new password of the user
+      # Returns error code -109 or 1 for success
+      def change_password
+        if User.exists?(:email => params[:email], :is_valid => true)
+          @user = User.find_by_email_and_is_valid(params[:email], true)
+          #UserAnalytic.create(:action => 10, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+          status = @user.authenticate(params[:password])
+          Rails.logger.debug(status)
+          if status == 200
+            @user.change_password(params[:new_password])
+            render json: { "eXpresso" => { "code" => 1, "message" => "Password successfully changed" } }
+          else
+            render json: { "eXpresso" => { "code" => -109, "message" => @user.errors } }
+          end
+        end
+      end
+
     end
   end
 end

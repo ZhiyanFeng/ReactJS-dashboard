@@ -38,7 +38,7 @@ module Api
 
         result ||= Array.new
 
-        channel_ids = Subscription.where(["user_id =#{@user[:id]} AND is_valid"]).pluck(:channel_id)
+        #channel_ids = Subscription.where(["user_id =#{@user[:id]} AND is_valid"]).pluck(:channel_id)
 
         result.push("shift_counter" => Post.where("(post_type = 21 OR title = 'Shift Trade') AND is_valid AND created_at > '#{last_fetch}'").count)
         result.push("post_counter" => Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid AND created_at > '#{last_fetch}'").count)
@@ -425,6 +425,22 @@ module Api
             :function => "fetch_more_messages",
             :error => I18n.t('error.fetch.messages') % {:user_id => params[:id], :session_id => params[:session_id]} )
         end
+      end
+
+      def fetch_public_channels
+        result = {}
+        result["channels"] ||= Array.new
+
+        UserAnalytic.create(:action => 1090, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
+        @channels = Channel.where("channel_type in ('organization_feed', 'region_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+
+        @channels.map do |channel|
+          result["channels"].push(SyncChannelProfileSerializer.new(channel, root: false))
+        end
+
+        render json: { "eXpresso" => result }
       end
 
       def fetch_user

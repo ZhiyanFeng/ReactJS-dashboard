@@ -4,6 +4,7 @@ class SyncScheduleSerializerV2 < ActiveModel::Serializer
   :type,
   :owner_id,
   :channel_id,
+  :channel_name,
   :title,
   :content,
   :created_at,
@@ -36,6 +37,13 @@ class SyncScheduleSerializerV2 < ActiveModel::Serializer
 
   def owner
     OwnerSerializer.new(object.owner)
+  end
+
+  def channel_name
+    if Channel.exists?(:id => object.channel_id)
+      @channel = Channel.find(object.channel_id)
+      return @channel[:channel_name]
+    end
   end
 
 end

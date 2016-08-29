@@ -15,6 +15,7 @@ class ShiftStandaloneSerializer < ActiveModel::Serializer
   :tipping_user_id,
   :start_at,
   :end_at,
+  :created_at,
   :allow_delete,
   :comments_count
 

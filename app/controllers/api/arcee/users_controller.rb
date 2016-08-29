@@ -5,7 +5,7 @@ module Api
     class UsersController < ApplicationController
       class User < ::User
         # Note: this does not take into consideration the create/update actions for changing released_on
-        
+
         # Sub class to override column name in response
         #def as_json(options = {})
         #  super.merge(released_on: created_at.to_date)
@@ -17,13 +17,13 @@ module Api
       before_filter :fetch_user, :except => [:index, :join_org, :set_admin, :mass_invite_from_dashboard, :reset_password, :invite_from_dashboard, :make_admin, :revolk_users]
 
       respond_to :json
-      
+
       def fetch_user
         if User.exists?(:id => params[:id])
           @user = User.find_by_id(params[:id])
         end
       end
-      
+
       def index
         @users = User.all
         render json: @users, each_serializer: UserProfileSerializer
@@ -63,7 +63,7 @@ module Api
           end
         end
       end
-      
+
       def join_org
         @key = UserPrivilege.new(:org_id => params[:org_id], :owner_id => params[:id])
         if @key.create_key_for(false)
@@ -73,7 +73,7 @@ module Api
           render json: @key.errors
         end
       end
-      
+
       def leave_org
         if @user.leave_org
           render json: { "eXpresso" => { "code" => 1, "message" => "Leave organization successful." } }
@@ -81,7 +81,7 @@ module Api
           render json: { "eXpresso" => {"code" => -101, "message" => "Leave organization failed." } }
         end
       end
-      
+
       def switch_org
         if @user.update_attribute(:active_org, 0)
           render :json => @user, serializer: UserProfileSerializer
@@ -89,7 +89,7 @@ module Api
           render :json => @user.errors
         end
       end
-      
+
       def select_org
         if Mession.exists?(:id => params[:id])
           @mession = Mession.find(params[:id])
@@ -99,7 +99,7 @@ module Api
           else
             render :json => @mession.errors
           end
-        end        
+        end
       end
       ### ----- START Announcement REQUESTS ----- ###
       def announcements
@@ -107,8 +107,8 @@ module Api
 
         if params[:before].presence
           if params[:order] == "reverse"
-            posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("announcement"),
               params[:before],
               @user[:location],
@@ -116,8 +116,8 @@ module Api
               Time.now()
             ).includes(:settings, :comments, :likes, :flags, :organization).order("posts.created_at asc").last(r_size)
           else
-            posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("announcement"),
               params[:before],
               @user[:location],
@@ -128,8 +128,8 @@ module Api
         elsif params[:since].presence
           #created_at = Post.find(params[:since]).created_at.to_s
           if params[:order] == "reverse"
-            posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("announcement"),
               params[:since],
               @user[:location],
@@ -137,27 +137,27 @@ module Api
               Time.now()
             ).includes(:settings, :comments, :likes, :flags, :organization).order("posts.created_at asc").last(r_size)
           else
-            posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("announcement"),
               params[:since],
               @user[:location],
               @user[:user_group],
               Time.now()
-            ).includes(:settings, :comments, :likes, :flags, :organization).order("posts.created_at desc").limit(r_size)            
+            ).includes(:settings, :comments, :likes, :flags, :organization).order("posts.created_at desc").limit(r_size)
           end
         else
           if params[:order] == "reverse"
-            posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("announcement"),
               @user[:location],
               @user[:user_group],
               Time.now()
             ).includes(:settings, :comments, :likes, :flags, :organization).order("posts.created_at asc").last(r_size)
           else
-            posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("announcement"),
               @user[:location],
               @user[:user_group],
@@ -165,32 +165,32 @@ module Api
             ).includes(:settings, :comments, :likes, :flags, :organization).order("posts.created_at desc").limit(r_size)
           end
         end
-        
+
         UserNotificationCounter.reset(params[:id], @user[:active_org], "announcements")
-        
+
         posts.each do |p|
           p.check_user(params[:user_id])
         end
         render :json => posts, each_serializer: AnnouncementSerializer
       end
       ### ----- END Announcement REQUESTS ----- ###
-      
+
       ### ----- START Newsfeed REQUESTS ----- ###
       def newsfeeds
         r_size = params[:size].presence ? params[:size] : 5
 
         if params[:before].presence
           if params[:order] == "reverse"
-            posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("post"),
               params[:before],
               @user[:location],
               Time.now()
             ).includes(:settings, :comments, :likes, :flags, :owner).order("posts.created_at asc").last(r_size)
           else
-            posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("post"),
               params[:before],
               @user[:location],
@@ -200,16 +200,16 @@ module Api
         elsif params[:since].presence
           #created_at = Post.find(params[:since]).created_at.to_s
           if params[:order] == "reverse"
-            posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("post"),
               params[:since],
               @user[:location],
               Time.now()
             ).includes(:settings, :comments, :likes, :flags, :owner).order("posts.created_at asc").last(r_size)
           else
-            posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("post"),
               params[:since],
               @user[:location],
@@ -218,15 +218,15 @@ module Api
           end
         else
           if params[:order] == "reverse"
-            posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("post"),
               @user[:location],
               Time.now()
-            ).includes(:settings, :comments, :likes, :flags, :owner).order("posts.created_at asc").last(r_size)            
+            ).includes(:settings, :comments, :likes, :flags, :owner).order("posts.created_at asc").last(r_size)
           else
-            posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND is_valid AND created_at <= ?", 
-              @user[:active_org], 
+            posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND is_valid AND created_at <= ?",
+              @user[:active_org],
               PostType.reference_by_base_type("post"),
               @user[:location],
               Time.now()
@@ -240,27 +240,27 @@ module Api
 
         render :json => posts, each_serializer: NewsfeedSerializer
       end
-      
+
       ### ----- END Newsfeed REQUESTS ----- ###
-      
+
       ### ----- START Event REQUESTS ----- ###
-      
+
       def events
         if params[:before].presence
-          posts = Post.where("org_id = ? AND post_type IN (9,10,14,15,16) AND id < ? AND location = ? AND is_valid", 
-            @user[:active_org], 
+          posts = Post.where("org_id = ? AND post_type IN (9,10,14,15,16) AND id < ? AND location = ? AND is_valid",
+            @user[:active_org],
             params[:before],
             @user[:location]
           ).order("posts.created_at desc").limit(15)
         elsif params[:since].presence
           created_at = Post.find(params[:since]).created_at.to_s
-          posts = Post.where("org_id = ? AND post_type IN (9,10,14,15,16) AND id > ? AND location = ? AND is_valid", 
+          posts = Post.where("org_id = ? AND post_type IN (9,10,14,15,16) AND id > ? AND location = ? AND is_valid",
             @user[:active_org],
             params[:since],
             @user[:location]
           ).order("posts.created_at desc").limit(15)
         else
-          posts = Post.where("org_id = ? AND post_type IN (9,10,14,15,16) AND location = ? AND is_valid", 
+          posts = Post.where("org_id = ? AND post_type IN (9,10,14,15,16) AND location = ? AND is_valid",
             @user[:active_org],
             @user[:location]
           ).order("posts.created_at desc").limit(15)
@@ -272,15 +272,15 @@ module Api
 
         render :json => posts, each_serializer: AnnouncementSerializer
       end
-      
+
       ### ----- END Event REQUESTS ----- ###
-      
+
       ### ----- START Training REQUESTS ----- ###
-      
+
       def trainings
         if params[:before].presence
-          posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-            @user[:active_org], 
+          posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+            @user[:active_org],
             PostType.reference_by_base_type("training"),
             params[:before],
             @user[:location],
@@ -289,8 +289,8 @@ module Api
           ).order("posts.updated_at asc")
         elsif params[:since].presence
           created_at = Post.find(params[:since]).created_at.to_s
-          posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-            @user[:active_org], 
+          posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+            @user[:active_org],
             PostType.reference_by_base_type("training"),
             params[:since],
             @user[:location],
@@ -298,8 +298,8 @@ module Api
             Time.now
           ).order("posts.updated_at asc")
         else
-          posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-            @user[:active_org], 
+          posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+            @user[:active_org],
             PostType.reference_by_base_type("training"),
             @user[:location],
             @user[:user_group],
@@ -313,15 +313,15 @@ module Api
 
         render :json => posts, each_serializer: NewsfeedSerializer
       end
-      
+
       ### ----- END Training REQUESTS ----- ###
-      
+
       ### ----- START Training REQUESTS ----- ###
-      
+
       def quizzes
         if params[:before].presence
-          posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-            @user[:active_org], 
+          posts = Post.where("org_id = ? AND post_type IN (?) AND id < ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+            @user[:active_org],
             PostType.reference_by_base_type("quiz"),
             params[:before],
             @user[:location],
@@ -330,8 +330,8 @@ module Api
           ).order("posts.updated_at asc")
         elsif params[:since].presence
           created_at = Post.find(params[:since]).created_at.to_s
-          posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-            @user[:active_org], 
+          posts = Post.where("org_id = ? AND post_type IN (?) AND id > ? AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+            @user[:active_org],
             PostType.reference_by_base_type("quiz"),
             params[:since],
             @user[:location],
@@ -339,8 +339,8 @@ module Api
             Time.now
           ).order("posts.updated_at asc")
         else
-          posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND user_group = ? AND is_valid AND created_at <= ?", 
-            @user[:active_org], 
+          posts = Post.where("org_id = ? AND post_type IN (?) AND location = ? AND user_group = ? AND is_valid AND created_at <= ?",
+            @user[:active_org],
             PostType.reference_by_base_type("quiz"),
             @user[:location],
             @user[:user_group],
@@ -354,50 +354,50 @@ module Api
 
         render :json => posts, each_serializer: QuizzesSerializer
       end
-      
+
       ### ----- END Training REQUESTS ----- ###
-      
+
       def notifications
         notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(100)
 
         render :json => notifications, each_serializer: NotificationSerializer
       end
-      
+
       def counters
         counter = UserNotificationCounter.fetch(@user[:id], @user[:active_org])
-        render :json => counter, serializer: NotificationCounterSerializer        
+        render :json => counter, serializer: NotificationCounterSerializer
       end
-      
+
       def profile
         if @user.gallery_image.presence
           @user.gallery_image.each do |p|
             p.check_user(params[:user_id])
           end
         end
-        
+
         if @user.profile_image.presence
           @user.profile_image.check_user(params[:user_id])
         end
-        
+
         render json: @user, serializer: UserGallerySerializer
       end
-      
+
       def gallery
         @gallery = Image.where(
           :owner_id => params[:id],
           :image_type => [2,4,5]
         ).order('created_at desc')
-        
+
         @gallery.each do |p|
           p.check_user(params[:user_id])
         end
-        
+
         render json: @gallery, each_serializer: ImageSerializer
       end
-      
+
       def validate_user
         @user = User.find_by_validation_hash(params[:hash])
-                
+
         respond_to do |format|
           if @user.update_attribute(:validated, true)
 
@@ -409,7 +409,7 @@ module Api
           end
         end
       end
-      
+
       def resend_validation_email
         @user = User.find_by_email(params[:email])
         if NotificationsMailer.user_validation(@user).deliver
@@ -418,7 +418,7 @@ module Api
           render json: { "eXpresso" => { "code" => -129, "message" => "Email resent failed." } }
         end
       end
-      
+
       def update
         @user.update_attribute(:status, params[:status]) if params[:status].presence
         begin
@@ -435,7 +435,7 @@ module Api
 
         @user.update_attribute(:profile_id, params[:profile_id]) if params[:profile_id].presence
         @user.update_attribute(:push_count, @user.push_count - params[:push_count]) if params[:push_count].presence
-        
+
         if params[:org_id].presence
           organization = Organization.find(@user[:active_org])
           type = @user[:profile_id].blank? ? 5 : 6
@@ -443,7 +443,7 @@ module Api
             :org_id => params[:org_id],
             :owner_id => @user[:id],
             :title => "New Member!",
-            :content => "Hello, I am the newest member of " + organization[:name] + ".", 
+            :content => "Hello, I am the newest member of " + organization[:name] + ".",
             :post_type => type
           )
           if type == 6
@@ -452,11 +452,11 @@ module Api
             @post.basic_hello
           end
           Follower.follow(4, @post[:id], @user[:id])
-          message = @user[:first_name] + " " + @user[:last_name] + " joined your organization!" 
+          message = @user[:first_name] + " " + @user[:last_name] + " joined your organization!"
           User.notification_broadcast(@user[:id], @post[:org_id], "post", "join", message, 4, @post[:id])
           Mession.broadcast(@post[:org_id], "open_app", "join", 4, @post[:id], @user[:id], @user[:id])
         end
-        
+
         render :json => @user, serializer: UserProfileSerializer
       end
 
@@ -468,7 +468,7 @@ module Api
           render json: { "eXpresso" => { "code" => 1, "message" => "User update success." } }
         else
           render json: { "eXpresso" => { "code" => -126, "message" => "User update failed." } }
-        end      
+        end
       end
 
       def manage_group_user
@@ -516,7 +516,7 @@ module Api
       #    render :json => @user.errors
       #  end
       #end
-      
+
       # Fetches the list of users belonging to the same org as the caller
       # Called on the members objects of the User class
       # => params[:id] = id of the calling user
@@ -531,7 +531,7 @@ module Api
         end
         render json: @users, each_serializer: UserProfileSerializer
       end
-          
+
       # Fetches the list of active chat sessions involving the user
       # Called on the members objects of the User class
       # => params[:id] = id of the calling user
@@ -539,7 +539,7 @@ module Api
       def chat_list
         session_ids = ChatParticipant.where(:user_id => params[:id], :is_active => true).pluck(:session_id)
         @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
-        
+
         render json: @sessions, each_serializer: ChatSessionSerializer
       end
 
@@ -548,6 +548,7 @@ module Api
       # Returns error code -108 or 1 for success
       def reset_password
         if params[:email].present?
+          #phone_number = params[:email].sub("@coffeemobile.com","")
           user = User.find_by_email(params[:email])
           if user && user.send_password_reset
             #UserAnalytic.create(:action => 10, :org_id => user[:active_org], :user_id => user[:id], :ip_address => request.remote_ip.to_s)
@@ -576,7 +577,7 @@ module Api
       #    render json: { "eXpresso" => { "code" => -108, "message" => user.errors } }
       #  end
       #end
-      
+
       # Resets the password for the user from the settings screen
       # Called on the members objects of the User class
       # => params[:email] = email of the user who wants to reset the password
@@ -598,7 +599,7 @@ module Api
           end
         end
       end
-      
+
       def set_admin
         @user = User.find_by_email(params[:email])
         @key = UserPrivilege.where(:org_id => params[:org_id], :owner_id => @user[:id]).first
@@ -608,7 +609,7 @@ module Api
           render json: @key.errors
         end
       end
-      
+
       def remove_admin
         @user = User.find_by_email(params[:email])
         @key = UserPrivilege.where(:org_id => params[:org_id], :owner_id => @user[:id]).first
@@ -618,7 +619,7 @@ module Api
           render json: @key.errors
         end
       end
-      
+
       def logout
         @mession = Mession.where(:user_id => params[:id], :is_active => true).last
         if @mession.update_attribute(:is_active, false)
@@ -627,7 +628,7 @@ module Api
           render :json => @mession.errors
         end
       end
-      
+
       def update_badge_count
         if @user.update_attribute(:push_count, params[:counter])
           render json: { "eXpresso" => { "code" => 1, "message" => "Counter updated successfully" } }
@@ -643,15 +644,15 @@ module Api
         elsif Invitation.exists?(:email => params[:email].downcase, :is_valid => true)
           render json: { "eXpresso" => { "code" => 0 } }
         else
-          
+
           if @invitation = Invitation.create(
-              :first_name => params[:first_name], 
-              :last_name => params[:last_name], 
-              :email => params[:email].downcase, 
-              :phone_number => params[:phone_number], 
-              :user_group => params[:user_group], 
-              :location => params[:location], 
-              :org_id => params[:org_id], 
+              :first_name => params[:first_name],
+              :last_name => params[:last_name],
+              :email => params[:email].downcase,
+              :phone_number => params[:phone_number],
+              :user_group => params[:user_group],
+              :location => params[:location],
+              :org_id => params[:org_id],
               :owner_id => params[:owner_id],
               :is_invited => true
             )
@@ -675,13 +676,13 @@ module Api
             @ignored = @ignored + 1
           else
             if @invitation = Invitation.create(
-              :first_name => user[1][:first_name], 
-              :last_name => user[1][:last_name], 
-              :email => user[1][:email].downcase, 
+              :first_name => user[1][:first_name],
+              :last_name => user[1][:last_name],
+              :email => user[1][:email].downcase,
               :phone_number => user[1][:phone_number],
-              :user_group => user[1][:user_group], 
-              :location => user[1][:location], 
-              :org_id => params[:org_id], 
+              :user_group => user[1][:user_group],
+              :location => user[1][:location],
+              :org_id => params[:org_id],
               :owner_id => params[:owner_id],
               :is_invited => true
             )
@@ -694,13 +695,13 @@ module Api
         end
         render json: { "eXpresso" => { "code" => 1, "message" => "Invitations sent", "added" => @added, "ignored" => @ignored } }
       end
-      
+
       def invite_from_contact
         t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
         t_token = '81eaed486465b41042fd32b61e5a1b14'
-        
+
         @client = Twilio::REST::Client.new t_sid, t_token
-        
+
         if Rails.env.production?
           @host = "http://goo.gl/isddrw"
         elsif Rails.env.staging?
@@ -710,19 +711,19 @@ module Api
         else
           @host = "http://goo.gl/isddrw"
         end
-        
+
         message = @client.account.messages.create(
           #:body => "#{@user.first_name} #{@user.last_name} has invited you to download the app they use to trade shifts and chat. It's called Coffee Mobile, download here: #{@host}",
           :body => "#{@user.first_name} #{@user.last_name} has invited you to download the app they use to trade shifts and chat. Download Coffee Mobile here: #{@host}",
           :to => params[:phone],
           :from => "+16473602178"
         )
-        if message 
+        if message
           render json: { "eXpresso" => { "code" => 1, "message" => "Invitation sent" } }
         else
           render json: { "eXpresso" => { "code" => -111, "message" => message.errors } }
         end
-      end      
+      end
 
       def share
         @post = Post.new(
@@ -732,8 +733,8 @@ module Api
           :content => params[:content],
           :post_type => PostType.reference_by_description(params[:reference])
         )
-        
-       
+
+
         image = params[:file].presence ? params[:file] : nil
         video = params[:video].presence ? params[:video] : nil
         event = params[:event].presence ? params[:event] : nil
@@ -746,7 +747,7 @@ module Api
           render json: @post.errors
         end
       end
-      
+
     end
   end
 end

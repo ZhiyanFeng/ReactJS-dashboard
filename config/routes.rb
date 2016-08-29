@@ -212,6 +212,10 @@ Expresso::Application.routes.draw do
       resources :user_privileges do
         get :fix_existing_subscriptions, :on => :collection
       end
+
+      resources :chat_participants do
+        get :reset, :on => :member
+      end
     end
 
     scope module: :bumblebee, constraints: ApiConstraints.new(version: 2) do

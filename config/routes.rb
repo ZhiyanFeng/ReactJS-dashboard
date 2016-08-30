@@ -93,6 +93,7 @@ Expresso::Application.routes.draw do
     scope module: :charmander, constraints: ApiConstraints.new(version: 3, default: true) do
       match 'users/reset_password/', :as => :user_reset_password_v2, :via => :post, :controller => :users, :action => :reset_password
       match 'users/change_password/', :as => :user_change_password_v2, :via => :post, :controller => :users, :action => :change_password
+      match 'images/upload_image/', :as => :upload_image_v2, :via => :post, :controller => :images, :action => :upload_image
 
       resources :channels do
         post :i_am_admin, :on => :member

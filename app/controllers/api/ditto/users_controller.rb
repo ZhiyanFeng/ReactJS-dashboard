@@ -427,14 +427,44 @@ module Api
         end
       end
 
-      def fetch_public_channels
+      def fetch_region_channels
         result = {}
         result["channels"] ||= Array.new
 
         UserAnalytic.create(:action => 1090, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
+        #subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
+        #privileges_ids = UserPrivilege.where(:owner_id => @user[:id], :is_valid => true).pluck(:location_id)
+
+        #@locations = Location.where("id IN (#{privileges_ids.join(", ")})")
+
+        #@locations.each do |location|
+        #  query = "SELECT id FROM channels WHERE channel_type='region_feed' AND channel_name % "+location[:location_name]+" AND similarity(channel_name, "+location[:location_name]+") >= 0.2 ORDER BY similarity(channel_name, "+location[:location_name]+") DESC"
+        #  @channels = Channel.where("channel_type in ('organization_feed', 'public_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+
+        #  @channels.map do |channel|
+        #    result["channels"].push(SyncChannelProfileSerializer.new(channel, root: false))
+        #  end
+        #end
+
         subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
-        @channels = Channel.where("channel_type in ('organization_feed', 'region_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+        @channels = Channel.where("channel_type in ('organization_feed', 'public_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+
+        @channels.map do |channel|
+          result["channels"].push(SyncChannelProfileSerializer.new(channel, root: false))
+        end
+
+        render json: { "eXpresso" => result }
+      end
+
+      def fetch_public_channels
+        result = {}
+        result["channels"] ||= Array.new
+
+        UserAnalytic.create(:action => 1100, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
+        @channels = Channel.where("channel_type in ('region_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
 
         @channels.map do |channel|
           result["channels"].push(SyncChannelProfileSerializer.new(channel, root: false))

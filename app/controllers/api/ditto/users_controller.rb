@@ -443,15 +443,15 @@ module Api
         #  @channels = Channel.where("channel_type in ('organization_feed', 'public_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
 
         #  @channels.map do |channel|
-        #    result["channels"].push(SyncChannelProfileSerializer.new(channel, root: false))
+        #    result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
         #  end
         #end
 
         subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
-        @channels = Channel.where("channel_type in ('organization_feed', 'public_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+        @channels = Channel.where("channel_type in ('region_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
 
         @channels.map do |channel|
-          result["channels"].push(SyncChannelProfileSerializer.new(channel, root: false))
+          result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
         end
 
         render json: { "eXpresso" => result }
@@ -464,10 +464,10 @@ module Api
         UserAnalytic.create(:action => 1100, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
-        @channels = Channel.where("channel_type in ('region_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+        @channels = Channel.where("channel_type in ('organization_feed', 'public_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
 
         @channels.map do |channel|
-          result["channels"].push(SyncChannelProfileSerializer.new(channel, root: false))
+          result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
         end
 
         render json: { "eXpresso" => result }

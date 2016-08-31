@@ -3,6 +3,7 @@ class ChannelProfileSerializerV2 < ActiveModel::Serializer
   attributes :id,
   :channel_name,
   :member_count,
+  :description,
   :channel_profile
 
   def channel_profile

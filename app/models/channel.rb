@@ -10,6 +10,7 @@ class Channel < ActiveRecord::Base
   :owner_id,
   :member_count,
   :is_active,
+  :description,
   :become_active_when,
   :allow_view,
   :allow_post,

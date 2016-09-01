@@ -473,6 +473,36 @@ module Api
         render json: { "eXpresso" => result }
       end
 
+      def join_channel
+        UserAnalytic.create(:action => 1110, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        if Channel.exists?(:id => params[:id])
+          @channel = Channel.find(params[:id])
+          if @channel[:channel_type] == "public_feed" || @channel[:channel_type] == "organization_feed"
+            if Subscription.exists?(:channel_id => params[:channel_id], :user_id => @user[:id])
+              @subscription = Subscription.where(:channel_id => params[:channel_id], :user_id => @user[:id]).first
+              @subscription.update_attributes(:is_valid => true, :is_valid => true)
+              render json: { "eXpresso" => { "code" => 1, "message" => "Successfully subscribed to channel!" } }
+            else
+              @subscription = Subscription.create(
+                :user_id => @user[:id],
+                :channel_id => @channel[:id],
+                :is_active => true
+              )
+              render json: { "eXpresso" => { "code" => 1, "message" => "Successfully subscribed to channel!" } }
+            end
+          else
+            render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('error.channel.not_public' % {:channel_id => params[:channel_id]} ) } }
+          end
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('error.channel.does_not_exist' % {:channel_id => params[:channel_id]} ) } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_more_messages",
+            :error => I18n.t('error.channel.does_not_exist') % {:channel_id => params[:channel_id]} )
+        end
+      end
+
       def fetch_user
         if User.exists?(:id => params[:id])
           @user = User.find_by_id(params[:id])

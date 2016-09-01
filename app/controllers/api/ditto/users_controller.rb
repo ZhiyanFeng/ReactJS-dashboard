@@ -476,8 +476,8 @@ module Api
       def join_channel
         UserAnalytic.create(:action => 1110, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
-        if Channel.exists?(:id => params[:id])
-          @channel = Channel.find(params[:id])
+        if Channel.exists?(:id => params[:channel_id])
+          @channel = Channel.find(params[:channel_id])
           if @channel[:channel_type] == "public_feed" || @channel[:channel_type] == "organization_feed"
             if Subscription.exists?(:channel_id => params[:channel_id], :user_id => @user[:id])
               @subscription = Subscription.where(:channel_id => params[:channel_id], :user_id => @user[:id]).first
@@ -498,7 +498,7 @@ module Api
           render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('error.channel.does_not_exist' % {:channel_id => params[:channel_id]} ) } }
           ErrorLog.create(
             :file => "users_controller.rb",
-            :function => "fetch_more_messages",
+            :function => "join_channel",
             :error => I18n.t('error.channel.does_not_exist') % {:channel_id => params[:channel_id]} )
         end
       end

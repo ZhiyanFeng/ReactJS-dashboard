@@ -448,11 +448,20 @@ module Api
         #end
 
         subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
-        @channels = Channel.where("channel_type in ('region_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
-
-        @channels.map do |channel|
-          result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+        user_active_location_ids = UserPrivilege.where(:owner_id => @user[:id], :is_valid => true, :is_approved => true).pluck(:location_id)
+        @locations = Location.where("id IN (#{subscribed_channel_ids.join(", ")})")
+        @locations.each do |location|
+          @channels = Channel.where("(channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?) AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%brand_center_at:#{location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location[:id]}\\|")
+          @channels.each do |channel|
+            result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+          end
         end
+
+        #@locations = Channel.where("channel_type in ('location_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+        #@channels = Channel.where("channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?", "%brand_center_at:#{@location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location_id}\\|")
+        #@channels.map do |channel|
+        #  result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+        #end
 
         render json: { "eXpresso" => result }
       end

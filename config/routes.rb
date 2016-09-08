@@ -210,6 +210,7 @@ Expresso::Application.routes.draw do
         post :contact_dump, :on => :member
         post :flash_action, :on => :member
         get :deactivate, :on => :member
+        post :update_badge_count, :on => :member
       end
 
       resources :user_privileges do

@@ -30,6 +30,14 @@ module Api
         render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
       end
 
+      def update_badge_count
+        if @user.update_attribute(:push_count, params[:counter])
+          render json: { "eXpresso" => { "code" => 1, "message" => "Counter updated successfully" } }
+        else
+          render json: { "eXpresso" => { "code" => -110, "message" => @user.errors } }
+        end
+      end
+
       def claim_reward
         @claim = Claim.new(
           :user_id => params[:id],

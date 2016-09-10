@@ -18,6 +18,28 @@ module Api
 
       respond_to :json
 
+      def detail
+        post = Post.where(:id => params[:id]).includes(:likes, :flags, :comments => [:likes, :flags]).first
+        UserAnalytic.create(:action => 2,:org_id => post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
+        if !params[:silent].present?
+          Notification.did_view(params[:user_id], 4, params[:id]) unless params[:reset_count].present?
+          post.add_view
+        end
+
+        post.check_user(params[:user_id])
+
+        post.comments.each do |p|
+          p.check_user(params[:user_id])
+        end
+        if PostType.find_post_type(post[:post_type]) == "post"
+          render json: post, serializer: FeedDetailSerializerV2
+        elsif PostType.find_post_type(post[:post_type]) == "announcement"
+          render json: post, serializer: FeedDetailSerializerV2
+        else
+          render json: post, serializer: FeedDetailSerializerV2
+        end
+      end
+
       def post_shift
         @user = User.find(params[:owner_id])
         if @user[:is_valid]

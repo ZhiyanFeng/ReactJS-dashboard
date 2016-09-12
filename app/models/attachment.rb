@@ -56,7 +56,7 @@ class Attachment < ActiveRecord::Base
         elsif p["source"] == 11
           if ScheduleElement.exists?(:id => p["source_id"])
             obj = ScheduleElement.find(p["source_id"])
-            objs.insert(count, ShiftStandaloneSerializer.new(obj))
+            objs.insert(count, ShiftStandaloneSerializerSelfRoot.new(obj))
             count = count + 1
           end
         elsif p["source"] == 12

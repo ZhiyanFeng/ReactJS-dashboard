@@ -71,6 +71,7 @@ Expresso::Application.routes.draw do
     scope module: :ditto, constraints: ApiConstraints.new(version: 4) do
       resources :posts do
         post :post_shift, :on => :collection
+        post :detail, :on => :member
       end
 
       resources :users do

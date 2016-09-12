@@ -1,5 +1,5 @@
 class ShiftStandaloneSerializerSelfRoot < ActiveModel::Serializer
-  self.root = false
+  self.root = "shift"
   attributes :id,
   :post_id,
   :location,

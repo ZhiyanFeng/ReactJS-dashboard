@@ -13,7 +13,7 @@ module Api
       end
 
       before_filter :restrict_access, :set_headers, :except => [:validate_user]
-      before_filter :validate_session, :except => []
+      before_filter :validate_session, :except => [:logout]
       before_filter :fetch_user, :except => []
 
       respond_to :json
@@ -509,6 +509,15 @@ module Api
             :file => "users_controller.rb",
             :function => "join_channel",
             :error => I18n.t('error.channel.does_not_exist') % {:channel_id => params[:channel_id]} )
+        end
+      end
+
+      def logout
+        @mession = Mession.where(:user_id => params[:id], :is_active => true).last
+        if @mession.update_attribute(:is_active, false)
+          render :json => { "response" => "Success." }
+        else
+          render :json => @mession.errors
         end
       end
 

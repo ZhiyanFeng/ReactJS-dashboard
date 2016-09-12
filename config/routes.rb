@@ -90,6 +90,7 @@ Expresso::Application.routes.draw do
         post :fetch_public_channels, :on => :member
         post :fetch_region_channels, :on => :member
         post :join_channel, :on => :member
+        get :logout, :on => :member
       end
     end
 

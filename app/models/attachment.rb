@@ -11,7 +11,7 @@ class Attachment < ActiveRecord::Base
 	attr_accessor :images, :videos, :events, :schedules, :safety_courses, :file_uploads
 	validates_presence_of :json, :on => :create
 
-  def to_objs_v2
+  def to_objs_v2(user_id)
     objs = []
     count = 0
     begin
@@ -56,6 +56,7 @@ class Attachment < ActiveRecord::Base
         elsif p["source"] == 11
           if ScheduleElement.exists?(:id => p["source_id"])
             obj = ScheduleElement.find(p["source_id"])
+            obj.check_user(user_id)
             objs.insert(count, ShiftStandaloneSerializerSelfRoot.new(obj))
             count = count + 1
           end

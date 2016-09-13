@@ -32,6 +32,18 @@ class ChannelsController < ApplicationController
               if UserPrivilege.exists?(:owner_id => @claim[:user_id], :location_id => location_id, :is_valid => true, :is_approved => true)
                 @privilege = UserPrivilege.where(:owner_id => @claim[:user_id], :location_id => location_id, :is_valid => true, :is_approved => true).first
                 @privilege.update_attribute(:is_admin, true)
+                @post = Post.create(
+                  :channel_id => @claim[:ref_id],
+                  :org_id => 1,
+                  :owner_id => @claim[:user_id],
+                  :location => location_id,
+                  :z_index => 9999,
+                  :title => "Private message for #{@owner[:first_name]} #{@owner[:last_name]}.",
+                  :content => "Your admin claim is successful, now you may access the admin options of the channels from the gear button to the top right. Click here for guide to Shyft's other features: http://bit.ly/LiteUserGuide",
+                  #:attachment_id => 82231,
+                  :attachment_id => 7508,
+                  :post_type => 6
+                )
               end
             rescue => e
               ErrorLog.create(

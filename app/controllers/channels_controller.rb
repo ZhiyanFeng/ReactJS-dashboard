@@ -38,7 +38,7 @@ class ChannelsController < ApplicationController
                   :owner_id => @claim[:user_id],
                   :location => location_id,
                   :z_index => 9999,
-                  :title => "Private message for #{@owner[:first_name]} #{@owner[:last_name]}.",
+                  :title => "Private message for #{@user[:first_name]} #{@user[:last_name]}.",
                   :content => "Your admin claim is successful, now you may access the admin options of the channels from the gear button to the top right. Click here for guide to Shyft's other features: http://bit.ly/LiteUserGuide",
                   #:attachment_id => 82231,
                   :attachment_id => 7508,

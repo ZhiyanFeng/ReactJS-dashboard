@@ -304,13 +304,13 @@ module Api
 
           if UserAnalytic.exists?(:action => 1070, :user_id => @user[:id])
             last_fetch = UserAnalytic.where(:action => 1070, :user_id => @user[:id]).last[:created_at]
-            @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
+            @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
           else
             last_fetch = Time.now.utc
-            @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
+            @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
           end
 
-          deleted_ids = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND z_index < 9999 AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+          deleted_ids = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
           UserAnalytic.create(:action => 1070, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 

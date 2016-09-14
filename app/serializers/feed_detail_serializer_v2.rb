@@ -13,15 +13,26 @@ class FeedDetailSerializerV2 < ActiveModel::Serializer
   :views_count,
   :allow_like,
   :allow_comment,
+  :allow_delete,
   :created_at,
   :updated_at,
   :attachment,
   :owner,
   :owner_id,
-  :settings,
+  #:settings, taken out for v4
   :comments,
   :likes,
   :type
+
+  def allow_delete
+    if object.user_id.to_i == object.owner_id.to_i
+      return true
+    elsif Subscription.exists?(:user_id => object.user_id, :is_admin => true, :channel_id => object.channel_id, :is_valid => true)
+      return true
+    else
+      return false
+    end
+  end
 
   def type
     PostType.find_post_type(object.post_type)
@@ -60,9 +71,9 @@ class FeedDetailSerializerV2 < ActiveModel::Serializer
     result
   end
 
-  def settings
-    PostSettingsSerializer.new(object.settings)
-  end
+  #def settings
+  #  PostSettingsSerializer.new(object.settings)
+  #end
 
   def owner
     OwnerSerializer.new(object.owner)

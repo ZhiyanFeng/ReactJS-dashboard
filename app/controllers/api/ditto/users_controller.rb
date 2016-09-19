@@ -89,7 +89,7 @@ module Api
         end
 
         @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
-        @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")})").order("start_at #{order}").limit(20)
+        @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")}) AND is_valid").order("start_at #{order}").limit(20)
 
         @shyfts.each do |shift|
           shift.check_user(params[:id])

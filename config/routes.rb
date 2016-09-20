@@ -92,6 +92,16 @@ Expresso::Application.routes.draw do
         post :join_channel, :on => :member
         get :logout, :on => :member
       end
+
+      resources :schedule_elements do
+        get :cleanup, :on => :collection
+        post :update_tip, :on => :member
+        post :cover, :on => :member
+        post :approve, :on => :member
+        post :reject, :on => :member
+        post :uncover, :on => :member
+        post :delete_shift, :on => :member
+      end
     end
 
     scope module: :charmander, constraints: ApiConstraints.new(version: 3, default: true) do

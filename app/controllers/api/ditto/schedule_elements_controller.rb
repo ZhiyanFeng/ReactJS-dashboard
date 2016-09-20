@@ -132,6 +132,7 @@ module Api
             mession = Mession.where(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:coverer_id]]).first
             mession.target_push('open_app', @message, nil, nil, 'silent.mp3', nil)
           end
+          @schedule_element.check_user(params[:user_id])
           render json: @schedule_element, serializer: ShiftStandaloneSerializerSelfRoot
         elsif result == "covered"
           render json: { "code" => -1, "message" => "This shift is already covered and/or approved.", "error" => "The status code of the shift is covered."}
@@ -177,6 +178,7 @@ module Api
             mession = Mession.where(['user_id = ? AND is_active AND push_id IS NOT NULL', @schedule_element[:coverer_id]]).first
             mession.target_push('open_app', @message, nil, nil, 'silent.mp3', nil)
           end
+          @schedule_element.check_user(params[:user_id])
           render json: @schedule_element, serializer: ShiftStandaloneSerializerSelfRoot
         elsif result == "covered"
           render json: { "code" => -1, "message" => "This shift is already covered and/or approved.", "error" => "The status code of the shift is covered."}

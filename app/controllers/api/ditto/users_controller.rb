@@ -13,416 +13,517 @@ module Api
       end
 
       before_filter :restrict_access, :set_headers, :except => [:validate_user]
-      before_filter :validate_session, :except => [:verify, :invite_from_dashboard, :manage_user, :join_org, :create, :select_org, :validate_user, :update, :set_admin, :remove_admin, :reset_password, :logout, :reindex]
-      before_filter :fetch_user, :except => [:verify, :index, :join_org, :set_admin, :reset_password, :reindex]
+      before_filter :validate_session, :except => [:logout]
+      before_filter :fetch_user, :except => []
 
       respond_to :json
+      @@_BASIC_POST_TYPE_IDS = "5,6,7,8,9"
+      @@_ANNOUNCEMENT_POST_TYPE_IDS = "1,2,3,4,10"
+      @@_TRAINING_POST_TYPE_IDS = "11,12,13,18"
+      @@_QUIZ_POST_TYPE_IDS = "14,15"
+      @@_SAFETY_TRAINING_POST_TYPE_IDS = "16"
+      @@_SAFETY_QUIZ_POST_TYPE_IDS = "17"
+      @@_SCHEDULE_POST_TYPE_IDS = "19,20"
 
-      def reindex
-        #User.all.each do |usr|
-        User.where(:last_recount => nil).each do |usr|
-          usr.recalculate_scores
-        end
-      end
+      # GET COUNTERS
+      def fetch_counters
 
-      def test_sidekiq
-        TestWorker.perform_async(true)
-        render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
-      end
-
-      def claim_reward
-        @claim = Claim.new(
-          :user_id => params[:id],
-          :referred_count_required_for_claim => params[:claim_count],
-          :status => "VERIFYING",
-          :claim_amount => params[:claim_amount],
-          :email => params[:email],
-          :verified => false
-        )
-        if @claim.save
-          render json: { "eXpresso" => { "code" => 1, "message" => "Success", "verification_code" => @claim[:verification_code], "claim_id" => @claim[:claim_id] } }
+        if UserAnalytic.exists?(:action => 1000, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 1000, :user_id => @user[:id]).last[:created_at]
         else
-          render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, your claim could not be processed at this moment.", "error" => "Could not save info, probably server." } }
+          last_fetch = Time.now
         end
+
+        UserAnalytic.create(:action => 1000, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        result ||= Array.new
+
+        #channel_ids = Subscription.where(["user_id =#{@user[:id]} AND is_valid"]).pluck(:channel_id)
+
+        result.push("shift_counter" => Post.where("(post_type = 21 OR title = 'Shift Trade') AND is_valid AND created_at > '#{last_fetch}'").count)
+        result.push("post_counter" => Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid AND created_at > '#{last_fetch}'").count)
+        result.push("schedule_counter" => Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND is_valid AND created_at > '#{last_fetch}'").count)
+        result.push("notification_counter" => Notification.where("recipient_id = #{@user[:id]} AND created_at > '#{last_fetch}'").count)
+        member_location_ids = UserPrivilege.where(:owner_id => params[:id], :is_approved => true, :is_valid => true).pluck(:location_id)
+        result.push("contact_counter" => UserPrivilege.where("location_id in (?) AND created_at > '#{last_fetch}'", member_location_ids).count)
+        session_ids = ChatParticipant.where(:user_id => params[:id], :is_active => true).pluck(:session_id)
+        result.push("message_counter" => ChatMessage.where("session_id in (?) AND created_at > '#{last_fetch}'", session_ids).count)
+
+        render json: { "eXpresso" => result }
       end
 
-      def contact_dump
-        if params[:id].present?
-          user_id = params[:id]
+      # GET SHIFTS
+      def fetch_shifts
+        result = {}
+        result["shifts"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        if UserAnalytic.exists?(:action => 1010, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 1010, :user_id => @user[:id]).last[:created_at]
         else
-          user_id = 0
+          last_fetch = Time.now
         end
-        count = 0
 
-        params[:contacts].each do |contact|
-          begin
-            if contact[:phones].present?
-              phone_numbers = contact[:phones].map(&:inspect).join(', ').gsub(/[\(\)\-\+\s\u00a0]/i, '')
-            else
-              phone_numbers = nil
-            end
+        UserAnalytic.create(:action => 1010, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
-            if contact[:emails].present?
-              emails = contact[:emails].map(&:inspect).join(', ')
-            else
-              emails = nil
-            end
+        constructed_SQL = ""
 
-            if contact[:social_profiles].present?
-              socials = contact[:social_profiles].map(&:inspect).join(', ')
-            else
-              socials = nil
-            end
-            ContactDump.create(
-              :user_id => user_id,
-              :phone_numbers => phone_numbers,
-              :first_name => contact[:first_name],
-              :last_name => contact[:last_name],
-              :emails => emails,
-              :social_links => socials,
-              :processed => false
-            )
-            count = count + 1
-          rescue => e
-            Rails.logger.debug("============ERROR START users:contact_dump ============")
-            Rails.logger.debug(e.message)
-            Rails.logger.debug(e.backtrace.join("\n"))
-            Rails.logger.debug("============ERROR END users:contact_dump ============")
-            count = count - 1
-          ensure
+        if params[:filters][:show_expired] == "true"
+          constructed_SQL = constructed_SQL + "start_at <= '#{Time.now}' "
+          order = "ASC"
+        else params[:filters][:show_expired] == "false"
+          constructed_SQL = constructed_SQL + "start_at > '#{Time.now}' "
+          order = "DESC"
+        end
+
+        if params[:filters][:display_my_shift_only] == "true"
+          constructed_SQL = constructed_SQL + "AND (owner_id = #{@user[:id]} OR coverer_id = #{@user[:id]} OR approver_id = #{@user[:id]}) "
+        else
+        end
+
+        constructed_SQL = constructed_SQL + "AND trade_status in (#{params[:filters][:status_filter_str]}) "
+
+        if params[:filters][:location].present?
+          constructed_SQL = constructed_SQL + "AND location_id in (#{params[:filters][:location]}) "
+        else
+        end
+
+        @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
+        @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")}) AND is_valid").order("start_at #{order}").limit(20)
+
+        @shyfts.each do |shift|
+          shift.check_user(params[:id])
+        end
+        @shyfts.map do |shift|
+          result["shifts"].push(ShiftStandaloneSerializer.new(shift, root: false))
+        end
+
+        #render json: @shyfts, each_serializer: ShiftStandaloneSerializer
+        render json: { "eXpresso" => result }
+      end
+
+      # GET SUBSCRIPTIONS
+      def fetch_subscriptions
+        result = {}
+        result["subscriptions"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        if UserAnalytic.exists?(:action => 1020, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 1020, :user_id => @user[:id]).last[:created_at]
+          @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
+        else
+          last_fetch = Time.now.utc
+          @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
+        end
+
+        deleted_ids = Subscription.where("user_id = #{@user[:id]} AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        UserAnalytic.create(:action => 1020, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        @subscriptions.each do |s|
+          last_sync_time = s[:subscription_last_synchronize].present? ? s[:subscription_last_synchronize] : Time.now.utc
+          new_subscription = s[:subscription_last_synchronize].present? ? false : true
+          s.check_parameters(last_fetch, new_subscription, last_fetch)
+        end
+
+        @subscriptions.map do |subscription|
+          if @user[:system_user]
+            result["subscriptions"].push(SyncSubscriptionSerializerV2.new(subscription, root: false))
+          else
+            result["subscriptions"].push(SyncSubscriptionSerializerV2.new(subscription, root: false))
           end
         end
-        render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records processed" } }
+
+        result["deleted_ids"].push(deleted_ids)
+
+        render json: { "eXpresso" => result }
       end
 
-      def verify_claim
-        if Claim.exists?(:claim_id => params[:claim_id])
-          @claim = Claim.where(:claim_id => params[:claim_id]).first
-          if @claim.update_attributes(:verified => true, :status => "PROCESSING")
-            @user = User.find(@claim[:user_id])
-            if @user.process_verified_claim("DEFAULT", @claim[:referred_count_required_for_claim])
-              @claim.update_attributes(:verified => true, :status => "DENIED")
-              render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+      # GET SCHEDULES
+      def fetch_schedules
+        result = {}
+        result["schedules"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        channels = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc").pluck(:channel_id)
+
+        if UserAnalytic.exists?(:action => 1030, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 1030, :user_id => @user[:id]).last[:created_at]
+          @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
+            params[:id]
+          ).order("posts.updated_at desc").limit(10)
+          #@schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND updated_at > ?",
+          #  params[:id],
+          #  last_fetch
+          #).order("posts.updated_at desc").limit(10)
+        else
+          last_fetch = Time.now.utc
+          @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{@@_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
+            params[:id]
+          ).order("posts.updated_at desc").limit(10)
+        end
+
+        deleted_ids = Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        UserAnalytic.create(:action => 1030, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        @schedules.each do |p|
+          p.check_user(params[:id])
+        end
+        @schedules.map do |schedule|
+          result["schedules"].push(SyncScheduleSerializerV2.new(schedule, root: false))
+        end
+
+        result["deleted_ids"].push(deleted_ids)
+
+        render json: { "eXpresso" => result }
+      end
+
+      # GET SESSIONS
+      def fetch_sessions
+        result = {}
+        result["sessions"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        session_ids = ChatParticipant.where(:user_id => params[:id], :is_active => true).pluck(:session_id)
+
+        if UserAnalytic.exists?(:action => 1040, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 1040, :user_id => @user[:id]).last[:created_at]
+          #@sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active AND updated_at > ?", session_ids, last_fetch]).order("updated_at desc")
+          @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
+        else
+          last_fetch = Time.now.utc
+          @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc")
+        end
+
+        deleted_ids = ChatSession.where("is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        UserAnalytic.create(:action => 1040, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        @sessions.map do |session|
+          result["sessions"].push(SyncChatSerializer.new(session, root: false))
+        end
+
+        result["deleted_ids"].push(deleted_ids)
+
+        render json: { "eXpresso" => result }
+      end
+
+      # GET CONTACTS
+      def fetch_contacts
+        result = {}
+        result["contacts"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
+
+        if location_list.count > 0
+          if UserAnalytic.exists?(:action => 1050, :user_id => @user[:id])
+            last_fetch = UserAnalytic.where(:action => 1050, :user_id => @user[:id]).last[:created_at]
+            #@contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_approved AND updated_at > '#{last_fetch}'")
+            @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
+          else
+            last_fetch = Time.now.utc
+            @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
+          end
+
+          deleted_ids = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+          UserAnalytic.create(:action => 1050, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+          @contacts.map do |contact|
+            result["contacts"].push(SyncContactThruPrivilegeSerializer.new(contact, root: false))
+          end
+
+          result["deleted_ids"].push(deleted_ids)
+        end
+
+        render json: { "eXpresso" => result }
+      end
+
+      # GET NOTIFICATIONS
+      def fetch_notifications
+        result = {}
+        result["notifications"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
+
+        if UserAnalytic.exists?(:action => 106, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 106, :user_id => @user[:id]).last[:created_at]
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
+          #@notifications = Notification.where("org_id = ? AND notify_id = ? AND viewed = 'false' AND updated_at > ?",
+          #  @user[:active_org],
+          #  params[:id],
+          #  last_fetch
+          #).includes(:sender, :recipient).order("created_at desc")
+        else
+          last_fetch = Time.now.utc
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
+        end
+
+        deleted_ids = Notification.where("org_id = #{@user[:active_org]} AND notify_id = #{params[:id]} AND updated_at > '#{last_fetch}'").pluck(:id)
+
+        UserAnalytic.create(:action => 1060, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        @notifications.map do |notification|
+          result["notifications"].push(SyncNotificationSerializer.new(notification, root: false))
+        end
+
+        result["deleted_ids"].push(deleted_ids)
+
+        render json: { "eXpresso" => result }
+      end
+
+      # GET NOTIFICATIONS
+      def fetch_more_notifications
+        result = {}
+        result["notifications"] ||= Array.new
+        result["deleted_ids"] ||= Array.new
+
+        location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
+
+        @notifications = Notification.where("org_id = 1 AND notify_id = #{params[:id]} AND viewed = 'f' AND id < #{params[:last_notification_id]}").includes(:sender, :recipient).order("created_at desc").limit(20)
+
+        UserAnalytic.create(:action => 1061, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        @notifications.map do |notification|
+          result["notifications"].push(SyncNotificationSerializer.new(notification, root: false))
+        end
+
+        render json: { "eXpresso" => result }
+      end
+
+      def fetch_posts
+        if Subscription.exists?(:id => params[:subscription_id], :is_valid => true)
+          result = {}
+          result["posts"] ||= Array.new
+          result["deleted_ids"] ||= Array.new
+
+          @subscription = Subscription.where(:id => params[:subscription_id], :is_valid => true).first
+
+          if UserAnalytic.exists?(:action => 1070, :user_id => @user[:id])
+            last_fetch = UserAnalytic.where(:action => 1070, :user_id => @user[:id]).last[:created_at]
+            @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
+          else
+            last_fetch = Time.now.utc
+            @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
+          end
+
+          deleted_ids = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+          UserAnalytic.create(:action => 1070, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+          @posts.each do |post|
+            post.check_user(params[:id])
+          end
+          @posts.map do |post|
+            #SyncFeedSerializer.new(post, scope: scope, root: false)
+            result["posts"].push(SyncFeedSerializerV2.new(post, root: false))
+          end
+
+          result["deleted_ids"].push(deleted_ids)
+
+          render json: { "eXpresso" => result }
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('warning.fetch.posts') } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_posts",
+            :error => I18n.t('error.fetch.posts') % {:user_id => params[:id], :subscription_id => params[:subscription_id]} )
+        end
+      end
+
+      def fetch_more_posts
+        if Subscription.exists?(:id => params[:subscription_id], :is_valid => true)
+          result = {}
+          result["posts"] ||= Array.new
+
+          UserAnalytic.create(:action => 1071, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+          @subscription = Subscription.where(:id => params[:subscription_id], :is_valid => true).first
+
+          @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid AND id < #{params[:last_post_id]}").order("created_at DESC").limit(10)
+
+          @posts.each do |post|
+            post.check_user(params[:id])
+          end
+          @posts.map do |post|
+            #SyncFeedSerializer.new(post, scope: scope, root: false)
+            result["posts"].push(SyncFeedSerializer.new(post, root: false))
+          end
+
+          render json: { "eXpresso" => result }
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('warning.fetch.messages') } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_more_messages",
+            :error => I18n.t('error.fetch.messages') % {:user_id => params[:id], :session_id => params[:session_id]} )
+        end
+      end
+
+      def fetch_messages
+        if ChatParticipant.exists?(:user_id => params[:id], :session_id => params[:session_id], :is_valid => true)
+          result = {}
+          result["messages"] ||= Array.new
+          result["deleted_ids"] ||= Array.new
+
+          @participant = ChatParticipant.where(:user_id => params[:id], :session_id => params[:session_id], :is_valid => true).first
+
+          if UserAnalytic.exists?(:action => 1080, :user_id => @user[:id])
+            last_fetch = UserAnalytic.where(:action => 1080, :user_id => @user[:id]).last[:created_at]
+            @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
+          else
+            last_fetch = Time.now.utc
+            @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid").order("created_at DESC").limit(10)
+          end
+
+          deleted_ids = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
+
+          UserAnalytic.create(:action => 1080, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+          @participant.update_attribute(:unread_count, 0)
+
+          @messages.map do |message|
+            result["messages"].push(ChatMessageSerializer.new(message, root: false))
+          end
+
+          #render json: @messages, each_serializer: ChatMessageSerializer
+          result["deleted_ids"].push(deleted_ids)
+
+          render json: { "eXpresso" => result }
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('warning.fetch.messages') } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_messages",
+            :error => I18n.t('error.fetch.messages') % {:user_id => params[:id], :session_id => params[:session_id]} )
+        end
+      end
+
+      def fetch_more_messages
+        if ChatParticipant.exists?(:user_id => params[:id], :session_id => params[:session_id], :is_valid => true)
+          result = {}
+          result["messages"] ||= Array.new
+
+          UserAnalytic.create(:action => 1081, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+          @participant = ChatParticipant.where(:user_id => params[:id], :session_id => params[:session_id], :is_valid => true).first
+
+          @messages = ChatMessage.where("session_id = #{@participant[:session_id]} AND is_valid AND id < #{params[:last_message_id]}").order("created_at DESC").limit(10)
+
+          @messages.map do |message|
+            result["messages"].push(ChatMessageSerializer.new(message, root: false))
+          end
+
+          render json: { "eXpresso" => result }
+        else
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('warning.fetch.messages') } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "fetch_more_messages",
+            :error => I18n.t('error.fetch.messages') % {:user_id => params[:id], :session_id => params[:session_id]} )
+        end
+      end
+
+      def fetch_region_channels
+        result = {}
+        result["channels"] ||= Array.new
+
+        UserAnalytic.create(:action => 1090, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        #subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
+        #privileges_ids = UserPrivilege.where(:owner_id => @user[:id], :is_valid => true).pluck(:location_id)
+
+        #@locations = Location.where("id IN (#{privileges_ids.join(", ")})")
+
+        #@locations.each do |location|
+        #  query = "SELECT id FROM channels WHERE channel_type='region_feed' AND channel_name % "+location[:location_name]+" AND similarity(channel_name, "+location[:location_name]+") >= 0.2 ORDER BY similarity(channel_name, "+location[:location_name]+") DESC"
+        #  @channels = Channel.where("channel_type in ('organization_feed', 'public_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+
+        #  @channels.map do |channel|
+        #    result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+        #  end
+        #end
+
+        subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
+        user_active_location_ids = UserPrivilege.where(:owner_id => @user[:id], :is_valid => true, :is_approved => true).pluck(:location_id)
+        @locations = Location.where("id IN (#{subscribed_channel_ids.join(", ")})")
+        @locations.each do |location|
+          @channels = Channel.where("(channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?) AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%brand_center_at:#{location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location[:id]}\\|")
+          @channels.each do |channel|
+            result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+          end
+        end
+
+        #@locations = Channel.where("channel_type in ('location_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+        #@channels = Channel.where("channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?", "%brand_center_at:#{@location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location_id}\\|")
+        #@channels.map do |channel|
+        #  result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+        #end
+
+        render json: { "eXpresso" => result }
+      end
+
+      def fetch_public_channels
+        result = {}
+        result["channels"] ||= Array.new
+
+        UserAnalytic.create(:action => 1100, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
+        @channels = Channel.where("channel_type in ('organization_feed', 'public_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
+
+        @channels.map do |channel|
+          result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+        end
+
+        render json: { "eXpresso" => result }
+      end
+
+      def join_channel
+        UserAnalytic.create(:action => 1110, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+
+        if Channel.exists?(:id => params[:channel_id])
+          @channel = Channel.find(params[:channel_id])
+          if @channel[:channel_type] == "public_feed" || @channel[:channel_type] == "organization_feed"
+            if Subscription.exists?(:channel_id => params[:channel_id], :user_id => @user[:id])
+              @subscription = Subscription.where(:channel_id => params[:channel_id], :user_id => @user[:id]).first
+              @subscription.update_attributes(:is_valid => true, :is_active => true)
+              render json: { "eXpresso" => { "code" => 1, "message" => "Successfully subscribed to channel!" } }
             else
-              render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, you do not have enough referrals that you can claim a reward for. Contact our team if this is not correct at hello@myshyft.com", "error" => "Not enough referral unclaimed" } }
+              @subscription = Subscription.create(
+                :user_id => @user[:id],
+                :channel_id => @channel[:id],
+                :is_active => true
+              )
+              render json: { "eXpresso" => { "code" => 1, "message" => "Successfully subscribed to channel!" } }
             end
           else
-            render json: { "eXpresso" => { "code" => -1, "message" => "The verification failed" } }
+            render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('error.channel.not_public' % {:channel_id => params[:channel_id]} ) } }
           end
         else
-          render json: { "eXpresso" => { "code" => -1, "message" => "Cannot find the claim" } }
+          render json: { "eXpresso" => { "code" => -1, "message" => I18n.t('error.channel.does_not_exist' % {:channel_id => params[:channel_id]} ) } }
+          ErrorLog.create(
+            :file => "users_controller.rb",
+            :function => "join_channel",
+            :error => I18n.t('error.channel.does_not_exist') % {:channel_id => params[:channel_id]} )
         end
       end
 
-      def create_referral_link
-        @referral = ReferralSend.new(
-          :sender_id => params[:id],
-          :program_code => params[:program_code].present? ? params[:program_code] : "DEFAULT",
-          :referral_link => params[:referral_link],
-          :referral_platform => params[:referral_platform].present? ? params[:referral_platform] : "DIRECT",
-          :referral_code => params[:referral_code].present? ? params[:referral_code] : @user.get_referral_code,
-          :referral_target_id => params[:referral_target_id]
-        )
-        if @referral.save
-          render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+      def logout
+        @mession = Mession.where(:user_id => params[:id], :is_active => true).last
+        if @mession.update_attribute(:is_active, false)
+          render :json => { "response" => "Success." }
         else
-          render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, we could not create the referral information at this moment.", "error" => "Could not save info, probably server." } }
-        end
-      end
-
-      def get_referral_code
-        if User.exists?(:id => params[:id], :is_valid => true)
-          @user = User.find(params[:id])
-          code = @user.get_referral_code
-          count = @user.get_referral_count("DEFAULT")
-          claims = @user.get_current_claim
-          render json: { "eXpresso" => {
-            "code" => 1,
-            "program_code" => "DEFAULT",
-            "referral_code" => code,
-            "referral_count" => count % 5,
-            "claimable_amount" => (count / 5) * 5,
-            "processing_claim" => claims,
-            #"referral_screen_display" => "Shyft works better when your coworkers are using it too...",
-            "referral_screen_display" => "Click to copy the link and share Shyft with your friends and coworkers!",
-            "referral_facebook_message" => "Hey! Check out Shyft, the app we are using for shift swaps and sharing schedules. It is completely free, you can get it here: [LINK HERE]",
-            "referral_twitter_message" => "Hey! Check out Shyft, the app we are using for shift swaps and sharing schedules. It is completely free, you can get it here: [LINK HERE]",
-            "referral_social_message" => "Hey! Check out Shyft, the app we are using for shift swaps and sharing schedules. It is completely free, you can get it here: [LINK HERE]",
-            #"referral_chat_message" => "Hey! Check out Shyft, the app we are using for shift swaps and sharing schedules. It is completely free, you can get it here: [LINK HERE]",
-            "referral_chat_message" => "Hey! We're using Shyft at work to swap shifts and post schedules now. It's free, download it here: [LINK HERE]",
-            "message" => "Success" } }
-        else
-          render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, we couldn't get your referral information at this moment.", "error" => "User with ID #{params[:id]} does not exist." } }
-        end
-      end
-
-      def get_referred_users
-        if User.exists?(:id => params[:id], :is_valid => true)
-          @user = User.find(params[:id])
-          code = @user.get_referral_code
-          @referred = ReferralAccept.where(:referral_code => code)
-
-          render json: @referred, each_serializer: ReferredUserSerializer
-        else
-          render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, we couldn't get your referral information at this moment.", "error" => "User with ID #{params[:id]} does not exist." } }
+          render :json => @mession.errors
         end
       end
 
       def fetch_user
         if User.exists?(:id => params[:id])
           @user = User.find_by_id(params[:id])
-        end
-      end
-
-      def profile
-        render json: @user, serializer: UserProfileSerializer
-      end
-
-      def flash_action
-        if User.exists?(:id => params[:id], :is_valid => true)
-          FlashMessageResponse.create(:user_id => params[:user_id], :flash_message_uid => params[:uid], :clicked => params[:clicked])
-
-          render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
-        else
-          render json: { "eXpresso" => { "code" => -1, "message" => "Sorry, action could not be performed.", "error" => "User with ID #{params[:id]} does not exist." } }
-        end
-      end
-
-      def fetch_shifts
-        UserAnalytic.create(:action => 101, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
-
-        @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
-        @shyfts = ScheduleElement.where("start_at >= '#{params[:startDate]}' AND start_at <= '#{params[:endDate]}' AND channel_id IN (#{@subscriptions.join(", ")})").order("start_at ASC").limit(20)
-
-        render json: @shyfts, each_serializer: ShiftStandaloneSerializer
-      end
-
-      def synchronize
-        #Log the action
-        UserAnalytic.create(:action => 4, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
-
-        _BASIC_POST_TYPE_IDS = "5,6,7,8,9"
-        _ANNOUNCEMENT_POST_TYPE_IDS = "1,2,3,4,10"
-        _TRAINING_POST_TYPE_IDS = "11,12,13,18"
-        _QUIZ_POST_TYPE_IDS = "14,15"
-        _SAFETY_TRAINING_POST_TYPE_IDS = "16"
-        _SAFETY_QUIZ_POST_TYPE_IDS = "17"
-        _SCHEDULE_POST_TYPE_IDS = "19,20"
-
-        fetch_size = params[:size].present? ? params[:size] : 15
-        fetch_all = params[:options].present? ? false : true
-        fetch_time = params[:last_sync_time].present? ? Time.zone.parse(params[:last_sync_time]) : Time.now
-        fetch_fresh = params[:last_sync_time].present? ? false : true
-        fetch_history = params[:before].present? ? true : false
-
-        result = {}
-        #result["server_sync_time"] = DateTime.now.iso8601(3)
-        #result["flash_alert"] = { "uid" => "16818e151fc45d95ae3634a50da9d783", "message" => "Having trouble getting your shifts covered? <u>Shyft</u> works well with lots of coworkers on your network, <b>invite some coworkers</b> and see your shifts covered instantly!", "button" => "INVITE COWORKERS", "target" => "contact_invite"}
-        result["server_sync_time"] = Time.now.utc
-        result["subscriptions"] ||= Array.new
-        result["shifts"] ||= Array.new
-        result["schedules"] ||= Array.new
-        result["contacts"] ||= Array.new
-        result["notifications"] ||= Array.new
-        result["sessions"] ||= Array.new
-        channels ||= Array.new
-
-        if fetch_fresh
-          @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
-        else
-          @subscriptions = Subscription.where(["user_id =#{@user[:id]} AND updated_at > ?", fetch_time]).order("updated_at desc")
-        end
-        #@subscriptions = Subscription.where(:user_id => @user[:id], :is_valid => true)
-        @subscriptions.each do |s|
-          #s.check_parameters(fetch_time, fetch_fresh)
-          last_sync_time = s[:subscription_last_synchronize].present? ? s[:subscription_last_synchronize] : Time.now.utc
-          new_subscription = s[:subscription_last_synchronize].present? ? false : true
-          s.check_parameters(last_sync_time, new_subscription, fetch_fresh)
-        end
-        @subscriptions.map do |subscription|
-          if @user[:system_user]
-            result["subscriptions"].push(SyncSystemSubscriptionSerializer.new(subscription, root: false))
-          else
-            result["subscriptions"].push(SyncSubscriptionSerializer.new(subscription, root: false))
-          end
-          #subscription.update_attribute(:subscription_last_synchronize, Time.now)
-          channels.push(subscription[:channel_id])
-        end
-
-        # -- START FETCH CONTACT INFORMATION -- #
-        if fetch_all || params[:options][:contacts].present?
-          location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
-          if location_list.count > 0
-              if fetch_fresh
-                #@contacts = User.where("id IN (#{contact_ids.join(", ")}) AND is_valid")
-                @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_valid AND is_approved")
-              else
-                #@contacts = User.where("id IN (#{contact_ids.join(", ")}) AND updated_at > '#{fetch_time}' AND is_valid")
-                @contacts = UserPrivilege.where("location_id IN (#{location_list.join(", ")}) AND owner_id != #{@user[:id]} AND NOT is_invisible AND is_approved AND updated_at > '#{fetch_time}'")
-              end
-              @contacts.map do |contact|
-                #result["contacts"].push(SyncContactSerializerTwo.new(contact, root: false))
-                result["contacts"].push(SyncContactThruPrivilegeSerializer.new(contact, root: false))
-              end
-            #end
-          end
-        else
-          #skip because it is not specified to have this in the result
-        end
-        # -- END FETCH CONTACT INFORMATION -- #
-
-        if fetch_all || params[:options][:sessions].presence
-          session_ids = ChatParticipant.where(:user_id => params[:id], :is_active => true).pluck(:session_id)
-          if fetch_fresh
-            @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active", session_ids]).order("updated_at desc").limit(55)
-          else
-            @sessions = ChatSession.where(["id IN(?) AND is_valid AND is_active AND updated_at > ?", session_ids, fetch_time]).order("updated_at desc")
-          end
-          @sessions.map do |session|
-            result["sessions"].push(SyncChatSerializer.new(session, root: false))
-          end
-        else
-          #skip because it is not specified to have this in the result
-        end
-
-        # -- START FETCH SCHEDULES -- #
-        if fetch_all || params[:options][:schedules].presence
-          if channels.size > 0
-            if fetch_fresh
-              @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND is_valid",
-                params[:user_id]
-              ).order("posts.updated_at desc").limit(15)
-            else
-              @schedules = Post.where("(z_index < 9999 OR owner_id = ?) AND post_type IN (#{_SCHEDULE_POST_TYPE_IDS}) AND channel_id IN (#{channels.join(", ")}) AND updated_at > ?",
-                params[:user_id],
-                fetch_time
-              ).order("posts.updated_at desc").limit(15)
-            end
-            @schedules.each do |p|
-              p.check_user(params[:user_id])
-            end
-            @schedules.map do |quiz|
-              result["schedules"].push(SyncScheduleSerializer.new(quiz, root: false))
-            end
-          end
-        else
-          #skip because it is not specified to have this in the result
-        end
-        # -- END FETCH SCHEDULES -- #
-
-        # -- START FETCH NOTIFICATION -- #
-        if fetch_all || params[:options][:notifications].presence
-          if fetch_fresh
-            @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(100)
-          else
-            @notifications = Notification.where("org_id = ? AND notify_id = ? AND viewed = 'false' AND updated_at > ?",
-              @user[:active_org],
-              params[:id],
-              fetch_time
-            ).includes(:sender, :recipient).order("created_at desc")
-          end
-          @notifications.map do |notification|
-            result["notifications"].push(SyncNotificationSerializer.new(notification, root: false))
-          end
-        else
-          #skip because it is not specified to have this in the result
-        end
-        # -- END FETCH NOTIFICATION -- #
-
-        render json: { "eXpresso" => result }
-        @subscriptions.map do |subscription|
-          subscription.update_attribute(:subscription_last_synchronize, Time.now)
-        end
-      end
-
-      def change_password
-        if User.exists?(:email => params[:email], :is_valid => true)
-          @user = User.find_by_email_and_is_valid(params[:email], true)
-          #UserAnalytic.create(:action => 10, :org_id => @user[:active_org], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
-          status = @user.authenticate_location_based(params[:password])
-          if status == 200
-            @user.change_password(params[:new_password])
-            render json: { "eXpresso" => { "code" => 1, "message" => "Password successfully changed" } }
-          else
-            render json: { "eXpresso" => { "code" => -109, "message" => @user.errors } }
-          end
-        end
-      end
-
-      def deactivate
-        if User.exists?(:id => params[:id], :is_valid => true)
-          @user = User.find(params[:id])
-          @user.update_attribute(:is_valid, false)
-          render json: { "eXpresso" => { "code" => 1, "message" => "Account successfully deleted" } }
-        else
-          render json: { "eXpresso" => { "code" => -1, "message" => "User account does not exist", "error" => "Cannot find user account" } }
-        end
-      end
-
-      def invite_from_contact
-        t_sid = 'AC69f03337f35ddba0403beab55af5caf3'
-        t_token = '81eaed486465b41042fd32b61e5a1b14'
-
-        @client = Twilio::REST::Client.new t_sid, t_token
-
-        if params[:referral_link].present?
-          @host = params[:referral_link]
-        elsif Rails.env.production?
-          @host = "http://goo.gl/isddrw"
-        elsif Rails.env.staging?
-          @host = "http://goo.gl/isddrw"
-        elsif Rails.env.testing?
-          @host = "http://goo.gl/isddrw"
-        else
-          @host = "http://goo.gl/isddrw"
-        end
-
-        begin
-          ReferralSend.create(
-            :sender_id => params[:id],
-            :program_code => params[:program_code].present? ? params[:program_code] : "DEFAULT",
-            :referral_link => @host,
-            :referral_platform => "TWILIO",
-            :referral_code => params[:referral_code].present? ? params[:referral_code] : @user.get_referral_code,
-            :referral_target_id => params[:phone]
-          )
-        rescue
-        ensure
-        end
-
-        message_body = "Hi"
-        if params[:name].present?
-          if Obscenity.profane?(params[:name])
-            message_body = "Hey we are using Shyft to swap shifts and share schedules. The rest of the team is already on it: #{@host} - #{@user[:first_name]} #{@user[:last_name]}."
-          else
-            message_body = "Hey #{params[:name]}, we are using Shyft to swap shifts and share schedules. The rest of the team is already on it: #{@host} - #{@user[:first_name]} #{@user[:last_name]}."
-          end
-        else
-          message_body = "#{@user[:first_name]} #{@user[:last_name]} has invited you to download the app they use to trade shifts and chat. Download Shyft here: #{@host}"
-        end
-
-        #phone_number = params[:phone].gsub(/[\+\-\(\)\s]/,'')
-        phone_number = params[:phone].gsub(/\W/,'')
-
-
-        begin
-          message = @client.account.messages.create(
-            :body => message_body,
-            #:body => "#{@user.first_name} #{@user.last_name} has invited you to download the app they use to trade shifts and chat. Download Shyft here: #{@host}",
-            :to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
-            :from => "+16473602178"
-          )
-          if message
-            render json: { "eXpresso" => { "code" => 1, "message" => "Invitation sent" } }
-          else
-            render json: { "eXpresso" => { "code" => -111, "message" => message.errors } }
-          end
-        rescue Twilio::REST::RequestError => e
-          ErrorLog.create(
-            :file => "users_controller.rb",
-            :function => "invite_from_contact",
-            :error => "#{e}")
-          render json: { "code" => -1, "message" => "Ops...Something went wrong!.", "error" => "Shouldn't land here but it did."}
         end
       end
 

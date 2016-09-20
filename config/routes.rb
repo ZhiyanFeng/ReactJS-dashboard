@@ -68,7 +68,47 @@ Expresso::Application.routes.draw do
   get "resend" => "sessions#resend", :as => "resend"
 
   namespace :api do
-    scope module: :charmander, constraints: ApiConstraints.new(version: 3) do
+    scope module: :ditto, constraints: ApiConstraints.new(version: 4) do
+      resources :posts do
+        post :post_shift, :on => :collection
+        post :detail, :on => :member
+      end
+
+      resources :users do
+        post :fetch_counters, :on => :member
+        post :fetch_shifts, :on => :member
+        post :fetch_subscriptions, :on => :member
+        post :fetch_schedules, :on => :member
+        post :fetch_sessions, :on => :member
+        post :fetch_contacts, :on => :member
+        post :fetch_more_notifications, :on => :member
+        post :fetch_notifications, :on => :member
+        post :fetch_posts, :on => :member
+        post :fetch_more_posts, :on => :member
+        post :fetch_messages, :on => :member
+        post :fetch_more_messages, :on => :member
+        post :fetch_public_channels, :on => :member
+        post :fetch_region_channels, :on => :member
+        post :join_channel, :on => :member
+        get :logout, :on => :member
+      end
+
+      resources :schedule_elements do
+        get :cleanup, :on => :collection
+        post :update_tip, :on => :member
+        post :cover, :on => :member
+        post :approve, :on => :member
+        post :reject, :on => :member
+        post :uncover, :on => :member
+        post :delete_shift, :on => :member
+      end
+    end
+
+    scope module: :charmander, constraints: ApiConstraints.new(version: 3, default: true) do
+      match 'users/reset_password/', :as => :user_reset_password_v2, :via => :post, :controller => :users, :action => :reset_password
+      match 'users/change_password/', :as => :user_change_password_v2, :via => :post, :controller => :users, :action => :change_password
+      match 'images/upload_image/', :as => :upload_image_v2, :via => :post, :controller => :images, :action => :upload_image
+
       resources :channels do
         post :i_am_admin, :on => :member
         post :profile, :on => :member
@@ -182,11 +222,15 @@ Expresso::Application.routes.draw do
         post :contact_dump, :on => :member
         post :flash_action, :on => :member
         get :deactivate, :on => :member
-        post :fetch_shifts, :on => :member
+        post :update_badge_count, :on => :member
       end
 
       resources :user_privileges do
         get :fix_existing_subscriptions, :on => :collection
+      end
+
+      resources :chat_participants do
+        get :reset, :on => :member
       end
     end
 
@@ -256,7 +300,7 @@ Expresso::Application.routes.draw do
       end
     end
 
-    scope module: :arcee, constraints: ApiConstraints.new(version: 1, default: true) do
+    scope module: :arcee, constraints: ApiConstraints.new(version: 1) do
 
       match '/systems/channel_subscriber_push/', :as => :channel_subscriber_push, :via => :post, :controller => :systems, :action => :channel_subscriber_push
       match '/systems/setup/', :as => :initialize_test_environment, :via => :get, :controller => :systems, :action => :setup_groups

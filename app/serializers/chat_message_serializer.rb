@@ -2,12 +2,13 @@ class ChatMessageSerializer < ActiveModel::Serializer
   attributes :id,
     :message,
     :sender_id,
+    :session_id,
     :message_type,
     :attachment,
     :created_at
 
   #params :outdated
-    
+
   def attachment
     if object.attachment_id.presence
       @attachments = Attachment.find(object.attachment_id)

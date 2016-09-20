@@ -100,75 +100,79 @@ module Api
       def messages
         if ChatSession.exists?(params[:id])
           @session =  ChatSession.find(params[:id])
-          @chat_participant = ChatParticipant.find_by_session_id_and_user_id(params[:id], params[:user_id])
-          if @session[:multiuser_chat]
-            if params[:before].presence
-              messages = ChatMessage.where("session_id = ? AND id < ? AND id > ? AND is_valid",
-                params[:id],
-                params[:before],
-                @chat_participant[:view_from]
-              ).order("created_at asc").last(25)
-            elsif params[:since].presence
-              #created_at = ChatMessage.find(params[:since]).created_at.to_s
-              messages = ChatMessage.where("session_id = ? AND id > ? AND id > ? AND is_valid",
-                params[:id],
-                params[:since],
-                @chat_participant[:view_from]
-              ).order("created_at asc").last(25)
-            else
-              messages = ChatMessage.where("session_id = ? AND id > ? AND is_valid",
-                params[:id],
-                @chat_participant[:view_from]
-              ).order("created_at asc").last(25)
-            end
-          else
-            if params[:before].presence
-              messages = ChatMessage.where("session_id = ? AND id < ? AND id > ? AND is_valid",
-                params[:id],
-                params[:before],
-                @chat_participant[:view_from]
-              ).order("created_at asc").last(25)
-            elsif params[:since].presence
-              #created_at = ChatMessage.find(params[:since]).created_at.to_s
-              messages = ChatMessage.where("session_id = ? AND id > ? AND id > ? AND is_valid",
-                params[:id],
-                params[:since],
-                @chat_participant[:view_from]
-              ).order("created_at asc").last(25)
-            else
-              messages = ChatMessage.where("session_id = ? AND id > ? AND is_valid",
-                params[:id],
-                @chat_participant[:view_from]
-              ).order("created_at asc").last(25)
-            end
-          end
-
-          is_outdated = false
-          if Mession.exists?(:user_id => params[:user_id], :is_active => true)
-            @mession = Mession.where(:user_id => params[:user_id], :is_active => true).first
-            if @mession[:build].present?
-              if @mession[:push_to] == "APNS"
-                if @mession[:build].to_i < 15091402
-                  is_outdated = true
-                end
-              elsif @mession[:push_to] == "GCM"
-                if @mession[:build].to_i < 15092100
-                  is_outdated = true
-                end
+          if ChatParticipant.exists?(:session_id => params[:id], :user_id => params[:user_id])
+            @chat_participant = ChatParticipant.find_by_session_id_and_user_id(params[:id], params[:user_id])
+            if @session[:multiuser_chat]
+              if params[:before].presence
+                messages = ChatMessage.where("session_id = ? AND id < ? AND id > ? AND is_valid",
+                  params[:id],
+                  params[:before],
+                  @chat_participant[:view_from]
+                ).order("created_at asc").last(25)
+              elsif params[:since].presence
+                #created_at = ChatMessage.find(params[:since]).created_at.to_s
+                messages = ChatMessage.where("session_id = ? AND id > ? AND id > ? AND is_valid",
+                  params[:id],
+                  params[:since],
+                  @chat_participant[:view_from]
+                ).order("created_at asc").last(25)
               else
+                messages = ChatMessage.where("session_id = ? AND id > ? AND is_valid",
+                  params[:id],
+                  @chat_participant[:view_from]
+                ).order("created_at asc").last(25)
+              end
+            else
+              if params[:before].presence
+                messages = ChatMessage.where("session_id = ? AND id < ? AND id > ? AND is_valid",
+                  params[:id],
+                  params[:before],
+                  @chat_participant[:view_from]
+                ).order("created_at asc").last(25)
+              elsif params[:since].presence
+                #created_at = ChatMessage.find(params[:since]).created_at.to_s
+                messages = ChatMessage.where("session_id = ? AND id > ? AND id > ? AND is_valid",
+                  params[:id],
+                  params[:since],
+                  @chat_participant[:view_from]
+                ).order("created_at asc").last(25)
+              else
+                messages = ChatMessage.where("session_id = ? AND id > ? AND is_valid",
+                  params[:id],
+                  @chat_participant[:view_from]
+                ).order("created_at asc").last(25)
               end
             end
+
+            is_outdated = false
+            if Mession.exists?(:user_id => params[:user_id], :is_active => true)
+              @mession = Mession.where(:user_id => params[:user_id], :is_active => true).first
+              if @mession[:build].present?
+                if @mession[:push_to] == "APNS"
+                  if @mession[:build].to_i < 15091402
+                    is_outdated = true
+                  end
+                elsif @mession[:push_to] == "GCM"
+                  if @mession[:build].to_i < 15092100
+                    is_outdated = true
+                  end
+                else
+                end
+              end
+            else
+              ErrorLog.create(
+                :file => "chat_sessions_controller.rb",
+                :function => "messages",
+                :error => "Should not be able to get here without a session.")
+            end
+
+            #@messages = ChatMessage.where(:session_id => params[:id])
+            @chat_participant.update_attribute(:unread_count, 0)
+
+            render json: messages, each_serializer: ChatMessageSerializer, outdated: is_outdated
           else
-            ErrorLog.create(
-              :file => "chat_sessions_controller.rb",
-              :function => "messages",
-              :error => "Should not be able to get here without a session.")
+            render json: { "eXpresso" => { "code" => -1, "message" => "You do not have access to this chat session.", "error" => "Could not find chat participant for session with ID #{params[:id]} for user #{params[:user_id]}." } }
           end
-
-          #@messages = ChatMessage.where(:session_id => params[:id])
-          @chat_participant.update_attribute(:unread_count, 0)
-
-          render json: messages, each_serializer: ChatMessageSerializer, outdated: is_outdated
         else
           render json: { "eXpresso" => { "code" => -1, "message" => "The chat session you are looking for does not exists.", "error" => "Could not find chat session with ID #{params[:id]}." } }
         end

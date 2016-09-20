@@ -1,11 +1,11 @@
 include ActionController::HttpAuthentication::Token::ControllerMethods
 
 module Api
-  module Bumblebee
+  module Charmander
     class ChatParticipantsController < ApplicationController
-      
+
       before_filter :restrict_access, :set_headers
-      
+
       respond_to :json
 
       def index
@@ -15,10 +15,10 @@ module Api
       def show
         respond_with ChatParticipant.find(params[:id])
       end
-      
+
       def reset
         @chatparticipant = ChatParticipant.find(params[:id])
-        if @chatparticipant.reset_count        
+        if @chatparticipant.reset_count
           render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
         else
           render json: { "eXpresso" => { "code" => -304, "message" => "Reset failed" } }
@@ -27,7 +27,7 @@ module Api
 
       def create
         @chatparticipant = ChatParticipant.new(params[:chatparticipant])
-        
+
         respond_to do |format|
           if @chatparticipant.save
             format.html { render json: @chatparticipant, status: 200 }
@@ -46,12 +46,12 @@ module Api
       def destroy
         @chatparticipant = ChatParticipant.find(params[:id])
 
-        if @chatparticipant.update_attribute(:is_active, false)        
+        if @chatparticipant.update_attribute(:is_active, false)
           render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
         else
           render json: { "eXpresso" => { "code" => -305, "message" => "Delete failed" } }
         end
-      end      
+      end
     end
   end
 end

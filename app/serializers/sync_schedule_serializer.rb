@@ -11,11 +11,11 @@ class SyncScheduleSerializer < ActiveModel::Serializer
   :attachment,
   :owner,
   :is_valid
-  
+
   def attachment
     if object.attachment_id.presence
       @attachments = Attachment.find(object.attachment_id)
-      @attachments.to_objs      
+      @attachments.to_objs
     end
   end
 
@@ -26,5 +26,5 @@ class SyncScheduleSerializer < ActiveModel::Serializer
   def owner
     OwnerSerializer.new(object.owner)
   end
-  
+
 end

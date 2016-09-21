@@ -302,7 +302,7 @@ module Api
 
           @subscription = Subscription.where(:id => params[:subscription_id], :is_valid => true).first
 
-          if UserAnalytic.exists?(:action => 1070, :user_id => @user[:id])
+          if UserAnalytic.exists?(:action => 1070, :source_id => params[:subscription_id], :user_id => @user[:id])
             last_fetch = UserAnalytic.where(:action => 1070, :user_id => @user[:id]).last[:created_at]
             @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
           else
@@ -312,7 +312,7 @@ module Api
 
           deleted_ids = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
-          UserAnalytic.create(:action => 1070, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+          UserAnalytic.create(:action => 1070, :org_id => 1, :user_id => @user[:id],:source_id => params[:subscription_id], :ip_address => request.remote_ip.to_s)
 
           @posts.each do |post|
             post.check_user(params[:id])
@@ -339,7 +339,7 @@ module Api
           result = {}
           result["posts"] ||= Array.new
 
-          UserAnalytic.create(:action => 1071, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+          UserAnalytic.create(:action => 1071, :org_id => 1, :source_id => params[:subscription_id], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
           @subscription = Subscription.where(:id => params[:subscription_id], :is_valid => true).first
 

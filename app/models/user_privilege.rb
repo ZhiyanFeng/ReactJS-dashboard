@@ -246,7 +246,7 @@ class UserPrivilege < ActiveRecord::Base
           :location => self[:location_id],
           :owner_id => 134,
           :channel_id => location_channel[:id],
-          :title => "Welcome to your Shyft Channel - Earn 25$!",
+          :title => "Welcome to Shyft - Earn 25$!",
           :content => "This is the main feed for your work location to swap shifts. Use the + button to post a shift, or make a post. You can set up private groups, post schedules, chat, have fun and communicate with your team! Your channel settings are in the top right corner (gear button). Earn 25$ - We want to send your location a gift! Grow this location to 15 team members and Shyft will send a $25 gift card of your choice to your store. All you have to do is invite your team, and submit your store name and address to hello@myshyft.com for our review! ​*New employee signups only - Ends #{(Date.today+5.days).to_formatted_s(:long_ordinal)} at 12:00PM EST* \n\n#ShyftLife 📱🔁📆🙋",
           :post_type => 1
         )

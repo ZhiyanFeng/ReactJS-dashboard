@@ -69,6 +69,8 @@ Expresso::Application.routes.draw do
 
   namespace :api do
     scope module: :ditto, constraints: ApiConstraints.new(version: 4) do
+      resources :notifications
+
       resources :posts do
         post :post_shift, :on => :collection
         post :detail, :on => :member

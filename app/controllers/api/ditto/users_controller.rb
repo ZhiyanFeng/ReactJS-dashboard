@@ -249,9 +249,9 @@ module Api
 
         location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
 
-        if UserAnalytic.exists?(:action => 106, :user_id => @user[:id])
-          last_fetch = UserAnalytic.where(:action => 106, :user_id => @user[:id]).last[:created_at]
-          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
+        if UserAnalytic.exists?(:action => 1060, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 1060, :user_id => @user[:id]).last[:created_at]
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => @user[:id]).includes(:sender, :recipient).order("created_at desc").limit(20)
           #@notifications = Notification.where("org_id = ? AND notify_id = ? AND viewed = 'false' AND updated_at > ?",
           #  @user[:active_org],
           #  params[:id],
@@ -259,7 +259,7 @@ module Api
           #).includes(:sender, :recipient).order("created_at desc")
         else
           last_fetch = Time.now.utc
-          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => @user[:id]).includes(:sender, :recipient).order("created_at desc").limit(20)
         end
 
         deleted_ids = Notification.where("org_id = #{@user[:active_org]} AND notify_id = #{params[:id]} AND updated_at > '#{last_fetch}'").pluck(:id)

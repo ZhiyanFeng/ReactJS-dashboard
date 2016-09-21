@@ -92,9 +92,9 @@ module Api
         result["server_sync_time"] = DateTime.now.iso8601(3)
         result["posts"] ||= Array.new
         if @subscription[:is_coffee]
-          @posts = Post.where("post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{@subscription[:channel_id]} AND id < #{params[:post_id]} AND is_valid").order('created_at DESC').limit(15)
+          @posts = Post.where("post_type in (5,6,7,8,9,1,2,3,4,10,21) AND channel_id = #{@subscription[:channel_id]} AND id < #{params[:post_id]} AND is_valid").order('created_at DESC').limit(15)
         else
-          @posts = Post.where("post_type in (5,6,7,8,9,1,2,3,4,10) AND channel_id = #{@subscription[:channel_id]} AND id < #{params[:post_id]} AND (z_index < 9999 OR owner_id = #{@subscription[:user_id]}) AND is_valid").order('created_at DESC').limit(15)
+          @posts = Post.where("post_type in (5,6,7,8,9,1,2,3,4,10,21) AND channel_id = #{@subscription[:channel_id]} AND id < #{params[:post_id]} AND (z_index < 9999 OR owner_id = #{@subscription[:user_id]}) AND is_valid").order('created_at DESC').limit(15)
         end
         @posts.each do |p|
           p.check_user(params[:user_id])

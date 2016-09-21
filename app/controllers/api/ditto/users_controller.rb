@@ -251,7 +251,7 @@ module Api
 
         if UserAnalytic.exists?(:action => 1060, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 1060, :user_id => @user[:id]).last[:created_at]
-          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => @user[:id]).includes(:sender, :recipient).order("created_at desc").limit(20)
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => @user[:id], :is_valid => true).includes(:sender, :recipient).order("created_at desc").limit(20)
           #@notifications = Notification.where("org_id = ? AND notify_id = ? AND viewed = 'false' AND updated_at > ?",
           #  @user[:active_org],
           #  params[:id],
@@ -259,7 +259,7 @@ module Api
           #).includes(:sender, :recipient).order("created_at desc")
         else
           last_fetch = Time.now.utc
-          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => @user[:id]).includes(:sender, :recipient).order("created_at desc").limit(20)
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => @user[:id], :is_valid => true).includes(:sender, :recipient).order("created_at desc").limit(20)
         end
 
         deleted_ids = Notification.where("org_id = #{@user[:active_org]} AND notify_id = #{params[:id]} AND updated_at > '#{last_fetch}'").pluck(:id)

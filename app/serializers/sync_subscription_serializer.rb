@@ -25,7 +25,7 @@ class SyncSubscriptionSerializer < ActiveModel::Serializer
   end
 
   def content_since_last_refresh
-    @post = Post.where("channel_id = #{object.channel_id} AND z_index < 9999 AND post_type IN (5,6,7,8,9,1,2,3,4,10) AND owner_id != #{user_id} AND created_at > TIMESTAMP '#{object.params_sync_time}' AND is_valid")
+    @post = Post.where("channel_id = #{object.channel_id} AND z_index < 9999 AND post_type IN (5,6,7,8,9,1,2,3,4,10,21) AND owner_id != #{user_id} AND created_at > TIMESTAMP '#{object.params_sync_time}' AND is_valid")
     @post.count
   end
 

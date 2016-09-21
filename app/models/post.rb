@@ -213,11 +213,7 @@ class Post < ActiveRecord::Base
       self.attach_schedule(schedule) if @postType[:includes_schedule] == true
       self.attach_safety_course(safety_course) if @postType[:includes_safety_course] == true
 
-      if @postType[:image_count] > 0
-        self.update_attributes(:is_valid => true, :created_at => Time.now)
-      else
-        self.update_attribute(:is_valid, true)
-      end
+      self.update_attribute(:is_valid, true)
       if self.save
         #basetype=PostType.find_post_type(self[:post_type])
         basetype = @postType[:base_type]

@@ -21,7 +21,7 @@ module Api
       def destroy
         if Notification.exists?(:id => params[:id])
           @notifcation = Notification.find(params[:id])
-          @notifcation.update_attribute(:is_valid => false)
+          @notifcation.update_attribute(:is_valid, false)
           render json: @notifcation, serializer: SyncNotificationSerializer
         else
           render :json => { "eXpresso" => { "code" => -1, "error" => I18n.t('warning.error.notification.does_not_exist') } }

@@ -235,12 +235,12 @@ module Api
           message = @user[:first_name] + " " + @user[:last_name] + " has invited you to the private group \"#{self_assembled_channel[:channel_name]}\"."
 
           if self_assembled_channel.setup_subscriptions_to_custom_channel(params[:participants], message)
-            #self_assembled_channel.create_welcome_message
+            self_assembled_channel.create_welcome_message
             if @subscription = Subscription.where(:channel_id => self_assembled_channel[:id], :user_id => @user[:id]).first
               #@subscription.check_parameters(Time.now.utc, true, true)
               @subscription.update_attribute(:is_admin, true)
               @subscription.check_parameters(Time.now.utc, true, true)
-              self_assembled_channel.create_welcome_message
+
               render json: @subscription, serializer: SyncSubscriptionSerializer
             else
               render json: { "eXpresso" => { "code" => -1, "error" => self_assembled_channel.errors, "message" => "There was an error setting up the channel." } }

@@ -150,13 +150,13 @@ class ScheduleElement < ActiveRecord::Base
       @notification.save
     end
 
-    @managers = Subscription.where(:channel_id => @post[:channel_id], :is_admin => true, :is_valid => true, :is_active => true)
+    @managers = Subscription.where(:channel_id => @post[:channel_id], :is_admin => true, :is_valid => true, :is_active => true).pluck(:user_id)
     @managers.each do |m|
       content = Follower.create_shift_pending_message_for_managers(shift)
       @notification = Notification.new(
         :source => 4,
         :source_id => @post[:id],
-        :notify_id => m[:user_id],
+        :notify_id => m,
         :sender_id => shift[:coverer_id],
         :recipient_id => shift[:owner_id],
         :org_id => 1,

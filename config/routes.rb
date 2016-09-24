@@ -173,6 +173,11 @@ Expresso::Application.routes.draw do
         post :update_push_id, :on => :member
       end
 
+      resources :notifications do
+        get :viewed, :on => :member
+        post :viewed_all, :on => :collection
+      end
+
       resources :posts do
         post :compose, :on => :collection
         get :destroy_post, :on => :member

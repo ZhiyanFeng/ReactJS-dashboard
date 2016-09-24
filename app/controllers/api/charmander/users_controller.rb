@@ -343,6 +343,15 @@ module Api
         end
       end
 
+      def logout
+        @mession = Mession.where(:user_id => params[:id], :is_active => true).last
+        if @mession.update_attribute(:is_active, false)
+          render :json => { "response" => "Success." }
+        else
+          render :json => @mession.errors
+        end
+      end
+
       def change_password
         if User.exists?(:email => params[:email], :is_valid => true)
           @user = User.find_by_email_and_is_valid(params[:email], true)

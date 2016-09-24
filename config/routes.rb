@@ -227,6 +227,7 @@ Expresso::Application.routes.draw do
         get :get_referred_users, :on => :member
         get :test_sidekiq, :on => :collection
         post :contact_dump, :on => :member
+        get :logout, :on => :member
         post :flash_action, :on => :member
         get :deactivate, :on => :member
         post :update_badge_count, :on => :member

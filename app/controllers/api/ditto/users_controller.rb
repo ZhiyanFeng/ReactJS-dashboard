@@ -452,11 +452,36 @@ module Api
         user_active_location_ids = UserPrivilege.where(:owner_id => @user[:id], :is_valid => true, :is_approved => true).pluck(:location_id)
         @locations = Location.where("id IN (#{subscribed_channel_ids.join(", ")})")
         @locations.each do |location|
-          @channels = Channel.where("(channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?) AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%brand_center_at:#{location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location[:id]}\\|")
+          @channels = Channel.where("(channel_frequency LIKE ?) AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%location_id_in:%\|#{location[:id]}\|%")
           @channels.each do |channel|
             result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
           end
+          if location[:location_name].present?
+            @brand_radar_channels = Channel.where("channel_frequency LIKE ? OR channel_frequency LIKE ?", "%brand_center_at:#{location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%")
+            @brand_radar_channels.each do |channel|
+              type = channel[:channel_frequency].split(":")[0]
+              if type == "geo_center_at"
+                coordinate = channel[:channel_frequency].split(":")[1].split(",")
+                distance = channel[:channel_frequency].split(":")[2]
+                if Location.distance_between([coordinate[1].to_f,coordinate[0].to_f], [location[:lat].to_f,location[:lng].to_f]) < distance.to_f
+                  result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+                end
+              elsif type == "brand_center_at"
+                coordinate = channel[:channel_frequency].split(":")[2].split(",")
+                distance = channel[:channel_frequency].split(":")[3]
+                if Location.distance_between([coordinate[1].to_f,coordinate[0].to_f], [location[:lat].to_f,location[:lng].to_f]) < distance.to_f
+                  result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+                end
+              else
+              end
+            end
+          end
         end
+
+        #@channels = Channel.where("channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?", "%brand_center_at:#{@location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location_id}\\|")
+        #@channels.each do |channel|
+
+        #end
 
         #@locations = Channel.where("channel_type in ('location_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
         #@channels = Channel.where("channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?", "%brand_center_at:#{@location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location_id}\\|")

@@ -157,7 +157,7 @@ module Api
         end
         #if @user = User.find(:first, :conditions => ["lower(email) = ? AND is_valid", params[:email].downcase] )
         if @user
-          if ["075A60BC-D5ED-4390-BF6A-C3745F70BAC7"].include?(params[:mession][:device_id])
+          if ["01642889-8B5A-4AAF-9B3B-DBD791823BCE"].include?(params[:mession][:device_id])
             Mession.clean_via_device(params[:mession][:device_id])
 
             @mession = Mession.new(

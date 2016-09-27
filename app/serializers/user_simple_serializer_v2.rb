@@ -3,7 +3,8 @@ class UserSimpleSerializerV2 < ActiveModel::Serializer
   attributes :id,
   :first_name,
   :last_name,
-  :profile_image
+  :profile_image,
+  :cover_image
 
   def id
     object.id

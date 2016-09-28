@@ -473,6 +473,7 @@ Expresso::Application.routes.draw do
       resources :messions do
         post :send_referral_message, :on => :member
         post :send_custom_noification, :on => :collection
+        post :send_batch_noification, :on => :collection
         put :activate, :on => :member
         post :check_android_version, :on => :collection
         post :check_ios_version, :on => :collection

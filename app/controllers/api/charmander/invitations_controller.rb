@@ -138,7 +138,7 @@ module Api
               )
               if @privilege.save
                 @privilege.setup_coffee_admin_subscriptions(@location)
-                render json: { "eXpresso" => { "code" => 1 } }
+                render json: { "eXpresso" => { "code" => 1, "location_id" => @location[:id] } }
               else
                 render json: { "eXpresso" => { "code" => -1, "error" => "Problem setting up subscriptions" } }
               end
@@ -155,7 +155,7 @@ module Api
               )
               if @privilege.save
                 @privilege.setup_location_subscriptions(@location, false, @user)
-                render json: { "eXpresso" => { "code" => 1 } }
+                render json: { "eXpresso" => { "code" => 1, "location_id" => @location[:id] } }
               else
                 render json: { "eXpresso" => { "code" => -1, "error" => "Problem setting up subscriptions" } }
               end
@@ -170,7 +170,7 @@ module Api
               )
               if @privilege.save
                 @privilege.setup_location_subscriptions(@location, true, @user)
-                render json: { "eXpresso" => { "code" => 1 } }
+                render json: { "eXpresso" => { "code" => 1, "location_id" => @location[:id] } }
               else
                 render json: { "eXpresso" => { "code" => -1, "error" => "Problem setting up subscriptions" } }
               end

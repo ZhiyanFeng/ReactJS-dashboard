@@ -74,6 +74,7 @@ Expresso::Application.routes.draw do
       resources :posts do
         post :post_shift, :on => :collection
         post :detail, :on => :member
+        post :tip, :on => :member
       end
 
       resources :users do

@@ -18,6 +18,33 @@ module Api
 
       respond_to :json
 
+      def tip
+        post = Post.find(params[:id])
+        if params[:user_id].to_i == post[:owner_id].to_i || params[:user_id].to_i == 134
+          if params[:dont_push].present?
+            push = false
+          else
+            push = true
+          end
+          @gratitude = Gratitude.new(
+            :amount => params[:tip_amount],
+            :shift_id => params[:shift_id],
+            :owner_id => params[:user_id],
+            :source => 4,
+            :source_id => post[:id]
+          )
+          if @gratitude.create_gratitude(post, push)
+            #render json: { "code" => 1, "message" => "Success" }
+            @schedule_element = ScheduleElement.find(params[:shift_id])
+            render json: @schedule_element, serializer: ShiftStandaloneSerializer
+          else
+            render json: { "code" => -1, "message" => "Could not tip this shift at the moment" }
+          end
+        else
+          render json: { "code" => -1, "message" => "You cannot add a tip to a shift you did not post at the moment. Sorry!" }
+        end
+      end
+
       def detail
         post = Post.where(:id => params[:id]).includes(:likes, :flags, :comments => [:likes, :flags]).first
         UserAnalytic.create(:action => 2,:org_id => post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)

@@ -765,8 +765,8 @@ class Post < ActiveRecord::Base
         ensure
         end
         @user = User.find(self.owner_id)
-        if self.get_archtype == "shift_trade"
-          channel_latest_message = @user[:first_name] + " " + @user[:last_name] + " posted a shift trade."
+        if self.get_archtype == "shift_trade" || self.post_type == 21
+          #channel_latest_message = @user[:first_name] + " " + @user[:last_name] + " posted a shift trade."
           @user.update_attributes(:shift_count => @user[:shift_count] + 1, :shyft_score => @user[:shyft_score] + 2)
         else
           channel_latest_message = @user[:first_name] + " " + @user[:last_name] + ": " + self[:content]

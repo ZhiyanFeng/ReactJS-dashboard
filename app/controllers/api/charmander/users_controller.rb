@@ -62,6 +62,8 @@ module Api
         end
         count = 0
 
+        render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records processed" } }
+
         params[:contacts].each do |contact|
           begin
             if contact[:phones].present?
@@ -100,7 +102,7 @@ module Api
           ensure
           end
         end
-        render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records processed" } }
+        #render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records processed" } }
       end
 
       def verify_claim

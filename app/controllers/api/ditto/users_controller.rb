@@ -517,6 +517,7 @@ module Api
             if Subscription.exists?(:channel_id => params[:channel_id], :user_id => @user[:id])
               @subscription = Subscription.where(:channel_id => params[:channel_id], :user_id => @user[:id]).first
               @subscription.update_attributes(:is_valid => true, :is_active => true)
+              @channel.recount
               render json: { "eXpresso" => { "code" => 1, "message" => "Successfully subscribed to channel!" } }
             else
               @subscription = Subscription.create(
@@ -524,6 +525,7 @@ module Api
                 :channel_id => @channel[:id],
                 :is_active => true
               )
+              @channel.recount
               render json: { "eXpresso" => { "code" => 1, "message" => "Successfully subscribed to channel!" } }
             end
           else

@@ -233,6 +233,7 @@ Expresso::Application.routes.draw do
         post :flash_action, :on => :member
         get :deactivate, :on => :member
         post :update_badge_count, :on => :member
+        post :revolk_users, :on => :collection
       end
 
       resources :user_privileges do

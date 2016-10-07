@@ -454,6 +454,23 @@ module Api
         render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records updated, #{counta} ambiguous records also updated" } }
       end
 
+      def assign_shifts_to_location
+        count = 0
+        counta = 0
+        @shyfts = ScheduleElement.where(:location_id => nil)
+        @shyfts.each do |shyft|
+          @keys = UserPrivilege.where(:owner_id => shyft.owner_id)
+          if @keys.count == 1
+            shyft.update_attribute(:location_id,@keys.first[:location_id])
+            count = count + 1
+          else
+            counta = counta + 1
+          end
+        end
+
+        render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records updated, #{counta} records skipped" } }
+      end
+
       def assign_shifs_to_channel
         count = 0
         counta = 0

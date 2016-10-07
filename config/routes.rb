@@ -131,6 +131,7 @@ Expresso::Application.routes.draw do
         get :recount_location_region_channel, :on => :member
         get :recount_category_channel, :on => :member
         get :assign_shifs_to_channel, :on => :collection
+        get :assign_shifts_to_location, :on => :collection
       end
 
       resources :chat_sessions do

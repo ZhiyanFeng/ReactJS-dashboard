@@ -92,10 +92,15 @@ module Api
           :is_valid => true
         )
         if @claim.save
-          NotificationsMailer.admin_claim_confirmation_email(email,first_name,@claim[:activation_code]).deliver
-          1
-        else
-          2
+          if email.include? "@gmail" || email.include? "@yahoo" || email.include? "@hotmail" || email.include? "@aol"
+            return 3
+          else
+            if NotificationsMailer.admin_claim_confirmation_email(email,first_name,@claim[:activation_code]).deliver
+              return 1
+            else
+              return 2
+            end
+          end
         end
       end
 
@@ -106,8 +111,13 @@ module Api
             if Subscription.exists?(:channel_id => @channel[:id].to_i, :user_id => params[:user_id], :is_valid => true)
               @user = User.find(params[:user_id])
               #self.send_admin_claim(params[:user_id], @channel[:id].to_i, params[:email])
-              self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name])
-              render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+              if self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name]) == 1
+                render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+              elsif self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name]) == 3
+                render json: { "eXpresso" => { "code" => -1, "message" => "The email address you provided to us is not a @company address, one of our staff will contact you to approve your admin status manually. If you have a @company address, you can attempt this process again." } }
+              else
+                render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+              end
             else
               render json: { "eXpresso" => { "code" => -1, "message" => "You do not belong to this group and therefore cannot become an admin. Contact hello@myshyft.com if this is an error.", "error" => "User does not have the proper privilege key to proceed." } }
             end

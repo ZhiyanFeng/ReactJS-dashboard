@@ -92,7 +92,7 @@ module Api
           :is_valid => true
         )
         if @claim.save
-          if email.include? "@gmail" || email.include? "@yahoo" || email.include? "@hotmail" || email.include? "@aol"
+          if email.include?("@gmail") || email.include?("@yahoo") || email.include?("@hotmail") || email.include?("@aol")
             return 3
           else
             if NotificationsMailer.admin_claim_confirmation_email(email,first_name,@claim[:activation_code]).deliver

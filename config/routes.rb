@@ -292,6 +292,7 @@ Expresso::Application.routes.draw do
         post :safety_trainings, :on => :member
         post :safety_quizzes, :on => :member
         post :zhu_xiao_zhang_hao, :on => :member
+        post :revolk_users, :on => :collection
       end
 
       resources :invitations do

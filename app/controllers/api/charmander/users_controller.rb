@@ -345,6 +345,17 @@ module Api
         end
       end
 
+      def revolk_users
+        success ||= Array.new
+        @users = User.where(:id => params[:ids])
+        @users.each do |user|
+          success.push(user[:id]) if user.revolk_account
+          #success.push(user[:id]) if user
+        end
+
+        render json: { "eXpresso" => { "code" => 1, "message" => "Success", "successids" => success } }
+      end
+
       def logout
         @mession = Mession.where(:user_id => params[:id], :is_active => true).last
         if @mession.update_attribute(:is_active, false)

@@ -114,7 +114,7 @@ module Api
               if self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name]) == 1
                 render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
               elsif self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name]) == 3
-                render json: { "eXpresso" => { "code" => -1, "message" => "The email address you provided to us is not a @company address, one of our staff will contact you to approve your admin status manually. If you have a @company address, you can attempt this process again." } }
+                render json: { "eXpresso" => { "code" => -1, "message" => "The email you provided is not an @company address, our staff will contact you to approve your admin status manually, hang tight! OR If you have a @company address, you can attempt this process again." } }
               else
                 render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
               end
@@ -159,7 +159,7 @@ module Api
                   render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
                 end
               else
-                APILogger.info "[channel.remove_subscriber] subscription of user with ID #{params[:remove_id]} does not exist."
+                #APILogger.info "[channel.remove_subscriber] subscription of user with ID #{params[:remove_id]} does not exist."
                 render json: { "eXpresso" => { "code" => -1, "message" => "The user you're trying to remove is not in your group.", "error" => "Target user does not have subscription to channel with ID #{params[:id]}." } }
               end
             end

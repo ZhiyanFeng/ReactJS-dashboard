@@ -89,7 +89,8 @@ module Api
         else
         end
 
-        @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
+        #@subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
+        @subscriptions = Subscription.where(:is_valid => true, :user_id => @user[:id]).pluck(:channel_id)
         @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")}) AND is_valid").order("start_at #{order}").limit(50)
 
         @shyfts.each do |shift|

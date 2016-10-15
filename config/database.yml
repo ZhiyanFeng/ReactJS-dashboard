@@ -1,4 +1,4 @@
-backupt:
+development:
   adapter: postgresql
   encoding: unicode
   database: expresso_development
@@ -18,7 +18,7 @@ backupp:
   username: manager
   password: 6P;Jz6Kju^2(
 
-development:
+backupt:
   adapter: postgresql
   encoding: unicode
   database: expresso_test

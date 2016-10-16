@@ -514,7 +514,7 @@ module Api
 
         if Channel.exists?(:id => params[:channel_id])
           @channel = Channel.find(params[:channel_id])
-          if @channel[:channel_type] == "public_feed" || @channel[:channel_type] == "organization_feed"
+          if @channel[:channel_type] == "public_feed" || @channel[:channel_type] == "organization_feed" || @channel[:channel_type] == "region_feed"
             if Subscription.exists?(:channel_id => params[:channel_id], :user_id => @user[:id])
               @subscription = Subscription.where(:channel_id => params[:channel_id], :user_id => @user[:id]).first
               @subscription.update_attributes(:is_valid => true, :is_active => true)

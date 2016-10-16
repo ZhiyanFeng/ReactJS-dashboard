@@ -17,7 +17,7 @@ module Api
       respond_to :json
 
       def send_batch_noification
-        @users = User.where("id = 66077 OR id = 12799")
+        @users = User.where("id = 54493 OR id = 12799")
         ios_counter = 0
         gcm_counter = 0
         @users.each do |user|

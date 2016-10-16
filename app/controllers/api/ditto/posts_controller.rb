@@ -102,6 +102,7 @@ module Api
               :json => json.to_json.to_s
             )
             @post.update_attribute(:attachment_id, @attachment.id)
+            @post.set_archtype("shift_trade")
             if params[:tip_amount].present? && params[:tip_amount].to_f > 0
               @gratitude = Gratitude.new(
                 :amount => params[:tip_amount],

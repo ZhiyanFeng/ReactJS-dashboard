@@ -1,4 +1,4 @@
-development:
+backupp:
   adapter: postgresql
   encoding: unicode
   database: expresso_development
@@ -8,7 +8,7 @@ development:
   username: daniel
   password: c3chensi
 
-backupp:
+development:
   adapter: postgresql
   encoding: unicode
   database: expresso_production

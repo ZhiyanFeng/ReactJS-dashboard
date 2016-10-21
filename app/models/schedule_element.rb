@@ -165,9 +165,10 @@ class ScheduleElement < ActiveRecord::Base
       )
       @notification.save
       if Mession.exists?(:user_id => m, :is_active => true, :is_valid => true)
+        @user = User.find(m)
         @mession = Mession.where(:user_id => m, :is_active => true, :is_valid => true).order("created_at DESC").first
         #@mession.target_push(action, message, source=nil, source_id=nil, sound=nil, badge=nil)
-        @mession.target_push('open_app', content, source=nil, source_id=nil, sound=nil, badge=nil) # TODO: Need to update this to proper open shift push when its available.
+        @mession.target_push('open_app', content, source=nil, source_id=nil, sound=nil, @user[:push_count]) # TODO: Need to update this to proper open shift push when its available.
       end
     end
 

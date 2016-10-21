@@ -164,6 +164,11 @@ class ScheduleElement < ActiveRecord::Base
         :message => content
       )
       @notification.save
+      if Mession.exists?(:user_id => m, :is_active => true, :is_valid => true)
+        @mession = Mession.where(:user_id => m, :is_active => true, :is_valid => true).order("created_at DESC").first
+        #@mession.target_push(action, message, source=nil, source_id=nil, sound=nil, badge=nil)
+        @mession.target_push('open_app', content, source=nil, source_id=nil, sound=nil, badge=nil) # TODO: Need to update this to proper open shift push when its available.
+      end
     end
 
     Follower.follow(4, @post[:id], shift[:coverer_id])

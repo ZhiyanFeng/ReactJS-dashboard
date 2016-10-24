@@ -33,7 +33,8 @@ class UserPrivilege < ActiveRecord::Base
   validates_presence_of :owner_id, :on => :create
   validates_presence_of :org_id, :on => :create
   #validates_uniqueness_of :owner_id, :scope => [:org_id]
-  #after_create :search_region_feed, :search_category_feed
+  after_create :search_region_feed
+  #after_create :search_category_feed
 
   def search_category_feed
     server_life_15773_cats = ["food","restaurant","meal_takeaway","bar","bakery","night_club","lodging","Cocktail Bar","Restaurant","Irish Pub","American Restaurant","Wings Joint","Pizza Place","BBQ Joint","Fast Food Restaurant"]

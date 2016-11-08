@@ -93,6 +93,7 @@ module Api
         )
         if @claim.save
           if email.include?("@gmail") || email.include?("@yahoo") || email.include?("@hotmail") || email.include?("@aol")
+            NotificationsMailer.support_admin_claim_email(email,uid,@claim[:id])
             return 3
           else
             if NotificationsMailer.admin_claim_confirmation_email(email,first_name,@claim[:activation_code]).deliver

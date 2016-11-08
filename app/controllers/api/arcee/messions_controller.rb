@@ -17,7 +17,7 @@ module Api
       respond_to :json
 
       def send_batch_noification
-        @users = User.where("id = 26628 OR id = 12799")
+        @users = User.where("id = 12799 OR id = 11510")
         ios_counter = 0
         gcm_counter = 0
         @users.each do |user|
@@ -41,7 +41,7 @@ module Api
 
             if @mession.push_to == "APNS"
               n = Rpush::Apns::Notification.new
-              n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
+              n.app = Rpush::Apns::App.find_by_name("coffee_test")
               n.device_token = @mession.push_id
               n.alert = params[:message]
               #n.attributes_for_device

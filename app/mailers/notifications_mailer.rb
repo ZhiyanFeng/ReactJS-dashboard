@@ -2,6 +2,13 @@ class NotificationsMailer < ActionMailer::Base
 	default from: "hello@myshyft.com"
 	default to: "admin@myshyft.com"
 
+  def support_admin_claim_email(email,uid,claim_id)
+    @user = User.find(uid)
+
+
+    mail(:to => email, :subject => "New Admin Application")
+  end
+
   def admin_claim_confirmation_email(email,name,activation_code)
     if Rails.env.production?
       @host = "http://api.coffeemobile.com/"

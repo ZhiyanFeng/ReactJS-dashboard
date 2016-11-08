@@ -453,7 +453,7 @@ module Api
         user_active_location_ids = UserPrivilege.where(:owner_id => @user[:id], :is_valid => true, :is_approved => true).pluck(:location_id)
         @locations = Location.where("id IN (#{subscribed_channel_ids.join(", ")})")
         @locations.each do |location|
-          @channels = Channel.where("(channel_frequency LIKE ?) AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%location_id_in:%\|#{location[:id]}\|%")
+          @channels = Channel.where("(channel_frequency LIKE ?) AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%location_id_in:%\|#{location[:id]}\|%").order("member_count DESC")
           @channels.each do |channel|
             result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
             already_sent_channels.push(channel[:id])

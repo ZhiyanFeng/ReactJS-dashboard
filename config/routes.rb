@@ -36,11 +36,15 @@ Expresso::Application.routes.draw do
   resources :subscriptions
   resources :videos
   resources :users
+  resources :admin_claims do
+    post :display, :on => :collection
+  end
   #resources :locations
 
   get "user_search" => "users#search", :as => "user_search"
   get "location_search" => "locations#search", :as => "location_search"
   post "users/list_by_name" => "users#list_by_name", :as => "list_by_name"
+  get "admin_claim_search" => "admin_claims#search", :as => "admin_claim_search"
   post "locations/list_search_result" => "locations#list_search_result", :as => "list_location_search_result"
   #get "locations/list_members" => "locations#list_members", :as => "list_location_members"
   get "locations/make_admin" => "locations#make_admin", :as => "location_make_admin"

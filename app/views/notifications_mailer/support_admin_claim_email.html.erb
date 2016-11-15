@@ -15,17 +15,14 @@ end
 <body>
   <p>Dear support team, an user has requested for admin access with an email address that we could not verify automatically. Please verify manually thanks!</p>
   <br />
-  <label>Email Address</label>
-  <p><%= email %></p>
-
-  <label>User ID</label>
-  <p><%= @user.id %></p>
-
-  <label>User Name</label>
-  <p><%= @user.first_name %> <%= @user.last_name %></p>
-
-  <label>Claim Code</label>
-  <p><%= claim_id %></p>
+  <label>Email Address</label>: <%= @email %>
+  <br />
+  <label>User ID</label>: <%= @user.id %>
+  <br />
+  <label>User Name</label>: <%= @user.first_name %> <%= @user.last_name %>
+  <br />
+  <label>Claim Code</label>: <%= @claim_id %>
+  <br />
   <small><%= @host%>/admin_claim_search</small>
 </div>
 </body>

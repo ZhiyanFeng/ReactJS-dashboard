@@ -5,8 +5,8 @@ class NotificationsMailer < ActionMailer::Base
   def support_admin_claim_email(email,uid,claim_id)
     @user = User.find(uid)
 
-
-    mail(:to => email, :subject => "New Admin Application")
+    #mail(:to => email, :subject => "New Admin Application")
+    mail(:to => "support@myshyft.com", :subject => "New Admin Application")
   end
 
   def admin_claim_confirmation_email(email,name,activation_code)

@@ -28,6 +28,9 @@ class AdminClaimsController < ApplicationController
     @user = User.find(@admin_claim[:user_id])
     if @admin_claim[:ref_type] == 1
       @channel = Channel.find(@admin_claim[:ref_id])
+      if @channel[:channel_type] == "location_feed"
+        @location = Location.find(@channel[:channel_frequency].to_i)
+      end
     end
 
     render "show.html"

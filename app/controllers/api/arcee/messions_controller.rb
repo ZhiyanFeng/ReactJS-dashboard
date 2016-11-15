@@ -41,7 +41,7 @@ module Api
 
             if @mession.push_to == "APNS"
               n = Rpush::Apns::Notification.new
-              n.app = Rpush::Apns::App.find_by_name("coffee_test")
+              n.app = Rpush::Apns::App.find_by_name("coffee_enterprise")
               n.device_token = @mession.push_id
               n.alert = params[:message]
               #n.attributes_for_device

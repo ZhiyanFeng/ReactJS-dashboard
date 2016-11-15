@@ -115,7 +115,7 @@ module Api
               if self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name]) == 1
                 render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
               elsif self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name]) == 3
-                render json: { "eXpresso" => { "code" => 1, "message" => "The email you provided is not an @company address, our staff will contact you to approve your admin status manually, hang tight! OR If you have a @company address, you can attempt this process again." } }
+                render json: { "eXpresso" => { "code" => -1, "message" => "The email you provided is not an @company address, our staff will contact you to approve your admin status manually, hang tight! OR If you have a @company address, you can attempt this process again." } }
               else
                 render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
               end

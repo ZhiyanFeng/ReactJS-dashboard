@@ -7,7 +7,7 @@ class NotificationsMailer < ActionMailer::Base
     @email = email
     @claim_id = claim_id
     #mail(:to => email, :subject => "New Admin Application")
-    mail(:to => "support@myshyft.com", :subject => "New Admin Application #{claim_id}")
+    mail(:from => "adminclaim@myshyft.com",:to => "support@myshyft.com", :subject => "New Admin Application #{claim_id}")
   end
 
   def admin_claim_confirmation_email(email,name,activation_code)

@@ -33,10 +33,14 @@ module Api
         else
           #last_fetch = Time.now #UPDATED Dec 7, 2016
           if UserPrivilege.exists?(["owner_id = ? AND is_valid", @user[:id]])
-            loc = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid").order("created_at DESC").first
-            channel = Channel.where("channel_frequency = '#{loc[:location_id]}'").first
-            last_post_timestamp = Post.where("channel_id = #{channel[:id]}").order("created_at DESC").first
-            last_fetch = last_post_timestamp[:created_at] - 10.seconds
+            begin
+              loc = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid").order("created_at DESC").first
+              channel = Channel.where("channel_frequency = '#{loc[:location_id]}'").first
+              last_post_timestamp = Post.where("channel_id = #{channel[:id]} AND owner_id != #{@user[:id]}").order("created_at DESC").first
+              last_fetch = last_post_timestamp[:created_at] - 10.seconds
+            rescue
+              last_fetch = Time.now
+            end
           else
             last_fetch = Time.now
           end
@@ -124,10 +128,15 @@ module Api
         else
           #last_fetch = Time.now.utc
           if UserPrivilege.exists?(["owner_id = ? AND is_valid", @user[:id]])
-            loc = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid").order("created_at DESC").first
-            channel = Channel.where("channel_frequency = '#{loc[:location_id]}'").first
-            last_post_timestamp = Post.where("channel_id = #{channel[:id]}").order("created_at DESC").first
-            last_fetch = last_post_timestamp[:created_at] - 10.seconds
+            begin
+              loc = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid").order("created_at DESC").first
+              channel = Channel.where("channel_frequency = '#{loc[:location_id]}'").first
+              #last_post_timestamp = Post.where("channel_id = #{channel[:id]}").order("created_at DESC").first
+              last_post_timestamp = Post.where("channel_id = #{channel[:id]} AND owner_id != #{@user[:id]}").order("created_at DESC").first
+              last_fetch = last_post_timestamp[:created_at] - 10.seconds
+            rescue
+              last_fetch = Time.now
+            end
           else
             last_fetch = Time.now
           end

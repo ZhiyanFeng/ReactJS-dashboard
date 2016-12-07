@@ -32,11 +32,11 @@ module Api
           last_fetch = UserAnalytic.where(:action => 1000, :user_id => @user[:id]).last[:created_at]
         else
           #last_fetch = Time.now #UPDATED Dec 7, 2016
-          if UserPrivilege.exists?("owner_id = #{@user[:id]} AND is_valid")
+          if UserPrivilege.exists?(["owner_id = ? AND is_valid", @user[:id]])
             loc = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid").order("created_at DESC").first
-            channel = Channel.where("channel_frequency = '#{loc}'").first
-            last_post_timestamp = Post.where("channel_id = #{channel}").order("created_at DESC").first
-            last_fetch = last_post_timestamp[:created_at] - 1.seconds
+            channel = Channel.where("channel_frequency = '#{loc[:location_id]}'").first
+            last_post_timestamp = Post.where("channel_id = #{channel[:id]}").order("created_at DESC").first
+            last_fetch = last_post_timestamp[:created_at] - 10.seconds
           else
             last_fetch = Time.now
           end

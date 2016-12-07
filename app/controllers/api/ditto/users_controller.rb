@@ -31,7 +31,15 @@ module Api
         if UserAnalytic.exists?(:action => 1000, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 1000, :user_id => @user[:id]).last[:created_at]
         else
-          last_fetch = Time.now
+          #last_fetch = Time.now #UPDATED Dec 7, 2016
+          if UserPrivilege.exists?("owner_id = #{@user[:id]} AND is_valid")
+            loc = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid").order("created_at DESC").first
+            channel = Channel.where("channel_frequency = '#{loc}'").first
+            last_post_timestamp = Post.where("channel_id = #{channel}").order("created_at DESC").first
+            last_fetch = last_post_timestamp[:created_at] - 1.seconds
+          else
+            last_fetch = Time.now
+          end
         end
 
         UserAnalytic.create(:action => 1000, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)

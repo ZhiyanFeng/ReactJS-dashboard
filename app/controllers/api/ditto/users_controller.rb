@@ -474,7 +474,11 @@ module Api
         #  end
         #end
         already_sent_channels ||= Array.new
-        subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
+        if params[:all].present? && params[:all] == "true"
+          subscribed_channel_ids = [1]
+        else
+          subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
+        end
         user_active_location_ids = UserPrivilege.where(:owner_id => @user[:id], :is_valid => true, :is_approved => true).pluck(:location_id)
         @locations = Location.where("id IN (#{subscribed_channel_ids.join(", ")})")
         @locations.each do |location|

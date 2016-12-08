@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160527221445) do
+ActiveRecord::Schema.define(version: 20161011184459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,7 @@ ActiveRecord::Schema.define(version: 20160527221445) do
     t.boolean  "allow_view_profile",                       default: true
     t.boolean  "allow_view_covered_shifts",                default: false
     t.boolean  "shift_trade_require_approval",             default: false
+    t.text     "description"
   end
 
   create_table "chat_messages", force: :cascade do |t|
@@ -348,6 +349,7 @@ ActiveRecord::Schema.define(version: 20160527221445) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "category",          limit: 255
+    t.string   "swift_code"
   end
 
   create_table "messions", force: :cascade do |t|
@@ -382,6 +384,7 @@ ActiveRecord::Schema.define(version: 20160527221445) do
     t.string   "message",      limit: 255
     t.datetime "created_at",               precision: 6
     t.datetime "updated_at",               precision: 6
+    t.boolean  "is_valid",                               default: true
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -629,6 +632,8 @@ ActiveRecord::Schema.define(version: 20160527221445) do
     t.integer  "coverer_id"
     t.integer  "approver_id"
     t.integer  "location_id"
+    t.integer  "channel_id"
+    t.integer  "post_id"
   end
 
   create_table "schedules", force: :cascade do |t|

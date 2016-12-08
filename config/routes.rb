@@ -36,12 +36,16 @@ Expresso::Application.routes.draw do
   resources :subscriptions
   resources :videos
   resources :users
+  resources :admin_claims do
+    post :display, :on => :collection
+  end
   #resources :locations
 
   get "user_delete/:id" => "users#delete", :as => "user_delete"
   get "user_search" => "users#search", :as => "user_search"
   get "location_search" => "locations#search", :as => "location_search"
   post "users/list_by_name" => "users#list_by_name", :as => "list_by_name"
+  get "admin_claim_search" => "admin_claims#search", :as => "admin_claim_search"
   post "locations/list_search_result" => "locations#list_search_result", :as => "list_location_search_result"
   #get "locations/list_members" => "locations#list_members", :as => "list_location_members"
   get "locations/make_admin" => "locations#make_admin", :as => "location_make_admin"
@@ -70,9 +74,12 @@ Expresso::Application.routes.draw do
 
   namespace :api do
     scope module: :ditto, constraints: ApiConstraints.new(version: 4) do
+      resources :notifications
+
       resources :posts do
         post :post_shift, :on => :collection
         post :detail, :on => :member
+        #post :tip, :on => :member
       end
 
       resources :users do
@@ -129,6 +136,7 @@ Expresso::Application.routes.draw do
         get :recount_location_region_channel, :on => :member
         get :recount_category_channel, :on => :member
         get :assign_shifs_to_channel, :on => :collection
+        get :assign_shifts_to_location, :on => :collection
       end
 
       resources :chat_sessions do
@@ -170,6 +178,11 @@ Expresso::Application.routes.draw do
         post :check_android_version, :on => :collection
         post :check_ios_version, :on => :collection
         post :update_push_id, :on => :member
+      end
+
+      resources :notifications do
+        get :viewed, :on => :member
+        post :viewed_all, :on => :collection
       end
 
       resources :posts do
@@ -221,9 +234,11 @@ Expresso::Application.routes.draw do
         get :get_referred_users, :on => :member
         get :test_sidekiq, :on => :collection
         post :contact_dump, :on => :member
+        get :logout, :on => :member
         post :flash_action, :on => :member
         get :deactivate, :on => :member
         post :update_badge_count, :on => :member
+        post :revolk_users, :on => :collection
       end
 
       resources :user_privileges do
@@ -283,6 +298,7 @@ Expresso::Application.routes.draw do
         post :safety_trainings, :on => :member
         post :safety_quizzes, :on => :member
         post :zhu_xiao_zhang_hao, :on => :member
+        post :revolk_users, :on => :collection
       end
 
       resources :invitations do
@@ -466,6 +482,7 @@ Expresso::Application.routes.draw do
       resources :messions do
         post :send_referral_message, :on => :member
         post :send_custom_noification, :on => :collection
+        post :send_batch_noification, :on => :collection
         put :activate, :on => :member
         post :check_android_version, :on => :collection
         post :check_ios_version, :on => :collection

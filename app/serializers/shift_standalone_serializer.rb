@@ -59,7 +59,7 @@ class ShiftStandaloneSerializer < ActiveModel::Serializer
 
   def poster
     @poster = User.find(owner_id)
-    UserSimpleSerializer.new(@poster)
+    UserSimpleSerializerV2.new(@poster)
   end
 
   def coverer_name
@@ -74,7 +74,7 @@ class ShiftStandaloneSerializer < ActiveModel::Serializer
   def coverer
     if object.coverer_id.present?
       @coverer = User.find(coverer_id)
-      UserSimpleSerializer.new(@coverer)
+      UserSimpleSerializerV2.new(@coverer)
     else
       nil
     end

@@ -27,6 +27,8 @@ en:
     channel:
       not_public: "Channel with the id %{channel_id} is not a public channel so you must be invited into it"
       does_not_exist: "Channel with the id %{channel_id} does not exist"
+    notification:
+      does_not_exist: "Notification with the id %{notification_id} does not exist"
   warning:
     account:
       invalid: "Your account is not valid. Please contact support@myshyft.com for assitance."

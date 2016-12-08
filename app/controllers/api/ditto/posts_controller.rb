@@ -18,6 +18,33 @@ module Api
 
       respond_to :json
 
+      def tip
+        post = Post.find(params[:id])
+        if params[:user_id].to_i == post[:owner_id].to_i || params[:user_id].to_i == 134
+          if params[:dont_push].present?
+            push = false
+          else
+            push = true
+          end
+          @gratitude = Gratitude.new(
+            :amount => params[:tip_amount],
+            :shift_id => params[:shift_id],
+            :owner_id => params[:user_id],
+            :source => 4,
+            :source_id => post[:id]
+          )
+          if @gratitude.create_gratitude(post, push)
+            #render json: { "code" => 1, "message" => "Success" }
+            @schedule_element = ScheduleElement.find(params[:shift_id])
+            render json: @schedule_element, serializer: ShiftStandaloneSerializer
+          else
+            render json: { "code" => -1, "message" => "Could not tip this shift at the moment" }
+          end
+        else
+          render json: { "code" => -1, "message" => "You cannot add a tip to a shift you did not post at the moment. Sorry!" }
+        end
+      end
+
       def detail
         post = Post.where(:id => params[:id]).includes(:likes, :flags, :comments => [:likes, :flags]).first
         UserAnalytic.create(:action => 2,:org_id => post[:org_id], :user_id => params[:user_id], :source_id => params[:id], :ip_address => request.remote_ip.to_s)
@@ -75,6 +102,7 @@ module Api
               :json => json.to_json.to_s
             )
             @post.update_attribute(:attachment_id, @attachment.id)
+            @post.set_archtype("shift_trade")
             if params[:tip_amount].present? && params[:tip_amount].to_f > 0
               @gratitude = Gratitude.new(
                 :amount => params[:tip_amount],
@@ -239,8 +267,8 @@ module Api
             return default_channel(location_id)
           end
         elsif permission == "channel"
-          if Channel.exists?(:channel_frequency => location_id.to_s, :is_valid => true)
-            @channel = Channel.where(:channel_frequency => location_id.to_s, :is_valid => true).first
+          if Channel.exists?(:id => channel_id, :is_valid => true)
+            @channel = Channel.find(channel_id)
             return @channel[:id]
           else
             return default_channel(location_id)

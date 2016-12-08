@@ -16,8 +16,8 @@
 #Mail.register_interceptor(DevelopmentMailInterceptor) if Rails.env.development?
 
 ActionMailer::Base.smtp_settings = {
-  :user_name => 'bpatrontasch',
-  :password => 'Unn7td90',
+  :user_name => 'xdsdcx',
+  :password => '%cFErr$1R/15',
   :domain => 'myshyft.com',
   :address => 'smtp.sendgrid.net',
   :port => 587,

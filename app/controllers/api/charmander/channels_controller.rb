@@ -92,10 +92,16 @@ module Api
           :is_valid => true
         )
         if @claim.save
-          NotificationsMailer.admin_claim_confirmation_email(email,first_name,@claim[:activation_code]).deliver
-          1
-        else
-          2
+          if email.include?("@gmail") || email.include?("@yahoo") || email.include?("@hotmail") || email.include?("@aol")
+            NotificationsMailer.support_admin_claim_email(email,uid,@claim[:id]).deliver_now
+            return 3
+          else
+            if NotificationsMailer.admin_claim_confirmation_email(email,first_name,@claim[:activation_code]).deliver_now
+              return 1
+            else
+              return 2
+            end
+          end
         end
       end
 
@@ -106,8 +112,15 @@ module Api
             if Subscription.exists?(:channel_id => @channel[:id].to_i, :user_id => params[:user_id], :is_valid => true)
               @user = User.find(params[:user_id])
               #self.send_admin_claim(params[:user_id], @channel[:id].to_i, params[:email])
-              self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name])
-              render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+              response = self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name])
+              if response == 1
+                render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+              #elsif self.send_admin_claim_email(params[:user_id], @channel[:id], params[:email],@user[:first_name]) == 3
+              elsif response == 3
+                render json: { "eXpresso" => { "code" => -1, "message" => "The email you provided is not an @company address, our staff will contact you to approve your admin status manually, hang tight! OR If you have a @company address, you can attempt this process again." } }
+              else
+                render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
+              end
             else
               render json: { "eXpresso" => { "code" => -1, "message" => "You do not belong to this group and therefore cannot become an admin. Contact hello@myshyft.com if this is an error.", "error" => "User does not have the proper privilege key to proceed." } }
             end
@@ -149,7 +162,7 @@ module Api
                   render json: { "eXpresso" => { "code" => 1, "message" => "Success" } }
                 end
               else
-                APILogger.info "[channel.remove_subscriber] subscription of user with ID #{params[:remove_id]} does not exist."
+                #APILogger.info "[channel.remove_subscriber] subscription of user with ID #{params[:remove_id]} does not exist."
                 render json: { "eXpresso" => { "code" => -1, "message" => "The user you're trying to remove is not in your group.", "error" => "Target user does not have subscription to channel with ID #{params[:id]}." } }
               end
             end
@@ -240,6 +253,7 @@ module Api
               #@subscription.check_parameters(Time.now.utc, true, true)
               @subscription.update_attribute(:is_admin, true)
               @subscription.check_parameters(Time.now.utc, true, true)
+
               render json: @subscription, serializer: SyncSubscriptionSerializer
             else
               render json: { "eXpresso" => { "code" => -1, "error" => self_assembled_channel.errors, "message" => "There was an error setting up the channel." } }
@@ -451,6 +465,23 @@ module Api
         end
 
         render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records updated, #{counta} ambiguous records also updated" } }
+      end
+
+      def assign_shifts_to_location
+        count = 0
+        counta = 0
+        @shyfts = ScheduleElement.where(:location_id => nil)
+        @shyfts.each do |shyft|
+          @keys = UserPrivilege.where(:owner_id => shyft.owner_id)
+          if @keys.count == 1
+            shyft.update_attribute(:location_id,@keys.first[:location_id])
+            count = count + 1
+          else
+            counta = counta + 1
+          end
+        end
+
+        render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records updated, #{counta} records skipped" } }
       end
 
       def assign_shifs_to_channel

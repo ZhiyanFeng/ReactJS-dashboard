@@ -149,6 +149,29 @@ class ScheduleElement < ActiveRecord::Base
       )
       @notification.save
     end
+
+    @managers = Subscription.where(:channel_id => @post[:channel_id], :is_admin => true, :is_valid => true, :is_active => true).pluck(:user_id)
+    @managers.each do |m|
+      content = Follower.create_shift_pending_message_for_managers(shift)
+      @notification = Notification.new(
+        :source => 4,
+        :source_id => @post[:id],
+        :notify_id => m,
+        :sender_id => shift[:coverer_id],
+        :recipient_id => shift[:owner_id],
+        :org_id => 1,
+        :event => "shift_waiting_approval",
+        :message => content
+      )
+      @notification.save
+      if Mession.exists?(:user_id => m, :is_active => true, :is_valid => true)
+        @user = User.find(m)
+        @mession = Mession.where(:user_id => m, :is_active => true, :is_valid => true).order("created_at DESC").first
+        #@mession.target_push(action, message, source=nil, source_id=nil, sound=nil, badge=nil)
+        @mession.target_push('open_app', content, source=nil, source_id=nil, sound=nil, @user[:push_count]) # TODO: Need to update this to proper open shift push when its available.
+      end
+    end
+
     Follower.follow(4, @post[:id], shift[:coverer_id])
   end
 

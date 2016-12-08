@@ -62,6 +62,8 @@ module Api
         end
         count = 0
 
+        render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records processed" } }
+
         params[:contacts].each do |contact|
           begin
             if contact[:phones].present?
@@ -100,7 +102,7 @@ module Api
           ensure
           end
         end
-        render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records processed" } }
+        #render json: { "eXpresso" => { "code" => 1, "message" => "#{count} records processed" } }
       end
 
       def verify_claim
@@ -224,9 +226,9 @@ module Api
         fetch_history = params[:before].present? ? true : false
 
         result = {}
-        #result["server_sync_time"] = DateTime.now.iso8601(3)
+        result["server_sync_time"] = DateTime.now.iso8601(3)
         #result["flash_alert"] = { "uid" => "16818e151fc45d95ae3634a50da9d783", "message" => "Having trouble getting your shifts covered? <u>Shyft</u> works well with lots of coworkers on your network, <b>invite some coworkers</b> and see your shifts covered instantly!", "button" => "INVITE COWORKERS", "target" => "contact_invite"}
-        result["server_sync_time"] = Time.now.utc
+        #result["server_sync_time"] = Time.now.utc
         result["subscriptions"] ||= Array.new
         result["shifts"] ||= Array.new
         result["schedules"] ||= Array.new
@@ -340,6 +342,26 @@ module Api
         render json: { "eXpresso" => result }
         @subscriptions.map do |subscription|
           subscription.update_attribute(:subscription_last_synchronize, Time.now)
+        end
+      end
+
+      def revolk_users
+        success ||= Array.new
+        @users = User.where(:id => params[:ids])
+        @users.each do |user|
+          success.push(user[:id]) if user.revolk_account
+          #success.push(user[:id]) if user
+        end
+
+        render json: { "eXpresso" => { "code" => 1, "message" => "Success", "successids" => success } }
+      end
+
+      def logout
+        @mession = Mession.where(:user_id => params[:id], :is_active => true).last
+        if @mession.update_attribute(:is_active, false)
+          render :json => { "response" => "Success." }
+        else
+          render :json => @mession.errors
         end
       end
 

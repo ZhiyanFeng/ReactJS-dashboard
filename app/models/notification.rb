@@ -17,11 +17,11 @@
 #
 
 class Notification < ActiveRecord::Base
-	#belongs_to :notify_id, :class_name => "Notification", :foreign_key => 
+	#belongs_to :notify_id, :class_name => "Notification", :foreign_key =>
 	belongs_to :sender, :class_name => "User", :foreign_key => "sender_id"
 	belongs_to :recipient, :class_name => "User", :foreign_key => "recipient_id"
 
-	attr_accessible :notify_id, :sender_id, :recipient_id, :source, :source_id, :event, :viewed, :message, :org_id
+	attr_accessible :notify_id, :sender_id, :recipient_id, :source, :source_id, :event, :viewed, :message, :org_id, :is_valid
 
 	validates_presence_of :source, :on => :create
 	validates_presence_of :source_id, :on => :create
@@ -29,7 +29,7 @@ class Notification < ActiveRecord::Base
 	validates_presence_of :org_id, :on => :create
 	validates_presence_of :recipient_id, :on => :create
 	validates_presence_of :message, :on => :create
-	
+
 	def self.did_view(user_id, source, source_id)
 	  @notifications = Notification.where(:notify_id => user_id, :source => source, :source_id => source_id)
 	  begin
@@ -39,7 +39,7 @@ class Notification < ActiveRecord::Base
     rescue
     ensure
     end
-    
+
     return @notifications.count
   end
 end

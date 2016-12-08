@@ -33,7 +33,8 @@ class UserPrivilege < ActiveRecord::Base
   validates_presence_of :owner_id, :on => :create
   validates_presence_of :org_id, :on => :create
   #validates_uniqueness_of :owner_id, :scope => [:org_id]
-  #after_create :search_region_feed, :search_category_feed
+  after_create :search_region_feed
+  #after_create :search_category_feed
 
   def search_category_feed
     server_life_15773_cats = ["food","restaurant","meal_takeaway","bar","bakery","night_club","lodging","Cocktail Bar","Restaurant","Irish Pub","American Restaurant","Wings Joint","Pizza Place","BBQ Joint","Fast Food Restaurant"]
@@ -246,17 +247,19 @@ class UserPrivilege < ActiveRecord::Base
           :location => self[:location_id],
           :owner_id => 134,
           :channel_id => location_channel[:id],
-          :title => "Welcome to your Shyft Channel - Earn 25$!",
-          :content => "This is the main feed for your work location to swap shifts. Use the + button to post a shift, or make a post. You can set up private groups, post schedules, chat, have fun and communicate with your team! Your channel settings are in the top right corner (gear button). Earn 25$ - We want to send your location a gift! Grow this location to 15 team members and Shyft will send a $25 gift card of your choice to your store. All you have to do is invite your team, and submit your store name and address to hello@myshyft.com for our review! ​*New employee signups only - Ends #{(Date.today+5.days).to_formatted_s(:long_ordinal)} at 12:00PM EST* \n\n#ShyftLife 📱🔁📆🙋",
-          :post_type => 1
+          :title => "Welcome to Shyft!",
+          :attachment_id => 126234,
+          #:content => "This is the main feed for your work location to swap shifts. Use the + button to post a shift, or make a post. You can set up private groups, post schedules, chat, have fun and communicate with your team! Your channel settings are in the top right corner (gear button). Earn 25$ - We want to send your location a gift! Grow this location to 15 team members and Shyft will send a $25 gift card of your choice to your store. All you have to do is invite your team, and submit your store name and address to hello@myshyft.com for our review! ​*New employee signups only - Ends #{(Date.today+5.days).to_formatted_s(:long_ordinal)} at 12:00PM EST* \n\n#ShyftLife 📱🔁📆🙋",
+          :content => "Welcome to Shyft! We hope we make work a little easier for you. To have a digital $20 Gift card emailed to you, simply do these two things before #{(Date.today+5.days).to_formatted_s(:long_ordinal)} 12:00PM EST* \n\n1. Get 10 coworkers to join this location.\n2. Have your leader claim admin status in your channel settings.\nThen email us your store name to hello@myshyft.com\n*Limit of one gift card per location*\nThe Shyft Team 📱📆🔄😎",
+          :post_type => 2
         )
         @post.save
 
-        begin
-          create_AB_test_post(location[:id],location_channel[:id])
-        rescue
-        ensure
-        end
+        #begin
+        #  create_AB_test_post(location[:id],location_channel[:id])
+        #rescue
+        #ensure
+        #end
       end
 
       if make_post
@@ -292,8 +295,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "Want to get a shift covered? Tap the + Button at the bottom of this screen and select 'Shift' then try adding your details and press post! Click here for other features: http://bit.ly/LiteUserGuide",
           #image 3
-          #:attachment_id => 82229,
-          :attachment_id => 7507,
+          :attachment_id => 82229,
+          #:attachment_id => 7507,
           :post_type => 6
         )
       @post.save
@@ -306,8 +309,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "Managers get admin features! Click the gear button in the top right hand corner of this screen and select 'I Am A Manager'. Click here for other features: http://bit.ly/LiteUserGuide",
           #image 4
-          #:attachment_id => 82231,
-          :attachment_id => 7508,
+          :attachment_id => 82231,
+          #:attachment_id => 7508,
           :post_type => 6
         )
       @post.save
@@ -320,8 +323,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "Snap & Share your schedule! Select the schedule tab, then take a quick snap of your schedule, enter your details and post it! Click here for other features: http://bit.ly/LiteUserGuide",
           #image 6
-          #:attachment_id => 82233,
-          :attachment_id => 7510,
+          :attachment_id => 82233,
+          #:attachment_id => 7510,
           :post_type => 6
         )
       @post.save
@@ -334,8 +337,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "Want to get a shift covered? Tap the + Button at the bottom of this screen and select 'Shift' then try adding your details and press post! Click here for other features: http://bit.ly/LiteUserGuide",
           #image 3
-          #:attachment_id => 82229,
-          :attachment_id => 7507,
+          :attachment_id => 82229,
+          #:attachment_id => 7507,
           :post_type => 6
         )
       @post3.save
@@ -348,8 +351,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "",
           #image 2
-          #:attachment_id => 82228,
-          :attachment_id => 7506,
+          :attachment_id => 82228,
+          #:attachment_id => 7506,
           :post_type => 6
         )
       @post2.save
@@ -362,8 +365,8 @@ class UserPrivilege < ActiveRecord::Base
           :title => "Shyft tutorial",
           :content => "",
           #image 1
-          #:attachment_id => 82236,
-          :attachment_id => 7505,
+          :attachment_id => 82236,
+          #:attachment_id => 7505,
           :post_type => 6
         )
       @post1.save

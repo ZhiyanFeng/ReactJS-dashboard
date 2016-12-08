@@ -76,7 +76,7 @@ class FeedDetailSerializerV2 < ActiveModel::Serializer
   #end
 
   def owner
-    OwnerSerializer.new(object.owner)
+    OwnerSerializerV2.new(object.owner)
   end
 
   def comments

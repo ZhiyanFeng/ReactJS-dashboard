@@ -64,7 +64,7 @@ class User < ActiveRecord::Base
   validates_presence_of :first_name
   validates_presence_of :last_name
   #validates_presence_of :email
-  validates_uniqueness_of :email, :case_sensitive => false
+  #validates_uniqueness_of :email, :case_sensitive => false
   validates_uniqueness_of :phone_number, :allow_blank => true, :allow_nil => true
 
   def hitting_post_threshold(channel_id)

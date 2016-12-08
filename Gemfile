@@ -27,6 +27,7 @@ group :development, :test do
 	gem "rspec-rails"
 	gem "annotate"
 	gem "factory_girl_rails"
+  gem "rb-readline"
 end
 
 group :test do

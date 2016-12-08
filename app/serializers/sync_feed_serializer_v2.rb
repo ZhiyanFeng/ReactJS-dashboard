@@ -34,8 +34,10 @@ class SyncFeedSerializerV2 < ActiveModel::Serializer
 
   def attachment
     if object.attachment_id.presence
-      @attachments = Attachment.find(object.attachment_id)
-      @attachments.to_objs
+      if Attachment.exists?(object.attachment_id)
+        @attachments = Attachment.find(object.attachment_id)
+        @attachments.to_objs
+      end
     end
   end
 

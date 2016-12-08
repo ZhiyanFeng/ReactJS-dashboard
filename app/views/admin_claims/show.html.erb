@@ -1,0 +1,48 @@
+<p id="notice"><%= notice %></p>
+
+<div class="field">
+  <label>First Name</label>: <b><%= @user[:first_name] %></b>
+</div>
+
+<div class="field">
+  <label>Last Name</label>: <b><%= @user[:last_name] %></b>
+</div>
+
+<div class="field">
+  <label>User ID</label>: <b><%= @user[:id] %></b>
+</div>
+
+<div class="field">
+  <label>Claim Channel ID</label>: <b><%= @channel[:id] %></b>
+</div>
+
+<div class="field">
+  <label>Claim Channel Name</label>: <b><%= @channel[:channel_name] %></b>
+</div>
+
+<% if @channel[:channel_type] == "location_feed" %>
+  <div class="field">
+    <label>Location ID</label>: <b><%= @location[:id] %></b>
+  </div>
+
+  <div class="field">
+    <label>Location Name</label>: <b><%= @location[:location_name] %></b>
+  </div>
+
+  <div class="field">
+    <label>Location Address</label>: <b><%= @location[:address] %></b>
+  </div>
+<% else %>
+  <div class="field">
+    <label>Location</label>: <b>This is not a location channel.</b>
+  </div>
+<% end %>
+
+<div class="field">
+  <label>Claim Admin Email</label>: <b><%= @admin_claim[:email] %></b>
+</div>
+
+<div class="field">
+  <label>Claim Date</label>: <b><%= @admin_claim[:created_at] %></b>
+</div>
+

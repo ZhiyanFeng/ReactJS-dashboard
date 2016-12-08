@@ -19,11 +19,20 @@ module Api
       end
 
       def send_weekly_summary_by_location
-        if NotificationsMailer.weekly_statistics(params[:email], params[:location_id]).deliver
-          render json: "Success"
-        else
-          render json: "Failed"
+        begin
+          if NotificationsMailer.weekly_statistics(params[:email], params[:location_id]).deliver_now
+            render json: "Success"
+          else
+            render json: "Failed"
+          end
+        rescue => ex
+          logger.error ex.message
         end
+        #if NotificationsMailer.weekly_statistics(params[:email], params[:location_id]).deliver_now
+        #  render json: "Success"
+        #else
+        #  render json: "Failed"
+        #end
       end
 
       def send_weekly_summary_by_location_test

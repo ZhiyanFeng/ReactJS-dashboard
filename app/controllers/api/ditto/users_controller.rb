@@ -31,23 +31,36 @@ module Api
         if UserAnalytic.exists?(:action => 1000, :user_id => @user[:id])
           last_fetch = UserAnalytic.where(:action => 1000, :user_id => @user[:id]).last[:created_at]
         else
-          last_fetch = Time.now
+          #last_fetch = Time.now #UPDATED Dec 7, 2016
+          if UserPrivilege.exists?(["owner_id = ? AND is_valid", @user[:id]])
+            begin
+              loc = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid").order("created_at DESC").first
+              channel = Channel.where("channel_frequency = '#{loc[:location_id]}'").first
+              last_post_timestamp = Post.where("channel_id = #{channel[:id]} AND owner_id != #{@user[:id]}").order("created_at DESC").first
+              last_fetch = last_post_timestamp[:created_at] - 10.seconds
+            rescue
+              last_fetch = Time.now
+            end
+          else
+            last_fetch = Time.now
+          end
         end
 
         UserAnalytic.create(:action => 1000, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
         result ||= Array.new
 
-        #channel_ids = Subscription.where(["user_id =#{@user[:id]} AND is_valid"]).pluck(:channel_id)
+        channel_ids = Subscription.where(["user_id =#{@user[:id]} AND is_valid"]).pluck(:channel_id)
 
-        result.push("shift_counter" => Post.where("(post_type = 21 OR title = 'Shift Trade') AND is_valid AND created_at > '#{last_fetch}'").count)
-        result.push("post_counter" => Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS + @@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid AND created_at > '#{last_fetch}'").count)
-        result.push("schedule_counter" => Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND is_valid AND created_at > '#{last_fetch}'").count)
-        result.push("notification_counter" => Notification.where("recipient_id = #{@user[:id]} AND created_at > '#{last_fetch}'").count)
+        result.push("shift_counter" => Post.where("(post_type = 21 OR title = 'Shift Trade') AND is_valid AND channel_id IN (#{channel_ids.join(", ")}) AND owner_id != #{@user[:id]} AND created_at > '#{last_fetch}'").count)
+        result.push("post_counter" => Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND title != 'Shift Trade' AND channel_id IN (#{channel_ids.join(", ")}) AND owner_id != #{@user[:id]} AND is_valid AND created_at > '#{last_fetch}'").count)
+        #result.push("post_counter" => Post.where("post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND title != 'Shift Trade' AND is_valid AND created_at > '#{last_fetch}'").count)
+        result.push("schedule_counter" => Post.where("post_type in (#{@@_SCHEDULE_POST_TYPE_IDS}) AND owner_id != #{@user[:id]} AND channel_id IN (#{channel_ids.join(", ")}) AND is_valid AND created_at > '#{last_fetch}'").count)
+        result.push("notification_counter" => Notification.where("notify_id = #{@user[:id]} AND created_at > '#{last_fetch}'").count)
         member_location_ids = UserPrivilege.where(:owner_id => params[:id], :is_approved => true, :is_valid => true).pluck(:location_id)
         result.push("contact_counter" => UserPrivilege.where("location_id in (?) AND created_at > '#{last_fetch}'", member_location_ids).count)
         session_ids = ChatParticipant.where(:user_id => params[:id], :is_active => true).pluck(:session_id)
-        result.push("message_counter" => ChatMessage.where("session_id in (?) AND created_at > '#{last_fetch}'", session_ids).count)
+        result.push("message_counter" => ChatMessage.where("session_id in (?) AND created_at > '#{last_fetch}' AND sender_id != #{@user[:id]}", session_ids).count)
 
         render json: { "eXpresso" => result }
       end
@@ -88,8 +101,9 @@ module Api
         else
         end
 
-        @subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
-        @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")}) AND is_valid").order("start_at #{order}").limit(20)
+        #@subscriptions = Subscription.where(:is_active => true, :user_id => @user[:id]).pluck(:channel_id)
+        @subscriptions = Subscription.where(:is_valid => true, :user_id => @user[:id]).pluck(:channel_id)
+        @shyfts = ScheduleElement.where("#{constructed_SQL} AND channel_id IN (#{@subscriptions.join(", ")}) AND is_valid").order("start_at #{order}").limit(50)
 
         @shyfts.each do |shift|
           shift.check_user(params[:id])
@@ -112,7 +126,20 @@ module Api
           last_fetch = UserAnalytic.where(:action => 1020, :user_id => @user[:id]).last[:created_at]
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         else
-          last_fetch = Time.now.utc
+          #last_fetch = Time.now.utc
+          if UserPrivilege.exists?(["owner_id = ? AND is_valid", @user[:id]])
+            begin
+              loc = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid").order("created_at DESC").first
+              channel = Channel.where("channel_frequency = '#{loc[:location_id]}'").first
+              #last_post_timestamp = Post.where("channel_id = #{channel[:id]}").order("created_at DESC").first
+              last_post_timestamp = Post.where("channel_id = #{channel[:id]} AND owner_id != #{@user[:id]}").order("created_at DESC").first
+              last_fetch = last_post_timestamp[:created_at] - 10.seconds
+            rescue
+              last_fetch = Time.now
+            end
+          else
+            last_fetch = Time.now
+          end
           @subscriptions = Subscription.where("user_id =#{@user[:id]} AND is_valid AND is_active").order("updated_at desc")
         end
 
@@ -249,9 +276,9 @@ module Api
 
         location_list = UserPrivilege.where("owner_id = #{@user[:id]} AND is_valid = 't' AND is_approved='t' AND location_id IS NOT NULL AND is_invisible = 'f'").pluck(:location_id)
 
-        if UserAnalytic.exists?(:action => 106, :user_id => @user[:id])
-          last_fetch = UserAnalytic.where(:action => 106, :user_id => @user[:id]).last[:created_at]
-          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
+        if UserAnalytic.exists?(:action => 1060, :user_id => @user[:id])
+          last_fetch = UserAnalytic.where(:action => 1060, :user_id => @user[:id]).last[:created_at]
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => @user[:id], :is_valid => true).includes(:sender, :recipient).order("created_at desc").limit(20)
           #@notifications = Notification.where("org_id = ? AND notify_id = ? AND viewed = 'false' AND updated_at > ?",
           #  @user[:active_org],
           #  params[:id],
@@ -259,7 +286,7 @@ module Api
           #).includes(:sender, :recipient).order("created_at desc")
         else
           last_fetch = Time.now.utc
-          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => params[:id], :viewed => false).includes(:sender, :recipient).order("created_at desc").limit(20)
+          @notifications = Notification.where(:org_id => @user[:active_org], :notify_id => @user[:id], :is_valid => true).includes(:sender, :recipient).order("created_at desc").limit(20)
         end
 
         deleted_ids = Notification.where("org_id = #{@user[:active_org]} AND notify_id = #{params[:id]} AND updated_at > '#{last_fetch}'").pluck(:id)
@@ -302,7 +329,7 @@ module Api
 
           @subscription = Subscription.where(:id => params[:subscription_id], :is_valid => true).first
 
-          if UserAnalytic.exists?(:action => 1070, :user_id => @user[:id])
+          if UserAnalytic.exists?(:action => 1070, :source_id => params[:subscription_id], :user_id => @user[:id])
             last_fetch = UserAnalytic.where(:action => 1070, :user_id => @user[:id]).last[:created_at]
             @posts = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid").order("created_at DESC").limit(10)
           else
@@ -312,7 +339,7 @@ module Api
 
           deleted_ids = Post.where("channel_id = #{@subscription[:channel_id]} AND title != 'Shift Trade' AND (z_index < 9999 OR (z_index > 0 AND owner_id = #{@user[:id]})) AND post_type in (#{@@_BASIC_POST_TYPE_IDS},#{@@_ANNOUNCEMENT_POST_TYPE_IDS}) AND is_valid = 'f' AND updated_at > '#{last_fetch}'").pluck(:id)
 
-          UserAnalytic.create(:action => 1070, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+          UserAnalytic.create(:action => 1070, :org_id => 1, :user_id => @user[:id],:source_id => params[:subscription_id], :ip_address => request.remote_ip.to_s)
 
           @posts.each do |post|
             post.check_user(params[:id])
@@ -339,7 +366,7 @@ module Api
           result = {}
           result["posts"] ||= Array.new
 
-          UserAnalytic.create(:action => 1071, :org_id => 1, :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
+          UserAnalytic.create(:action => 1071, :org_id => 1, :source_id => params[:subscription_id], :user_id => @user[:id], :ip_address => request.remote_ip.to_s)
 
           @subscription = Subscription.where(:id => params[:subscription_id], :is_valid => true).first
 
@@ -446,16 +473,44 @@ module Api
         #    result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
         #  end
         #end
-
+        already_sent_channels ||= Array.new
         subscribed_channel_ids = Subscription.where(:user_id => @user[:id], :is_valid => true).pluck(:channel_id)
         user_active_location_ids = UserPrivilege.where(:owner_id => @user[:id], :is_valid => true, :is_approved => true).pluck(:location_id)
         @locations = Location.where("id IN (#{subscribed_channel_ids.join(", ")})")
         @locations.each do |location|
-          @channels = Channel.where("(channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?) AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%brand_center_at:#{location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location[:id]}\\|")
+          @channels = Channel.where("(channel_frequency LIKE ?) AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%location_id_in:%\|#{location[:id]}\|%").order("member_count DESC")
           @channels.each do |channel|
             result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+            already_sent_channels.push(channel[:id])
+          end
+          if location[:location_name].present?
+            @brand_radar_channels = Channel.where("channel_frequency LIKE ? OR channel_frequency LIKE ? AND id NOT IN (#{subscribed_channel_ids.join(", ")})", "%brand_center_at:#{location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%")
+            @brand_radar_channels.each do |channel|
+              type = channel[:channel_frequency].split(":")[0]
+              if type == "geo_center_at"
+                coordinate = channel[:channel_frequency].split(":")[1].split(",")
+                distance = channel[:channel_frequency].split(":")[2]
+                if Location.distance_between([coordinate[1].to_f,coordinate[0].to_f], [location[:lat].to_f,location[:lng].to_f]) < distance.to_f && !already_sent_channels.include?(channel[:id])
+                  result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+                  already_sent_channels.push(channel[:id])
+                end
+              elsif type == "brand_center_at"
+                coordinate = channel[:channel_frequency].split(":")[2].split(",")
+                distance = channel[:channel_frequency].split(":")[3]
+                if Location.distance_between([coordinate[1].to_f,coordinate[0].to_f], [location[:lat].to_f,location[:lng].to_f]) < distance.to_f && !already_sent_channels.include?(channel[:id])
+                  result["channels"].push(ChannelProfileSerializerV2.new(channel, root: false))
+                  already_sent_channels.push(channel[:id])
+                end
+              else
+              end
+            end
           end
         end
+
+        #@channels = Channel.where("channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?", "%brand_center_at:#{@location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location_id}\\|")
+        #@channels.each do |channel|
+
+        #end
 
         #@locations = Channel.where("channel_type in ('location_feed') AND channel_frequency LIKE '\%brand_center_at\%' AND id NOT IN (#{subscribed_channel_ids.join(", ")})")
         #@channels = Channel.where("channel_frequency LIKE ? OR channel_frequency LIKE ? OR channel_frequency ~ ?", "%brand_center_at:#{@location[:location_name].downcase.gsub("'",'').split.first}:%", "%geo_center_at:%", "^location_id_in:[0-9|]*\\|#{location_id}\\|")
@@ -487,10 +542,11 @@ module Api
 
         if Channel.exists?(:id => params[:channel_id])
           @channel = Channel.find(params[:channel_id])
-          if @channel[:channel_type] == "public_feed" || @channel[:channel_type] == "organization_feed"
+          if @channel[:channel_type] == "public_feed" || @channel[:channel_type] == "organization_feed" || @channel[:channel_type] == "region_feed"
             if Subscription.exists?(:channel_id => params[:channel_id], :user_id => @user[:id])
               @subscription = Subscription.where(:channel_id => params[:channel_id], :user_id => @user[:id]).first
               @subscription.update_attributes(:is_valid => true, :is_active => true)
+              @channel.recount
               render json: { "eXpresso" => { "code" => 1, "message" => "Successfully subscribed to channel!" } }
             else
               @subscription = Subscription.create(
@@ -498,6 +554,7 @@ module Api
                 :channel_id => @channel[:id],
                 :is_active => true
               )
+              @channel.recount
               render json: { "eXpresso" => { "code" => 1, "message" => "Successfully subscribed to channel!" } }
             end
           else

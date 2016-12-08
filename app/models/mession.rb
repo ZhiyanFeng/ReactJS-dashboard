@@ -35,12 +35,15 @@ class Mession < ActiveRecord::Base
   validates_presence_of :push_to, :on => :create
 
   def post_signup_engagement
-    Rails.logger.debug "post_signup_engagement #{self[:user_id]}"
-    if Mession.where(:user_id => self.user_id).count == 1
-      #ChrisSignupWorker.perform_in(5.minutes, user[:id], self[:id])
-      PostSignupWorker.perform_in(1.hours, user[:id], self[:id])
-      PostSignupWorker.perform_in(1.days, user[:id], 0)
-      PostSignupWorker.perform_in(3.days, user[:id], 0)
+    begin
+      if Mession.where(:user_id => self.user_id).count == 1
+        #ChrisSignupWorker.perform_in(5.minutes, user[:id], self[:id])
+        PostSignupWorker.perform_in(1.hours, user[:id], self[:id])
+        PostSignupWorker.perform_in(1.days, user[:id], 0)
+        PostSignupWorker.perform_in(3.days, user[:id], 0)
+      end
+    rescue
+    ensure
     end
   end
 

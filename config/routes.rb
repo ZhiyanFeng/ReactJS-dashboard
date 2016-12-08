@@ -38,6 +38,7 @@ Expresso::Application.routes.draw do
   resources :users
   #resources :locations
 
+  get "user_delete/:id" => "users#delete", :as => "user_delete"
   get "user_search" => "users#search", :as => "user_search"
   get "location_search" => "locations#search", :as => "location_search"
   post "users/list_by_name" => "users#list_by_name", :as => "list_by_name"

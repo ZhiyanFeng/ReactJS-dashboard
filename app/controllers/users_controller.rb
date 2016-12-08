@@ -23,15 +23,20 @@ class UsersController < ApplicationController
     end
   end
 
+  
   def search
     respond_to do |format|
-      format.html # show.html.erb
+      format.html # search.html.erb
     end
   end
 
   def list_by_name
-    name = params[:user_name].split(' ')
-    @users = User.where("lower(first_name) like ? and lower(last_name) like ?","\%#{name[0]}\%","\%#{name[1]}\%")
+    input = params[:user_name].split(' ')
+    if input.length==1 && input[0] =~ /\A\d+\z/ ? true:false
+        @users = User.where("phone_number like ?", "%#{input[0]}%");
+    else
+        @users = User.where("lower(first_name) like ? and lower(last_name) like ?","\%#{input[0]}\%","\%#{input[1]}\%")
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @users }
@@ -46,6 +51,27 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+  end
+
+  # Make user invalid
+  def delete
+      @user = User.find(params[:id])
+      @user.is_valid='false'
+      @user.save
+      @privileges = UserPrivilege.where("owner_id= ?",params[:id])
+      @privileges.each do |p|
+        p.update_attribute(:is_valid,"false")
+      end
+      @subscriptions = Subscription.where("user_id= ?",params[:id])
+      @subscriptions.each do |s|
+          s.update_attribute(:is_valid, "false")
+      end
+      @chat_participants = ChatParticipant.where("user_id= ?",params[:id])
+      @chat_participants.each do |c|
+          c.update_attribute(:is_valid, "false")
+      end
+                                          
+      redirect_to '/user_search', :notice => "The user #{@user.first_name} has been deleted."
   end
 
   # POST /users

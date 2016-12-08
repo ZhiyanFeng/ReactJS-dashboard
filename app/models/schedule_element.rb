@@ -71,6 +71,8 @@ class ScheduleElement < ActiveRecord::Base
   def cover(coverer_id, require_approval=nil)
     if self.is_valid == false
       return "deleted"
+    elsif self.start_at < Time.now
+      return "expired"
     elsif self.trade_status == 0
       if require_approval
         self.trade_status = 2

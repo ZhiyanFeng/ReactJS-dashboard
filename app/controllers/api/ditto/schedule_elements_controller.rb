@@ -95,6 +95,8 @@ module Api
           render json: { "code" => -186, "message" => "Shift already covered by someone else." }
         elsif result == "deleted"
           render json: { "code" => -188, "message" => "Shift deleted by owner." }
+        elsif result == "expired"
+          render json: { "code" => -189, "message" => "The shift you are trying to cover has expired. If this is not correct please contact support@myshyft.com", "error" => "Trying to cover an expired shift." }
         else
           render json: { "code" => -1, "message" => @schedule_element.errors }
         end

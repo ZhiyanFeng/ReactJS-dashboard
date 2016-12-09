@@ -248,7 +248,8 @@ module Api
 
       def delete_shift
         begin
-          Post.update(params[:post_id], :is_valid => false)
+          #Post.update(params[:post_id], :is_valid => false)
+          Post.update(params[:post_id], :is_valid => false, :z_index => 9999)
           @schedule_element.update_attribute(:is_valid, false)
           render json: { "code" => 1, "message" => "Success" }
         rescue

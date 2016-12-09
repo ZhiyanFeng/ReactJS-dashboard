@@ -19,7 +19,8 @@ module Api
         #phone_number = params[:phone_number].gsub(/[\+\-\(\)\s]/,'')
         phone_number = params[:phone_number].gsub(/\W/,'')
         if User.exists?(:phone_number => phone_number)
-          render json: { "eXpresso" => { "code" => -101, "message" => "Phone number already registered" } }
+          #render json: { "eXpresso" => { "code" => -101, "message" => "Phone number already registered" } }
+          render json: { "eXpresso" => { "code" => -101, "message" => "This account already exists, please try another number." } }
         elsif Invitation.exists?(:phone_number => phone_number, :is_valid => true)
           @invitation = Invitation.where(:phone_number => phone_number, :is_valid => true).first
           if @invitation[:is_invited]

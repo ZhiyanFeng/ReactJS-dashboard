@@ -39,9 +39,12 @@ class FeedDetailSerializerV2 < ActiveModel::Serializer
   end
 
   def attachment
-    if object.attachment_id.presence
-      @attachments = Attachment.find(object.attachment_id)
-      @attachments.to_objs_v2(object.user_id)
+    begin
+      if object.attachment_id.presence
+        @attachments = Attachment.find(object.attachment_id)
+        @attachments.to_objs_v2(object.user_id)
+      end
+    rescue
     end
   end
 

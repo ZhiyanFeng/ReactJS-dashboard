@@ -4,7 +4,7 @@ class Location < ActiveRecord::Base
   attr_accessible :org_id, :owner_id, :location_name, :lng, :longitude, :lat, :latitude, :unit_number, :street_number, :four_sq_id,  :google_map_id,
   :address, :city, :province, :country, :postal, :formatted_address, :member_count, :is_valid, :is_hq, :category, :swift_code
 
-  after_create :manage_coordinates
+  after_create :manage_coordinates, :compile_swift_code
 
   def member_add
       self.update_attribute(:member_count, self.member_count + 1)

@@ -105,7 +105,8 @@ class Location < ActiveRecord::Base
   end
 
   def compile_swift_code
-    o = [('A'..'Z'),(0..9)].map { |i| i.to_a }.flatten
+    #o = [('A'..'Z'),(0..9)].map { |i| i.to_a }.flatten
+    o = [('A'..'Z')].map { |i| i.to_a }.flatten
     s = (0..5).map { o[rand(o.length)] }.join
     if Location.exists?(:swift_code => s)
       compile_swift_code

@@ -111,7 +111,8 @@ class Location < ActiveRecord::Base
     if Location.exists?(:swift_code => s)
       compile_swift_code
     else
-      s
+      #s
+      self.update_attribute(:swift_code, s)
     end
   end
 

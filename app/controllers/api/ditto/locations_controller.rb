@@ -18,6 +18,15 @@ module Api
         end
       end
 
+      def fix_location_swiftcodes
+        locations = Location.all
+        locations.each do |location|
+          if !location[:swift_code].present?
+            location.compile_swift_code
+          end
+        end
+      end
+
     end
   end
 end

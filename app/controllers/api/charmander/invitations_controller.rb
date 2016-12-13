@@ -62,8 +62,8 @@ module Api
         phone_number = number.gsub(/\W/,'')
         message = @client.account.messages.create(
           :body => "#{code} is your Shyft verification code, please enter it within the next 30 mins.",
-          #:to => "+"+number,
-          :to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
+          #:to => phone_number.size > 10 ? "+"+ phone_number : phone_number,
+          :to => "+"+ phone_number,
           #:from => "+16137028842"
           :from => "+16282225569"
         )

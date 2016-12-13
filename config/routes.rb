@@ -110,6 +110,11 @@ Expresso::Application.routes.draw do
         post :uncover, :on => :member
         post :delete_shift, :on => :member
       end
+
+      resources :locations do
+        get :fetch_location_via_swiftcode
+        get :fix_location_swiftcodes
+      end
     end
 
     scope module: :charmander, constraints: ApiConstraints.new(version: 3, default: true) do

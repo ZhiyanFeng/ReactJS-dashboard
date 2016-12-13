@@ -112,8 +112,8 @@ Expresso::Application.routes.draw do
       end
 
       resources :locations do
-        get :fetch_location_via_swiftcode
-        get :fix_location_swiftcodes
+        post :fetch_location_via_swiftcode, :on => :collection
+        get :fix_location_swiftcodes, :on => :collection
       end
     end
 

@@ -10,6 +10,7 @@ class SyncChannelProfileSerializer < ActiveModel::Serializer
   :owner_id,
   :member_count,
   :is_active,
+  :swift_code,
   :become_active_when,
   :allow_view,
   :allow_post,

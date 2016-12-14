@@ -9,15 +9,6 @@ module Api
 
       respond_to :json
 
-      def fetch_location_via_swiftcode
-        if Location.exists?(:swift_code => params[:swift_code])
-          location = Location.find_by(swift_code: params[:swift_code])
-          render json: location, serializer: LocationSerializer
-        else
-          render json: { "eXpresso" => { "code" => -1, "error" => "A location with that swift code does not exist.", "message" => "A location with that swift code does not exist." } }
-        end
-      end
-
       def fix_location_swiftcodes
         locations = Location.all
         locations.each do |location|

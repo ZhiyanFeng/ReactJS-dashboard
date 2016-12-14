@@ -39,6 +39,10 @@ Expresso::Application.routes.draw do
   resources :admin_claims do
     post :display, :on => :collection
   end
+
+  resources :locations do
+    post :fetch_location_via_swiftcode, :on => :collection
+  end
   #resources :locations
 
   get "user_delete/:id" => "users#delete", :as => "user_delete"
@@ -112,7 +116,6 @@ Expresso::Application.routes.draw do
       end
 
       resources :locations do
-        post :fetch_location_via_swiftcode, :on => :collection
         get :fix_location_swiftcodes, :on => :collection
       end
     end

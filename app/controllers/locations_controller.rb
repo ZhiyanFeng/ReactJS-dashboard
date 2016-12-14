@@ -1,5 +1,5 @@
 class LocationsController < ApplicationController
-  http_basic_authenticate_with :name => "theboat", :password => "whosyourdaddy", :except => [:fetch_url_meta]
+  http_basic_authenticate_with :name => "theboat", :password => "whosyourdaddy", :except => [:fetch_url_meta, :fetch_location_via_swiftcode]
   layout "scaffold"
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
@@ -26,6 +26,15 @@ class LocationsController < ApplicationController
   def search
     respond_to do |format|
       format.html # show.html.erb
+    end
+  end
+
+  def fetch_location_via_swiftcode
+    if Location.exists?(:swift_code => params[:swift_code])
+      location = Location.find_by(swift_code: params[:swift_code])
+      render json: location, serializer: LocationSerializer
+    else
+      render json: { "eXpresso" => { "code" => -1, "error" => "A location with that swift code does not exist.", "message" => "A location with that swift code does not exist." } }
     end
   end
 

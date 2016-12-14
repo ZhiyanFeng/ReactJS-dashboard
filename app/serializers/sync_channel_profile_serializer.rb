@@ -43,7 +43,7 @@ class SyncChannelProfileSerializer < ActiveModel::Serializer
 
   def swift_code
     if object.channel.channel_type.include? "location_feed"
-      if Location.exists?(:channel_frequency => object.channel.channel_frequency.to_i)
+      if Location.exists?(:id => object.channel.channel_frequency.to_i)
         location = Location.find(object.channel.channel_frequency.to_i)
         location[:swift_code]
       else

@@ -32,7 +32,7 @@ class LocationsController < ApplicationController
   def fetch_location_via_swiftcode
     if Location.exists?(:swift_code => params[:swift_code])
       location = Location.find_by(swift_code: params[:swift_code])
-      render json: location, serializer: LocationSerializer
+      render json: location, serializer: LocationSwiftSearchSerializer
     else
       render json: { "eXpresso" => { "code" => -1, "error" => "A location with that swift code does not exist.", "message" => "A location with that swift code does not exist." } }
     end

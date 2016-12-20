@@ -1,5 +1,5 @@
 module Api
-    module InternalApi
+    module Internal
         class UsersController < ApplicationController
             class User < ::User
                 # Note: this does not take into consideration the create/update actions for changing released_on

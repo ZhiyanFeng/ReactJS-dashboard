@@ -77,9 +77,9 @@ Expresso::Application.routes.draw do
   get "resend" => "sessions#resend", :as => "resend"
 
   namespace :api do
-      scope module: :internalApi do
+      scope module: :internal do
         resources :users do
-      #      post :search, on => :collection
+            post :search, :on => :collection
         end
       end
         

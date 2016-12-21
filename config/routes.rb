@@ -77,12 +77,11 @@ Expresso::Application.routes.draw do
   get "resend" => "sessions#resend", :as => "resend"
 
   namespace :api do
-      scope module: :internal do
+      scope module: :internal, constraints: ApiConstraints.new(version: 0) do
         resources :users do
-            post :search, :on => :collection
+            get :search, :on => :collection
         end
       end
-        
     scope module: :ditto, constraints: ApiConstraints.new(version: 4) do
       resources :notifications
 

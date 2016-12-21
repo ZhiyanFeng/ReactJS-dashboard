@@ -1,3 +1,4 @@
+require 'pry'
 module Api
     module Internal
         class UsersController < ApplicationController
@@ -10,9 +11,9 @@ module Api
                 #end
             end
             respond_to :json 
-
             def search
                 input = params[:user_name].split(' ')
+                binding.pry
                 if input.length==1 && input[0] =~ /\A\d+\z/ ? true:false
                     @users = User.where("phone_number like ?", "%#{input[0]}%");
                 else

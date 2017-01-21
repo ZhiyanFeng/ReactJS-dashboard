@@ -13,9 +13,8 @@ import Footer from './common/footer';
 /* Pages */
 
 import Home from './routes/Home';
-import Home2 from './routes/Home2';
-import Datatablesjs from './routes/Datatablesjs';
-import Homepage from './routes/Homepage';
+import UserEdit from './routes/UserEditForm';
+import UserList from './routes/UserList';
 
 //import Lock from './routes/Lock';
 //import Login from './routes/Login';
@@ -24,7 +23,6 @@ import Homepage from './routes/Homepage';
 
 class App extends React.Component {
     render() {
-        console.log('from app', this.props);
         return (
             <MainContainer {...this.props}>
                 <Sidebar />
@@ -46,8 +44,9 @@ class App extends React.Component {
 
 const routes = (
     <Route component={App}>
-        <Route path='/home2' component={Home2} />
-        <Route path='tables/datatables' component={Datatablesjs} />
+        <Route path='/home' component={Home} />
+        <Route path='tables/datatables' component={UserList} />
+        <Route path='user/edit(/:id)' component={UserEdit} />
     </Route>
 );
 
@@ -57,9 +56,7 @@ const routes = (
 
 const combinedRoutes = (
     <Route>
-        <Route>
-            {routes}
-        </Route>
+        {routes}
     </Route>
 
 );

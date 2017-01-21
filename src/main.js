@@ -9,10 +9,8 @@ import render, {
   replaceReducers,
 } from './node/redux-router';
 
-
-
 import reducers from './redux/reducers';
-console.log('from main', reducers);
+
 setupReducers(reducers);
 render(routes);
 

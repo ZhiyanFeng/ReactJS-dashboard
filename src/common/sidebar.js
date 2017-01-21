@@ -37,7 +37,6 @@ class ApplicationSidebar extends React.Component {
                                     <div className='sidebar-header'>PAGES</div>
 
                                     <SidebarNavItem glyph='icon-fontello-gauge' name='Home' href='/' />
-                                    <SidebarNavItem glyph='icon-fontello-gauge' name='Home2' href='/home2' />
                                     <SidebarNavItem href={::this.getPath('tables/datatables')} glyph='icon-fontello-th-2' name='Datatables' />
 
                                 </SidebarNav>

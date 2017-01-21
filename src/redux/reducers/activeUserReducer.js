@@ -8,8 +8,9 @@ const activeUserReducer = (state = null
             };
             break;
     }
-    console.log('active user reducer', state);
     return state;
 }
 
-export default activeUserReducer;
+module.exports = {
+    activeUserReducer,
+}

@@ -1,21 +1,7 @@
-import greetings from './greetings';
-import userReducer from "./userReducer";
+import users from "./userReducer";
+import activeUser from "./activeUserReducer";
 
 module.exports = {
-    //...greetings,
-    ...userReducer,
+    ...users,
+    ...activeUser, 
 };
-//import {combineReducers} from "redux";
-//import userReducer from "./userReducer";
-//import activeUserReducer from "./activeUserReducer";
-//
-//
-//const allReducers = combineReducers({
-//        ...greetings,
-//        users: userReducer,
-//        activeUser: activeUserReducer
-//    //form: formReducer
-//
-//})
-//
-//export default allReducers;

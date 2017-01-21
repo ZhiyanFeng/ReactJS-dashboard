@@ -54,7 +54,7 @@ require('source-map-support').install({environment: 'node'});
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _path=__webpack_require__(5);var _path2=_interopRequireDefault(_path);var _express=__webpack_require__(6);var _express2=_interopRequireDefault(_express);var _compression=__webpack_require__(7);var _compression2=_interopRequireDefault(_compression);var _cookieParser=__webpack_require__(8);var _cookieParser2=_interopRequireDefault(_cookieParser);var _expressGraphql=__webpack_require__(9);var _expressGraphql2=_interopRequireDefault(_expressGraphql);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _server=__webpack_require__(11);var _server2=_interopRequireDefault(_server);var _routes=__webpack_require__(180);var _routes2=_interopRequireDefault(_routes);var _reduxRouter=__webpack_require__(605);var _RubixAssetMiddleware=__webpack_require__(626);var _RubixAssetMiddleware2=_interopRequireDefault(_RubixAssetMiddleware);var _schema=__webpack_require__(627);var _schema2=_interopRequireDefault(_schema);var _reducers=__webpack_require__(630);var _reducers2=_interopRequireDefault(_reducers);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}(0,_reduxRouter.setupReducers)(_reducers2.default);var port=process.env.PORT||8080;var app=(0,_express2.default)();app.use((0,_compression2.default)());app.use((0,_cookieParser2.default)());app.use(_express2.default.static(_path2.default.join(process.cwd(),'public')));app.set('views',_path2.default.join(process.cwd(),'views'));app.set('view engine','pug');function renderHTML(req,res){(0,_reduxRouter.renderHTMLString)(_routes2.default,req,function(error,redirectLocation,data){if(error){if(error.message==='Not found'){res.status(404).send(error.message);}else{res.status(500).send(error.message);}}else if(redirectLocation){res.redirect(302,redirectLocation.pathname+redirectLocation.search);}else{res.render('index',{content:data.content,data:(0,_stringify2.default)(data.data).replace(/\//g,'\\/')});}});}app.use('/graphql',(0,_expressGraphql2.default)({schema:_schema2.default,pretty:true,graphiql:true}));app.get('*',(0,_RubixAssetMiddleware2.default)('ltr'),function(req,res,next){renderHTML(req,res);});app.listen(port,function(){console.log('Node.js app is running at http://localhost:'+port+'/');});;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(port,'port','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');__REACT_HOT_LOADER__.register(app,'app','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');__REACT_HOT_LOADER__.register(renderHTML,'renderHTML','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');}();;
+	'use strict';var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _path=__webpack_require__(5);var _path2=_interopRequireDefault(_path);var _express=__webpack_require__(6);var _express2=_interopRequireDefault(_express);var _compression=__webpack_require__(7);var _compression2=_interopRequireDefault(_compression);var _cookieParser=__webpack_require__(8);var _cookieParser2=_interopRequireDefault(_cookieParser);var _expressGraphql=__webpack_require__(9);var _expressGraphql2=_interopRequireDefault(_expressGraphql);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _server=__webpack_require__(11);var _server2=_interopRequireDefault(_server);var _routes=__webpack_require__(180);var _routes2=_interopRequireDefault(_routes);var _reduxRouter=__webpack_require__(611);var _RubixAssetMiddleware=__webpack_require__(631);var _RubixAssetMiddleware2=_interopRequireDefault(_RubixAssetMiddleware);var _schema=__webpack_require__(632);var _schema2=_interopRequireDefault(_schema);var _reducers=__webpack_require__(635);var _reducers2=_interopRequireDefault(_reducers);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}(0,_reduxRouter.setupReducers)(_reducers2.default);var port=process.env.PORT||8080;var app=(0,_express2.default)();app.use((0,_compression2.default)());app.use((0,_cookieParser2.default)());app.use(_express2.default.static(_path2.default.join(process.cwd(),'public')));app.set('views',_path2.default.join(process.cwd(),'views'));app.set('view engine','pug');function renderHTML(req,res){(0,_reduxRouter.renderHTMLString)(_routes2.default,req,function(error,redirectLocation,data){if(error){if(error.message==='Not found'){res.status(404).send(error.message);}else{res.status(500).send(error.message);}}else if(redirectLocation){res.redirect(302,redirectLocation.pathname+redirectLocation.search);}else{res.render('index',{content:data.content,data:(0,_stringify2.default)(data.data).replace(/\//g,'\\/')});}});}app.use('/graphql',(0,_expressGraphql2.default)({schema:_schema2.default,pretty:true,graphiql:true}));app.get('*',(0,_RubixAssetMiddleware2.default)('ltr'),function(req,res,next){renderHTML(req,res);});app.listen(port,function(){console.log('Node.js app is running at http://localhost:'+port+'/');});;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(port,'port','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');__REACT_HOT_LOADER__.register(app,'app','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');__REACT_HOT_LOADER__.register(renderHTML,'renderHTML','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');}();;
 
 /***/ },
 /* 2 */
@@ -20283,12 +20283,12 @@ require('source-map-support').install({environment: 'node'});
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRouter=__webpack_require__(259);var _rubix=__webpack_require__(260);var _sidebar=__webpack_require__(590);var _sidebar2=_interopRequireDefault(_sidebar);var _header=__webpack_require__(591);var _header2=_interopRequireDefault(_header);var _footer=__webpack_require__(592);var _footer2=_interopRequireDefault(_footer);var _Home=__webpack_require__(593);var _Home2=_interopRequireDefault(_Home);var _Home3=__webpack_require__(601);var _Home4=_interopRequireDefault(_Home3);var _Datatablesjs=__webpack_require__(602);var _Datatablesjs2=_interopRequireDefault(_Datatablesjs);var _Homepage=__webpack_require__(604);var _Homepage2=_interopRequireDefault(_Homepage);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}//import Lock from './routes/Lock';
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRouter=__webpack_require__(259);var _rubix=__webpack_require__(260);var _sidebar=__webpack_require__(590);var _sidebar2=_interopRequireDefault(_sidebar);var _header=__webpack_require__(591);var _header2=_interopRequireDefault(_header);var _footer=__webpack_require__(592);var _footer2=_interopRequireDefault(_footer);var _Home=__webpack_require__(593);var _Home2=_interopRequireDefault(_Home);var _UserEditForm=__webpack_require__(601);var _UserEditForm2=_interopRequireDefault(_UserEditForm);var _UserList=__webpack_require__(604);var _UserList2=_interopRequireDefault(_UserList);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}//import Lock from './routes/Lock';
 	//import Login from './routes/Login';
 	//import Signup from './routes/Signup';
-	/* Pages */var App=function(_React$Component){(0,_inherits3.default)(App,_React$Component);function App(){(0,_classCallCheck3.default)(this,App);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}App.prototype.render=function render(){console.log('from app',this.props);return _react2.default.createElement(_rubix.MainContainer,this.props,_react2.default.createElement(_sidebar2.default,null),_react2.default.createElement(_header2.default,null),_react2.default.createElement('div',{id:'body'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},this.props.children)))),_react2.default.createElement(_footer2.default,null));};return App;}(_react2.default.Component);/* Common Components */var routes=_react2.default.createElement(_reactRouter.Route,{component:App},_react2.default.createElement(_reactRouter.Route,{path:'/home2',component:_Home4.default}),_react2.default.createElement(_reactRouter.Route,{path:'tables/datatables',component:_Datatablesjs2.default}));/**
+	/* Common Components */var App=function(_React$Component){(0,_inherits3.default)(App,_React$Component);function App(){(0,_classCallCheck3.default)(this,App);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}App.prototype.render=function render(){return _react2.default.createElement(_rubix.MainContainer,this.props,_react2.default.createElement(_sidebar2.default,null),_react2.default.createElement(_header2.default,null),_react2.default.createElement('div',{id:'body'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},this.props.children)))),_react2.default.createElement(_footer2.default,null));};return App;}(_react2.default.Component);/* Pages */var routes=_react2.default.createElement(_reactRouter.Route,{component:App},_react2.default.createElement(_reactRouter.Route,{path:'/home',component:_Home2.default}),_react2.default.createElement(_reactRouter.Route,{path:'tables/datatables',component:_UserList2.default}),_react2.default.createElement(_reactRouter.Route,{path:'user/edit(/:id)',component:_UserEditForm2.default}));/**
 	*  * No Sidebar, Header or Footer. Only the Body is rendered.
-	    *   */var combinedRoutes=_react2.default.createElement(_reactRouter.Route,null,_react2.default.createElement(_reactRouter.Route,null,routes));var _default=_react2.default.createElement(_reactRouter.Route,null,_react2.default.createElement(_reactRouter.Route,{path:'/',component:App}),_react2.default.createElement(_reactRouter.Route,{path:'/ltr'},combinedRoutes),_react2.default.createElement(_reactRouter.Route,{path:'/rtl'},combinedRoutes));exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(App,'App','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes.js');__REACT_HOT_LOADER__.register(routes,'routes','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes.js');__REACT_HOT_LOADER__.register(combinedRoutes,'combinedRoutes','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes.js');}();;
+	    *   */var combinedRoutes=_react2.default.createElement(_reactRouter.Route,null,routes);var _default=_react2.default.createElement(_reactRouter.Route,null,_react2.default.createElement(_reactRouter.Route,{path:'/',component:App}),_react2.default.createElement(_reactRouter.Route,{path:'/ltr'},combinedRoutes),_react2.default.createElement(_reactRouter.Route,{path:'/rtl'},combinedRoutes));exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(App,'App','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes.js');__REACT_HOT_LOADER__.register(routes,'routes','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes.js');__REACT_HOT_LOADER__.register(combinedRoutes,'combinedRoutes','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes.js');}();;
 
 /***/ },
 /* 181 */
@@ -48436,7 +48436,7 @@ require('source-map-support').install({environment: 'node'});
 /* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _class,_class2;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _rubix=__webpack_require__(260);var _reactRouter=__webpack_require__(259);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var ApplicationSidebar=(0,_reactRouter.withRouter)(_class=function(_React$Component){(0,_inherits3.default)(ApplicationSidebar,_React$Component);function ApplicationSidebar(){(0,_classCallCheck3.default)(this,ApplicationSidebar);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}ApplicationSidebar.prototype.handleChange=function handleChange(e){this._nav.search(e.target.value);};ApplicationSidebar.prototype.getPath=function getPath(path){var dir=this.props.location.pathname.search('rtl')!==-1?'rtl':'ltr';path='/'+dir+'/'+path;return path;};ApplicationSidebar.prototype.render=function render(){var _this2=this;return _react2.default.createElement('div',null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(_rubix.FormControl,{type:'text',placeholder:'Search...',onChange:this.handleChange.bind(this),className:'sidebar-search',style:{border:'none',background:'none',margin:'10px 0 0 0',borderBottom:'1px solid #666',color:'white'}}),_react2.default.createElement('div',{className:'sidebar-nav-container'},_react2.default.createElement(_rubix.SidebarNav,{style:{marginBottom:0},ref:function ref(c){return _this2._nav=c;}},_react2.default.createElement('div',{className:'sidebar-header'},'PAGES'),_react2.default.createElement(_rubix.SidebarNavItem,{glyph:'icon-fontello-gauge',name:'Home',href:'/'}),_react2.default.createElement(_rubix.SidebarNavItem,{glyph:'icon-fontello-gauge',name:'Home2',href:'/home2'}),_react2.default.createElement(_rubix.SidebarNavItem,{href:this.getPath.call(this,'tables/datatables'),glyph:'icon-fontello-th-2',name:'Datatables'})))))));};return ApplicationSidebar;}(_react2.default.Component))||_class;var DummySidebar=function(_React$Component2){(0,_inherits3.default)(DummySidebar,_React$Component2);function DummySidebar(){(0,_classCallCheck3.default)(this,DummySidebar);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}DummySidebar.prototype.render=function render(){return _react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement('div',{className:'sidebar-header'},'DUMMY SIDEBAR'),_react2.default.createElement(_rubix.LoremIpsum,{query:'1p'}))));};return DummySidebar;}(_react2.default.Component);var SidebarContainer=(0,_reactRouter.withRouter)(_class2=function(_React$Component3){(0,_inherits3.default)(SidebarContainer,_React$Component3);function SidebarContainer(){(0,_classCallCheck3.default)(this,SidebarContainer);return(0,_possibleConstructorReturn3.default)(this,_React$Component3.apply(this,arguments));}SidebarContainer.prototype.render=function render(){return _react2.default.createElement('div',{id:'sidebar'},_react2.default.createElement('div',{id:'avatar'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,{className:'fg-white'},_react2.default.createElement(_rubix.Col,{xs:4,collapseRight:true},_react2.default.createElement('img',{src:'/imgs/app/avatars/avatar0.png',width:'40',height:'40'})),_react2.default.createElement(_rubix.Col,{xs:8,collapseLeft:true,id:'avatar-col'},_react2.default.createElement('div',{style:{top:23,fontSize:16,lineHeight:1,position:'relative'}},'Anna Sanchez'),_react2.default.createElement('div',null,_react2.default.createElement(_rubix.Progress,{id:'demo-progress',value:30,color:'#ffffff'}),_react2.default.createElement('a',{href:'#'},_react2.default.createElement(_rubix.Icon,{id:'demo-icon',bundle:'fontello',glyph:'lock-5'}))))))),_react2.default.createElement(_rubix.SidebarControls,null,_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'docs',sidebar:0}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'chat-1',sidebar:1}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'chart-pie-2',sidebar:2}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'th-list-2',sidebar:3}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'bell-5',sidebar:4})),_react2.default.createElement('div',{id:'sidebar-container'},_react2.default.createElement(_rubix.Sidebar,{sidebar:0},_react2.default.createElement(ApplicationSidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:1},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:2},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:3},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:4},_react2.default.createElement(DummySidebar,null))));};return SidebarContainer;}(_react2.default.Component))||_class2;exports.default=SidebarContainer;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(ApplicationSidebar,'ApplicationSidebar','/Users/zhiyan/Documents/rubix/redux/todolist/src/common/sidebar.js');__REACT_HOT_LOADER__.register(DummySidebar,'DummySidebar','/Users/zhiyan/Documents/rubix/redux/todolist/src/common/sidebar.js');__REACT_HOT_LOADER__.register(SidebarContainer,'SidebarContainer','/Users/zhiyan/Documents/rubix/redux/todolist/src/common/sidebar.js');}();;
+	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _class,_class2;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _rubix=__webpack_require__(260);var _reactRouter=__webpack_require__(259);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var ApplicationSidebar=(0,_reactRouter.withRouter)(_class=function(_React$Component){(0,_inherits3.default)(ApplicationSidebar,_React$Component);function ApplicationSidebar(){(0,_classCallCheck3.default)(this,ApplicationSidebar);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}ApplicationSidebar.prototype.handleChange=function handleChange(e){this._nav.search(e.target.value);};ApplicationSidebar.prototype.getPath=function getPath(path){var dir=this.props.location.pathname.search('rtl')!==-1?'rtl':'ltr';path='/'+dir+'/'+path;return path;};ApplicationSidebar.prototype.render=function render(){var _this2=this;return _react2.default.createElement('div',null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(_rubix.FormControl,{type:'text',placeholder:'Search...',onChange:this.handleChange.bind(this),className:'sidebar-search',style:{border:'none',background:'none',margin:'10px 0 0 0',borderBottom:'1px solid #666',color:'white'}}),_react2.default.createElement('div',{className:'sidebar-nav-container'},_react2.default.createElement(_rubix.SidebarNav,{style:{marginBottom:0},ref:function ref(c){return _this2._nav=c;}},_react2.default.createElement('div',{className:'sidebar-header'},'PAGES'),_react2.default.createElement(_rubix.SidebarNavItem,{glyph:'icon-fontello-gauge',name:'Home',href:'/'}),_react2.default.createElement(_rubix.SidebarNavItem,{href:this.getPath.call(this,'tables/datatables'),glyph:'icon-fontello-th-2',name:'Datatables'})))))));};return ApplicationSidebar;}(_react2.default.Component))||_class;var DummySidebar=function(_React$Component2){(0,_inherits3.default)(DummySidebar,_React$Component2);function DummySidebar(){(0,_classCallCheck3.default)(this,DummySidebar);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}DummySidebar.prototype.render=function render(){return _react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement('div',{className:'sidebar-header'},'DUMMY SIDEBAR'),_react2.default.createElement(_rubix.LoremIpsum,{query:'1p'}))));};return DummySidebar;}(_react2.default.Component);var SidebarContainer=(0,_reactRouter.withRouter)(_class2=function(_React$Component3){(0,_inherits3.default)(SidebarContainer,_React$Component3);function SidebarContainer(){(0,_classCallCheck3.default)(this,SidebarContainer);return(0,_possibleConstructorReturn3.default)(this,_React$Component3.apply(this,arguments));}SidebarContainer.prototype.render=function render(){return _react2.default.createElement('div',{id:'sidebar'},_react2.default.createElement('div',{id:'avatar'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,{className:'fg-white'},_react2.default.createElement(_rubix.Col,{xs:4,collapseRight:true},_react2.default.createElement('img',{src:'/imgs/app/avatars/avatar0.png',width:'40',height:'40'})),_react2.default.createElement(_rubix.Col,{xs:8,collapseLeft:true,id:'avatar-col'},_react2.default.createElement('div',{style:{top:23,fontSize:16,lineHeight:1,position:'relative'}},'Anna Sanchez'),_react2.default.createElement('div',null,_react2.default.createElement(_rubix.Progress,{id:'demo-progress',value:30,color:'#ffffff'}),_react2.default.createElement('a',{href:'#'},_react2.default.createElement(_rubix.Icon,{id:'demo-icon',bundle:'fontello',glyph:'lock-5'}))))))),_react2.default.createElement(_rubix.SidebarControls,null,_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'docs',sidebar:0}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'chat-1',sidebar:1}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'chart-pie-2',sidebar:2}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'th-list-2',sidebar:3}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'bell-5',sidebar:4})),_react2.default.createElement('div',{id:'sidebar-container'},_react2.default.createElement(_rubix.Sidebar,{sidebar:0},_react2.default.createElement(ApplicationSidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:1},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:2},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:3},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:4},_react2.default.createElement(DummySidebar,null))));};return SidebarContainer;}(_react2.default.Component))||_class2;exports.default=SidebarContainer;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(ApplicationSidebar,'ApplicationSidebar','/Users/zhiyan/Documents/rubix/redux/todolist/src/common/sidebar.js');__REACT_HOT_LOADER__.register(DummySidebar,'DummySidebar','/Users/zhiyan/Documents/rubix/redux/todolist/src/common/sidebar.js');__REACT_HOT_LOADER__.register(SidebarContainer,'SidebarContainer','/Users/zhiyan/Documents/rubix/redux/todolist/src/common/sidebar.js');}();;
 
 /***/ },
 /* 591 */
@@ -48511,29 +48511,75 @@ require('source-map-support').install({environment: 'node'});
 /* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _dec,_class;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(594);var _actions=__webpack_require__(595);var _actions2=_interopRequireDefault(_actions);var _rubix=__webpack_require__(260);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Home=(_dec=(0,_reactRedux.connect)(function(state){return state;}),_dec(_class=function(_React$Component){(0,_inherits3.default)(Home,_React$Component);function Home(){(0,_classCallCheck3.default)(this,Home);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}Home.fetchData=function fetchData(store){return store.dispatch(_actions2.default.getGreeting('Greetings from Rubix :)'));};Home.prototype.render=function render(){return _react2.default.createElement(_rubix.PanelContainer,null,_react2.default.createElement(_rubix.Panel,null,_react2.default.createElement(_rubix.PanelBody,null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement('p',null,this.props.greetings.hello)))))));};return Home;}(_react2.default.Component))||_class);exports.default=Home;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(Home,'Home','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Home2.js');}();;
+	'use strict';exports.__esModule=true;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactBootstrap=__webpack_require__(602);var _reduxForm=__webpack_require__(603);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserEdit=function(_React$Component){(0,_inherits3.default)(UserEdit,_React$Component);function UserEdit(props){(0,_classCallCheck3.default)(this,UserEdit);return(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));//this.form_type = (props.initalValues.id > 0) ? 'edit' : 'add';
+	}UserEdit.prototype.render=function render(){return _react2.default.createElement('div',null,_react2.default.createElement(_reactBootstrap.PageHeader,null,'User Edit'),_react2.default.createElement(_reactBootstrap.Form,{horizontal:true},_react2.default.createElement(_reduxForm.Field,{name:'firstname',component:UserEdit.renderFirstName}),_react2.default.createElement(_reduxForm.Field,{name:'phone',component:UserEdit.renderPhone}),_react2.default.createElement(_reactBootstrap.FormGroup,null,_react2.default.createElement(_reactBootstrap.Col,{smOffset:2,sm:8},_react2.default.createElement(_reactBootstrap.Button,{type:'submit'},'Save')))));};UserEdit.renderFirstName=function renderFirstName(props){return _react2.default.createElement(_reactBootstrap.FormGroup,null,_react2.default.createElement(_reactBootstrap.Col,{sm:2},' First Name'),_react2.default.createElement(_reactBootstrap.Col,{sm:8},_react2.default.createElement(_reactBootstrap.FormControl,(0,_extends3.default)({},props.input,{id:'firstname',type:'text',placeholder:'First Name'}))));};UserEdit.renderPhone=function renderPhone(props){return _react2.default.createElement(_reactBootstrap.FormGroup,null,_react2.default.createElement(_reactBootstrap.Col,{sm:2},'Phone Number'),_react2.default.createElement(_reactBootstrap.Col,{sm:8},_react2.default.createElement(_reactBootstrap.FormControl,(0,_extends3.default)({},props.input,{id:'phone',type:'text',placeholder:'Phone Number'}))));};return UserEdit;}(_react2.default.Component);//decorate the form component
+	UserEdit=(0,_reduxForm.reduxForm)({form:'user-edit'})(UserEdit);function mapStateToProps(state,own_props){var form_data={firstname:"",phone:""};for(var index in state.userReducer.users){if(state.userReducer.users[index].id===Number(own_props.params.id)){form_data.firstname=state.userReducer.users[index].first_name;form_data.phone=state.userReducer.users[index].phone_number;break;}}return{initialValues:form_data};}var _default=(0,_reactRedux.connect)(mapStateToProps)(UserEdit);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(UserEdit,'UserEdit','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserEditForm.js');__REACT_HOT_LOADER__.register(mapStateToProps,'mapStateToProps','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserEditForm.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserEditForm.js');}();;
 
 /***/ },
 /* 602 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
-	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _dec,_class;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(594);var _reactDom=__webpack_require__(275);var _reactDom2=_interopRequireDefault(_reactDom);var _lodash=__webpack_require__(603);var _lodash2=_interopRequireDefault(_lodash);var _rubix=__webpack_require__(260);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var DatatableComponent=function(_React$Component){(0,_inherits3.default)(DatatableComponent,_React$Component);function DatatableComponent(props){(0,_classCallCheck3.default)(this,DatatableComponent);return(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));}DatatableComponent.prototype.componentDidMount=function componentDidMount(){$(_reactDom2.default.findDOMNode(this.example)).addClass('nowrap').dataTable({responsive:true,columnDefs:[//{ targets: [-1, -3], className: 'dt-body-right' }
-	]});};DatatableComponent.prototype.render=function render(){var _this2=this;var rows=_lodash2.default.map(this.props.userReducer.users,function(user){return _react2.default.createElement('tr',{onClick:function onClick(){return _this2.props.selectUser(user);},key:user.id},_react2.default.createElement('td',null,user.id),_react2.default.createElement('td',null,user.first_name),_react2.default.createElement('td',null,user.last_name),_react2.default.createElement('td',null,user.phone_number),_react2.default.createElement('td',null));});return _react2.default.createElement(_rubix.Table,{ref:function ref(c){return _this2.example=c;},className:'display',cellSpacing:'0',width:'100%'},_react2.default.createElement('thead',null,_react2.default.createElement('tr',null,_react2.default.createElement('th',null,'Id'),_react2.default.createElement('th',null,'First Name'),_react2.default.createElement('th',null,'Last Name'),_react2.default.createElement('th',null,'Phone Number'))),_react2.default.createElement('tfoot',null,_react2.default.createElement('tr',null,_react2.default.createElement('th',null,'Id'),_react2.default.createElement('th',null,'First Name'),_react2.default.createElement('th',null,'Last Name'),_react2.default.createElement('th',null,'Phone Number'))),_react2.default.createElement('tbody',null,rows));};return DatatableComponent;}(_react2.default.Component);var Datatablesjs=(_dec=(0,_reactRedux.connect)(function(state){return state;}),_dec(_class=function(_React$Component2){(0,_inherits3.default)(Datatablesjs,_React$Component2);function Datatablesjs(){(0,_classCallCheck3.default)(this,Datatablesjs);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}Datatablesjs.prototype.render=function render(){console.log('store from tabel class',this.props);return _react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(_rubix.PanelContainer,null,_react2.default.createElement(_rubix.Panel,null,_react2.default.createElement(_rubix.PanelBody,null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(DatatableComponent,this.props),_react2.default.createElement('br',null)))))))));};return Datatablesjs;}(_react2.default.Component))||_class);exports.default=Datatablesjs;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(DatatableComponent,'DatatableComponent','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Datatablesjs.js');__REACT_HOT_LOADER__.register(Datatablesjs,'Datatablesjs','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Datatablesjs.js');}();;
+	module.exports = require("react-bootstrap");
 
 /***/ },
 /* 603 */
 /***/ function(module, exports) {
 
-	module.exports = require("lodash");
+	module.exports = require("redux-form");
 
 /***/ },
 /* 604 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;exports.default=undefined;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _class;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRouter=__webpack_require__(259);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _rubix=__webpack_require__(260);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Hero=function(_React$Component){(0,_inherits3.default)(Hero,_React$Component);function Hero(){(0,_classCallCheck3.default)(this,Hero);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}Hero.prototype.render=function render(){return _react2.default.createElement('div',(0,_extends3.default)({},this.props,{className:(0,_classnames2.default)(this.props.className,'homepage-hero')}),_react2.default.createElement(_rubix.Grid,{fixed:true},this.props.children));};return Hero;}(_react2.default.Component);var HeroHeader=function(_React$Component2){(0,_inherits3.default)(HeroHeader,_React$Component2);function HeroHeader(){(0,_classCallCheck3.default)(this,HeroHeader);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}HeroHeader.prototype.render=function render(){return _react2.default.createElement('div',(0,_extends3.default)({},this.props,{className:(0,_classnames2.default)(this.props.className,'homepage-hero-header')}),this.props.children);};return HeroHeader;}(_react2.default.Component);var HeroHeader2=function(_React$Component3){(0,_inherits3.default)(HeroHeader2,_React$Component3);function HeroHeader2(){(0,_classCallCheck3.default)(this,HeroHeader2);return(0,_possibleConstructorReturn3.default)(this,_React$Component3.apply(this,arguments));}HeroHeader2.prototype.render=function render(){return _react2.default.createElement('div',(0,_extends3.default)({},this.props,{className:(0,_classnames2.default)(this.props.className,'homepage-hero-header2')}),this.props.children);};return HeroHeader2;}(_react2.default.Component);var Homepage=(0,_reactRouter.withRouter)(_class=function(_React$Component4){(0,_inherits3.default)(Homepage,_React$Component4);function Homepage(){(0,_classCallCheck3.default)(this,Homepage);return(0,_possibleConstructorReturn3.default)(this,_React$Component4.apply(this,arguments));}Homepage.prototype.handleNavigation=function handleNavigation(){this.props.router.push('/ltr/dashboard');};Homepage.prototype.render=function render(){return _react2.default.createElement('div',{id:'homepage-container'},_react2.default.createElement(_rubix.Button,{bsStyle:'deepred',id:'demo-btn',onClick:this.handleNavigation.bind(this)},'View Demo'),_react2.default.createElement('div',null,_react2.default.createElement(Hero,{className:'text-center hidden-xs',style:{height:475,backgroundImage:'url(/imgs/app/homepage/background.png)',backgroundRepeat:'no-repeat',backgroundSize:'cover',overflow:'hidden'}},_react2.default.createElement('img',{src:'/imgs/app/homepage/simplepowerful.png',style:{marginTop:5}})),_react2.default.createElement(Hero,{className:'text-center visible-xs',style:{height:270,backgroundImage:'url(/imgs/app/homepage/background.png)',backgroundRepeat:'no-repeat',backgroundSize:'cover',overflow:'hidden'}},_react2.default.createElement('img',{width:'270',className:'visible-xs',src:'/imgs/app/homepage/simplepowerful.png',style:{margin:'auto',marginTop:30}}))),_react2.default.createElement(Hero,null,_react2.default.createElement(HeroHeader,null,_react2.default.createElement('span',null,"Don't wait for Web Components "),_react2.default.createElement('sup',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'NEW!'))),_react2.default.createElement(HeroHeader2,null,"Embrace React ",_react2.default.createElement('sup',null,_react2.default.createElement('small',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'v15.3.1')))),_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{sm:7,collapseLeft:true,collapseRight:true},_react2.default.createElement('p',{style:{marginTop:60}},'Rubix is built on top of React which uses a Virtual DOM implementation for ultra-high performance and semantic markup coupled with CommonJS for composable Components.'),_react2.default.createElement('p',null,'The result: ',_react2.default.createElement('strong',null,'clean and elegant code.'))),_react2.default.createElement(_rubix.Col,{sm:5,collapseLeft:true,collapseRight:true},_react2.default.createElement('div',{className:'hidden-xs text-right'},_react2.default.createElement('img',{src:'/imgs/app/homepage/reactcode.png'})),_react2.default.createElement('div',{className:'visible-xs text-center'},_react2.default.createElement('img',{width:'250',src:'/imgs/app/homepage/reactcode.png'})))))),_react2.default.createElement(Hero,null,_react2.default.createElement(HeroHeader2,null,_react2.default.createElement('span',null,"Bootstrap on Steroids "),_react2.default.createElement('sup',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'NEW!'))),_react2.default.createElement('div',{className:'text-center',style:{marginTop:25,marginBottom:25}},_react2.default.createElement('div',{className:'hidden-xs'},_react2.default.createElement('img',{src:'/imgs/app/homepage/bootstrapreact.png'})),_react2.default.createElement('div',{className:'visible-xs'},_react2.default.createElement('img',{width:'250',src:'/imgs/app/homepage/bootstrapreact.png'}))),_react2.default.createElement('p',{className:'text-center'},'Rubix implements custom React Components on top of the popular react-bootstrap project enabling you to write shorter, semantic markup. Say Goodbye to unwieldy classnames and spaghetti code!')),_react2.default.createElement(Hero,{style:{position:'relative',zIndex:2}},_react2.default.createElement(HeroHeader,null,_react2.default.createElement('span',null,"Multiple Language + Framework Integrations "),_react2.default.createElement('sup',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'NEW!'))),_react2.default.createElement('div',{className:'text-center visible-xs',style:{marginTop:50,marginBottom:50}},_react2.default.createElement('img',{width:'100%',src:'/imgs/app/homepage/rubix-implementations.png'})),_react2.default.createElement('p',{className:'text-center',style:{marginTop:25}},"Rubix comes integrated with starter kits for various backends including:",' ',_react2.default.createElement('strong',null,_react2.default.createElement('em',null,_react2.default.createElement('small',null,'NodeJS'))),', ',_react2.default.createElement('strong',null,_react2.default.createElement('em',null,_react2.default.createElement('small',null,'Redux + GraphQL'))),', ',_react2.default.createElement('strong',null,_react2.default.createElement('em',null,_react2.default.createElement('small',null,'Relay + GraphQL'))),', ',_react2.default.createElement('strong',null,_react2.default.createElement('em',null,_react2.default.createElement('small',null,'Ruby on Rails'))),', ',_react2.default.createElement('strong',null,_react2.default.createElement('em',null,_react2.default.createElement('small',null,'Laravel'))),' and ',_react2.default.createElement('strong',null,_react2.default.createElement('em',null,_react2.default.createElement('small',null,'Meteor'))),'.'),_react2.default.createElement('p',{className:'text-center hidden-xs'},_react2.default.createElement('small',null,_react2.default.createElement('em',null,'The complete list of features for each integration is detailed below:'))),_react2.default.createElement('hr',{className:'hidden-xs'}),_react2.default.createElement('div',{className:'text-center hidden-xs'},_react2.default.createElement(_rubix.Tab.Container,{id:'integration-description',defaultActiveKey:'redux'},_react2.default.createElement(_rubix.Row,{className:'clearfix'},_react2.default.createElement(_rubix.Col,{sm:12},_react2.default.createElement(_rubix.Nav,{bsStyle:'pills'},_react2.default.createElement(_rubix.NavItem,{eventKey:'redux'},_react2.default.createElement('img',{src:'/imgs/app/homepage/redux.png',alt:'redux'})),_react2.default.createElement(_rubix.NavItem,{eventKey:'relay'},_react2.default.createElement('img',{src:'/imgs/app/homepage/relay.png',alt:'relay'})),_react2.default.createElement(_rubix.NavItem,{eventKey:'graphql'},_react2.default.createElement('img',{src:'/imgs/app/homepage/graphql.png',alt:'graphql'})),_react2.default.createElement(_rubix.NavItem,{eventKey:'laravel'},_react2.default.createElement('img',{src:'/imgs/app/homepage/laravel.png',alt:'laravel'})),_react2.default.createElement(_rubix.NavItem,{eventKey:'rails'},_react2.default.createElement('img',{src:'/imgs/app/homepage/rails.png',alt:'rails'})),_react2.default.createElement(_rubix.NavItem,{eventKey:'meteor'},_react2.default.createElement('img',{src:'/imgs/app/homepage/meteor.png',alt:'meteor'})),_react2.default.createElement(_rubix.NavItem,{eventKey:'nodejs'},_react2.default.createElement('img',{src:'/imgs/app/homepage/nodejs.png',alt:'nodejs'}))),_react2.default.createElement(_rubix.Tab.Content,{animation:false},_react2.default.createElement(_rubix.Tab.Pane,{eventKey:'redux'},_react2.default.createElement('ul',null,_react2.default.createElement('li',null,'Integrated with ',_react2.default.createElement('strong',null,'GraphQL'),'.'),_react2.default.createElement('li',null,'Integrates with ',_react2.default.createElement('strong',null,'Chrome Redux DevTools'),'.'),_react2.default.createElement('li',null,'Provides a ',_react2.default.createElement('strong',null,'GraphiQL in-browser IDE'),' for interactively exploring GraphQL schemas.'),_react2.default.createElement('li',null,'Integrated with ',_react2.default.createElement('strong',null,'redux'),', ',_react2.default.createElement('strong',null,'redux-fetch-data'),', ',_react2.default.createElement('strong',null,'react-router'),' and ',_react2.default.createElement('strong',null,'react-router-redux'),'.'),_react2.default.createElement('li',null,_react2.default.createElement('strong',null,'Isomorphic/Universal:'),' Server-side rendering enabled.'),_react2.default.createElement('li',null,'An example ',_react2.default.createElement('strong',null,'Todo List'),' app demonstrating the complete integration. Includes a tutorial which re-creates the entire example app.'),_react2.default.createElement('li',null,'Deployment guides for ',_react2.default.createElement('strong',null,'Heroku + mLab'),' and ',_react2.default.createElement('strong',null,'DigitalOcean'),'.'))),_react2.default.createElement(_rubix.Tab.Pane,{eventKey:'relay'},_react2.default.createElement('ul',null,_react2.default.createElement('li',null,'Integrated with ',_react2.default.createElement('strong',null,'GraphQL'),'.'),_react2.default.createElement('li',null,'Provides a ',_react2.default.createElement('strong',null,'GraphiQL in-browser IDE'),' for interactively exploring GraphQL schemas.'),_react2.default.createElement('li',null,'Integrated with ',_react2.default.createElement('strong',null,'isomorphic-relay'),', ',_react2.default.createElement('strong',null,'isomorphic-relay-router'),', ',_react2.default.createElement('strong',null,'react-relay'),' and ',_react2.default.createElement('strong',null,'react-router'),'.'),_react2.default.createElement('li',null,_react2.default.createElement('strong',null,'Isomorphic/Universal:'),' Server-side rendering enabled.'),_react2.default.createElement('li',null,'An example ',_react2.default.createElement('strong',null,'Todo List'),' app demonstrating the complete integration. Includes a tutorial which re-creates the entire example app.'),_react2.default.createElement('li',null,'Deployment guides for ',_react2.default.createElement('strong',null,'Heroku + mLab'),' and ',_react2.default.createElement('strong',null,'DigitalOcean'),'.'))),_react2.default.createElement(_rubix.Tab.Pane,{eventKey:'graphql'},_react2.default.createElement('ul',null,_react2.default.createElement('li',null,'Integrates with both ',_react2.default.createElement('strong',null,'Relay'),' and ',_react2.default.createElement('strong',null,'Redux'),'.'),_react2.default.createElement('li',null,'Includes a ',_react2.default.createElement('strong',null,'GraphiQL in-browser IDE'),' for interactively exploring GraphQL schemas.'))),_react2.default.createElement(_rubix.Tab.Pane,{eventKey:'laravel'},_react2.default.createElement('ul',null,_react2.default.createElement('li',null,'Integrates with ',_react2.default.createElement('strong',null,'Laravel 5.1 LTS'),'.'),_react2.default.createElement('li',null,'Managed using ',_react2.default.createElement('strong',null,'Homestead'),' to provide same virtual environment for all platforms.'),_react2.default.createElement('li',null,_react2.default.createElement('strong',null,'Isomorphic/Universal:'),' Server-side rendering enabled. Makes use of ',_react2.default.createElement('strong',null,_react2.default.createElement('em',null,'react-php-v8js')),' for compiling React components server-side.'),_react2.default.createElement('li',null,'An example ',_react2.default.createElement('strong',null,'Todo List'),' app demonstrating the complete integration. Includes a tutorial which re-creates the entire example app.'),_react2.default.createElement('li',null,'Complete Deployment guide for pushing the entire app to ',_react2.default.createElement('strong',null,'Forge'),'.'))),_react2.default.createElement(_rubix.Tab.Pane,{eventKey:'rails'},_react2.default.createElement('ul',null,_react2.default.createElement('li',null,'Integrates with ',_react2.default.createElement('strong',null,'Rails 5'),'.'),_react2.default.createElement('li',null,_react2.default.createElement('strong',null,'Isomorphic/Universal:'),' Server-side rendering enabled.'),_react2.default.createElement('li',null,'An example ',_react2.default.createElement('strong',null,'Todo List'),' app demonstrating the complete integration. Includes a tutorial which re-creates the entire example app.'),_react2.default.createElement('li',null,'Deployment guides for ',_react2.default.createElement('strong',null,'Heroku'),'.'))),_react2.default.createElement(_rubix.Tab.Pane,{eventKey:'meteor'},_react2.default.createElement('ul',null,_react2.default.createElement('li',null,'Integrates with ',_react2.default.createElement('strong',null,'Meteor 1.4'),'.'),_react2.default.createElement('li',null,_react2.default.createElement('strong',null,'Isomorphic/Universal:'),' Server-side rendering enabled.'),_react2.default.createElement('li',null,'An example ',_react2.default.createElement('strong',null,'Todo List'),' app demonstrating the complete integration. Includes a tutorial which re-creates the entire example app.'),_react2.default.createElement('li',null,'Deployment guides for ',_react2.default.createElement('strong',null,'Galaxy + mLab'),'.'))),_react2.default.createElement(_rubix.Tab.Pane,{eventKey:'nodejs'},_react2.default.createElement('ul',null,_react2.default.createElement('li',null,_react2.default.createElement('strong',null,'Isomorphic/Universal:'),' Server-side rendering enabled.'),_react2.default.createElement('li',null,'Ability to create ',_react2.default.createElement('strong',null,'distributables'),' for integrations not provided.'))))))))),_react2.default.createElement(Hero,{style:{position:'relative',zIndex:2}},_react2.default.createElement(HeroHeader,null,_react2.default.createElement('span',null,"The Asset Pipeline "),_react2.default.createElement('sup',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'NEW!'))),_react2.default.createElement(HeroHeader2,null,"NPM, Webpack and Go!"),_react2.default.createElement('div',{className:'text-center',style:{marginTop:25,marginBottom:25}},_react2.default.createElement('div',{className:'hidden-xs'},_react2.default.createElement('img',{src:'/imgs/app/homepage/assetpipeline.png'})),_react2.default.createElement('div',{className:'visible-xs'},_react2.default.createElement('img',{width:'250',src:'/imgs/app/homepage/assetpipeline.png'}))),_react2.default.createElement('p',{className:'text-center'},"The new architecture in Rubix 4.0, removes the complexity of previous versions and implements a better and simpler asset pipeline using NPM scripts. It uses Webpack to transpile React code, compile SASS files, compile fonts and even provide RTL support by flipping stylesheets."),_react2.default.createElement('p',{className:'text-center'},"Rubix uses Babel for Javascript transformations. It ships with a set of ES6/ES7 syntax transformers. These allow you to use new ES6/ES7 syntax, right now, without waiting for browser support.")),_react2.default.createElement(Hero,{style:{position:'relative',zIndex:2}},_react2.default.createElement(HeroHeader,null,_react2.default.createElement('span',null,"Modular and Distributable "),_react2.default.createElement('sup',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'NEW!'))),_react2.default.createElement('div',{className:'text-center',style:{marginTop:50,marginBottom:50}},_react2.default.createElement('div',{className:'logo-container',id:'npm-logo'},_react2.default.createElement('svg',{viewBox:'0 0 18 7',style:{width:200}},_react2.default.createElement('path',{fill:'#CB3837',d:'M0,0v6h5v1h4v-1h9v-6'}),_react2.default.createElement('path',{fill:'#FFF',d:'M1,1v4h2v-3h1v3h1v-4h1v5h2v-4h1v2h-1v1h2v-4h1v4h2v-3h1v3h1v-3h1v3h1v-4'})))),_react2.default.createElement('p',{className:'text-center',style:{marginTop:25}},'Already have a ',_react2.default.createElement('strong',null,'existing React project'),' and not willing to make the transition to our starter-kits? No worries! We are now providing Rubix as a module which you can ',_react2.default.createElement('strong',null,'directly import'),' into your existing projects.'),_react2.default.createElement('p',{className:'text-center',style:{marginTop:25}},'Rubix 4.0 allows you to create static sites using a feature called ',_react2.default.createElement('strong',null,'distributables'),'. These distributables can be deployed directly to any static server (e.g. Apache2 / Nginx etc).')),_react2.default.createElement(Hero,null,_react2.default.createElement(HeroHeader2,null,"Rubix Charts"),_react2.default.createElement('div',{className:'text-center',style:{marginTop:25,marginBottom:25}},_react2.default.createElement('div',{className:'hidden-xs'},_react2.default.createElement('img',{src:'/imgs/app/homepage/rubixcharts.png'})),_react2.default.createElement('div',{className:'visible-xs'},_react2.default.createElement('img',{width:'250',src:'/imgs/app/homepage/rubixcharts.png'}))),_react2.default.createElement('p',{className:'text-center'},'Rubix Charts is an aesthetically beautiful, hand-crafted charting library created exclusively for Rubix Admin app. We used the awesome D3.JS library to write all the charting components (Line, Area, Stacked, Bar, Column, Pie and Donut) that power Rubix Charts.')),_react2.default.createElement(Hero,null,_react2.default.createElement(HeroHeader,null,"Internationalization and Localization"),_react2.default.createElement(HeroHeader2,null,"Mozilla L20n.js"),_react2.default.createElement('div',{className:'text-center',style:{marginTop:25,marginBottom:25}},_react2.default.createElement('div',{className:'hidden-xs'},_react2.default.createElement('img',{src:'/imgs/app/homepage/mozflags.png'})),_react2.default.createElement('div',{className:'visible-xs'},_react2.default.createElement('img',{width:'250',src:'/imgs/app/homepage/mozflags.png'}))),_react2.default.createElement('p',{className:'text-center'},"Mozilla L20n is a developer friendly framework that places languages in the localizer's hand to create better translations. "),_react2.default.createElement('p',{className:'text-center'},"It removes the need for developers to thoroughly understand the specifics of a natural language and provides an opportunity for localizers to create better translations. Rubix ships with custom React component bindings for the framework.")),_react2.default.createElement(Hero,{style:{position:'relative',zIndex:2}},_react2.default.createElement(HeroHeader,null,_react2.default.createElement('span',null,"Universal Javascript "),_react2.default.createElement('sup',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'NEW!'))),_react2.default.createElement(HeroHeader2,null,"Render client code on the server!"),_react2.default.createElement('div',{className:'text-center',style:{marginTop:25,marginBottom:25}},_react2.default.createElement('div',{className:'hidden-xs'},_react2.default.createElement('img',{src:'/imgs/app/homepage/isomorphic.png'})),_react2.default.createElement('div',{className:'visible-xs'},_react2.default.createElement('img',{width:'250',src:'/imgs/app/homepage/isomorphic.png'}))),_react2.default.createElement('p',{className:'text-center'},"Rubix uses React-Router to provide routing client side and reuses the same routing logic for rendering compiled HTML from the server making your app SEO friendly.")),_react2.default.createElement(Hero,null,_react2.default.createElement(HeroHeader,null,"Create complex layouts easily"),_react2.default.createElement(HeroHeader2,null,"Panels"),_react2.default.createElement('div',{className:'text-center',style:{marginTop:25,marginBottom:25}},_react2.default.createElement('div',{className:'hidden-xs'},_react2.default.createElement('img',{src:'/imgs/app/homepage/panels.png'})),_react2.default.createElement('div',{className:'visible-xs'},_react2.default.createElement('img',{width:'250',src:'/imgs/app/homepage/panels.png'}))),_react2.default.createElement('p',{className:'text-center'},"Rubix Panels empowers developers to create complex layouts in addition to the awesome Grid provided by Twitter Bootstrap. Pretty much every example page showcased in the demo makes use of Panels for layout.")),_react2.default.createElement(Hero,{style:{position:'relative',zIndex:2}},_react2.default.createElement(HeroHeader,null,_react2.default.createElement('span',null,"React Hot Loader v3.0 "),_react2.default.createElement('sup',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'NEW!'))),_react2.default.createElement(HeroHeader2,null,"Time-saving synchronised browser testing!"),_react2.default.createElement('div',{className:'text-center',style:{marginTop:25,marginBottom:25}},_react2.default.createElement('video',{loop:true,autoPlay:true,width:'100%'},_react2.default.createElement('source',{src:'/video/app/homepage/livereload.mp4',type:'video/mp4'}),_react2.default.createElement('source',{src:'/video/app/homepage/livereload.ogv',type:'video/ogg'}),'Your browser does not support the video tag.')),_react2.default.createElement('p',{className:'text-center'},"When you’re making responsive websites, there’s a lot of tweaking and testing to do. React Hot Loader makes your workflow faster by ",_react2.default.createElement('strong',null,'hot-reloading code as soon as a change is made.')," Hot reloading is enabled for SASS files, Image files, Locale files and WebFonts.")),_react2.default.createElement(Hero,{style:{position:'relative',zIndex:2}},_react2.default.createElement(HeroHeader,null,_react2.default.createElement('span',null,"Advanced Theming and Customizations "),_react2.default.createElement('sup',null,_react2.default.createElement(_rubix.Label,{className:'bg-deepred fg-white'},'NEW!'))),_react2.default.createElement(HeroHeader2,null,_react2.default.createElement('small',null,'Using SASS mixins!')),_react2.default.createElement('div',{className:'text-center',style:{marginTop:25,marginBottom:25}},_react2.default.createElement('div',{className:'hidden-xs'},_react2.default.createElement('img',{src:'/imgs/app/homepage/themes.png'})),_react2.default.createElement('div',{className:'visible-xs'},_react2.default.createElement('img',{width:'250',src:'/imgs/app/homepage/themes.png'}))),_react2.default.createElement('p',{className:'text-center'},"We provide SASS mixins to customize individual UI elements or even the entire theme!")),_react2.default.createElement('div',null,_react2.default.createElement(Hero,{className:'text-center',style:{height:215,backgroundImage:'url(/imgs/app/homepage/background.png)',backgroundRepeat:'no-repeat',backgroundSize:'cover',overflow:'hidden',backgroundPosition:'0% 100%'}},_react2.default.createElement('h1',{className:'fg-white',style:{marginTop:0,marginBottom:25,fontWeight:100}},'So what are you waiting for?'),_react2.default.createElement(_rubix.Button,{lg:true,outlined:true,inverse:true,retainBackground:true,bsStyle:'red',onClick:this.handleNavigation.bind(this)},'Click here to View Demo'))));};return Homepage;}(_react2.default.Component))||_class;exports.default=Homepage;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(Hero,'Hero','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Homepage.js');__REACT_HOT_LOADER__.register(HeroHeader,'HeroHeader','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Homepage.js');__REACT_HOT_LOADER__.register(HeroHeader2,'HeroHeader2','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Homepage.js');__REACT_HOT_LOADER__.register(Homepage,'Homepage','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Homepage.js');}();;
+	'use strict';exports.__esModule=true;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(594);var _redux=__webpack_require__(605);var _reactDom=__webpack_require__(275);var _reactDom2=_interopRequireDefault(_reactDom);var _lodash=__webpack_require__(606);var _lodash2=_interopRequireDefault(_lodash);var _rubix=__webpack_require__(260);var _selectUser=__webpack_require__(607);var _modalDeleteUser=__webpack_require__(608);var _UserDelete=__webpack_require__(609);var _UserDelete2=_interopRequireDefault(_UserDelete);var _UserListElement=__webpack_require__(610);var _UserListElement2=_interopRequireDefault(_UserListElement);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var DatatableComponent=function(_React$Component){(0,_inherits3.default)(DatatableComponent,_React$Component);function DatatableComponent(){(0,_classCallCheck3.default)(this,DatatableComponent);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}DatatableComponent.prototype.componentDidMount=function componentDidMount(){$(_reactDom2.default.findDOMNode(this.example)).addClass('nowrap').dataTable({responsive:true,columnDefs:[{targets:[-1,-3],className:'dt-body-left'}]});};DatatableComponent.prototype.render=function render(){var _this2=this;return _react2.default.createElement('div',null,_react2.default.createElement(_rubix.Table,{ref:function ref(c){return _this2.example=c;},className:'display',cellSpacing:'0',width:'100%'},_react2.default.createElement('thead',null,_react2.default.createElement('tr',null,_react2.default.createElement('th',null,'Id'),_react2.default.createElement('th',null,'First Name'),_react2.default.createElement('th',null,'Last Name'),_react2.default.createElement('th',null,'Phone Number'),_react2.default.createElement('th',null,'Edit'),_react2.default.createElement('th',null,'Delete'))),_react2.default.createElement('tbody',null,this.props.users.map(function(user,index){return _react2.default.createElement(_UserListElement2.default,{key:user.id,user:user});})),_react2.default.createElement('tfoot',null,_react2.default.createElement('tr',null,_react2.default.createElement('th',null,'Id'),_react2.default.createElement('th',null,'First Name'),_react2.default.createElement('th',null,'Last Name'),_react2.default.createElement('th',null,'Phone Number'),_react2.default.createElement('th',null,'Edit'),_react2.default.createElement('th',null,'Delete')))),_react2.default.createElement(_UserDelete2.default,null));};return DatatableComponent;}(_react2.default.Component);//@connect((state) => state.userReducer)
+	var UserList=function(_React$Component2){(0,_inherits3.default)(UserList,_React$Component2);function UserList(){(0,_classCallCheck3.default)(this,UserList);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}UserList.prototype.render=function render(){return _react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(_rubix.PanelContainer,null,_react2.default.createElement(_rubix.Panel,null,_react2.default.createElement(_rubix.PanelBody,null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(DatatableComponent,this.props),_react2.default.createElement('br',null)))))))));};return UserList;}(_react2.default.Component);var mapStateToProps=function mapStateToProps(state){return{users:state.userReducer.users};};//const mapDispatchToProps = (dispatch) => {
+	//    return bindActionCreators({
+	//        selectUser: SelectUser, 
+	//        modalDelete: ModalDeleteUser,
+	//    }, dispatch);
+	//
+	//};
+	var myDispatch=function myDispatch(dispatch,props){return(0,_extends3.default)({dispatch:dispatch},(0,_redux.bindActionCreators)({selectUser:_selectUser.SelectUser,modalDelete:_modalDeleteUser.ModalDeleteUser},dispatch));};var _default=(0,_reactRedux.connect)(mapStateToProps,myDispatch)(UserList);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(DatatableComponent,'DatatableComponent','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(UserList,'UserList','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(mapStateToProps,'mapStateToProps','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(myDispatch,'myDispatch','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');}();;
 
 /***/ },
 /* 605 */
+/***/ function(module, exports) {
+
+	module.exports = require("redux");
+
+/***/ },
+/* 606 */
+/***/ function(module, exports) {
+
+	module.exports = require("lodash");
+
+/***/ },
+/* 607 */
+/***/ function(module, exports) {
+
+	"use strict";exports.__esModule=true;var SelectUser=exports.SelectUser=function SelectUser(user){return{type:"SELECT_USER",payload:user};};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(SelectUser,"SelectUser","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/actions/actionTypes/selectUser.js");}();;
+
+/***/ },
+/* 608 */
+/***/ function(module, exports) {
+
+	"use strict";exports.__esModule=true;var SelectUser=exports.SelectUser=function SelectUser(user){return{type:"user.modalDelete",payload:user};};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(SelectUser,"SelectUser","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/actions/actionTypes/modalDeleteUser.js");}();;
+
+/***/ },
+/* 609 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactBootstrap=__webpack_require__(602);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserDelete=function(_React$Component){(0,_inherits3.default)(UserDelete,_React$Component);function UserDelete(props){(0,_classCallCheck3.default)(this,UserDelete);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.modalDeleteHide=_this.modalDeleteHide.bind(_this);_this.userDelete=_this.userDelete.bind(_this);return _this;}UserDelete.prototype.modalDeleteHide=function modalDeleteHide(event){this.props.dispatch({type:"user.modalDeleteHide"});};UserDelete.prototype.userDelete=function userDelete(event){//delete the user
+	this.props.dispatch({type:'user.delete',id:this.props.modal_delete.id});this.props.dispatch({type:"user.modalDeleteHide"});};UserDelete.prototype.render=function render(){return _react2.default.createElement(_reactBootstrap.Modal,{show:this.props.modal_delete.show},_react2.default.createElement(_reactBootstrap.Modal.Header,null,_react2.default.createElement(_reactBootstrap.Modal.Title,null,'Are you sure you want to delete user with phone No.',_react2.default.createElement('strong',null,' ',this.props.modal_delete.phone),'?')),_react2.default.createElement(_reactBootstrap.Modal.Footer,null,_react2.default.createElement(_reactBootstrap.Button,{onClick:this.modalDeleteHide},'No'),_react2.default.createElement(_reactBootstrap.Button,{bsStyle:'primary',onClick:this.userDelete},'Yes')));};return UserDelete;}(_react2.default.Component);function mapStateToProps(state){var modal_delete=void 0;if(state.userReducer.modal&&state.userReducer.modal.list_delete){modal_delete=state.userReducer.modal.list_delete;}else{modal_delete={show:false,id:0,phone:''};}return{modal_delete:modal_delete};}var _default=(0,_reactRedux.connect)(mapStateToProps)(UserDelete);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(UserDelete,'UserDelete','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserDelete.js');__REACT_HOT_LOADER__.register(mapStateToProps,'mapStateToProps','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserDelete.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserDelete.js');}();;
+
+/***/ },
+/* 610 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRouter=__webpack_require__(259);var _reactBootstrap=__webpack_require__(602);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserListElement=function(_React$Component){(0,_inherits3.default)(UserListElement,_React$Component);function UserListElement(props){(0,_classCallCheck3.default)(this,UserListElement);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.modalDeleteShow=_this.modalDeleteShow.bind(_this);return _this;}UserListElement.prototype.modalDeleteShow=function modalDeleteShow(event){var userId=Number(event.target.dataset.id);var phoneNumber=event.target.dataset.phone_number;this.props.dispatch({type:'user.modalDelete',id:userId,phone:phoneNumber});};UserListElement.prototype.render=function render(){var user=this.props.user;return _react2.default.createElement('tr',null,_react2.default.createElement('td',null,user.id),_react2.default.createElement('td',null,user.first_name),_react2.default.createElement('td',null,user.last_name),_react2.default.createElement('td',null,user.phone_number),_react2.default.createElement('td',null,_react2.default.createElement(_reactRouter.Link,{to:'/ltr/user/edit/'+user.id},_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-primary',bsSize:'small'},'Edit ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'edit'})))),_react2.default.createElement('td',null,_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-danger',bsSize:'small','data-id':user.id,'data-phone_number':user.phone_number,onClick:this.modalDeleteShow},'Delete ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'remove-circle'}))));};return UserListElement;}(_react2.default.Component);var _default=(0,_reactRedux.connect)()(UserListElement);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(UserListElement,'UserListElement','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserListElement.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserListElement.js');}();;
+
+/***/ },
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48591,35 +48637,35 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _reactRouter = __webpack_require__(259);
 	
-	var _reactHotLoader = __webpack_require__(606);
+	var _reactHotLoader = __webpack_require__(612);
 	
-	var _reactRouterScroll = __webpack_require__(607);
+	var _reactRouterScroll = __webpack_require__(613);
 	
 	var _reactRouterScroll2 = _interopRequireDefault(_reactRouterScroll);
 	
 	var _reactRedux = __webpack_require__(594);
 	
-	var _redux = __webpack_require__(613);
+	var _redux = __webpack_require__(605);
 	
-	var _reactRouterRedux = __webpack_require__(614);
+	var _reactRouterRedux = __webpack_require__(619);
 	
-	var _reduxThunk = __webpack_require__(615);
+	var _reduxThunk = __webpack_require__(620);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxFetchData = __webpack_require__(616);
+	var _reduxFetchData = __webpack_require__(621);
 	
-	var _utils = __webpack_require__(617);
+	var _utils = __webpack_require__(622);
 	
-	var _onRouterSetup = __webpack_require__(621);
+	var _onRouterSetup = __webpack_require__(626);
 	
 	var _onRouterSetup2 = _interopRequireDefault(_onRouterSetup);
 	
-	var _onRouterUpdate = __webpack_require__(623);
+	var _onRouterUpdate = __webpack_require__(628);
 	
 	var _onRouterUpdate2 = _interopRequireDefault(_onRouterUpdate);
 	
-	var _checkScroll = __webpack_require__(624);
+	var _checkScroll = __webpack_require__(629);
 	
 	var _checkScroll2 = _interopRequireDefault(_checkScroll);
 	
@@ -48791,13 +48837,13 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 606 */
+/* 612 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-hot-loader");
 
 /***/ },
-/* 607 */
+/* 613 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48809,7 +48855,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ScrollBehaviorContainer = __webpack_require__(608);
+	var _ScrollBehaviorContainer = __webpack_require__(614);
 	
 	var _ScrollBehaviorContainer2 = _interopRequireDefault(_ScrollBehaviorContainer);
 	
@@ -48832,7 +48878,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = exports['default'];
 
 /***/ },
-/* 608 */
+/* 614 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48843,7 +48889,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ScrollBehavior = __webpack_require__(609);
+	var _ScrollBehavior = __webpack_require__(615);
 	
 	var _ScrollBehavior2 = _interopRequireDefault(_ScrollBehavior);
 	
@@ -48924,7 +48970,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 609 */
+/* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48947,13 +48993,13 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _scrollTop2 = _interopRequireDefault(_scrollTop);
 	
-	var _requestAnimationFrame = __webpack_require__(610);
+	var _requestAnimationFrame = __webpack_require__(616);
 	
 	var _requestAnimationFrame2 = _interopRequireDefault(_requestAnimationFrame);
 	
-	var _Actions = __webpack_require__(611);
+	var _Actions = __webpack_require__(617);
 	
-	var _DOMStateStorage = __webpack_require__(612);
+	var _DOMStateStorage = __webpack_require__(618);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -49131,7 +49177,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = exports['default'];
 
 /***/ },
-/* 610 */
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49182,7 +49228,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = compatRaf;
 
 /***/ },
-/* 611 */
+/* 617 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -49209,7 +49255,7 @@ require('source-map-support').install({environment: 'node'});
 	var POP = exports.POP = 'POP';
 
 /***/ },
-/* 612 */
+/* 618 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49299,25 +49345,19 @@ require('source-map-support').install({environment: 'node'});
 	};
 
 /***/ },
-/* 613 */
-/***/ function(module, exports) {
-
-	module.exports = require("redux");
-
-/***/ },
-/* 614 */
+/* 619 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-router-redux");
 
 /***/ },
-/* 615 */
+/* 620 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-thunk");
 
 /***/ },
-/* 616 */
+/* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49326,7 +49366,7 @@ require('source-map-support').install({environment: 'node'});
 	  value: true
 	});
 	
-	var _utils = __webpack_require__(617);
+	var _utils = __webpack_require__(622);
 	
 	Object.defineProperty(exports, 'fetchDataOnServer', {
 	  enumerable: true,
@@ -49335,7 +49375,7 @@ require('source-map-support').install({environment: 'node'});
 	  }
 	});
 	
-	var _module = __webpack_require__(618);
+	var _module = __webpack_require__(623);
 	
 	Object.defineProperty(exports, 'reducer', {
 	  enumerable: true,
@@ -49344,7 +49384,7 @@ require('source-map-support').install({environment: 'node'});
 	  }
 	});
 	
-	var _fetchData = __webpack_require__(620);
+	var _fetchData = __webpack_require__(625);
 	
 	Object.defineProperty(exports, 'FetchData', {
 	  enumerable: true,
@@ -49356,7 +49396,7 @@ require('source-map-support').install({environment: 'node'});
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 617 */
+/* 622 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49373,7 +49413,7 @@ require('source-map-support').install({environment: 'node'});
 	exports.flattenComponents = flattenComponents;
 	exports.fetchDataOnServer = fetchDataOnServer;
 	
-	var _module = __webpack_require__(618);
+	var _module = __webpack_require__(623);
 	
 	/**
 	 *
@@ -49453,7 +49493,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 618 */
+/* 623 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49467,7 +49507,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	exports.handleDoneFetching = handleDoneFetching;
 	
-	var _reduxActions = __webpack_require__(619);
+	var _reduxActions = __webpack_require__(624);
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -49484,13 +49524,13 @@ require('source-map-support').install({environment: 'node'});
 	exports.default = reducer;
 
 /***/ },
-/* 619 */
+/* 624 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-actions");
 
 /***/ },
-/* 620 */
+/* 625 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49506,15 +49546,15 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _redux = __webpack_require__(613);
+	var _redux = __webpack_require__(605);
 	
 	var _reactRedux = __webpack_require__(594);
 	
 	var _reactRouter = __webpack_require__(259);
 	
-	var _module = __webpack_require__(618);
+	var _module = __webpack_require__(623);
 	
-	var _utils = __webpack_require__(617);
+	var _utils = __webpack_require__(622);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -49594,7 +49634,7 @@ require('source-map-support').install({environment: 'node'});
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FetchData);
 
 /***/ },
-/* 621 */
+/* 626 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49608,7 +49648,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _isBrowser2 = _interopRequireDefault(_isBrowser);
 	
-	__webpack_require__(622);
+	__webpack_require__(627);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -49673,7 +49713,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 622 */
+/* 627 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -49900,7 +49940,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 623 */
+/* 628 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49946,7 +49986,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 624 */
+/* 629 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49960,11 +50000,11 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _isBrowser2 = _interopRequireDefault(_isBrowser);
 	
-	var _onRouterUpdate = __webpack_require__(623);
+	var _onRouterUpdate = __webpack_require__(628);
 	
 	var _onRouterUpdate2 = _interopRequireDefault(_onRouterUpdate);
 	
-	var _ga = __webpack_require__(625);
+	var _ga = __webpack_require__(630);
 	
 	var _ga2 = _interopRequireDefault(_ga);
 	
@@ -49992,7 +50032,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 625 */
+/* 630 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50019,7 +50059,7 @@ require('source-map-support').install({environment: 'node'});
 	};
 
 /***/ },
-/* 626 */
+/* 631 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50069,54 +50109,40 @@ require('source-map-support').install({environment: 'node'});
 	var static_path = 'http://' + hostname + ':' + port;
 
 /***/ },
-/* 627 */
+/* 632 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _graphql=__webpack_require__(628);var _graphqlRelay=__webpack_require__(629);var greetingsType=new _graphql.GraphQLObjectType({name:'Greetings',fields:function fields(){return{hello:{type:_graphql.GraphQLString,args:{message:{type:_graphql.GraphQLString}},resolve:function resolve(parentValue,_ref){var message=_ref.message;return'received: '+message;}}};}});var queryType=new _graphql.GraphQLObjectType({name:'Query',fields:function fields(){return{greetings:{type:greetingsType,resolve:function resolve(){return"";}}};}});var _default=new _graphql.GraphQLSchema({query:queryType});exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(greetingsType,'greetingsType','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');__REACT_HOT_LOADER__.register(queryType,'queryType','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');}();;
+	'use strict';exports.__esModule=true;var _graphql=__webpack_require__(633);var _graphqlRelay=__webpack_require__(634);var greetingsType=new _graphql.GraphQLObjectType({name:'Greetings',fields:function fields(){return{hello:{type:_graphql.GraphQLString,args:{message:{type:_graphql.GraphQLString}},resolve:function resolve(parentValue,_ref){var message=_ref.message;return'received: '+message;}}};}});var queryType=new _graphql.GraphQLObjectType({name:'Query',fields:function fields(){return{greetings:{type:greetingsType,resolve:function resolve(){return"";}}};}});var _default=new _graphql.GraphQLSchema({query:queryType});exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(greetingsType,'greetingsType','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');__REACT_HOT_LOADER__.register(queryType,'queryType','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');}();;
 
 /***/ },
-/* 628 */
+/* 633 */
 /***/ function(module, exports) {
 
 	module.exports = require("graphql");
 
 /***/ },
-/* 629 */
+/* 634 */
 /***/ function(module, exports) {
 
 	module.exports = require("graphql-relay");
 
 /***/ },
-/* 630 */
+/* 635 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _greetings=__webpack_require__(631);var _greetings2=_interopRequireDefault(_greetings);var _userReducer=__webpack_require__(632);var _userReducer2=_interopRequireDefault(_userReducer);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_userReducer2.default);//import {combineReducers} from "redux";
-	//import userReducer from "./userReducer";
-	//import activeUserReducer from "./activeUserReducer";
-	//
-	//
-	//const allReducers = combineReducers({
-	//        ...greetings,
-	//        users: userReducer,
-	//        activeUser: activeUserReducer
-	//    //form: formReducer
-	//
-	//})
-	//
-	//export default allReducers;
-	;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
+	"use strict";var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _userReducer=__webpack_require__(636);var _userReducer2=_interopRequireDefault(_userReducer);var _activeUserReducer=__webpack_require__(637);var _activeUserReducer2=_interopRequireDefault(_activeUserReducer);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_userReducer2.default,_activeUserReducer2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
 
 /***/ },
-/* 631 */
+/* 636 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';var _actionTypes=__webpack_require__(597);function greetings(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:[];var action=arguments[1];switch(action.type){case _actionTypes.GET_GREETING:return action.result.data.greetings;default:return state;}}module.exports={greetings:greetings};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(greetings,'greetings','/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/reducers/greetings.js');}();;
+	"use strict";var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _from=__webpack_require__(317);var _from2=_interopRequireDefault(_from);var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var userReducer=function userReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{users:[{id:1,first_name:"daniel",last_name:"chen",phone_number:123},{id:2,first_name:"daniel",last_name:"chen",phone_number:456}]};var action=arguments[1];switch(action.type){case"SEARCH_USERS":state=(0,_extends3.default)({},state,{users:[(0,_from2.default)(action.payload)]});break;case"user.modalDelete":state=JSON.parse((0,_stringify2.default)(state));state.modal=state.modal?state.modal:{};state.modal.list_delete={show:true,id:action.id,phone:action.phone};break;case"user.modalDeleteHide":state=JSON.parse((0,_stringify2.default)(state));state.modal.list_delete={show:false,id:0,phone:''};break;case"user.delete":state=JSON.parse((0,_stringify2.default)(state));for(var index in state.users){if(state.users[index].id===action.id){state.users.splice(index,1);}}break;}return state;};module.exports={userReducer:userReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(userReducer,"userReducer","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/reducers/userReducer.js");}();;
 
 /***/ },
-/* 632 */
+/* 637 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";var _from=__webpack_require__(317);var _from2=_interopRequireDefault(_from);var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var userReducer=function userReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{users:[{id:1,first_name:"daniel",last_name:"chen",phone_number:123},{id:2,first_name:"daniel",last_name:"chen",phone_number:456}]};var action=arguments[1];switch(action.type){case"SEARCH_USERS":state=(0,_extends3.default)({},state,{users:[(0,_from2.default)(action.payload)]});break;}return state;};module.exports={userReducer:userReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(userReducer,"userReducer","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/reducers/userReducer.js");}();;
+	"use strict";var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var activeUserReducer=function activeUserReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:null;var action=arguments[1];switch(action.type){case"SELECT_USER":state=(0,_extends3.default)({},state,{activeUser:action.payload});break;}return state;};module.exports={activeUserReducer:activeUserReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(activeUserReducer,"activeUserReducer","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/reducers/activeUserReducer.js");}();;
 
 /***/ }
 /******/ ]);

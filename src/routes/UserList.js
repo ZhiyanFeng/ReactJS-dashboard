@@ -16,10 +16,12 @@ import {
     PanelContainer,
 } from '@sketchpixy/rubix';
 
-import {SelectUser} from "../redux/actions/actionTypes/selectUser";
+import {getUsers} from "../redux/actions/apiUserActions";
 import {ModalDeleteUser} from "../redux/actions/actionTypes/modalDeleteUser";
 import UserDelete from '../components/UserDelete';
 import UserListElement from '../components/UserListElement';
+import Request from 'superagent';
+
 
 
 class DatatableComponent extends React.Component {
@@ -28,17 +30,36 @@ class DatatableComponent extends React.Component {
     componentDidMount() {
         $(ReactDOM.findDOMNode(this.example))
             .addClass('nowrap')
-            .dataTable({
-                responsive: true,
-                columnDefs: [
-                    { targets: [-1, -3], className: 'dt-body-left' }
-                ],
-            });
+        //.dataTable({
+        //       columnDefs: [
+        //           { targets: [-1, -3], className: 'dt-body-left' }
+        //       ],
+        //   });
+    }
+
+    updateSearch(){
+        this.search(this.refs.searchInput.value);
+    }
+
+    search(query=""){
+        if(query!==""){
+            var url =  `http://localhost:3000/api/users/search?user_name=${query}`;
+            Request.get(url)
+                .set({'x-method': 'pass_verification', 'accept': 'application/vnd.Expresso.v0', 'content-type': 'application/json'})
+                .then((response)=>{
+                    this.props.getUsers(response.body.eXpresso);
+                });
+        }
     }
 
     render() {
         return (
             <div>
+                <div>
+                    <input ref="searchInput" type="text" id="serarchBox"/>
+                    <button id="serachButton" onClick={(e)=>{this.updateSearch();}}>Search</button>
+                </div>
+
                 <Table ref={(c) => this.example = c} className='display' cellSpacing='0' width='100%'>
                     <thead>
                         <tr>
@@ -67,9 +88,9 @@ class DatatableComponent extends React.Component {
                             <th>Delete</th>
                         </tr>
                     </tfoot>
-                </Table>
-                <UserDelete/>
-            </div>
+            </Table>
+            <UserDelete/>
+        </div>
         );
     }
 }
@@ -119,8 +140,7 @@ const myDispatch =  (dispatch, props) => {
     return {
         dispatch,
         ...bindActionCreators({
-            selectUser: SelectUser, 
-            modalDelete: ModalDeleteUser,
+            getUsers: getUsers,
         }, dispatch)
     }
 };

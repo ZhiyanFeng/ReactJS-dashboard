@@ -13,7 +13,7 @@ import Footer from './common/footer';
 /* Pages */
 
 import Home from './routes/Home';
-import UserEdit from './routes/UserEditForm';
+import UserEdit from './components/UserEditForm';
 import UserList from './routes/UserList';
 
 //import Lock from './routes/Lock';

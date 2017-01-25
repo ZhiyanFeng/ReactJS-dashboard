@@ -54,7 +54,7 @@ require('source-map-support').install({environment: 'node'});
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _path=__webpack_require__(5);var _path2=_interopRequireDefault(_path);var _express=__webpack_require__(6);var _express2=_interopRequireDefault(_express);var _compression=__webpack_require__(7);var _compression2=_interopRequireDefault(_compression);var _cookieParser=__webpack_require__(8);var _cookieParser2=_interopRequireDefault(_cookieParser);var _expressGraphql=__webpack_require__(9);var _expressGraphql2=_interopRequireDefault(_expressGraphql);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _server=__webpack_require__(11);var _server2=_interopRequireDefault(_server);var _routes=__webpack_require__(180);var _routes2=_interopRequireDefault(_routes);var _reduxRouter=__webpack_require__(611);var _RubixAssetMiddleware=__webpack_require__(631);var _RubixAssetMiddleware2=_interopRequireDefault(_RubixAssetMiddleware);var _schema=__webpack_require__(632);var _schema2=_interopRequireDefault(_schema);var _reducers=__webpack_require__(635);var _reducers2=_interopRequireDefault(_reducers);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}(0,_reduxRouter.setupReducers)(_reducers2.default);var port=process.env.PORT||8080;var app=(0,_express2.default)();app.use((0,_compression2.default)());app.use((0,_cookieParser2.default)());app.use(_express2.default.static(_path2.default.join(process.cwd(),'public')));app.set('views',_path2.default.join(process.cwd(),'views'));app.set('view engine','pug');function renderHTML(req,res){(0,_reduxRouter.renderHTMLString)(_routes2.default,req,function(error,redirectLocation,data){if(error){if(error.message==='Not found'){res.status(404).send(error.message);}else{res.status(500).send(error.message);}}else if(redirectLocation){res.redirect(302,redirectLocation.pathname+redirectLocation.search);}else{res.render('index',{content:data.content,data:(0,_stringify2.default)(data.data).replace(/\//g,'\\/')});}});}app.use('/graphql',(0,_expressGraphql2.default)({schema:_schema2.default,pretty:true,graphiql:true}));app.get('*',(0,_RubixAssetMiddleware2.default)('ltr'),function(req,res,next){renderHTML(req,res);});app.listen(port,function(){console.log('Node.js app is running at http://localhost:'+port+'/');});;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(port,'port','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');__REACT_HOT_LOADER__.register(app,'app','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');__REACT_HOT_LOADER__.register(renderHTML,'renderHTML','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');}();;
+	'use strict';var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _path=__webpack_require__(5);var _path2=_interopRequireDefault(_path);var _express=__webpack_require__(6);var _express2=_interopRequireDefault(_express);var _compression=__webpack_require__(7);var _compression2=_interopRequireDefault(_compression);var _cookieParser=__webpack_require__(8);var _cookieParser2=_interopRequireDefault(_cookieParser);var _expressGraphql=__webpack_require__(9);var _expressGraphql2=_interopRequireDefault(_expressGraphql);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _server=__webpack_require__(11);var _server2=_interopRequireDefault(_server);var _routes=__webpack_require__(180);var _routes2=_interopRequireDefault(_routes);var _reduxRouter=__webpack_require__(609);var _RubixAssetMiddleware=__webpack_require__(629);var _RubixAssetMiddleware2=_interopRequireDefault(_RubixAssetMiddleware);var _schema=__webpack_require__(630);var _schema2=_interopRequireDefault(_schema);var _reducers=__webpack_require__(633);var _reducers2=_interopRequireDefault(_reducers);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}(0,_reduxRouter.setupReducers)(_reducers2.default);var port=process.env.PORT||8080;var app=(0,_express2.default)();app.use((0,_compression2.default)());app.use((0,_cookieParser2.default)());app.use(_express2.default.static(_path2.default.join(process.cwd(),'public')));app.set('views',_path2.default.join(process.cwd(),'views'));app.set('view engine','pug');function renderHTML(req,res){(0,_reduxRouter.renderHTMLString)(_routes2.default,req,function(error,redirectLocation,data){if(error){if(error.message==='Not found'){res.status(404).send(error.message);}else{res.status(500).send(error.message);}}else if(redirectLocation){res.redirect(302,redirectLocation.pathname+redirectLocation.search);}else{res.render('index',{content:data.content,data:(0,_stringify2.default)(data.data).replace(/\//g,'\\/')});}});}app.use('/graphql',(0,_expressGraphql2.default)({schema:_schema2.default,pretty:true,graphiql:true}));app.get('*',(0,_RubixAssetMiddleware2.default)('ltr'),function(req,res,next){renderHTML(req,res);});app.listen(port,function(){console.log('Node.js app is running at http://localhost:'+port+'/');});;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(port,'port','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');__REACT_HOT_LOADER__.register(app,'app','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');__REACT_HOT_LOADER__.register(renderHTML,'renderHTML','/Users/zhiyan/Documents/rubix/redux/todolist/server.babel.js');}();;
 
 /***/ },
 /* 2 */
@@ -20283,7 +20283,7 @@ require('source-map-support').install({environment: 'node'});
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRouter=__webpack_require__(259);var _rubix=__webpack_require__(260);var _sidebar=__webpack_require__(590);var _sidebar2=_interopRequireDefault(_sidebar);var _header=__webpack_require__(591);var _header2=_interopRequireDefault(_header);var _footer=__webpack_require__(592);var _footer2=_interopRequireDefault(_footer);var _Home=__webpack_require__(593);var _Home2=_interopRequireDefault(_Home);var _UserEditForm=__webpack_require__(601);var _UserEditForm2=_interopRequireDefault(_UserEditForm);var _UserList=__webpack_require__(604);var _UserList2=_interopRequireDefault(_UserList);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}//import Lock from './routes/Lock';
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRouter=__webpack_require__(259);var _rubix=__webpack_require__(260);var _sidebar=__webpack_require__(590);var _sidebar2=_interopRequireDefault(_sidebar);var _header=__webpack_require__(591);var _header2=_interopRequireDefault(_header);var _footer=__webpack_require__(592);var _footer2=_interopRequireDefault(_footer);var _Home=__webpack_require__(593);var _Home2=_interopRequireDefault(_Home);var _UserEditForm=__webpack_require__(639);var _UserEditForm2=_interopRequireDefault(_UserEditForm);var _UserList=__webpack_require__(602);var _UserList2=_interopRequireDefault(_UserList);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}//import Lock from './routes/Lock';
 	//import Login from './routes/Login';
 	//import Signup from './routes/Signup';
 	/* Common Components */var App=function(_React$Component){(0,_inherits3.default)(App,_React$Component);function App(){(0,_classCallCheck3.default)(this,App);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}App.prototype.render=function render(){return _react2.default.createElement(_rubix.MainContainer,this.props,_react2.default.createElement(_sidebar2.default,null),_react2.default.createElement(_header2.default,null),_react2.default.createElement('div',{id:'body'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},this.props.children)))),_react2.default.createElement(_footer2.default,null));};return App;}(_react2.default.Component);/* Pages */var routes=_react2.default.createElement(_reactRouter.Route,{component:App},_react2.default.createElement(_reactRouter.Route,{path:'/home',component:_Home2.default}),_react2.default.createElement(_reactRouter.Route,{path:'tables/datatables',component:_UserList2.default}),_react2.default.createElement(_reactRouter.Route,{path:'user/edit(/:id)',component:_UserEditForm2.default}));/**
@@ -48454,7 +48454,7 @@ require('source-map-support').install({environment: 'node'});
 /* 593 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _dec,_class;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(594);var _actions=__webpack_require__(595);var _actions2=_interopRequireDefault(_actions);var _rubix=__webpack_require__(260);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Home=(_dec=(0,_reactRedux.connect)(function(state){return state;}),_dec(_class=function(_React$Component){(0,_inherits3.default)(Home,_React$Component);function Home(){(0,_classCallCheck3.default)(this,Home);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}Home.fetchData=function fetchData(store){return store.dispatch(_actions2.default.getGreeting('Hello, World!'));};Home.prototype.render=function render(){return _react2.default.createElement(_rubix.PanelContainer,null,_react2.default.createElement(_rubix.Panel,null,_react2.default.createElement(_rubix.PanelBody,null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement('p',null,this.props.greetings.hello)))))));};return Home;}(_react2.default.Component))||_class);exports.default=Home;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(Home,'Home','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Home.js');}();;
+	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _dec,_class;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(594);var _allActions=__webpack_require__(637);var _allActions2=_interopRequireDefault(_allActions);var _rubix=__webpack_require__(260);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Home=(_dec=(0,_reactRedux.connect)(function(state){return state;}),_dec(_class=function(_React$Component){(0,_inherits3.default)(Home,_React$Component);function Home(){(0,_classCallCheck3.default)(this,Home);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}Home.fetchData=function fetchData(store){return store.dispatch(_allActions2.default.getGreeting('Hello, World!'));};Home.prototype.render=function render(){return _react2.default.createElement(_rubix.PanelContainer,null,_react2.default.createElement(_rubix.Panel,null,_react2.default.createElement(_rubix.PanelBody,null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement('p',null,this.props.greetings.hello)))))));};return Home;}(_react2.default.Component))||_class);exports.default=Home;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(Home,'Home','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/Home.js');}();;
 
 /***/ },
 /* 594 */
@@ -48463,75 +48463,44 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = require("react-redux");
 
 /***/ },
-/* 595 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _greetings=__webpack_require__(596);var _greetings2=_interopRequireDefault(_greetings);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_greetings2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
-
-/***/ },
+/* 595 */,
 /* 596 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';var _actionTypes=__webpack_require__(597);var _axios=__webpack_require__(599);var _axios2=_interopRequireDefault(_axios);var _graphql=__webpack_require__(600);var _graphql2=_interopRequireDefault(_graphql);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var GraphQLEndpoint=_graphql2.default.development.endpoint;if(false){GraphQLEndpoint=_graphql2.default.production.endpoint;}function getGreeting(inputMessage){var query='\n    query echoGreeting($inputMessage: String) {\n      greetings {\n        hello(message: $inputMessage)\n      }\n    }\n  ';var variables={inputMessage:inputMessage};return function(dispatch){return _axios2.default.post(GraphQLEndpoint,{query:query,variables:variables}).then(function(result){dispatch({type:_actionTypes.GET_GREETING,result:result.data});}).catch(function(error){dispatch({type:_actionTypes.GET_GREETING,error:error});});};}module.exports={getGreeting:getGreeting};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(GraphQLEndpoint,'GraphQLEndpoint','/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/actions/greetings.js');__REACT_HOT_LOADER__.register(getGreeting,'getGreeting','/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/actions/greetings.js');}();;
+	'use strict';exports.__esModule=true;exports.getUsers=getUsers;var _allActionTypes=__webpack_require__(638);function getUsers(result){return{type:'GET_USERS',payload:result};};var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(getUsers,'getUsers','/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/actions/apiUserActions.js');}();;
 
 /***/ },
-/* 597 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _greetings=__webpack_require__(598);var _greetings2=_interopRequireDefault(_greetings);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_greetings2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
-
-/***/ },
+/* 597 */,
 /* 598 */
 /***/ function(module, exports) {
 
 	'use strict';/*
 	 * action types
-	 */module.exports={GET_GREETING:'GET_GREETING'};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
+	 */module.exports={GET_USERS:'GET_USERS',DELETE_USER:'DELETE_USER',EDIT_USER:'EDIT_USER'};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
 
 /***/ },
-/* 599 */
-/***/ function(module, exports) {
-
-	module.exports = require("axios");
-
-/***/ },
+/* 599 */,
 /* 600 */
-/***/ function(module, exports) {
-
-	module.exports = {
-		"development": {
-			"endpoint": "http://localhost:8080/graphql"
-		},
-		"production": {
-			"endpoint": "http://localhost:8080/graphql"
-		}
-	};
-
-/***/ },
-/* 601 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';exports.__esModule=true;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactBootstrap=__webpack_require__(602);var _reduxForm=__webpack_require__(603);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserEdit=function(_React$Component){(0,_inherits3.default)(UserEdit,_React$Component);function UserEdit(props){(0,_classCallCheck3.default)(this,UserEdit);return(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));//this.form_type = (props.initalValues.id > 0) ? 'edit' : 'add';
-	}UserEdit.prototype.render=function render(){return _react2.default.createElement('div',null,_react2.default.createElement(_reactBootstrap.PageHeader,null,'User Edit'),_react2.default.createElement(_reactBootstrap.Form,{horizontal:true},_react2.default.createElement(_reduxForm.Field,{name:'firstname',component:UserEdit.renderFirstName}),_react2.default.createElement(_reduxForm.Field,{name:'phone',component:UserEdit.renderPhone}),_react2.default.createElement(_reactBootstrap.FormGroup,null,_react2.default.createElement(_reactBootstrap.Col,{smOffset:2,sm:8},_react2.default.createElement(_reactBootstrap.Button,{type:'submit'},'Save')))));};UserEdit.renderFirstName=function renderFirstName(props){return _react2.default.createElement(_reactBootstrap.FormGroup,null,_react2.default.createElement(_reactBootstrap.Col,{sm:2},' First Name'),_react2.default.createElement(_reactBootstrap.Col,{sm:8},_react2.default.createElement(_reactBootstrap.FormControl,(0,_extends3.default)({},props.input,{id:'firstname',type:'text',placeholder:'First Name'}))));};UserEdit.renderPhone=function renderPhone(props){return _react2.default.createElement(_reactBootstrap.FormGroup,null,_react2.default.createElement(_reactBootstrap.Col,{sm:2},'Phone Number'),_react2.default.createElement(_reactBootstrap.Col,{sm:8},_react2.default.createElement(_reactBootstrap.FormControl,(0,_extends3.default)({},props.input,{id:'phone',type:'text',placeholder:'Phone Number'}))));};return UserEdit;}(_react2.default.Component);//decorate the form component
-	UserEdit=(0,_reduxForm.reduxForm)({form:'user-edit'})(UserEdit);function mapStateToProps(state,own_props){var form_data={firstname:"",phone:""};for(var index in state.userReducer.users){if(state.userReducer.users[index].id===Number(own_props.params.id)){form_data.firstname=state.userReducer.users[index].first_name;form_data.phone=state.userReducer.users[index].phone_number;break;}}return{initialValues:form_data};}var _default=(0,_reactRedux.connect)(mapStateToProps)(UserEdit);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(UserEdit,'UserEdit','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserEditForm.js');__REACT_HOT_LOADER__.register(mapStateToProps,'mapStateToProps','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserEditForm.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserEditForm.js');}();;
-
-/***/ },
-/* 602 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-bootstrap");
 
 /***/ },
-/* 603 */
+/* 601 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-form");
 
 /***/ },
-/* 604 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(594);var _redux=__webpack_require__(605);var _reactDom=__webpack_require__(275);var _reactDom2=_interopRequireDefault(_reactDom);var _lodash=__webpack_require__(606);var _lodash2=_interopRequireDefault(_lodash);var _rubix=__webpack_require__(260);var _selectUser=__webpack_require__(607);var _modalDeleteUser=__webpack_require__(608);var _UserDelete=__webpack_require__(609);var _UserDelete2=_interopRequireDefault(_UserDelete);var _UserListElement=__webpack_require__(610);var _UserListElement2=_interopRequireDefault(_UserListElement);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var DatatableComponent=function(_React$Component){(0,_inherits3.default)(DatatableComponent,_React$Component);function DatatableComponent(){(0,_classCallCheck3.default)(this,DatatableComponent);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}DatatableComponent.prototype.componentDidMount=function componentDidMount(){$(_reactDom2.default.findDOMNode(this.example)).addClass('nowrap').dataTable({responsive:true,columnDefs:[{targets:[-1,-3],className:'dt-body-left'}]});};DatatableComponent.prototype.render=function render(){var _this2=this;return _react2.default.createElement('div',null,_react2.default.createElement(_rubix.Table,{ref:function ref(c){return _this2.example=c;},className:'display',cellSpacing:'0',width:'100%'},_react2.default.createElement('thead',null,_react2.default.createElement('tr',null,_react2.default.createElement('th',null,'Id'),_react2.default.createElement('th',null,'First Name'),_react2.default.createElement('th',null,'Last Name'),_react2.default.createElement('th',null,'Phone Number'),_react2.default.createElement('th',null,'Edit'),_react2.default.createElement('th',null,'Delete'))),_react2.default.createElement('tbody',null,this.props.users.map(function(user,index){return _react2.default.createElement(_UserListElement2.default,{key:user.id,user:user});})),_react2.default.createElement('tfoot',null,_react2.default.createElement('tr',null,_react2.default.createElement('th',null,'Id'),_react2.default.createElement('th',null,'First Name'),_react2.default.createElement('th',null,'Last Name'),_react2.default.createElement('th',null,'Phone Number'),_react2.default.createElement('th',null,'Edit'),_react2.default.createElement('th',null,'Delete')))),_react2.default.createElement(_UserDelete2.default,null));};return DatatableComponent;}(_react2.default.Component);//@connect((state) => state.userReducer)
+	'use strict';exports.__esModule=true;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(594);var _redux=__webpack_require__(603);var _reactDom=__webpack_require__(275);var _reactDom2=_interopRequireDefault(_reactDom);var _lodash=__webpack_require__(604);var _lodash2=_interopRequireDefault(_lodash);var _rubix=__webpack_require__(260);var _apiUserActions=__webpack_require__(596);var _modalDeleteUser=__webpack_require__(605);var _UserDelete=__webpack_require__(606);var _UserDelete2=_interopRequireDefault(_UserDelete);var _UserListElement=__webpack_require__(607);var _UserListElement2=_interopRequireDefault(_UserListElement);var _superagent=__webpack_require__(608);var _superagent2=_interopRequireDefault(_superagent);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var DatatableComponent=function(_React$Component){(0,_inherits3.default)(DatatableComponent,_React$Component);function DatatableComponent(){(0,_classCallCheck3.default)(this,DatatableComponent);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}DatatableComponent.prototype.componentDidMount=function componentDidMount(){$(_reactDom2.default.findDOMNode(this.example)).addClass('nowrap');//.dataTable({
+	//       columnDefs: [
+	//           { targets: [-1, -3], className: 'dt-body-left' }
+	//       ],
+	//   });
+	};DatatableComponent.prototype.updateSearch=function updateSearch(){this.search(this.refs.searchInput.value);};DatatableComponent.prototype.search=function search(){var _this2=this;var query=arguments.length>0&&arguments[0]!==undefined?arguments[0]:"";if(query!==""){var url='http://localhost:3000/api/users/search?user_name='+query;_superagent2.default.get(url).set({'x-method':'pass_verification','accept':'application/vnd.Expresso.v0','content-type':'application/json'}).then(function(response){_this2.props.getUsers(response.body.eXpresso);});}};DatatableComponent.prototype.render=function render(){var _this3=this;return _react2.default.createElement('div',null,_react2.default.createElement('div',null,_react2.default.createElement('input',{ref:'searchInput',type:'text',id:'serarchBox'}),_react2.default.createElement('button',{id:'serachButton',onClick:function onClick(e){_this3.updateSearch();}},'Search')),_react2.default.createElement(_rubix.Table,{ref:function ref(c){return _this3.example=c;},className:'display',cellSpacing:'0',width:'100%'},_react2.default.createElement('thead',null,_react2.default.createElement('tr',null,_react2.default.createElement('th',null,'Id'),_react2.default.createElement('th',null,'First Name'),_react2.default.createElement('th',null,'Last Name'),_react2.default.createElement('th',null,'Phone Number'),_react2.default.createElement('th',null,'Edit'),_react2.default.createElement('th',null,'Delete'))),_react2.default.createElement('tbody',null,this.props.users.map(function(user,index){return _react2.default.createElement(_UserListElement2.default,{key:user.id,user:user});})),_react2.default.createElement('tfoot',null,_react2.default.createElement('tr',null,_react2.default.createElement('th',null,'Id'),_react2.default.createElement('th',null,'First Name'),_react2.default.createElement('th',null,'Last Name'),_react2.default.createElement('th',null,'Phone Number'),_react2.default.createElement('th',null,'Edit'),_react2.default.createElement('th',null,'Delete')))),_react2.default.createElement(_UserDelete2.default,null));};return DatatableComponent;}(_react2.default.Component);//@connect((state) => state.userReducer)
 	var UserList=function(_React$Component2){(0,_inherits3.default)(UserList,_React$Component2);function UserList(){(0,_classCallCheck3.default)(this,UserList);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}UserList.prototype.render=function render(){return _react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(_rubix.PanelContainer,null,_react2.default.createElement(_rubix.Panel,null,_react2.default.createElement(_rubix.PanelBody,null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(DatatableComponent,this.props),_react2.default.createElement('br',null)))))))));};return UserList;}(_react2.default.Component);var mapStateToProps=function mapStateToProps(state){return{users:state.userReducer.users};};//const mapDispatchToProps = (dispatch) => {
 	//    return bindActionCreators({
 	//        selectUser: SelectUser, 
@@ -48539,47 +48508,47 @@ require('source-map-support').install({environment: 'node'});
 	//    }, dispatch);
 	//
 	//};
-	var myDispatch=function myDispatch(dispatch,props){return(0,_extends3.default)({dispatch:dispatch},(0,_redux.bindActionCreators)({selectUser:_selectUser.SelectUser,modalDelete:_modalDeleteUser.ModalDeleteUser},dispatch));};var _default=(0,_reactRedux.connect)(mapStateToProps,myDispatch)(UserList);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(DatatableComponent,'DatatableComponent','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(UserList,'UserList','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(mapStateToProps,'mapStateToProps','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(myDispatch,'myDispatch','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');}();;
+	var myDispatch=function myDispatch(dispatch,props){return(0,_extends3.default)({dispatch:dispatch},(0,_redux.bindActionCreators)({getUsers:_apiUserActions.getUsers},dispatch));};var _default=(0,_reactRedux.connect)(mapStateToProps,myDispatch)(UserList);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(DatatableComponent,'DatatableComponent','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(UserList,'UserList','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(mapStateToProps,'mapStateToProps','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(myDispatch,'myDispatch','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/routes/UserList.js');}();;
 
 /***/ },
-/* 605 */
+/* 603 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux");
 
 /***/ },
-/* 606 */
+/* 604 */
 /***/ function(module, exports) {
 
 	module.exports = require("lodash");
 
 /***/ },
-/* 607 */
-/***/ function(module, exports) {
-
-	"use strict";exports.__esModule=true;var SelectUser=exports.SelectUser=function SelectUser(user){return{type:"SELECT_USER",payload:user};};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(SelectUser,"SelectUser","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/actions/actionTypes/selectUser.js");}();;
-
-/***/ },
-/* 608 */
+/* 605 */
 /***/ function(module, exports) {
 
 	"use strict";exports.__esModule=true;var SelectUser=exports.SelectUser=function SelectUser(user){return{type:"user.modalDelete",payload:user};};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(SelectUser,"SelectUser","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/actions/actionTypes/modalDeleteUser.js");}();;
 
 /***/ },
-/* 609 */
+/* 606 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactBootstrap=__webpack_require__(602);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserDelete=function(_React$Component){(0,_inherits3.default)(UserDelete,_React$Component);function UserDelete(props){(0,_classCallCheck3.default)(this,UserDelete);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.modalDeleteHide=_this.modalDeleteHide.bind(_this);_this.userDelete=_this.userDelete.bind(_this);return _this;}UserDelete.prototype.modalDeleteHide=function modalDeleteHide(event){this.props.dispatch({type:"user.modalDeleteHide"});};UserDelete.prototype.userDelete=function userDelete(event){//delete the user
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactBootstrap=__webpack_require__(600);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserDelete=function(_React$Component){(0,_inherits3.default)(UserDelete,_React$Component);function UserDelete(props){(0,_classCallCheck3.default)(this,UserDelete);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.modalDeleteHide=_this.modalDeleteHide.bind(_this);_this.userDelete=_this.userDelete.bind(_this);return _this;}UserDelete.prototype.modalDeleteHide=function modalDeleteHide(event){this.props.dispatch({type:"user.modalDeleteHide"});};UserDelete.prototype.userDelete=function userDelete(event){//delete the user
 	this.props.dispatch({type:'user.delete',id:this.props.modal_delete.id});this.props.dispatch({type:"user.modalDeleteHide"});};UserDelete.prototype.render=function render(){return _react2.default.createElement(_reactBootstrap.Modal,{show:this.props.modal_delete.show},_react2.default.createElement(_reactBootstrap.Modal.Header,null,_react2.default.createElement(_reactBootstrap.Modal.Title,null,'Are you sure you want to delete user with phone No.',_react2.default.createElement('strong',null,' ',this.props.modal_delete.phone),'?')),_react2.default.createElement(_reactBootstrap.Modal.Footer,null,_react2.default.createElement(_reactBootstrap.Button,{onClick:this.modalDeleteHide},'No'),_react2.default.createElement(_reactBootstrap.Button,{bsStyle:'primary',onClick:this.userDelete},'Yes')));};return UserDelete;}(_react2.default.Component);function mapStateToProps(state){var modal_delete=void 0;if(state.userReducer.modal&&state.userReducer.modal.list_delete){modal_delete=state.userReducer.modal.list_delete;}else{modal_delete={show:false,id:0,phone:''};}return{modal_delete:modal_delete};}var _default=(0,_reactRedux.connect)(mapStateToProps)(UserDelete);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(UserDelete,'UserDelete','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserDelete.js');__REACT_HOT_LOADER__.register(mapStateToProps,'mapStateToProps','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserDelete.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserDelete.js');}();;
 
 /***/ },
-/* 610 */
+/* 607 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRouter=__webpack_require__(259);var _reactBootstrap=__webpack_require__(602);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserListElement=function(_React$Component){(0,_inherits3.default)(UserListElement,_React$Component);function UserListElement(props){(0,_classCallCheck3.default)(this,UserListElement);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.modalDeleteShow=_this.modalDeleteShow.bind(_this);return _this;}UserListElement.prototype.modalDeleteShow=function modalDeleteShow(event){var userId=Number(event.target.dataset.id);var phoneNumber=event.target.dataset.phone_number;this.props.dispatch({type:'user.modalDelete',id:userId,phone:phoneNumber});};UserListElement.prototype.render=function render(){var user=this.props.user;return _react2.default.createElement('tr',null,_react2.default.createElement('td',null,user.id),_react2.default.createElement('td',null,user.first_name),_react2.default.createElement('td',null,user.last_name),_react2.default.createElement('td',null,user.phone_number),_react2.default.createElement('td',null,_react2.default.createElement(_reactRouter.Link,{to:'/ltr/user/edit/'+user.id},_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-primary',bsSize:'small'},'Edit ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'edit'})))),_react2.default.createElement('td',null,_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-danger',bsSize:'small','data-id':user.id,'data-phone_number':user.phone_number,onClick:this.modalDeleteShow},'Delete ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'remove-circle'}))));};return UserListElement;}(_react2.default.Component);var _default=(0,_reactRedux.connect)()(UserListElement);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(UserListElement,'UserListElement','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserListElement.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserListElement.js');}();;
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRouter=__webpack_require__(259);var _reactBootstrap=__webpack_require__(600);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserListElement=function(_React$Component){(0,_inherits3.default)(UserListElement,_React$Component);function UserListElement(props){(0,_classCallCheck3.default)(this,UserListElement);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.modalDeleteShow=_this.modalDeleteShow.bind(_this);return _this;}UserListElement.prototype.modalDeleteShow=function modalDeleteShow(event){var userId=Number(event.target.dataset.id);var phoneNumber=event.target.dataset.phone_number;this.props.dispatch({type:'user.modalDelete',id:userId,phone:phoneNumber});};UserListElement.prototype.render=function render(){var user=this.props.user;return _react2.default.createElement('tr',null,_react2.default.createElement('td',null,user.id),_react2.default.createElement('td',null,user.first_name),_react2.default.createElement('td',null,user.last_name),_react2.default.createElement('td',null,user.phone_number),_react2.default.createElement('td',null,_react2.default.createElement(_reactRouter.Link,{to:'/ltr/user/edit/'+user.id},_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-primary',bsSize:'small'},'Edit ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'edit'})))),_react2.default.createElement('td',null,_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-danger',bsSize:'small','data-id':user.id,'data-phone_number':user.phone_number,onClick:this.modalDeleteShow},'Delete ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'remove-circle'}))));};return UserListElement;}(_react2.default.Component);var _default=(0,_reactRedux.connect)()(UserListElement);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(UserListElement,'UserListElement','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserListElement.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserListElement.js');}();;
 
 /***/ },
-/* 611 */
+/* 608 */
+/***/ function(module, exports) {
+
+	module.exports = require("superagent");
+
+/***/ },
+/* 609 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48637,35 +48606,35 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _reactRouter = __webpack_require__(259);
 	
-	var _reactHotLoader = __webpack_require__(612);
+	var _reactHotLoader = __webpack_require__(610);
 	
-	var _reactRouterScroll = __webpack_require__(613);
+	var _reactRouterScroll = __webpack_require__(611);
 	
 	var _reactRouterScroll2 = _interopRequireDefault(_reactRouterScroll);
 	
 	var _reactRedux = __webpack_require__(594);
 	
-	var _redux = __webpack_require__(605);
+	var _redux = __webpack_require__(603);
 	
-	var _reactRouterRedux = __webpack_require__(619);
+	var _reactRouterRedux = __webpack_require__(617);
 	
-	var _reduxThunk = __webpack_require__(620);
+	var _reduxThunk = __webpack_require__(618);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxFetchData = __webpack_require__(621);
+	var _reduxFetchData = __webpack_require__(619);
 	
-	var _utils = __webpack_require__(622);
+	var _utils = __webpack_require__(620);
 	
-	var _onRouterSetup = __webpack_require__(626);
+	var _onRouterSetup = __webpack_require__(624);
 	
 	var _onRouterSetup2 = _interopRequireDefault(_onRouterSetup);
 	
-	var _onRouterUpdate = __webpack_require__(628);
+	var _onRouterUpdate = __webpack_require__(626);
 	
 	var _onRouterUpdate2 = _interopRequireDefault(_onRouterUpdate);
 	
-	var _checkScroll = __webpack_require__(629);
+	var _checkScroll = __webpack_require__(627);
 	
 	var _checkScroll2 = _interopRequireDefault(_checkScroll);
 	
@@ -48837,13 +48806,13 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 612 */
+/* 610 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-hot-loader");
 
 /***/ },
-/* 613 */
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48855,7 +48824,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ScrollBehaviorContainer = __webpack_require__(614);
+	var _ScrollBehaviorContainer = __webpack_require__(612);
 	
 	var _ScrollBehaviorContainer2 = _interopRequireDefault(_ScrollBehaviorContainer);
 	
@@ -48878,7 +48847,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = exports['default'];
 
 /***/ },
-/* 614 */
+/* 612 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48889,7 +48858,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ScrollBehavior = __webpack_require__(615);
+	var _ScrollBehavior = __webpack_require__(613);
 	
 	var _ScrollBehavior2 = _interopRequireDefault(_ScrollBehavior);
 	
@@ -48970,7 +48939,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 615 */
+/* 613 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48993,13 +48962,13 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _scrollTop2 = _interopRequireDefault(_scrollTop);
 	
-	var _requestAnimationFrame = __webpack_require__(616);
+	var _requestAnimationFrame = __webpack_require__(614);
 	
 	var _requestAnimationFrame2 = _interopRequireDefault(_requestAnimationFrame);
 	
-	var _Actions = __webpack_require__(617);
+	var _Actions = __webpack_require__(615);
 	
-	var _DOMStateStorage = __webpack_require__(618);
+	var _DOMStateStorage = __webpack_require__(616);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -49177,7 +49146,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = exports['default'];
 
 /***/ },
-/* 616 */
+/* 614 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49228,7 +49197,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = compatRaf;
 
 /***/ },
-/* 617 */
+/* 615 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -49255,7 +49224,7 @@ require('source-map-support').install({environment: 'node'});
 	var POP = exports.POP = 'POP';
 
 /***/ },
-/* 618 */
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49345,19 +49314,19 @@ require('source-map-support').install({environment: 'node'});
 	};
 
 /***/ },
-/* 619 */
+/* 617 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-router-redux");
 
 /***/ },
-/* 620 */
+/* 618 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-thunk");
 
 /***/ },
-/* 621 */
+/* 619 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49366,7 +49335,7 @@ require('source-map-support').install({environment: 'node'});
 	  value: true
 	});
 	
-	var _utils = __webpack_require__(622);
+	var _utils = __webpack_require__(620);
 	
 	Object.defineProperty(exports, 'fetchDataOnServer', {
 	  enumerable: true,
@@ -49375,7 +49344,7 @@ require('source-map-support').install({environment: 'node'});
 	  }
 	});
 	
-	var _module = __webpack_require__(623);
+	var _module = __webpack_require__(621);
 	
 	Object.defineProperty(exports, 'reducer', {
 	  enumerable: true,
@@ -49384,7 +49353,7 @@ require('source-map-support').install({environment: 'node'});
 	  }
 	});
 	
-	var _fetchData = __webpack_require__(625);
+	var _fetchData = __webpack_require__(623);
 	
 	Object.defineProperty(exports, 'FetchData', {
 	  enumerable: true,
@@ -49396,7 +49365,7 @@ require('source-map-support').install({environment: 'node'});
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 622 */
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49413,7 +49382,7 @@ require('source-map-support').install({environment: 'node'});
 	exports.flattenComponents = flattenComponents;
 	exports.fetchDataOnServer = fetchDataOnServer;
 	
-	var _module = __webpack_require__(623);
+	var _module = __webpack_require__(621);
 	
 	/**
 	 *
@@ -49493,7 +49462,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 623 */
+/* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49507,7 +49476,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	exports.handleDoneFetching = handleDoneFetching;
 	
-	var _reduxActions = __webpack_require__(624);
+	var _reduxActions = __webpack_require__(622);
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -49524,13 +49493,13 @@ require('source-map-support').install({environment: 'node'});
 	exports.default = reducer;
 
 /***/ },
-/* 624 */
+/* 622 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-actions");
 
 /***/ },
-/* 625 */
+/* 623 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49546,15 +49515,15 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _redux = __webpack_require__(605);
+	var _redux = __webpack_require__(603);
 	
 	var _reactRedux = __webpack_require__(594);
 	
 	var _reactRouter = __webpack_require__(259);
 	
-	var _module = __webpack_require__(623);
+	var _module = __webpack_require__(621);
 	
-	var _utils = __webpack_require__(622);
+	var _utils = __webpack_require__(620);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -49634,7 +49603,7 @@ require('source-map-support').install({environment: 'node'});
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FetchData);
 
 /***/ },
-/* 626 */
+/* 624 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49648,7 +49617,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _isBrowser2 = _interopRequireDefault(_isBrowser);
 	
-	__webpack_require__(627);
+	__webpack_require__(625);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -49713,7 +49682,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 627 */
+/* 625 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -49940,7 +49909,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 628 */
+/* 626 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49986,7 +49955,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 629 */
+/* 627 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50000,11 +49969,11 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _isBrowser2 = _interopRequireDefault(_isBrowser);
 	
-	var _onRouterUpdate = __webpack_require__(628);
+	var _onRouterUpdate = __webpack_require__(626);
 	
 	var _onRouterUpdate2 = _interopRequireDefault(_onRouterUpdate);
 	
-	var _ga = __webpack_require__(630);
+	var _ga = __webpack_require__(628);
 	
 	var _ga2 = _interopRequireDefault(_ga);
 	
@@ -50032,7 +50001,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 630 */
+/* 628 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50059,7 +50028,7 @@ require('source-map-support').install({environment: 'node'});
 	};
 
 /***/ },
-/* 631 */
+/* 629 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50109,40 +50078,55 @@ require('source-map-support').install({environment: 'node'});
 	var static_path = 'http://' + hostname + ':' + port;
 
 /***/ },
-/* 632 */
+/* 630 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _graphql=__webpack_require__(633);var _graphqlRelay=__webpack_require__(634);var greetingsType=new _graphql.GraphQLObjectType({name:'Greetings',fields:function fields(){return{hello:{type:_graphql.GraphQLString,args:{message:{type:_graphql.GraphQLString}},resolve:function resolve(parentValue,_ref){var message=_ref.message;return'received: '+message;}}};}});var queryType=new _graphql.GraphQLObjectType({name:'Query',fields:function fields(){return{greetings:{type:greetingsType,resolve:function resolve(){return"";}}};}});var _default=new _graphql.GraphQLSchema({query:queryType});exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(greetingsType,'greetingsType','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');__REACT_HOT_LOADER__.register(queryType,'queryType','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');}();;
+	'use strict';exports.__esModule=true;var _graphql=__webpack_require__(631);var _graphqlRelay=__webpack_require__(632);var greetingsType=new _graphql.GraphQLObjectType({name:'Greetings',fields:function fields(){return{hello:{type:_graphql.GraphQLString,args:{message:{type:_graphql.GraphQLString}},resolve:function resolve(parentValue,_ref){var message=_ref.message;return'received: '+message;}}};}});var queryType=new _graphql.GraphQLObjectType({name:'Query',fields:function fields(){return{greetings:{type:greetingsType,resolve:function resolve(){return"";}}};}});var _default=new _graphql.GraphQLSchema({query:queryType});exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(greetingsType,'greetingsType','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');__REACT_HOT_LOADER__.register(queryType,'queryType','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/data/schema.js');}();;
 
 /***/ },
-/* 633 */
+/* 631 */
 /***/ function(module, exports) {
 
 	module.exports = require("graphql");
 
 /***/ },
-/* 634 */
+/* 632 */
 /***/ function(module, exports) {
 
 	module.exports = require("graphql-relay");
 
 /***/ },
-/* 635 */
+/* 633 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _userReducer=__webpack_require__(636);var _userReducer2=_interopRequireDefault(_userReducer);var _activeUserReducer=__webpack_require__(637);var _activeUserReducer2=_interopRequireDefault(_activeUserReducer);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_userReducer2.default,_activeUserReducer2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
+	"use strict";var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _userReducer=__webpack_require__(634);var _userReducer2=_interopRequireDefault(_userReducer);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_userReducer2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
 
 /***/ },
-/* 636 */
+/* 634 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _from=__webpack_require__(317);var _from2=_interopRequireDefault(_from);var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var userReducer=function userReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{users:[{id:1,first_name:"daniel",last_name:"chen",phone_number:123},{id:2,first_name:"daniel",last_name:"chen",phone_number:456}]};var action=arguments[1];switch(action.type){case"SEARCH_USERS":state=(0,_extends3.default)({},state,{users:[(0,_from2.default)(action.payload)]});break;case"user.modalDelete":state=JSON.parse((0,_stringify2.default)(state));state.modal=state.modal?state.modal:{};state.modal.list_delete={show:true,id:action.id,phone:action.phone};break;case"user.modalDeleteHide":state=JSON.parse((0,_stringify2.default)(state));state.modal.list_delete={show:false,id:0,phone:''};break;case"user.delete":state=JSON.parse((0,_stringify2.default)(state));for(var index in state.users){if(state.users[index].id===action.id){state.users.splice(index,1);}}break;}return state;};module.exports={userReducer:userReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(userReducer,"userReducer","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/reducers/userReducer.js");}();;
+	"use strict";var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _from=__webpack_require__(317);var _from2=_interopRequireDefault(_from);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var userReducer=function userReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{users:[]};var action=arguments[1];switch(action.type){case"GET_USERS":state={users:(0,_from2.default)(action.payload)};break;case"user.modalDelete":state=JSON.parse((0,_stringify2.default)(state));state.modal=state.modal?state.modal:{};state.modal.list_delete={show:true,id:action.id,phone:action.phone};break;case"user.modalDeleteHide":state=JSON.parse((0,_stringify2.default)(state));state.modal.list_delete={show:false,id:0,phone:''};break;case"user.delete":state=JSON.parse((0,_stringify2.default)(state));for(var index in state.users){if(state.users[index].id===action.id){state.users.splice(index,1);}}break;}return state;};module.exports={userReducer:userReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(userReducer,"userReducer","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/reducers/userReducer.js");}();;
 
 /***/ },
+/* 635 */,
+/* 636 */,
 /* 637 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var activeUserReducer=function activeUserReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:null;var action=arguments[1];switch(action.type){case"SELECT_USER":state=(0,_extends3.default)({},state,{activeUser:action.payload});break;}return state;};module.exports={activeUserReducer:activeUserReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(activeUserReducer,"activeUserReducer","/Users/zhiyan/Documents/rubix/redux/todolist/src/redux/reducers/activeUserReducer.js");}();;
+	'use strict';var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _apiUserActions=__webpack_require__(596);var _apiUserActions2=_interopRequireDefault(_apiUserActions);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_apiUserActions2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
+
+/***/ },
+/* 638 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _apiUserActionType=__webpack_require__(598);var _apiUserActionType2=_interopRequireDefault(_apiUserActionType);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_apiUserActionType2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
+
+/***/ },
+/* 639 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';exports.__esModule=true;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactBootstrap=__webpack_require__(600);var _reduxForm=__webpack_require__(601);var _reactRedux=__webpack_require__(594);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var UserEdit=function(_React$Component){(0,_inherits3.default)(UserEdit,_React$Component);function UserEdit(props){(0,_classCallCheck3.default)(this,UserEdit);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.state=_this.props;_this.onChange=_this.onChange.bind(_this);return _this;}UserEdit.prototype.onChange=function onChange(e){this.setState({});};UserEdit.prototype.render=function render(){return _react2.default.createElement('div',null,_react2.default.createElement(_reactBootstrap.PageHeader,null,'User Edit'),_react2.default.createElement(_reactBootstrap.Form,null,_react2.default.createElement('div',{className:'form-group'},_react2.default.createElement('lavel',{className:'control-label'},'First Name'),_react2.default.createElement('input',{value:this.state.first_name,type:'text',onChange:this.onChange.bind(this),name:'firstname',className:'form-control'}))));};UserEdit.renderFirstName=function renderFirstName(props){return _react2.default.createElement(_reactBootstrap.FormGroup,null,_react2.default.createElement(_reactBootstrap.Col,{sm:2},' First Name'),_react2.default.createElement(_reactBootstrap.Col,{sm:4},_react2.default.createElement(_reactBootstrap.FormControl,(0,_extends3.default)({},props.input,{id:'firstname',type:'text',placeholder:'First Name'}))));};UserEdit.renderPhone=function renderPhone(props){return _react2.default.createElement(_reactBootstrap.FormGroup,null,_react2.default.createElement(_reactBootstrap.Col,{sm:2},'Phone Number'),_react2.default.createElement(_reactBootstrap.Col,{sm:4},_react2.default.createElement(_reactBootstrap.FormControl,(0,_extends3.default)({},props.input,{id:'phone',type:'text',placeholder:'Phone Number'}))));};return UserEdit;}(_react2.default.Component);//decorate the form component
+	UserEdit=(0,_reduxForm.reduxForm)({form:'user-edit'})(UserEdit);function mapStateToProps(state,own_props){var form_data={firstname:"",phone:""};for(var index in state.userReducer.users){if(state.userReducer.users[index].id===Number(own_props.params.id)){form_data.firstname=state.userReducer.users[index].first_name;form_data.phone=state.userReducer.users[index].phone_number;break;}}return{initialValues:form_data};}var _default=(0,_reactRedux.connect)(mapStateToProps)(UserEdit);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(UserEdit,'UserEdit','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserEditForm.js');__REACT_HOT_LOADER__.register(mapStateToProps,'mapStateToProps','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserEditForm.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/rubix/redux/todolist/src/components/UserEditForm.js');}();;
 
 /***/ }
 /******/ ]);

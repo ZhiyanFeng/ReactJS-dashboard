@@ -10,54 +10,63 @@ import ReactDOMServer from 'react-dom/server';
 
 import routes from './src/routes';
 import {
-  setupReducers,
-  renderHTMLString,
+    setupReducers,
+    renderHTMLString,
 } from '@sketchpixy/rubix/lib/node/redux-router';
 import RubixAssetMiddleware from '@sketchpixy/rubix/lib/node/RubixAssetMiddleware';
 
 import schema from './data/schema.js';
-
 import reducers from './src/redux/reducers';
+import auth from './server/routes/auth';
+import fetchUsers from './server/routes/fetchUsers';
+var bodyParser = require("body-parser");
+
 setupReducers(reducers);
 
 const port = process.env.PORT || 8080;
 
 let app = express();
+
+app.use(bodyParser.urlencoded({ extended: false   }));
+app.use(bodyParser.json());
+
 app.use(compression());
 app.use(cookieParser());
 app.use(express.static(path.join(process.cwd(), 'public')));
 app.set('views', path.join(process.cwd(), 'views'));
 app.set('view engine', 'pug');
+app.use('/api/auth', auth);
+app.use('/api/fetchUsers', fetchUsers);
 
 function renderHTML(req, res) {
-  renderHTMLString(routes, req, (error, redirectLocation, data) => {
-    if (error) {
-      if (error.message === 'Not found') {
-        res.status(404).send(error.message);
-      } else {
-        res.status(500).send(error.message);
-      }
-    } else if (redirectLocation) {
-      res.redirect(302, redirectLocation.pathname + redirectLocation.search);
-    } else {
-      res.render('index', {
-        content: data.content,
-        data: JSON.stringify(data.data).replace(/\//g, '\\/')
-      });
-    }
-  });
+    renderHTMLString(routes, req, (error, redirectLocation, data) => {
+        if (error) {
+            if (error.message === 'Not found') {
+                res.status(404).send(error.message);
+            } else {
+                res.status(500).send(error.message);
+            }
+        } else if (redirectLocation) {
+            res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+        } else {
+            res.render('index', {
+                content: data.content,
+                data: JSON.stringify(data.data).replace(/\//g, '\\/')
+            });
+        }
+    });
 }
 
 app.use('/graphql', graphQLHTTP({
-  schema,
-  pretty: true,
-  graphiql: true,
+    schema,
+    pretty: true,
+    graphiql: true,
 }));
 
 app.get('*', RubixAssetMiddleware('ltr'), (req, res, next) => {
-  renderHTML(req, res);
+    renderHTML(req, res);
 });
 
 app.listen(port, () => {
-  console.log(`Node.js app is running at http://localhost:${port}/`);
+    console.log(`Node.js app is running at http://localhost:${port}/`);
 });

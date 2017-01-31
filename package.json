@@ -8,6 +8,7 @@
     "dev:server": "tmp/bundle.js"
   },
   "scripts": {
+    "transpile-es2015": "babel src -d lib",
     "clean:dist": "rimraf dist",
     "clean:js": "rimraf public/js/main*.js && rimraf public/js/app.js && rimraf public/js/plugins.js && rimraf public/js/*.map",
     "clean:css": "rimraf public/css/main*.css && rimraf public/css/app*.css && rimraf public/css/*.map",
@@ -38,11 +39,15 @@
     "dist": "cross-env NODE_ENV=production run-s bundle:client && node tools/create-dist.js",
     "dist:watch": "run-s bundle:client && node tools/watch-dist.js",
     "test": "mocha --compilers :./tools/babel-setup.js --recursive --watch ./test/*.js",
-    "start": "node server.js"
+    "start": "node-debug server.js"
   },
   "author": "Sketchpixy <support@sketchpixy.com>",
   "devDependencies": {
+    "@sketchpixy/just-wait": "^1.0.5",
     "autoprefixer": "^6.3.6",
+    "babel-cli": "^6.22.2",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-register": "^6.22.0",
     "bless-webpack-plugin": "^1.0.0",
     "chokidar": "^1.5.2",
     "concurrently": "^2.1.0",
@@ -54,7 +59,6 @@
     "isomorphic-style-loader": "^1.0.0",
     "jsdom": "^9.2.1",
     "json-loader": "^0.5.4",
-    "@sketchpixy/just-wait": "^1.0.5",
     "loader-utils": "^0.2.15",
     "mocha": "^3.0.2",
     "ncp": "^2.0.0",
@@ -85,12 +89,15 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "babel-relay-plugin-loader": "^0.9.0",
+    "body-parser": "^1.16.0",
     "classnames": "^2.2.5",
     "compression": "^1.6.2",
     "cookie-parser": "^1.4.3",
     "es6-promise": "^3.2.1",
     "express": "^4.14.0",
     "express-graphql": "^0.5.3",
+    "jsonwebtoken": "^7.2.1",
+    "jwt-decode": "^2.1.0",
     "promised-mongo": "git+https://github.com/mindeavor/promised-mongo.git",
     "pug": "^2.0.0-beta3",
     "react": "^15.3.0",
@@ -99,11 +106,13 @@
     "react-hot-loader": "^3.0.0-beta.2",
     "react-redux": "^5.0.2",
     "react-router": "^3.0.0-alpha.3",
+    "react-router-redux": "^4.0.7",
     "redux": "^3.6.0",
     "redux-form": "^6.4.3",
     "redux-logger": "^2.7.4",
     "source-map-support": "^0.4.0",
     "superagent": "^3.3.2",
+    "validator": "^6.2.1",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   }

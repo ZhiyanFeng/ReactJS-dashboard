@@ -26,7 +26,7 @@ export default class Home extends React.Component {
             <Grid>
               <Row>
                 <Col xs={12}>
-                  <p>{this.props.greetings.hello}</p>
+                  <p>{}</p>
                 </Col>
               </Row>
             </Grid>

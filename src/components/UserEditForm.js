@@ -1,28 +1,27 @@
 import React from 'react';
-import {PageHeader, Form, FormGroup, Col, Button, FormControl, InputGroup} from 'react-bootstrap';
+import {HelpBlock,PageHeader, Form, FormGroup, Col, Button, FormControl, InputGroup} from 'react-bootstrap';
 import { Field, reduxForm} from 'redux-form';
 import { connect } from 'react-redux';
+import { routeActions } from 'react-router-redux';
+
 
 class UserEdit extends React.Component{
-    form_type;
     constructor(props)
     {
         super(props);
-        this.state = this.prop;
-        //this.form_type = (props.initalValues.id > 0) ? 'edit' : 'add';
+        this.formSubmit = this.formSubmit.bind(this);
     }
 
     render(){
-
         return(
             <div>
                 <PageHeader>User Edit</PageHeader>
-                <Form horizontal>
+                <Form horizontal onSubmit={this.props.handleSubmit(this.formSubmit)}>
                     <Field name="firstname" component={UserEdit.renderFirstName}/>
                     <Field name="phone" component={UserEdit.renderPhone}/>
                     <FormGroup>
                         <Col smOffset={2} sm={4}>
-                            <Button type="submit">Save</Button>
+                            <Button type="submit" disabled={this.props.invalid || this.props.submitting}>Save</Button>
                         </Col>
                     </FormGroup>
                 </Form>
@@ -32,10 +31,12 @@ class UserEdit extends React.Component{
 
     static renderFirstName(props){
         return (
-            <FormGroup>
+            <FormGroup validationState={!props.meta.touched ? null: (props.meta.error ? 'error': 'success')}>
                 <Col sm={2}> First Name</Col>
                 <Col sm={4}> 
                     <FormControl {...props.input} id='firstname' type='text' placeholder='First Name'/>
+                    <FormControl.Feedback/>
+                    <HelpBlock>{props.meta.touched && props.meta.error ? props.meta.error : null}</HelpBlock>
                 </Col>
             </FormGroup>
         )
@@ -51,12 +52,33 @@ class UserEdit extends React.Component{
             </FormGroup>
         )
     }
+
+    formSubmit(values){
+        //this.props.dispatch({
+        //    type: 'users.' + this.form_type,
+        //    id: values.id,
+        //    firstname: values.username,
+        //    job: values.job,
+        //});
+
+        //this.props.dispatch(goBack());
+        this.props.router.goBack();
+        //this.props.dispatch(this.routeActions.push('/tr/tables/datatables'));
+    }
 }
 
 
 //decorate the form component
 UserEdit = reduxForm({
     form: 'user-edit',
+    validate: function(values){
+        const errors ={};
+        if(!values.firstname){
+            console.log('validation', values);
+            errors.firstname = 'firstname is required';
+        }
+        return errors;
+    }
 })(UserEdit);
 
 function mapStateToProps(state, own_props){

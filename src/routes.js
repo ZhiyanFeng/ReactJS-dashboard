@@ -15,6 +15,7 @@ import Footer from './common/footer';
 import Home from './routes/Home';
 import UserEdit from './components/UserEditForm';
 import UserList from './routes/UserList';
+import LoginPage from './components/login/login';
 
 //import Lock from './routes/Lock';
 //import Login from './routes/Login';
@@ -26,7 +27,7 @@ class App extends React.Component {
         return (
             <MainContainer {...this.props}>
                 <Sidebar />
-                <Header />
+                <Header {...this.props}/>
                 <div id='body'>
                     <Grid>
                         <Row>
@@ -43,8 +44,7 @@ class App extends React.Component {
 }
 
 const routes = (
-    <Route component={App}>
-        <Route path='/home' component={Home} />
+    <Route path='admin' component={App}>
         <Route path='tables/datatables' component={UserList} />
         <Route path='user/edit(/:id)' component={UserEdit} />
     </Route>
@@ -63,8 +63,7 @@ const combinedRoutes = (
 
 export default (
     <Route>
-        <Route path='/' component={App} />
-
+        <Route path='/' component={LoginPage} />
         <Route path='/ltr'>
             {combinedRoutes}
         </Route>

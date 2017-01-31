@@ -22,6 +22,9 @@ import checkScroll from './checkScroll';
 import isBrowser from '../isBrowser';
 import { reducer as formReducer } from 'redux-form';
 import createLogger from 'redux-logger';
+import setAuthorizationToken from '../redux/utils/setAuthorizationToken';
+import jwt from 'jsonwebtoken';
+import {setCurrentUser} from '../redux/actions/authActions';
 
 if (isBrowser()) {
   onRouterSetup();
@@ -38,7 +41,7 @@ var isRouterSet = false, history, reducer, store, routes;
 export function setupReducers(reducers) {
   reducer = combineReducers({
       userReducer: reducers.userReducer,
-      activeUserReducer: reducers.activeUserReducer,
+      authReducer: reducers.authReducer,
       form: formReducer,
       fetching: fetching,
       routing: routerReducer,
@@ -74,7 +77,12 @@ function createStoreWithMiddleware() {
 }
 
 export function createReduxStore(initialState) {
-    return (createStoreWithMiddleware())(reducer, initialState);
+    let store = (createStoreWithMiddleware())(reducer, initialState);
+    if(localStorage.jwtToken){
+        setAuthorizationToken(localStorage.jwtToken);
+        store.dispatch(setCurrentUser(jwt.decode(localStorage.jwtToken)));
+    }
+    return store;
 }
 
 function onFetchData(props) {
@@ -120,7 +128,6 @@ export default function render(Component, onRender) {
 
 export function renderHTMLString(routes, req, callback) {
     const store = createReduxStore();
-
     // in server
     match({ routes, location: req.url}, (error, redirectLocation, renderProps) => {
         if (!renderProps) {

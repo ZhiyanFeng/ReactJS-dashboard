@@ -3,6 +3,7 @@ import { connect  } from 'react-redux';
 import {bindActionCreators } from "redux";
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
+import axios from 'axios';
 
 import {
     Row,
@@ -42,57 +43,62 @@ class DatatableComponent extends React.Component {
     }
 
     search(query=""){
-        if(query!==""){
-            var url =  `http://localhost:3000/api/users/search?user_name=${query}`;
-            Request.get(url)
-                .set({'x-method': 'pass_verification', 'accept': 'application/vnd.Expresso.v0', 'content-type': 'application/json'})
-                .then((response)=>{
-                    this.props.getUsers(response.body.eXpresso);
-                });
-        }
+        return axios.post('/api/fetchUsers', query).then(res => {
+            console.log('suceed');
+        });
     }
 
-    render() {
-        return (
-            <div>
-                <div>
-                    <input ref="searchInput" type="text" id="serarchBox"/>
-                    <button id="serachButton" onClick={(e)=>{this.updateSearch();}}>Search</button>
-                </div>
+    //if(query!==""){
+    //    var url =  `http://localhost:3000/api/users/search?user_name=${query}`;
+    //    Request.get(url)
+    //        .set({'x-method': 'pass_verification', 'accept': 'application/vnd.Expresso.v0', 'content-type': 'application/json'})
+    //        .then((response)=>{
+    //            this.props.getUsers(response.body.eXpresso);
+    //        });
+    //}
 
-                <Table ref={(c) => this.example = c} className='display' cellSpacing='0' width='100%'>
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone Number</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {this.props.users.map((user, index) =>{
-                            return(
-                                <UserListElement key={user.id} user={user}/>
-                            );
-                        })}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>Id</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone Number</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                    </tfoot>
+
+render() {
+    return (
+        <div>
+            <div>
+                <input ref="searchInput" type="text" id="serarchBox"/>
+                <button id="serachButton" onClick={(e)=>{this.updateSearch();}}>Search</button>
+            </div>
+
+            <Table ref={(c) => this.example = c} className='display' cellSpacing='0' width='100%'>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.props.users.map((user, index) =>{
+                        return(
+                            <UserListElement key={user.id} user={user}/>
+                        );
+                    })}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </tfoot>
             </Table>
             <UserDelete/>
         </div>
-        );
-    }
+    );
+}
 }
 
 //@connect((state) => state.userReducer)

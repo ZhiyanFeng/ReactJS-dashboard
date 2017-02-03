@@ -9,6 +9,5 @@ export function getUsers(result){
     return{
         type: 'GET_USERS',
         payload: result
-
     }
 }

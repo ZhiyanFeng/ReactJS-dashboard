@@ -43,9 +43,9 @@ class LoginForm extends React.Component {
     isValid() {
         const { errors, isValid } = validateInput(this.state);
         if (!isValid) {
-                  this.setState({ errors });
+            this.setState({ errors });
         }
-            return isValid;
+        return isValid;
     }
 
     onSubmit(e){
@@ -62,11 +62,11 @@ class LoginForm extends React.Component {
     onChange(e){
         this.setState({[e.target.name]: e.target.value});
     }
-    back(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        this.props.router.goBack();
-    }
+    //back(e) {
+    //    e.preventDefault();
+    //    e.stopPropagation();
+    //    this.props.router.goBack();
+    //}
 
     componentDidMount() {
         $('html').addClass('authentication');
@@ -106,7 +106,8 @@ class LoginForm extends React.Component {
                                                         <Form onSubmit={::this.onSubmit}>
                                                             <TextFieldGroup
                                                                 field="email"
-                                                                label="Email   "
+                                                                label="Email"
+                                                                name="email"
                                                                 value={email}
                                                                 placeholder="yourname@myshyft.com"
                                                                 error={errors.email}
@@ -116,6 +117,7 @@ class LoginForm extends React.Component {
                                                         <TextFieldGroup
                                                             field="password"
                                                             label="Password"
+                                                            name="email"
                                                             value={password}
                                                             placeholder="password"
                                                             error={errors.password}

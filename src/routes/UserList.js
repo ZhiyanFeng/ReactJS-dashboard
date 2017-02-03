@@ -17,7 +17,7 @@ import {
     PanelContainer,
 } from '@sketchpixy/rubix';
 
-import {getUsers} from "../redux/actions/apiUserActions";
+import {search} from '../redux/actions/authActions';
 import {ModalDeleteUser} from "../redux/actions/actionTypes/modalDeleteUser";
 import UserDelete from '../components/UserDelete';
 import UserListElement from '../components/UserListElement';
@@ -39,14 +39,15 @@ class DatatableComponent extends React.Component {
     }
 
     updateSearch(){
-        this.search(this.refs.searchInput.value);
+        this.search(this.refs.searchInput.value, localStorage.getItem('key'));
     }
 
-    search(query=""){
-        return axios.post('/api/fetchUsers', query).then(res => {
-            console.log('suceed');
-        });
+    search(query="", key){
+        this.props.search(query, key).then(
+            (err) => this.setState({ errors: err.data.errors, isLoading: false  })
+        )
     }
+
 
     //if(query!==""){
     //    var url =  `http://localhost:3000/api/users/search?user_name=${query}`;
@@ -58,47 +59,47 @@ class DatatableComponent extends React.Component {
     //}
 
 
-render() {
-    return (
-        <div>
+    render() {
+        return (
             <div>
-                <input ref="searchInput" type="text" id="serarchBox"/>
-                <button id="serachButton" onClick={(e)=>{this.updateSearch();}}>Search</button>
-            </div>
+                <div>
+                    <input ref="searchInput" type="text" id="serarchBox"/>
+                    <button id="serachButton" onClick={(e)=>{this.updateSearch();}}>Search</button>
+                </div>
 
-            <Table ref={(c) => this.example = c} className='display' cellSpacing='0' width='100%'>
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Phone Number</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.props.users.map((user, index) =>{
-                        return(
-                            <UserListElement key={user.id} user={user}/>
-                        );
-                    })}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Id</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Phone Number</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
-                    </tr>
-                </tfoot>
-            </Table>
-            <UserDelete/>
-        </div>
-    );
-}
+                <Table ref={(c) => this.example = c} className='display' cellSpacing='0' width='100%'>
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.props.users.map((user, index) =>{
+                            return(
+                                <UserListElement key={user.id} user={user}/>
+                            );
+                        })}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </tfoot>
+                </Table>
+                <UserDelete/>
+            </div>
+        );
+    }
 }
 
 //@connect((state) => state.userReducer)
@@ -126,10 +127,14 @@ class UserList extends React.Component {
         );
     }
 }
+UserList.propTypes = {
+    search: React.PropTypes.func.isRequired
+}
 
 const mapStateToProps = (state) => {
     return {
         users: state.userReducer.users,
+        admin: state.authReducer.admin
     }
 
 };
@@ -146,7 +151,7 @@ const myDispatch =  (dispatch, props) => {
     return {
         dispatch,
         ...bindActionCreators({
-            getUsers: getUsers,
+            search: search,
         }, dispatch)
     }
 };

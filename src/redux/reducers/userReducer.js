@@ -3,9 +3,9 @@ const userReducer = (state = {
 
 }, action)=>{
     switch (action.type){
-        case "GET_USERS":
+        case "SET_SEARCH_USERS":
             state = {
-                users: Array.from(action.payload)
+                users: Array.from(action.users)
             };
             break;
         case "user.modalDelete":

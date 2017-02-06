@@ -12,9 +12,9 @@ import Footer from './common/footer';
 
 /* Pages */
 
-import Home from './routes/Home';
 import UserEdit from './components/UserEditForm';
 import UserList from './routes/UserList';
+import LocationList from './routes/LocationList';
 import LoginPage from './components/login/login';
 
 //import Lock from './routes/Lock';
@@ -45,7 +45,8 @@ class App extends React.Component {
 
 const routes = (
     <Route path='admin' component={App}>
-        <Route path='tables/datatables' component={UserList} />
+        <Route path='tables/userList' component={UserList} />
+        <Route path='tables/locationList' component={LocationList} />
         <Route path='user/edit(/:id)' component={UserEdit} />
     </Route>
 );

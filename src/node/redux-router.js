@@ -42,6 +42,7 @@ export function setupReducers(reducers) {
   reducer = combineReducers({
       userReducer: reducers.userReducer,
       authReducer: reducers.authReducer,
+      locationReducer: reducers.locationReducer,
       form: formReducer,
       fetching: fetching,
       routing: routerReducer,

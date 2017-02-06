@@ -16,12 +16,10 @@ import {
     PanelContainer,
 } from '@sketchpixy/rubix';
 
-import {searchUsers} from '../redux/actions/apiActions';
-import {ModalDeleteUser} from "../redux/actions/actionTypes/modalDeleteUser";
-import UserDelete from '../components/UserDelete';
-import UserListElement from '../components/UserListElement';
+import {searchLocations} from '../redux/actions/apiActions';
+import LocationListElement from '../components/LocationListElement';
 
-class DatatableComponent extends React.Component {
+class  DatatableComponent extends React.Component {
 
 
     componentDidMount() {
@@ -35,12 +33,12 @@ class DatatableComponent extends React.Component {
     }
 
     updateSearch(){
-        this.search(this.refs.searchInput.value, localStorage.getItem('key'));
+        this.searchLocations(this.refs.searchInput.value, localStorage.getItem('key'));
     }
 
-    search(query="", key){
-        this.props.searchUsers(query, key).then(
-            (err) => this.setState({ errors: err.data.errors, isLoading: false  })
+    searchLocations(query="", key){
+        this.props.searchLocations(query, key).then(
+            //(err) => this.setState({ errors: err.data.errors, isLoading: false  })
         )
     }
 
@@ -56,39 +54,37 @@ class DatatableComponent extends React.Component {
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone Number</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th>Formatted Address</th>
+                            <th>City</th>
+                            <th>Location Name</th>
+                            <th>Member Count</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.users.map((user, index) =>{
+                        {this.props.locations.map((location, index) =>{
                             return(
-                                <UserListElement key={user.id} user={user}/>
+                                <LocationListElement key={location.id} location={location}/>
                             );
                         })}
                     </tbody>
                     <tfoot>
                         <tr>
                             <th>Id</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Phone Number</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
+                            <th>Formatted Address</th>
+                            <th>City</th>
+                            <th>Location Name</th>
+                            <th>Member Count</th>
                         </tr>
                     </tfoot>
                 </Table>
-                <UserDelete/>
+                <locationDelete/>
             </div>
         );
     }
 }
 
-//@connect((state) => state.userReducer)
-class UserList extends React.Component {
+//@connect((state) => state.locationReducer)
+class LocationList extends React.Component {
     render() {
         return (
             <Row>
@@ -112,14 +108,13 @@ class UserList extends React.Component {
         );
     }
 }
-UserList.propTypes = {
-    searchUsers: React.PropTypes.func.isRequired
+LocationList.propTypes = {
+    searchLocations: React.PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => {
     return {
-        users: state.userReducer.users,
-        admin: state.authReducer.admin
+        locations: state.locationReducer.locations,
     }
 
 };
@@ -128,9 +123,9 @@ const myDispatch =  (dispatch, props) => {
     return {
         dispatch,
         ...bindActionCreators({
-            searchUsers: searchUsers,
+            searchLocations: searchLocations,
         }, dispatch)
     }
 };
-export default connect(mapStateToProps, myDispatch)(UserList);
+export default connect(mapStateToProps, myDispatch)(LocationList);
 

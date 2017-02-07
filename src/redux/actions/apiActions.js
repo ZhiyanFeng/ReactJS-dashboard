@@ -27,7 +27,7 @@ export function searchUsers(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post('http://localhost:3000/api/users/search', {'user_name': query}, config).then(res => {
+        return axios.post('http://internal.coffeemobile.com/api/users/search', {'user_name': query}, config).then(res => {
             dispatch(setSearchUsers(res.data.eXpresso));
         });
     }
@@ -44,7 +44,7 @@ export function searchLocations(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post('http://localhost:3000/api/locations/search', {'location_query': query}, config).then(res => {
+        return axios.post('http://internal.coffeemobile.com/api/locations/search', {'location_query': query}, config).then(res => {
             dispatch(setSearchLocations(res.data.eXpresso));
         });
     }

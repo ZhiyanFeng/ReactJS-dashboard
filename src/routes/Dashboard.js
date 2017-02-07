@@ -613,9 +613,9 @@ export default class Dashboard extends React.Component {
                 <MainChart />
               </Panel>
               <Panel horizontal className='force-collapse'>
-                <PanelRight className='bg-lightgreen fg-white panel-sm-2'>
+                <PanelLeft className='bg-lightgreen fg-white panel-sm-2'>
                   <RevenuePanel />
-                </PanelRight>
+                </PanelLeft>
                 <PanelRight className='bg-green fg-green panel-sm-4'>
                   <Grid>
                     <LoadPanel />

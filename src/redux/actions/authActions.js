@@ -31,7 +31,7 @@ export function login(data) {
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post('http://localhost:3000/sessions', {'email': data.email, 'password': data.password}, config).then(res => {
+        return axios.post('http://internal.coffeemobile.com/sessions', {'email': data.email, 'password': data.password}, config).then(res => {
             localStorage.setItem('admin', res.data.eXpresso.first_name);
             localStorage.setItem('key', res.data.eXpresso.api_key);
 

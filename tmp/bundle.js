@@ -54,7 +54,7 @@ require('source-map-support').install({environment: 'node'});
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _path=__webpack_require__(5);var _path2=_interopRequireDefault(_path);var _express=__webpack_require__(6);var _express2=_interopRequireDefault(_express);var _compression=__webpack_require__(7);var _compression2=_interopRequireDefault(_compression);var _cookieParser=__webpack_require__(8);var _cookieParser2=_interopRequireDefault(_cookieParser);var _expressGraphql=__webpack_require__(9);var _expressGraphql2=_interopRequireDefault(_expressGraphql);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _server=__webpack_require__(11);var _server2=_interopRequireDefault(_server);var _routes=__webpack_require__(180);var _routes2=_interopRequireDefault(_routes);var _reduxRouter=__webpack_require__(754);var _RubixAssetMiddleware=__webpack_require__(773);var _RubixAssetMiddleware2=_interopRequireDefault(_RubixAssetMiddleware);var _schema=__webpack_require__(774);var _schema2=_interopRequireDefault(_schema);var _reducers=__webpack_require__(777);var _reducers2=_interopRequireDefault(_reducers);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var bodyParser=__webpack_require__(781);(0,_reduxRouter.setupReducers)(_reducers2.default);var port=process.env.PORT||8080;var app=(0,_express2.default)();app.use(bodyParser.urlencoded({extended:false}));app.use(bodyParser.json());app.use((0,_compression2.default)());app.use((0,_cookieParser2.default)());app.use(_express2.default.static(_path2.default.join(process.cwd(),'public')));app.set('views',_path2.default.join(process.cwd(),'views'));app.set('view engine','pug');function renderHTML(req,res){(0,_reduxRouter.renderHTMLString)(_routes2.default,req,function(error,redirectLocation,data){if(error){if(error.message==='Not found'){res.status(404).send(error.message);}else{res.status(500).send(error.message);}}else if(redirectLocation){res.redirect(302,redirectLocation.pathname+redirectLocation.search);}else{res.render('index',{content:data.content,data:(0,_stringify2.default)(data.data).replace(/\//g,'\\/')});}});}app.use('/graphql',(0,_expressGraphql2.default)({schema:_schema2.default,pretty:true,graphiql:true}));app.get('*',(0,_RubixAssetMiddleware2.default)('ltr'),function(req,res,next){renderHTML(req,res);});app.listen(port,function(){console.log('Node.js app is running at http://localhost:'+port+'/');});;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(port,'port','/Users/zhiyan/Documents/todolist/server.babel.js');__REACT_HOT_LOADER__.register(app,'app','/Users/zhiyan/Documents/todolist/server.babel.js');__REACT_HOT_LOADER__.register(renderHTML,'renderHTML','/Users/zhiyan/Documents/todolist/server.babel.js');}();;
+	'use strict';var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _path=__webpack_require__(5);var _path2=_interopRequireDefault(_path);var _express=__webpack_require__(6);var _express2=_interopRequireDefault(_express);var _compression=__webpack_require__(7);var _compression2=_interopRequireDefault(_compression);var _cookieParser=__webpack_require__(8);var _cookieParser2=_interopRequireDefault(_cookieParser);var _expressGraphql=__webpack_require__(9);var _expressGraphql2=_interopRequireDefault(_expressGraphql);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _server=__webpack_require__(11);var _server2=_interopRequireDefault(_server);var _routes=__webpack_require__(180);var _routes2=_interopRequireDefault(_routes);var _reduxRouter=__webpack_require__(756);var _RubixAssetMiddleware=__webpack_require__(775);var _RubixAssetMiddleware2=_interopRequireDefault(_RubixAssetMiddleware);var _schema=__webpack_require__(776);var _schema2=_interopRequireDefault(_schema);var _reducers=__webpack_require__(779);var _reducers2=_interopRequireDefault(_reducers);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var bodyParser=__webpack_require__(783);(0,_reduxRouter.setupReducers)(_reducers2.default);var port=process.env.PORT||8080;var app=(0,_express2.default)();app.use(bodyParser.urlencoded({extended:false}));app.use(bodyParser.json());app.use((0,_compression2.default)());app.use((0,_cookieParser2.default)());app.use(_express2.default.static(_path2.default.join(process.cwd(),'public')));app.set('views',_path2.default.join(process.cwd(),'views'));app.set('view engine','pug');function renderHTML(req,res){(0,_reduxRouter.renderHTMLString)(_routes2.default,req,function(error,redirectLocation,data){if(error){if(error.message==='Not found'){res.status(404).send(error.message);}else{res.status(500).send(error.message);}}else if(redirectLocation){res.redirect(302,redirectLocation.pathname+redirectLocation.search);}else{res.render('index',{content:data.content,data:(0,_stringify2.default)(data.data).replace(/\//g,'\\/')});}});}app.use('/graphql',(0,_expressGraphql2.default)({schema:_schema2.default,pretty:true,graphiql:true}));app.get('*',(0,_RubixAssetMiddleware2.default)('ltr'),function(req,res,next){renderHTML(req,res);});app.listen(port,function(){console.log('Node.js app is running at http://localhost:'+port+'/');});;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(port,'port','/Users/zhiyan/Documents/todolist/server.babel.js');__REACT_HOT_LOADER__.register(app,'app','/Users/zhiyan/Documents/todolist/server.babel.js');__REACT_HOT_LOADER__.register(renderHTML,'renderHTML','/Users/zhiyan/Documents/todolist/server.babel.js');}();;
 
 /***/ },
 /* 2 */
@@ -20283,10 +20283,10 @@ require('source-map-support').install({environment: 'node'});
 /* 180 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRouter=__webpack_require__(259);var _rubix=__webpack_require__(260);var _sidebar=__webpack_require__(590);var _sidebar2=_interopRequireDefault(_sidebar);var _header=__webpack_require__(591);var _header2=_interopRequireDefault(_header);var _footer=__webpack_require__(699);var _footer2=_interopRequireDefault(_footer);var _UserEditForm=__webpack_require__(700);var _UserEditForm2=_interopRequireDefault(_UserEditForm);var _UserList=__webpack_require__(704);var _UserList2=_interopRequireDefault(_UserList);var _LocationList=__webpack_require__(711);var _LocationList2=_interopRequireDefault(_LocationList);var _login=__webpack_require__(712);var _login2=_interopRequireDefault(_login);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}//import Lock from './routes/Lock';
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRouter=__webpack_require__(259);var _rubix=__webpack_require__(260);var _sidebar=__webpack_require__(590);var _sidebar2=_interopRequireDefault(_sidebar);var _header=__webpack_require__(591);var _header2=_interopRequireDefault(_header);var _footer=__webpack_require__(699);var _footer2=_interopRequireDefault(_footer);var _UserEditForm=__webpack_require__(700);var _UserEditForm2=_interopRequireDefault(_UserEditForm);var _UserList=__webpack_require__(704);var _UserList2=_interopRequireDefault(_UserList);var _LocationList=__webpack_require__(711);var _LocationList2=_interopRequireDefault(_LocationList);var _Dashboard=__webpack_require__(713);var _Dashboard2=_interopRequireDefault(_Dashboard);var _login=__webpack_require__(714);var _login2=_interopRequireDefault(_login);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}//import Lock from './routes/Lock';
 	//import Login from './routes/Login';
 	//import Signup from './routes/Signup';
-	/* Pages */var App=function(_React$Component){(0,_inherits3.default)(App,_React$Component);function App(){(0,_classCallCheck3.default)(this,App);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}App.prototype.render=function render(){return _react2.default.createElement(_rubix.MainContainer,this.props,_react2.default.createElement(_sidebar2.default,null),_react2.default.createElement(_header2.default,this.props),_react2.default.createElement('div',{id:'body'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},this.props.children)))),_react2.default.createElement(_footer2.default,null));};return App;}(_react2.default.Component);/* Common Components */var routes=_react2.default.createElement(_reactRouter.Route,{path:'admin',component:App},_react2.default.createElement(_reactRouter.Route,{path:'tables/userList',component:_UserList2.default}),_react2.default.createElement(_reactRouter.Route,{path:'tables/locationList',component:_LocationList2.default}),_react2.default.createElement(_reactRouter.Route,{path:'user/edit(/:id)',component:_UserEditForm2.default}));/**
+	/* Common Components */var App=function(_React$Component){(0,_inherits3.default)(App,_React$Component);function App(){(0,_classCallCheck3.default)(this,App);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}App.prototype.render=function render(){return _react2.default.createElement(_rubix.MainContainer,this.props,_react2.default.createElement(_sidebar2.default,null),_react2.default.createElement(_header2.default,this.props),_react2.default.createElement('div',{id:'body'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},this.props.children)))),_react2.default.createElement(_footer2.default,null));};return App;}(_react2.default.Component);/* Pages */var routes=_react2.default.createElement(_reactRouter.Route,{path:'admin',component:App},_react2.default.createElement(_reactRouter.Route,{path:'dashboard',component:_Dashboard2.default}),_react2.default.createElement(_reactRouter.Route,{path:'tables/userList',component:_UserList2.default}),_react2.default.createElement(_reactRouter.Route,{path:'tables/locationList',component:_LocationList2.default}),_react2.default.createElement(_reactRouter.Route,{path:'user/edit(/:id)',component:_UserEditForm2.default}));/**
 	*  * No Sidebar, Header or Footer. Only the Body is rendered.
 	    *   */var combinedRoutes=_react2.default.createElement(_reactRouter.Route,null,routes);var _default=_react2.default.createElement(_reactRouter.Route,null,_react2.default.createElement(_reactRouter.Route,{path:'/',component:_login2.default}),_react2.default.createElement(_reactRouter.Route,{path:'/ltr'},combinedRoutes),_react2.default.createElement(_reactRouter.Route,{path:'/rtl'},combinedRoutes));exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(App,'App','/Users/zhiyan/Documents/todolist/src/routes.js');__REACT_HOT_LOADER__.register(routes,'routes','/Users/zhiyan/Documents/todolist/src/routes.js');__REACT_HOT_LOADER__.register(combinedRoutes,'combinedRoutes','/Users/zhiyan/Documents/todolist/src/routes.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/todolist/src/routes.js');}();;
 
@@ -48436,13 +48436,13 @@ require('source-map-support').install({environment: 'node'});
 /* 590 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _class,_class2;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _rubix=__webpack_require__(260);var _reactRouter=__webpack_require__(259);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var ApplicationSidebar=(0,_reactRouter.withRouter)(_class=function(_React$Component){(0,_inherits3.default)(ApplicationSidebar,_React$Component);function ApplicationSidebar(){(0,_classCallCheck3.default)(this,ApplicationSidebar);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}ApplicationSidebar.prototype.handleChange=function handleChange(e){this._nav.search(e.target.value);};ApplicationSidebar.prototype.getPath=function getPath(path){var dir=this.props.location.pathname.search('rtl')!==-1?'rtl':'ltr';path='/'+dir+'/'+path;return path;};ApplicationSidebar.prototype.render=function render(){var _this2=this;return _react2.default.createElement('div',null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(_rubix.FormControl,{type:'text',placeholder:'Search...',onChange:this.handleChange.bind(this),className:'sidebar-search',style:{border:'none',background:'none',margin:'10px 0 0 0',borderBottom:'1px solid #666',color:'white'}}),_react2.default.createElement('div',{className:'sidebar-nav-container'},_react2.default.createElement(_rubix.SidebarNav,{style:{marginBottom:0},ref:function ref(c){return _this2._nav=c;}},_react2.default.createElement('div',{className:'sidebar-header'},'PAGES'),_react2.default.createElement(_rubix.SidebarNavItem,{glyph:'glyphicon glyphicon-map-marker',name:'Location search',href:this.getPath.call(this,'admin/tables/locationList')}),_react2.default.createElement(_rubix.SidebarNavItem,{href:this.getPath.call(this,'admin/tables/userList'),glyph:'glyphicon glyphicon-user',name:'User search'})))))));};return ApplicationSidebar;}(_react2.default.Component))||_class;var DummySidebar=function(_React$Component2){(0,_inherits3.default)(DummySidebar,_React$Component2);function DummySidebar(){(0,_classCallCheck3.default)(this,DummySidebar);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}DummySidebar.prototype.render=function render(){return _react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement('div',{className:'sidebar-header'},'DUMMY SIDEBAR'),_react2.default.createElement(_rubix.LoremIpsum,{query:'1p'}))));};return DummySidebar;}(_react2.default.Component);var SidebarContainer=(0,_reactRouter.withRouter)(_class2=function(_React$Component3){(0,_inherits3.default)(SidebarContainer,_React$Component3);function SidebarContainer(){(0,_classCallCheck3.default)(this,SidebarContainer);return(0,_possibleConstructorReturn3.default)(this,_React$Component3.apply(this,arguments));}SidebarContainer.prototype.render=function render(){return _react2.default.createElement('div',{id:'sidebar'},_react2.default.createElement('div',{id:'avatar'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,{className:'fg-white'},_react2.default.createElement(_rubix.Col,{xs:4,collapseRight:true},_react2.default.createElement('img',{src:'/imgs/app/avatars/avatar0.png',width:'40',height:'40'})),_react2.default.createElement(_rubix.Col,{xs:8,collapseLeft:true,id:'avatar-col'},_react2.default.createElement('div',{style:{top:23,fontSize:16,lineHeight:1,position:'relative'}},localStorage.getItem('admin')),_react2.default.createElement('div',null,_react2.default.createElement(_rubix.Progress,{id:'demo-progress',value:30,color:'#ffffff'}),_react2.default.createElement('a',{href:'#'},_react2.default.createElement(_rubix.Icon,{id:'demo-icon',bundle:'fontello',glyph:'lock-5'}))))))),_react2.default.createElement(_rubix.SidebarControls,null,_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'docs',sidebar:0}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'chat-1',sidebar:1}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'chart-pie-2',sidebar:2}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'th-list-2',sidebar:3}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'bell-5',sidebar:4})),_react2.default.createElement('div',{id:'sidebar-container'},_react2.default.createElement(_rubix.Sidebar,{sidebar:0},_react2.default.createElement(ApplicationSidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:1},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:2},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:3},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:4},_react2.default.createElement(DummySidebar,null))));};return SidebarContainer;}(_react2.default.Component))||_class2;exports.default=SidebarContainer;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(ApplicationSidebar,'ApplicationSidebar','/Users/zhiyan/Documents/todolist/src/common/sidebar.js');__REACT_HOT_LOADER__.register(DummySidebar,'DummySidebar','/Users/zhiyan/Documents/todolist/src/common/sidebar.js');__REACT_HOT_LOADER__.register(SidebarContainer,'SidebarContainer','/Users/zhiyan/Documents/todolist/src/common/sidebar.js');}();;
+	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _class,_class2;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _rubix=__webpack_require__(260);var _reactRouter=__webpack_require__(259);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var ApplicationSidebar=(0,_reactRouter.withRouter)(_class=function(_React$Component){(0,_inherits3.default)(ApplicationSidebar,_React$Component);function ApplicationSidebar(){(0,_classCallCheck3.default)(this,ApplicationSidebar);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}ApplicationSidebar.prototype.handleChange=function handleChange(e){this._nav.search(e.target.value);};ApplicationSidebar.prototype.getPath=function getPath(path){var dir=this.props.location.pathname.search('rtl')!==-1?'rtl':'ltr';path='/'+dir+'/'+path;return path;};ApplicationSidebar.prototype.render=function render(){var _this2=this;return _react2.default.createElement('div',null,_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement(_rubix.FormControl,{type:'text',placeholder:'Search...',onChange:this.handleChange.bind(this),className:'sidebar-search',style:{border:'none',background:'none',margin:'10px 0 0 0',borderBottom:'1px solid #666',color:'white'}}),_react2.default.createElement('div',{className:'sidebar-nav-container'},_react2.default.createElement(_rubix.SidebarNav,{style:{marginBottom:0},ref:function ref(c){return _this2._nav=c;}},_react2.default.createElement('div',{className:'sidebar-header'},'PAGES'),_react2.default.createElement(_rubix.SidebarNavItem,{glyph:'icon-fontello-gauge',name:'Dashboard',href:this.getPath.call(this,'admin/dashboard')}),_react2.default.createElement(_rubix.SidebarNavItem,{glyph:'glyphicon glyphicon-map-marker',name:'Location search',href:this.getPath.call(this,'admin/tables/locationList')}),_react2.default.createElement(_rubix.SidebarNavItem,{href:this.getPath.call(this,'admin/tables/userList'),glyph:'glyphicon glyphicon-user',name:'User search'})))))));};return ApplicationSidebar;}(_react2.default.Component))||_class;var DummySidebar=function(_React$Component2){(0,_inherits3.default)(DummySidebar,_React$Component2);function DummySidebar(){(0,_classCallCheck3.default)(this,DummySidebar);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}DummySidebar.prototype.render=function render(){return _react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement('div',{className:'sidebar-header'},'DUMMY SIDEBAR'),_react2.default.createElement(_rubix.LoremIpsum,{query:'1p'}))));};return DummySidebar;}(_react2.default.Component);var SidebarContainer=(0,_reactRouter.withRouter)(_class2=function(_React$Component3){(0,_inherits3.default)(SidebarContainer,_React$Component3);function SidebarContainer(){(0,_classCallCheck3.default)(this,SidebarContainer);return(0,_possibleConstructorReturn3.default)(this,_React$Component3.apply(this,arguments));}SidebarContainer.prototype.render=function render(){return _react2.default.createElement('div',{id:'sidebar'},_react2.default.createElement('div',{id:'avatar'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,{className:'fg-white'},_react2.default.createElement(_rubix.Col,{xs:4,collapseRight:true},_react2.default.createElement('img',{src:'/imgs/app/avatars/admin.ico',width:'40',height:'40'})),_react2.default.createElement(_rubix.Col,{xs:8,collapseLeft:true,id:'avatar-col'},_react2.default.createElement('div',{style:{top:23,fontSize:16,lineHeight:1,position:'relative'}},localStorage.getItem('admin')),_react2.default.createElement('div',null,_react2.default.createElement(_rubix.Progress,{id:'demo-progress',value:30,color:'#ffffff'}),_react2.default.createElement('a',{href:'#'},_react2.default.createElement(_rubix.Icon,{id:'demo-icon',bundle:'fontello',glyph:'lock-5'}))))))),_react2.default.createElement(_rubix.SidebarControls,null,_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'docs',sidebar:0}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'chat-1',sidebar:1}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'chart-pie-2',sidebar:2}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'th-list-2',sidebar:3}),_react2.default.createElement(_rubix.SidebarControlBtn,{bundle:'fontello',glyph:'bell-5',sidebar:4})),_react2.default.createElement('div',{id:'sidebar-container'},_react2.default.createElement(_rubix.Sidebar,{sidebar:0},_react2.default.createElement(ApplicationSidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:1},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:2},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:3},_react2.default.createElement(DummySidebar,null)),_react2.default.createElement(_rubix.Sidebar,{sidebar:4},_react2.default.createElement(DummySidebar,null))));};return SidebarContainer;}(_react2.default.Component))||_class2;exports.default=SidebarContainer;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(ApplicationSidebar,'ApplicationSidebar','/Users/zhiyan/Documents/todolist/src/common/sidebar.js');__REACT_HOT_LOADER__.register(DummySidebar,'DummySidebar','/Users/zhiyan/Documents/todolist/src/common/sidebar.js');__REACT_HOT_LOADER__.register(SidebarContainer,'SidebarContainer','/Users/zhiyan/Documents/todolist/src/common/sidebar.js');}();;
 
 /***/ },
 /* 591 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactDom=__webpack_require__(275);var _reactDom2=_interopRequireDefault(_reactDom);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRedux=__webpack_require__(592);var _reactRouter=__webpack_require__(259);var _L20n=__webpack_require__(428);var _L20n2=_interopRequireDefault(_L20n);var _HeaderNavigation=__webpack_require__(593);var _HeaderNavigation2=_interopRequireDefault(_HeaderNavigation);var _common=__webpack_require__(599);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Brand=function(_React$Component){(0,_inherits3.default)(Brand,_React$Component);function Brand(){(0,_classCallCheck3.default)(this,Brand);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}Brand.prototype.render=function render(){return _react2.default.createElement(_common.Navbar.Header,this.props,_react2.default.createElement(_common.Navbar.Brand,{tabIndex:'-1'},_react2.default.createElement('a',{href:'#'},_react2.default.createElement('img',{src:'/imgs/common/logo.png',alt:'rubix',width:'111',height:'28'}))));};return Brand;}(_react2.default.Component);var Header=function(_React$Component2){(0,_inherits3.default)(Header,_React$Component2);function Header(){(0,_classCallCheck3.default)(this,Header);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}Header.prototype.render=function render(){return _react2.default.createElement(_common.Grid,{id:'navbar'},_react2.default.createElement(_common.Row,null,_react2.default.createElement(_common.Col,{xs:12},_react2.default.createElement(_common.Navbar,{fixedTop:true,fluid:true,id:'rubix-nav-header'},_react2.default.createElement(_common.Row,null,_react2.default.createElement(_common.Col,{xs:3,visible:'xs'},_react2.default.createElement(_common.SidebarBtn,null)),_react2.default.createElement(_common.Col,{xs:6,sm:4},_react2.default.createElement(Brand,null)),_react2.default.createElement(_common.Col,{xs:3,sm:8,collapseRight:true,className:'text-right'},_react2.default.createElement(_HeaderNavigation2.default,this.props)))))));};return Header;}(_react2.default.Component);exports.default=Header;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(Brand,'Brand','/Users/zhiyan/Documents/todolist/src/common/header.js');__REACT_HOT_LOADER__.register(Header,'Header','/Users/zhiyan/Documents/todolist/src/common/header.js');}();;
+	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactDom=__webpack_require__(275);var _reactDom2=_interopRequireDefault(_reactDom);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRedux=__webpack_require__(592);var _reactRouter=__webpack_require__(259);var _L20n=__webpack_require__(428);var _L20n2=_interopRequireDefault(_L20n);var _HeaderNavigation=__webpack_require__(593);var _HeaderNavigation2=_interopRequireDefault(_HeaderNavigation);var _common=__webpack_require__(599);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Brand=function(_React$Component){(0,_inherits3.default)(Brand,_React$Component);function Brand(){(0,_classCallCheck3.default)(this,Brand);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}Brand.prototype.render=function render(){return _react2.default.createElement(_common.Navbar.Header,this.props,_react2.default.createElement(_common.Navbar.Brand,{tabIndex:'-1'},_react2.default.createElement('a',{href:'#'},_react2.default.createElement('img',{src:'/imgs/common/shyft.png',alt:'Shyft',width:'111',height:'28'}))));};return Brand;}(_react2.default.Component);var Header=function(_React$Component2){(0,_inherits3.default)(Header,_React$Component2);function Header(){(0,_classCallCheck3.default)(this,Header);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}Header.prototype.render=function render(){return _react2.default.createElement(_common.Grid,{id:'navbar'},_react2.default.createElement(_common.Row,null,_react2.default.createElement(_common.Col,{xs:12},_react2.default.createElement(_common.Navbar,{fixedTop:true,fluid:true,id:'rubix-nav-header'},_react2.default.createElement(_common.Row,null,_react2.default.createElement(_common.Col,{xs:3,visible:'xs'},_react2.default.createElement(_common.SidebarBtn,null)),_react2.default.createElement(_common.Col,{xs:6,sm:4},_react2.default.createElement(Brand,null)),_react2.default.createElement(_common.Col,{xs:3,sm:8,collapseRight:true,className:'text-right'},_react2.default.createElement(_HeaderNavigation2.default,this.props)))))));};return Header;}(_react2.default.Component);exports.default=Header;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(Brand,'Brand','/Users/zhiyan/Documents/todolist/src/common/header.js');__REACT_HOT_LOADER__.register(Header,'Header','/Users/zhiyan/Documents/todolist/src/common/header.js');}();;
 
 /***/ },
 /* 592 */
@@ -49328,7 +49328,7 @@ require('source-map-support').install({environment: 'node'});
 /* 711 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(592);var _redux=__webpack_require__(705);var _reactDom=__webpack_require__(275);var _reactDom2=_interopRequireDefault(_reactDom);var _lodash=__webpack_require__(706);var _lodash2=_interopRequireDefault(_lodash);var _rubix=__webpack_require__(260);var _apiActions=__webpack_require__(707);var _LocationListElement=__webpack_require__(782);var _LocationListElement2=_interopRequireDefault(_LocationListElement);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var DatatableComponent=function(_React$Component){(0,_inherits3.default)(DatatableComponent,_React$Component);function DatatableComponent(){(0,_classCallCheck3.default)(this,DatatableComponent);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}DatatableComponent.prototype.componentDidMount=function componentDidMount(){$(_reactDom2.default.findDOMNode(this.example)).addClass('nowrap');//.dataTable({
+	'use strict';exports.__esModule=true;var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRedux=__webpack_require__(592);var _redux=__webpack_require__(705);var _reactDom=__webpack_require__(275);var _reactDom2=_interopRequireDefault(_reactDom);var _lodash=__webpack_require__(706);var _lodash2=_interopRequireDefault(_lodash);var _rubix=__webpack_require__(260);var _apiActions=__webpack_require__(707);var _LocationListElement=__webpack_require__(712);var _LocationListElement2=_interopRequireDefault(_LocationListElement);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var DatatableComponent=function(_React$Component){(0,_inherits3.default)(DatatableComponent,_React$Component);function DatatableComponent(){(0,_classCallCheck3.default)(this,DatatableComponent);return(0,_possibleConstructorReturn3.default)(this,_React$Component.apply(this,arguments));}DatatableComponent.prototype.componentDidMount=function componentDidMount(){$(_reactDom2.default.findDOMNode(this.example)).addClass('nowrap');//.dataTable({
 	//       columnDefs: [
 	//           { targets: [-1, -3], className: 'dt-body-left' }
 	//       ],
@@ -49340,7 +49340,19 @@ require('source-map-support').install({environment: 'node'});
 /* 712 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _class;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRouter=__webpack_require__(259);var _TextFieldGroup=__webpack_require__(713);var _TextFieldGroup2=_interopRequireDefault(_TextFieldGroup);var _reactRedux=__webpack_require__(592);var _authActions=__webpack_require__(594);var _common=__webpack_require__(599);var _loginValidation=__webpack_require__(714);var _loginValidation2=_interopRequireDefault(_loginValidation);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var LoginForm=(0,_reactRouter.withRouter)(_class=function(_React$Component){(0,_inherits3.default)(LoginForm,_React$Component);function LoginForm(props){(0,_classCallCheck3.default)(this,LoginForm);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.state={email:'',password:'',errors:{},isLoading:false};//this.onSubmit = this.onSubmit.bind(this);
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRouter=__webpack_require__(259);var _reactBootstrap=__webpack_require__(701);var _reactRedux=__webpack_require__(592);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var LocationListElement=function(_React$Component){(0,_inherits3.default)(LocationListElement,_React$Component);function LocationListElement(props){(0,_classCallCheck3.default)(this,LocationListElement);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.modalDeleteShow=_this.modalDeleteShow.bind(_this);return _this;}LocationListElement.prototype.modalDeleteShow=function modalDeleteShow(event){var locationId=Number(event.target.dataset.id);var phoneNumber=event.target.dataset.phone_number;this.props.dispatch({type:'location.modalDelete',id:locationId,phone:phoneNumber});};LocationListElement.prototype.render=function render(){var location=this.props.location;return _react2.default.createElement('tr',null,_react2.default.createElement('td',null,location.id),_react2.default.createElement('td',null,location.formatted_address),_react2.default.createElement('td',null,location.city),_react2.default.createElement('td',null,location.location_name),_react2.default.createElement('td',null,location.member_count),_react2.default.createElement('td',null,_react2.default.createElement(_reactRouter.Link,{to:'/ltr/location/edit/'+location.id},_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-primary',bsSize:'small'},'Edit ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'edit'})))),_react2.default.createElement('td',null,_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-danger',bsSize:'small','data-id':location.id,'data-phone_number':location.phone_number,onClick:this.modalDeleteShow},'Delete ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'remove-circle'}))));};return LocationListElement;}(_react2.default.Component);var _default=(0,_reactRedux.connect)()(LocationListElement);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(LocationListElement,'LocationListElement','/Users/zhiyan/Documents/todolist/src/components/LocationListElement.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/todolist/src/components/LocationListElement.js');}();;
+
+/***/ },
+/* 713 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';exports.__esModule=true;exports.default=undefined;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _rubix=__webpack_require__(260);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var Contact=function(_React$Component){(0,_inherits3.default)(Contact,_React$Component);function Contact(props){(0,_classCallCheck3.default)(this,Contact);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.state={invited:_this.props.invited?true:false,invitedText:_this.props.invited?'invited':'invite'};return _this;}Contact.prototype.handleClick=function handleClick(e){e.preventDefault();e.stopPropagation();this.setState({invited:!this.state.invited,invitedText:!this.state.invited?'invited':'invite'});};Contact.prototype.render=function render(){return _react2.default.createElement('tr',null,_react2.default.createElement('td',{style:{verticalAlign:'middle',borderTop:this.props.noBorder?'none':null}},_react2.default.createElement('img',{src:'/imgs/app/avatars/'+this.props.avatar+'.png'})),_react2.default.createElement('td',{style:{verticalAlign:'middle',borderTop:this.props.noBorder?'none':null}},this.props.name),_react2.default.createElement('td',{style:{verticalAlign:'middle',borderTop:this.props.noBorder?'none':null},className:'text-right'},_react2.default.createElement(_rubix.Button,{onlyOnHover:true,bsStyle:'orange',active:this.state.invited,onClick:this.handleClick.bind(this)},this.state.invitedText)));};return Contact;}(_react2.default.Component);var MainChart=function(_React$Component2){(0,_inherits3.default)(MainChart,_React$Component2);function MainChart(){(0,_classCallCheck3.default)(this,MainChart);return(0,_possibleConstructorReturn3.default)(this,_React$Component2.apply(this,arguments));}MainChart.prototype.componentDidMount=function componentDidMount(){var chart=new Rubix('#main-chart',{width:'100%',height:300,title:'Chart of Total Users',titleColor:'#2EB398',subtitle:'Period: 2004 and 2008',subtitleColor:'#2EB398',axis:{x:{type:'datetime',tickCount:3,label:'Time',labelColor:'#2EB398'},y:{type:'linear',tickFormat:'d',tickCount:2,labelColor:'#2EB398'}},tooltip:{color:'#55C9A6',format:{y:'.0f',x:'%x'}},margin:{top:25,left:50,right:25},interpolate:'linear',master_detail:true});var total_users=chart.area_series({name:'Total Users',color:'#2EB398',marker:'circle',fillopacity:0.7,noshadow:true});chart.extent=[1297110663*850+86400000*20*(.35*40),1297110663*850+86400000*20*(.66*40)];var t=1297110663*850;var v=[5,10,2,20,40,35,30,20,25,10,20,10,20,15,25,20,30,25,30,25,30,35,40,20,15,20,10,25,15,20,10,25,30,30,25,20,10,50,60,30];var getValue=function getValue(){var val=v.shift();v.push(val);return val;};var data=d3.range(40).map(function(){return{x:t+=86400000*20,y:getValue()};});total_users.addData(data);};MainChart.prototype.render=function render(){return _react2.default.createElement(_rubix.PanelBody,{style:{paddingTop:5}},_react2.default.createElement('div',{id:'main-chart'}));};return MainChart;}(_react2.default.Component);var MaleFemaleChart=function(_React$Component3){(0,_inherits3.default)(MaleFemaleChart,_React$Component3);function MaleFemaleChart(){(0,_classCallCheck3.default)(this,MaleFemaleChart);return(0,_possibleConstructorReturn3.default)(this,_React$Component3.apply(this,arguments));}MaleFemaleChart.prototype.componentDidMount=function componentDidMount(){var chart=new Rubix('#male-female-chart',{height:200,title:'Demographics',subtitle:'Visitors',axis:{x:{type:'ordinal',tickFormat:'d',tickCount:2,label:'Time'},y:{type:'linear',tickFormat:'d'}},tooltip:{theme_style:'dark',format:{y:'.0f'},abs:{y:true}},stacked:true,interpolate:'linear',show_markers:true});var column=chart.column_series({name:'Male Visitors',color:'#2D89EF',marker:'cross'});var data=[{x:2005,y:21},{x:2006,y:44},{x:2007,y:14},{x:2008,y:18},{x:2009,y:23},{x:2010,y:21}];column.addData(data);var column1=chart.column_series({name:'Female Visitors',color:'#FF0097',marker:'diamond'});var data1=[{x:2005,y:-79},{x:2006,y:-56},{x:2007,y:-86},{x:2008,y:-82},{x:2009,y:-77},{x:2010,y:-79}];column1.addData(data1);};MaleFemaleChart.prototype.render=function render(){return _react2.default.createElement('div',{id:'male-female-chart'});};return MaleFemaleChart;}(_react2.default.Component);var SocialSwitches=function(_React$Component4){(0,_inherits3.default)(SocialSwitches,_React$Component4);function SocialSwitches(){(0,_classCallCheck3.default)(this,SocialSwitches);return(0,_possibleConstructorReturn3.default)(this,_React$Component4.apply(this,arguments));}SocialSwitches.prototype.componentDidMount=function componentDidMount(){var elems=Array.prototype.slice.call(document.querySelectorAll('.js-switch'));elems.forEach(function(html){var switchery=new Switchery(html);});};SocialSwitches.prototype.render=function render(){return _react2.default.createElement(_rubix.Table,{className:'panel-switches',collapsed:true},_react2.default.createElement('tbody',null,_react2.default.createElement('tr',null,_react2.default.createElement('td',null,_react2.default.createElement(_rubix.Icon,{glyph:'icon-fontello-twitter',className:'fg-blue'}),_react2.default.createElement('span',{className:'text-uppercase panel-switches-text'},'twitter')),_react2.default.createElement('td',{className:'panel-switches-holder'},_react2.default.createElement('input',{type:'checkbox',className:'js-switch',defaultChecked:true}))),_react2.default.createElement('tr',null,_react2.default.createElement('td',null,_react2.default.createElement(_rubix.Icon,{glyph:'icon-fontello-facebook',className:'fg-darkblue'}),_react2.default.createElement('span',{className:'text-uppercase panel-switches-text'},'facebook')),_react2.default.createElement('td',{className:'panel-switches-holder'},_react2.default.createElement('input',{type:'checkbox',className:'js-switch'}))),_react2.default.createElement('tr',null,_react2.default.createElement('td',null,_react2.default.createElement(_rubix.Icon,{glyph:'icon-fontello-gplus',className:'fg-deepred'}),_react2.default.createElement('span',{className:'text-uppercase panel-switches-text'},'google+')),_react2.default.createElement('td',{className:'panel-switches-holder'},_react2.default.createElement('input',{type:'checkbox',className:'js-switch'}))),_react2.default.createElement('tr',null,_react2.default.createElement('td',null,_react2.default.createElement(_rubix.Icon,{glyph:'icon-fontello-linkedin',className:'fg-deepred'}),_react2.default.createElement('span',{className:'text-uppercase panel-switches-text'},'linkedin')),_react2.default.createElement('td',{className:'panel-switches-holder'},_react2.default.createElement('input',{type:'checkbox',className:'js-switch',defaultChecked:true}))),_react2.default.createElement('tr',null,_react2.default.createElement('td',null,_react2.default.createElement(_rubix.Icon,{glyph:'icon-fontello-instagram',className:'fg-deepred'}),_react2.default.createElement('span',{className:'text-uppercase panel-switches-text'},'instagram')),_react2.default.createElement('td',{className:'panel-switches-holder'},_react2.default.createElement(_rubix.Button,{bsStyle:'primary'},'connect')))));};return SocialSwitches;}(_react2.default.Component);var NotePanel=function(_React$Component5){(0,_inherits3.default)(NotePanel,_React$Component5);function NotePanel(){(0,_classCallCheck3.default)(this,NotePanel);return(0,_possibleConstructorReturn3.default)(this,_React$Component5.apply(this,arguments));}NotePanel.prototype.render=function render(){return _react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12,style:{padding:50,paddingTop:12.5,paddingBottom:25},className:'text-center'},_react2.default.createElement('h3',{className:'fg-black50'},'NOTE'),_react2.default.createElement('hr',null),_react2.default.createElement('p',null,_react2.default.createElement(_rubix.LoremIpsum,{query:'3s'})))));};return NotePanel;}(_react2.default.Component);var RevenuePanel=function(_React$Component6){(0,_inherits3.default)(RevenuePanel,_React$Component6);function RevenuePanel(){(0,_classCallCheck3.default)(this,RevenuePanel);return(0,_possibleConstructorReturn3.default)(this,_React$Component6.apply(this,arguments));}RevenuePanel.prototype.render=function render(){return _react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12,className:'text-center'},_react2.default.createElement('br',null),_react2.default.createElement('div',null,_react2.default.createElement('h4',null,'Gross Revenue'),_react2.default.createElement('h2',{className:'fg-green visible-xs visible-md visible-lg'},'9,362.74'),_react2.default.createElement('h4',{className:'fg-green visible-sm'},'9,362.74')),_react2.default.createElement('hr',{className:'border-green'}),_react2.default.createElement('div',null,_react2.default.createElement('h4',null,'Net Revenue'),_react2.default.createElement('h2',{className:'fg-green visible-xs visible-md visible-lg'},'6,734.89'),_react2.default.createElement('h4',{className:'fg-green visible-sm'},'6,734.89')))));};return RevenuePanel;}(_react2.default.Component);var LoadPanel=function(_React$Component7){(0,_inherits3.default)(LoadPanel,_React$Component7);function LoadPanel(){(0,_classCallCheck3.default)(this,LoadPanel);return(0,_possibleConstructorReturn3.default)(this,_React$Component7.apply(this,arguments));}LoadPanel.prototype.render=function render(){return _react2.default.createElement(_rubix.Row,{className:'bg-green fg-lightgreen'},_react2.default.createElement(_rubix.Col,{xs:6},_react2.default.createElement('h3',null,'Daily Load')),_react2.default.createElement(_rubix.Col,{xs:6,className:'text-right'},_react2.default.createElement('h2',{className:'fg-lightgreen'},'67%')));};return LoadPanel;}(_react2.default.Component);var AlertChart=function(_React$Component8){(0,_inherits3.default)(AlertChart,_React$Component8);function AlertChart(){(0,_classCallCheck3.default)(this,AlertChart);return(0,_possibleConstructorReturn3.default)(this,_React$Component8.apply(this,arguments));}AlertChart.prototype.componentDidMount=function componentDidMount(){var chart=new Rubix('#alert-chart',{width:'100%',height:200,hideLegend:true,hideAxisAndGrid:true,focusLineColor:'#fff',theme_style:'dark',axis:{x:{type:'linear'},y:{type:'linear',tickFormat:'d'}},tooltip:{color:'#fff',format:{x:'d',y:'d'}},margin:{left:25,top:50,right:25,bottom:25}});var alerts=chart.column_series({name:'Load',color:'#7CD5BA',nostroke:true});alerts.addData([{x:0,y:30},{x:1,y:40},{x:2,y:15},{x:3,y:30},{x:4,y:35},{x:5,y:70},{x:6,y:50},{x:7,y:60},{x:8,y:35},{x:9,y:30},{x:10,y:40},{x:11,y:30},{x:12,y:50},{x:13,y:35}]);};AlertChart.prototype.render=function render(){return _react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12},_react2.default.createElement('div',{id:'alert-chart',className:'rubix-chart'})));};return AlertChart;}(_react2.default.Component);var RadarChartPanel=function(_React$Component9){(0,_inherits3.default)(RadarChartPanel,_React$Component9);function RadarChartPanel(){(0,_classCallCheck3.default)(this,RadarChartPanel);return(0,_possibleConstructorReturn3.default)(this,_React$Component9.apply(this,arguments));}RadarChartPanel.prototype.componentDidMount=function componentDidMount(){var data={labels:['Japan','France','USA','Russia','China','Dubai','India'],datasets:[{label:'My First dataset',fillColor:'rgba(220,220,220,0.2)',strokeColor:'rgba(220,220,220,1)',pointColor:'rgba(220,220,220,1)',pointStrokeColor:'#fff',pointHighlightFill:'#fff',pointHighlightStroke:'rgba(220,220,220,1)',data:[65,59,90,81,56,55,40]},{label:'My Second dataset',fillColor:'rgba(234, 120, 130, 0.5)',strokeColor:'rgba(234, 120, 130, 1)',pointColor:'rgba(234, 120, 130, 1)',pointStrokeColor:'#fff',pointHighlightFill:'#fff',pointHighlightStroke:'rgba(151,187,205,1)',data:[28,48,40,19,96,27,100]}]};var ctx=document.getElementById('chartjs-1').getContext('2d');new Chart(ctx).Radar(data,{responsive:false,maintainAspectRatio:true});$('.line-EA7882').sparkline('html',{type:'line',height:25,lineColor:'#EA7882',fillColor:'rgba(234, 120, 130, 0.5)',sparkBarColor:'#EA7882'});$('.line-2EB398').sparkline('html',{type:'line',height:25,lineColor:'#2EB398',fillColor:'rgba(46, 179, 152, 0.5)',sparkBarColor:'#2EB398'});$('.line-79B0EC').sparkline('html',{type:'line',height:25,lineColor:'#79B0EC',fillColor:'rgba(121, 176, 236, 0.5)',sparkBarColor:'#79B0EC'});$('.line-FFC497').sparkline('html',{type:'line',height:25,lineColor:'#FFC497',fillColor:'rgba(255, 196, 151, 0.5)',sparkBarColor:'#FFC497'});};RadarChartPanel.prototype.render=function render(){return _react2.default.createElement('div',null,_react2.default.createElement('canvas',{id:'chartjs-1',height:'250',width:'250'}),_react2.default.createElement(_rubix.Table,{striped:true,collapsed:true},_react2.default.createElement('tbody',null,_react2.default.createElement('tr',null,_react2.default.createElement('td',{className:'text-left'},'Bounce Rate:'),_react2.default.createElement('td',{className:'text-center'},_react2.default.createElement(_rubix.Label,{className:'bg-red fg-white'},'+46%')),_react2.default.createElement('td',{className:'text-right'},_react2.default.createElement('div',{className:'line-EA7882'},'2,3,7,5,4,4,3,2,3,4,3,2,4,3,4,3,2,5'))),_react2.default.createElement('tr',null,_react2.default.createElement('td',{className:'text-left'},'New visits:'),_react2.default.createElement('td',{className:'text-center'},_react2.default.createElement(_rubix.Label,{className:'bg-darkgreen45 fg-white'},'+23%')),_react2.default.createElement('td',{className:'text-right'},_react2.default.createElement('div',{className:'line-2EB398'},'7,7,7,7,7,7,6,7,4,7,7,7,7,5,7,7,7,9'))),_react2.default.createElement('tr',null,_react2.default.createElement('td',{className:'text-left'},'Transactions:'),_react2.default.createElement('td',{className:'text-center'},_react2.default.createElement(_rubix.Label,{className:'bg-blue fg-white'},'43,000 (+50%)')),_react2.default.createElement('td',{className:'text-right'},_react2.default.createElement('div',{className:'line-79B0EC'},'4,6,7,7,4,3,2,1,4,9,3,2,3,5,2,4,3,1'))),_react2.default.createElement('tr',null,_react2.default.createElement('td',{className:'text-left'},'Conversions:'),_react2.default.createElement('td',{className:'text-center'},_react2.default.createElement(_rubix.Label,{className:'bg-orange fg-white'},'2000 (+75%)')),_react2.default.createElement('td',{className:'text-right'},_react2.default.createElement('div',{className:'line-FFC497'},'3,2,4,6,7,4,5,7,4,3,2,1,4,6,7,8,2,8'))))));};return RadarChartPanel;}(_react2.default.Component);var ContactListPanel=function(_React$Component10){(0,_inherits3.default)(ContactListPanel,_React$Component10);function ContactListPanel(){(0,_classCallCheck3.default)(this,ContactListPanel);return(0,_possibleConstructorReturn3.default)(this,_React$Component10.apply(this,arguments));}ContactListPanel.prototype.render=function render(){return _react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{xs:12,style:{padding:25}},_react2.default.createElement(_rubix.Form,null,_react2.default.createElement(_rubix.FormGroup,null,_react2.default.createElement(_rubix.InputGroup,null,_react2.default.createElement(_rubix.FormControl,{type:'text',placeholder:'Type a name here...',className:'border-orange border-focus-darkorange'}),_react2.default.createElement(_rubix.InputGroup.Button,null,_react2.default.createElement(_rubix.Button,{bsStyle:'orange'},_react2.default.createElement(_rubix.Icon,{glyph:'icon-fontello-search'})))))),_react2.default.createElement('div',{className:'text-center'},_react2.default.createElement(_rubix.Checkbox,null,'Invite all friends')),_react2.default.createElement('div',null,_react2.default.createElement(_rubix.Table,{collapsed:true},_react2.default.createElement('tbody',null,_react2.default.createElement(Contact,{name:'Jordyn Ouellet',avatar:'avatar5',noBorder:true}),_react2.default.createElement(Contact,{name:'Ava Perry',avatar:'avatar9'}),_react2.default.createElement(Contact,{name:'Angelina Mills',avatar:'avatar10',invited:true}),_react2.default.createElement(Contact,{name:'Crystal Ford',avatar:'avatar11'}),_react2.default.createElement(Contact,{name:'Toby King',avatar:'avatar7'}),_react2.default.createElement(Contact,{name:'Ju Lan',avatar:'avatar13',invited:true}),_react2.default.createElement(Contact,{name:'Alexandra Mordin',avatar:'avatar20'})))))));};return ContactListPanel;}(_react2.default.Component);var TicketsPanel=function(_React$Component11){(0,_inherits3.default)(TicketsPanel,_React$Component11);function TicketsPanel(){(0,_classCallCheck3.default)(this,TicketsPanel);return(0,_possibleConstructorReturn3.default)(this,_React$Component11.apply(this,arguments));}TicketsPanel.prototype.componentDidMount=function componentDidMount(){var ticketsCleared=Rubix.Donut('#tickets-cleared',{title:'Tickets Cleared',subtitle:'by agents',titleColor:'#EBA068',subtitleColor:'#EBA068',hideLegend:false,height:300,tooltip:{color:'#EBA068'}});ticketsCleared.addData([{name:'Karl Pohl',value:57,color:'#FA824F'},{name:'Gamze Erdoğan',value:32,color:'#EBA068'},{name:'Leyla Cəlilli',value:23,color:'#FFC497'},{name:'Nadir Üzeyirzadə',value:11,color:'#FFC9A0'},{name:'Anna Sanchez',value:7,color:'#FFD3B1'}]);};TicketsPanel.prototype.render=function render(){return _react2.default.createElement('div',null,_react2.default.createElement('div',{id:'tickets-cleared'}),_react2.default.createElement(_rubix.Table,{collapsed:true},_react2.default.createElement('tbody',null,_react2.default.createElement('tr',null,_react2.default.createElement('td',{style:{padding:'12.5px 25px'}},_react2.default.createElement(_rubix.Progress,{label:'Karl Pohl',value:57,color:'#FA824F',min:0,max:100})),_react2.default.createElement('td',{style:{padding:'12.5px 25px'},className:'text-right'},_react2.default.createElement(_rubix.Label,null,'57'))),_react2.default.createElement('tr',null,_react2.default.createElement('td',{style:{padding:'12.5px 25px'}},_react2.default.createElement(_rubix.Progress,{label:'Gamze Erdo\u011Fan',value:35,color:'#EBA068',min:0,max:100})),_react2.default.createElement('td',{style:{padding:'12.5px 25px'},className:'text-right'},_react2.default.createElement(_rubix.Label,null,'33'))),_react2.default.createElement('tr',null,_react2.default.createElement('td',{style:{padding:'12.5px 25px'}},_react2.default.createElement(_rubix.Progress,{label:'Leyla C\u0259lilli',value:30,color:'#FFC497',min:0,max:100})),_react2.default.createElement('td',{style:{padding:'12.5px 25px'},className:'text-right'},_react2.default.createElement(_rubix.Label,null,'23'))),_react2.default.createElement('tr',null,_react2.default.createElement('td',{style:{padding:'12.5px 25px'}},_react2.default.createElement(_rubix.Progress,{label:'Nadir \xDCzeyirzad\u0259',value:41,color:'#FFC9A0',min:0,max:100})),_react2.default.createElement('td',{style:{padding:'12.5px 25px'},className:'text-right'},_react2.default.createElement(_rubix.Label,null,'11'))),_react2.default.createElement('tr',null,_react2.default.createElement('td',{style:{padding:'12.5px 25px'}},_react2.default.createElement(_rubix.Progress,{label:'Anna Sanchez',value:66,color:'#FFD3B1',min:0,max:100})),_react2.default.createElement('td',{style:{padding:'12.5px 25px'},className:'text-right'},_react2.default.createElement(_rubix.Label,null,'7'))))));};return TicketsPanel;}(_react2.default.Component);var Dashboard=function(_React$Component12){(0,_inherits3.default)(Dashboard,_React$Component12);function Dashboard(){(0,_classCallCheck3.default)(this,Dashboard);return(0,_possibleConstructorReturn3.default)(this,_React$Component12.apply(this,arguments));}Dashboard.prototype.render=function render(){return _react2.default.createElement('div',{className:'dashboard'},_react2.default.createElement(_rubix.Row,null,_react2.default.createElement(_rubix.Col,{sm:12},_react2.default.createElement(_rubix.PanelTabContainer,{id:'dashboard-main',defaultActiveKey:'demographics'},_react2.default.createElement(_rubix.Panel,null,_react2.default.createElement(MainChart,null)),_react2.default.createElement(_rubix.Panel,{horizontal:true,className:'force-collapse'},_react2.default.createElement(_rubix.PanelRight,{className:'bg-lightgreen fg-white panel-sm-2'},_react2.default.createElement(RevenuePanel,null)),_react2.default.createElement(_rubix.PanelRight,{className:'bg-green fg-green panel-sm-4'},_react2.default.createElement(_rubix.Grid,null,_react2.default.createElement(LoadPanel,null),_react2.default.createElement(AlertChart,null))))))));};return Dashboard;}(_react2.default.Component);exports.default=Dashboard;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(Contact,'Contact','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(MainChart,'MainChart','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(MaleFemaleChart,'MaleFemaleChart','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(SocialSwitches,'SocialSwitches','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(NotePanel,'NotePanel','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(RevenuePanel,'RevenuePanel','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(LoadPanel,'LoadPanel','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(AlertChart,'AlertChart','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(RadarChartPanel,'RadarChartPanel','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(ContactListPanel,'ContactListPanel','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(TicketsPanel,'TicketsPanel','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');__REACT_HOT_LOADER__.register(Dashboard,'Dashboard','/Users/zhiyan/Documents/todolist/src/routes/Dashboard.js');}();;
+
+/***/ },
+/* 714 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _class;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);var _reactRouter=__webpack_require__(259);var _TextFieldGroup=__webpack_require__(715);var _TextFieldGroup2=_interopRequireDefault(_TextFieldGroup);var _reactRedux=__webpack_require__(592);var _authActions=__webpack_require__(594);var _common=__webpack_require__(599);var _loginValidation=__webpack_require__(716);var _loginValidation2=_interopRequireDefault(_loginValidation);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var LoginForm=(0,_reactRouter.withRouter)(_class=function(_React$Component){(0,_inherits3.default)(LoginForm,_React$Component);function LoginForm(props){(0,_classCallCheck3.default)(this,LoginForm);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.state={email:'',password:'',errors:{},isLoading:false};//this.onSubmit = this.onSubmit.bind(this);
 	return _this;}LoginForm.prototype.isValid=function isValid(){var _validateInput=(0,_loginValidation2.default)(this.state),errors=_validateInput.errors,isValid=_validateInput.isValid;if(!isValid){this.setState({errors:errors});}return isValid;};LoginForm.prototype.onSubmit=function onSubmit(e){var _this2=this;e.preventDefault();if(this.isValid()){this.setState({errors:{},isLoading:true});this.props.login(this.state).then(function(res){return _this2.props.router.push('ltr/admin');},function(err){return _this2.setState({errors:err.data.errors,isLoading:false});});}};LoginForm.prototype.onChange=function onChange(e){var _setState;this.setState((_setState={},_setState[e.target.name]=e.target.value,_setState));};//back(e) {
 	//    e.preventDefault();
 	//    e.stopPropagation();
@@ -49349,35 +49361,35 @@ require('source-map-support').install({environment: 'node'});
 	LoginForm.prototype.componentDidMount=function componentDidMount(){$('html').addClass('authentication');};LoginForm.prototype.componentWillUnmount=function componentWillUnmount(){$('html').removeClass('authentication');};LoginForm.prototype.getPath=function getPath(path){var dir=this.props.location.pathname.search('rtl')!==-1?'rtl':'ltr';path='/'+dir+'/'+path;return path;};LoginForm.prototype.render=function render(){var _state=this.state,email=_state.email,password=_state.password,errors=_state.errors,isLoading=_state.isLoading;return _react2.default.createElement('div',{id:'auth-container',className:'login',style:{"margin":"200px auto 0 auto"}},_react2.default.createElement('div',{id:'auth-row'},_react2.default.createElement('div',{id:'auth-cell'},_react2.default.createElement(_common.Grid,null,_react2.default.createElement(_common.Row,null,_react2.default.createElement(_common.Col,{sm:4,smOffset:4,xs:10,xsOffset:1,collapseLeft:true,collapseRight:true},_react2.default.createElement(_common.PanelContainer,{controls:false},_react2.default.createElement(_common.Panel,null,_react2.default.createElement(_common.PanelBody,{style:{padding:0}},_react2.default.createElement('div',{className:'text-center bg-darkblue fg-white'},_react2.default.createElement('h3',{style:{margin:0,padding:25}},'Sign in to Shyft')),_react2.default.createElement('div',{className:'bg-hoverblue fg-black50 text-center',style:{padding:12.5}},_react2.default.createElement('div',null,'You need to sign in for those awesome features')),_react2.default.createElement('div',null,_react2.default.createElement('div',{style:{padding:0,paddingTop:0,paddingBottom:0,margin:'auto',marginBottom:0,marginTop:25}},errors.form&&_react2.default.createElement('div',{className:'alert alert-danger'},errors.form),_react2.default.createElement(_common.Form,{onSubmit:this.onSubmit.bind(this)},_react2.default.createElement(_TextFieldGroup2.default,{field:'email',label:'Email',name:'email',value:email,placeholder:'yourname@myshyft.com',error:errors.email,onChange:this.onChange.bind(this)}),_react2.default.createElement(_TextFieldGroup2.default,{field:'password',label:'Password',name:'email',value:password,placeholder:'password',error:errors.password,onChange:this.onChange.bind(this),type:'password'}),_react2.default.createElement(_common.FormGroup,null,_react2.default.createElement(_common.Grid,null,_react2.default.createElement(_common.Row,null,_react2.default.createElement(_common.Col,{xs:6,collapseLeft:true,collapseRight:true,style:{paddingTop:10}},_react2.default.createElement(_reactRouter.Link,{to:this.getPath.call(this,'signup')},'Create a Shyft account')),_react2.default.createElement(_common.Col,{xs:6,collapseLeft:true,collapseRight:true,className:'text-right'},_react2.default.createElement(_common.Button,{outlined:true,lg:true,type:'submit',bsStyle:'blue',disabled:isLoading},'Login')))))))))))))))));};return LoginForm;}(_react2.default.Component))||_class;LoginForm.propTypes={login:_react2.default.PropTypes.func.isRequired};LoginForm.contextTypes={router:_react2.default.PropTypes.object.isRequired};var _default=(0,_reactRedux.connect)(null,{login:_authActions.login})(LoginForm);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(LoginForm,'LoginForm','/Users/zhiyan/Documents/todolist/src/components/login/login.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/todolist/src/components/login/login.js');}();;
 
 /***/ },
-/* 713 */
+/* 715 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';exports.__esModule=true;var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _classnames=__webpack_require__(258);var _classnames2=_interopRequireDefault(_classnames);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var TextFieldGroup=function TextFieldGroup(_ref){var field=_ref.field,value=_ref.value,label=_ref.label,error=_ref.error,placeholder=_ref.placeholder,type=_ref.type,Glyphicon=_ref.Glyphicon,onChange=_ref.onChange,checkUserExists=_ref.checkUserExists;return _react2.default.createElement('div',{className:(0,_classnames2.default)('form-group',{'has-error':error})},_react2.default.createElement('label',{className:'control-label'},label),_react2.default.createElement('input',{onChange:onChange,onBlur:checkUserExists,value:value,placeholder:placeholder,type:type,name:field,className:'form-control'}),error&&_react2.default.createElement('span',{className:'help-block'},error));};TextFieldGroup.propTypes={field:_react2.default.PropTypes.string.isRequired,value:_react2.default.PropTypes.string.isRequired,label:_react2.default.PropTypes.string.isRequired,error:_react2.default.PropTypes.string,type:_react2.default.PropTypes.string.isRequired,onChange:_react2.default.PropTypes.func.isRequired,checkUserExists:_react2.default.PropTypes.func};TextFieldGroup.defaultProps={type:'text'};var _default=TextFieldGroup;exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(TextFieldGroup,'TextFieldGroup','/Users/zhiyan/Documents/todolist/src/components/login/TextFieldGroup.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/todolist/src/components/login/TextFieldGroup.js');}();;
 
 /***/ },
-/* 714 */
+/* 716 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;exports.default=validateInput;var _validator=__webpack_require__(715);var _validator2=_interopRequireDefault(_validator);var _isEmpty=__webpack_require__(716);var _isEmpty2=_interopRequireDefault(_isEmpty);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}function validateInput(data){var errors={};if(!_validator2.default.isEmail(data.email)){errors.email='Email is invalid';}if(_validator2.default.isEmpty(data.password)){errors.password='This field is required';}return{errors:errors,isValid:(0,_isEmpty2.default)(errors)};};var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(validateInput,'validateInput','/Users/zhiyan/Documents/todolist/src/components/login/loginValidation.js');}();;
+	'use strict';exports.__esModule=true;exports.default=validateInput;var _validator=__webpack_require__(717);var _validator2=_interopRequireDefault(_validator);var _isEmpty=__webpack_require__(718);var _isEmpty2=_interopRequireDefault(_isEmpty);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}function validateInput(data){var errors={};if(!_validator2.default.isEmail(data.email)){errors.email='Email is invalid';}if(_validator2.default.isEmpty(data.password)){errors.password='This field is required';}return{errors:errors,isValid:(0,_isEmpty2.default)(errors)};};var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(validateInput,'validateInput','/Users/zhiyan/Documents/todolist/src/components/login/loginValidation.js');}();;
 
 /***/ },
-/* 715 */
+/* 717 */
 /***/ function(module, exports) {
 
 	module.exports = require("validator");
 
 /***/ },
-/* 716 */
+/* 718 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseKeys = __webpack_require__(717),
-	    getTag = __webpack_require__(721),
-	    isArguments = __webpack_require__(741),
-	    isArray = __webpack_require__(744),
-	    isArrayLike = __webpack_require__(745),
-	    isBuffer = __webpack_require__(747),
-	    isPrototype = __webpack_require__(718),
-	    isTypedArray = __webpack_require__(750);
+	var baseKeys = __webpack_require__(719),
+	    getTag = __webpack_require__(723),
+	    isArguments = __webpack_require__(743),
+	    isArray = __webpack_require__(746),
+	    isArrayLike = __webpack_require__(747),
+	    isBuffer = __webpack_require__(749),
+	    isPrototype = __webpack_require__(720),
+	    isTypedArray = __webpack_require__(752);
 	
 	/** `Object#toString` result references. */
 	var mapTag = '[object Map]',
@@ -49450,11 +49462,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 717 */
+/* 719 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isPrototype = __webpack_require__(718),
-	    nativeKeys = __webpack_require__(719);
+	var isPrototype = __webpack_require__(720),
+	    nativeKeys = __webpack_require__(721);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -49486,7 +49498,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 718 */
+/* 720 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -49510,10 +49522,10 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 719 */
+/* 721 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var overArg = __webpack_require__(720);
+	var overArg = __webpack_require__(722);
 	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = overArg(Object.keys, Object);
@@ -49522,7 +49534,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 720 */
+/* 722 */
 /***/ function(module, exports) {
 
 	/**
@@ -49543,16 +49555,16 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 721 */
+/* 723 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var DataView = __webpack_require__(722),
-	    Map = __webpack_require__(737),
-	    Promise = __webpack_require__(738),
-	    Set = __webpack_require__(739),
-	    WeakMap = __webpack_require__(740),
-	    baseGetTag = __webpack_require__(726),
-	    toSource = __webpack_require__(735);
+	var DataView = __webpack_require__(724),
+	    Map = __webpack_require__(739),
+	    Promise = __webpack_require__(740),
+	    Set = __webpack_require__(741),
+	    WeakMap = __webpack_require__(742),
+	    baseGetTag = __webpack_require__(728),
+	    toSource = __webpack_require__(737);
 	
 	/** `Object#toString` result references. */
 	var mapTag = '[object Map]',
@@ -49607,11 +49619,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 722 */
+/* 724 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(723),
-	    root = __webpack_require__(728);
+	var getNative = __webpack_require__(725),
+	    root = __webpack_require__(730);
 	
 	/* Built-in method references that are verified to be native. */
 	var DataView = getNative(root, 'DataView');
@@ -49620,11 +49632,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 723 */
+/* 725 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsNative = __webpack_require__(724),
-	    getValue = __webpack_require__(736);
+	var baseIsNative = __webpack_require__(726),
+	    getValue = __webpack_require__(738);
 	
 	/**
 	 * Gets the native function at `key` of `object`.
@@ -49643,13 +49655,13 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 724 */
+/* 726 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(725),
-	    isMasked = __webpack_require__(733),
-	    isObject = __webpack_require__(732),
-	    toSource = __webpack_require__(735);
+	var isFunction = __webpack_require__(727),
+	    isMasked = __webpack_require__(735),
+	    isObject = __webpack_require__(734),
+	    toSource = __webpack_require__(737);
 	
 	/**
 	 * Used to match `RegExp`
@@ -49696,11 +49708,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 725 */
+/* 727 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGetTag = __webpack_require__(726),
-	    isObject = __webpack_require__(732);
+	var baseGetTag = __webpack_require__(728),
+	    isObject = __webpack_require__(734);
 	
 	/** `Object#toString` result references. */
 	var asyncTag = '[object AsyncFunction]',
@@ -49739,12 +49751,12 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 726 */
+/* 728 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(727),
-	    getRawTag = __webpack_require__(730),
-	    objectToString = __webpack_require__(731);
+	var Symbol = __webpack_require__(729),
+	    getRawTag = __webpack_require__(732),
+	    objectToString = __webpack_require__(733);
 	
 	/** `Object#toString` result references. */
 	var nullTag = '[object Null]',
@@ -49773,10 +49785,10 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 727 */
+/* 729 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(728);
+	var root = __webpack_require__(730);
 	
 	/** Built-in value references. */
 	var Symbol = root.Symbol;
@@ -49785,10 +49797,10 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 728 */
+/* 730 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var freeGlobal = __webpack_require__(729);
+	var freeGlobal = __webpack_require__(731);
 	
 	/** Detect free variable `self`. */
 	var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
@@ -49800,7 +49812,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 729 */
+/* 731 */
 /***/ function(module, exports) {
 
 	/** Detect free variable `global` from Node.js. */
@@ -49810,10 +49822,10 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 730 */
+/* 732 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Symbol = __webpack_require__(727);
+	var Symbol = __webpack_require__(729);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -49862,7 +49874,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 731 */
+/* 733 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -49890,7 +49902,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 732 */
+/* 734 */
 /***/ function(module, exports) {
 
 	/**
@@ -49927,10 +49939,10 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 733 */
+/* 735 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var coreJsData = __webpack_require__(734);
+	var coreJsData = __webpack_require__(736);
 	
 	/** Used to detect methods masquerading as native. */
 	var maskSrcKey = (function() {
@@ -49953,10 +49965,10 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 734 */
+/* 736 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var root = __webpack_require__(728);
+	var root = __webpack_require__(730);
 	
 	/** Used to detect overreaching core-js shims. */
 	var coreJsData = root['__core-js_shared__'];
@@ -49965,7 +49977,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 735 */
+/* 737 */
 /***/ function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -49997,7 +50009,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 736 */
+/* 738 */
 /***/ function(module, exports) {
 
 	/**
@@ -50016,11 +50028,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 737 */
+/* 739 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(723),
-	    root = __webpack_require__(728);
+	var getNative = __webpack_require__(725),
+	    root = __webpack_require__(730);
 	
 	/* Built-in method references that are verified to be native. */
 	var Map = getNative(root, 'Map');
@@ -50029,11 +50041,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 738 */
+/* 740 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(723),
-	    root = __webpack_require__(728);
+	var getNative = __webpack_require__(725),
+	    root = __webpack_require__(730);
 	
 	/* Built-in method references that are verified to be native. */
 	var Promise = getNative(root, 'Promise');
@@ -50042,11 +50054,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 739 */
+/* 741 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(723),
-	    root = __webpack_require__(728);
+	var getNative = __webpack_require__(725),
+	    root = __webpack_require__(730);
 	
 	/* Built-in method references that are verified to be native. */
 	var Set = getNative(root, 'Set');
@@ -50055,11 +50067,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 740 */
+/* 742 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(723),
-	    root = __webpack_require__(728);
+	var getNative = __webpack_require__(725),
+	    root = __webpack_require__(730);
 	
 	/* Built-in method references that are verified to be native. */
 	var WeakMap = getNative(root, 'WeakMap');
@@ -50068,11 +50080,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 741 */
+/* 743 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsArguments = __webpack_require__(742),
-	    isObjectLike = __webpack_require__(743);
+	var baseIsArguments = __webpack_require__(744),
+	    isObjectLike = __webpack_require__(745);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -50110,11 +50122,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 742 */
+/* 744 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGetTag = __webpack_require__(726),
-	    isObjectLike = __webpack_require__(743);
+	var baseGetTag = __webpack_require__(728),
+	    isObjectLike = __webpack_require__(745);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]';
@@ -50134,7 +50146,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 743 */
+/* 745 */
 /***/ function(module, exports) {
 
 	/**
@@ -50169,7 +50181,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 744 */
+/* 746 */
 /***/ function(module, exports) {
 
 	/**
@@ -50201,11 +50213,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 745 */
+/* 747 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(725),
-	    isLength = __webpack_require__(746);
+	var isFunction = __webpack_require__(727),
+	    isLength = __webpack_require__(748);
 	
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
@@ -50240,7 +50252,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 746 */
+/* 748 */
 /***/ function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -50281,11 +50293,11 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 747 */
+/* 749 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(728),
-	    stubFalse = __webpack_require__(749);
+	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(730),
+	    stubFalse = __webpack_require__(751);
 	
 	/** Detect free variable `exports`. */
 	var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -50323,10 +50335,10 @@ require('source-map-support').install({environment: 'node'});
 	
 	module.exports = isBuffer;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(748)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(750)(module)))
 
 /***/ },
-/* 748 */
+/* 750 */
 /***/ function(module, exports) {
 
 	module.exports = function(module) {
@@ -50342,7 +50354,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 749 */
+/* 751 */
 /***/ function(module, exports) {
 
 	/**
@@ -50366,12 +50378,12 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 750 */
+/* 752 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseIsTypedArray = __webpack_require__(751),
-	    baseUnary = __webpack_require__(752),
-	    nodeUtil = __webpack_require__(753);
+	var baseIsTypedArray = __webpack_require__(753),
+	    baseUnary = __webpack_require__(754),
+	    nodeUtil = __webpack_require__(755);
 	
 	/* Node.js helper references. */
 	var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -50399,12 +50411,12 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 751 */
+/* 753 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseGetTag = __webpack_require__(726),
-	    isLength = __webpack_require__(746),
-	    isObjectLike = __webpack_require__(743);
+	var baseGetTag = __webpack_require__(728),
+	    isLength = __webpack_require__(748),
+	    isObjectLike = __webpack_require__(745);
 	
 	/** `Object#toString` result references. */
 	var argsTag = '[object Arguments]',
@@ -50465,7 +50477,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 752 */
+/* 754 */
 /***/ function(module, exports) {
 
 	/**
@@ -50485,10 +50497,10 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 753 */
+/* 755 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(729);
+	/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(731);
 	
 	/** Detect free variable `exports`. */
 	var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -50511,10 +50523,10 @@ require('source-map-support').install({environment: 'node'});
 	
 	module.exports = nodeUtil;
 	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(748)(module)))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(750)(module)))
 
 /***/ },
-/* 754 */
+/* 756 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50572,9 +50584,9 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _reactRouter = __webpack_require__(259);
 	
-	var _reactHotLoader = __webpack_require__(755);
+	var _reactHotLoader = __webpack_require__(757);
 	
-	var _reactRouterScroll = __webpack_require__(756);
+	var _reactRouterScroll = __webpack_require__(758);
 	
 	var _reactRouterScroll2 = _interopRequireDefault(_reactRouterScroll);
 	
@@ -50584,23 +50596,23 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _reactRouterRedux = __webpack_require__(703);
 	
-	var _reduxThunk = __webpack_require__(762);
+	var _reduxThunk = __webpack_require__(764);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxFetchData = __webpack_require__(763);
+	var _reduxFetchData = __webpack_require__(765);
 	
-	var _utils = __webpack_require__(764);
+	var _utils = __webpack_require__(766);
 	
-	var _onRouterSetup = __webpack_require__(768);
+	var _onRouterSetup = __webpack_require__(770);
 	
 	var _onRouterSetup2 = _interopRequireDefault(_onRouterSetup);
 	
-	var _onRouterUpdate = __webpack_require__(770);
+	var _onRouterUpdate = __webpack_require__(772);
 	
 	var _onRouterUpdate2 = _interopRequireDefault(_onRouterUpdate);
 	
-	var _checkScroll = __webpack_require__(771);
+	var _checkScroll = __webpack_require__(773);
 	
 	var _checkScroll2 = _interopRequireDefault(_checkScroll);
 	
@@ -50772,13 +50784,13 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 755 */
+/* 757 */
 /***/ function(module, exports) {
 
 	module.exports = require("react-hot-loader");
 
 /***/ },
-/* 756 */
+/* 758 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50790,7 +50802,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ScrollBehaviorContainer = __webpack_require__(757);
+	var _ScrollBehaviorContainer = __webpack_require__(759);
 	
 	var _ScrollBehaviorContainer2 = _interopRequireDefault(_ScrollBehaviorContainer);
 	
@@ -50813,7 +50825,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = exports['default'];
 
 /***/ },
-/* 757 */
+/* 759 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50824,7 +50836,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _ScrollBehavior = __webpack_require__(758);
+	var _ScrollBehavior = __webpack_require__(760);
 	
 	var _ScrollBehavior2 = _interopRequireDefault(_ScrollBehavior);
 	
@@ -50905,7 +50917,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 758 */
+/* 760 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50928,13 +50940,13 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _scrollTop2 = _interopRequireDefault(_scrollTop);
 	
-	var _requestAnimationFrame = __webpack_require__(759);
+	var _requestAnimationFrame = __webpack_require__(761);
 	
 	var _requestAnimationFrame2 = _interopRequireDefault(_requestAnimationFrame);
 	
-	var _Actions = __webpack_require__(760);
+	var _Actions = __webpack_require__(762);
 	
-	var _DOMStateStorage = __webpack_require__(761);
+	var _DOMStateStorage = __webpack_require__(763);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -51112,7 +51124,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = exports['default'];
 
 /***/ },
-/* 759 */
+/* 761 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51163,7 +51175,7 @@ require('source-map-support').install({environment: 'node'});
 	module.exports = compatRaf;
 
 /***/ },
-/* 760 */
+/* 762 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -51190,7 +51202,7 @@ require('source-map-support').install({environment: 'node'});
 	var POP = exports.POP = 'POP';
 
 /***/ },
-/* 761 */
+/* 763 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51280,13 +51292,13 @@ require('source-map-support').install({environment: 'node'});
 	};
 
 /***/ },
-/* 762 */
+/* 764 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-thunk");
 
 /***/ },
-/* 763 */
+/* 765 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51295,7 +51307,7 @@ require('source-map-support').install({environment: 'node'});
 	  value: true
 	});
 	
-	var _utils = __webpack_require__(764);
+	var _utils = __webpack_require__(766);
 	
 	Object.defineProperty(exports, 'fetchDataOnServer', {
 	  enumerable: true,
@@ -51304,7 +51316,7 @@ require('source-map-support').install({environment: 'node'});
 	  }
 	});
 	
-	var _module = __webpack_require__(765);
+	var _module = __webpack_require__(767);
 	
 	Object.defineProperty(exports, 'reducer', {
 	  enumerable: true,
@@ -51313,7 +51325,7 @@ require('source-map-support').install({environment: 'node'});
 	  }
 	});
 	
-	var _fetchData = __webpack_require__(767);
+	var _fetchData = __webpack_require__(769);
 	
 	Object.defineProperty(exports, 'FetchData', {
 	  enumerable: true,
@@ -51325,7 +51337,7 @@ require('source-map-support').install({environment: 'node'});
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /***/ },
-/* 764 */
+/* 766 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51342,7 +51354,7 @@ require('source-map-support').install({environment: 'node'});
 	exports.flattenComponents = flattenComponents;
 	exports.fetchDataOnServer = fetchDataOnServer;
 	
-	var _module = __webpack_require__(765);
+	var _module = __webpack_require__(767);
 	
 	/**
 	 *
@@ -51422,7 +51434,7 @@ require('source-map-support').install({environment: 'node'});
 
 
 /***/ },
-/* 765 */
+/* 767 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51436,7 +51448,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	exports.handleDoneFetching = handleDoneFetching;
 	
-	var _reduxActions = __webpack_require__(766);
+	var _reduxActions = __webpack_require__(768);
 	
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
@@ -51453,13 +51465,13 @@ require('source-map-support').install({environment: 'node'});
 	exports.default = reducer;
 
 /***/ },
-/* 766 */
+/* 768 */
 /***/ function(module, exports) {
 
 	module.exports = require("redux-actions");
 
 /***/ },
-/* 767 */
+/* 769 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51481,9 +51493,9 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _reactRouter = __webpack_require__(259);
 	
-	var _module = __webpack_require__(765);
+	var _module = __webpack_require__(767);
 	
-	var _utils = __webpack_require__(764);
+	var _utils = __webpack_require__(766);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -51563,7 +51575,7 @@ require('source-map-support').install({environment: 'node'});
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(FetchData);
 
 /***/ },
-/* 768 */
+/* 770 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51577,7 +51589,7 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _isBrowser2 = _interopRequireDefault(_isBrowser);
 	
-	__webpack_require__(769);
+	__webpack_require__(771);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -51642,7 +51654,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 769 */
+/* 771 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -51869,7 +51881,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 770 */
+/* 772 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51915,7 +51927,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 771 */
+/* 773 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51929,11 +51941,11 @@ require('source-map-support').install({environment: 'node'});
 	
 	var _isBrowser2 = _interopRequireDefault(_isBrowser);
 	
-	var _onRouterUpdate = __webpack_require__(770);
+	var _onRouterUpdate = __webpack_require__(772);
 	
 	var _onRouterUpdate2 = _interopRequireDefault(_onRouterUpdate);
 	
-	var _ga = __webpack_require__(772);
+	var _ga = __webpack_require__(774);
 	
 	var _ga2 = _interopRequireDefault(_ga);
 	
@@ -51961,7 +51973,7 @@ require('source-map-support').install({environment: 'node'});
 	}
 
 /***/ },
-/* 772 */
+/* 774 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51988,7 +52000,7 @@ require('source-map-support').install({environment: 'node'});
 	};
 
 /***/ },
-/* 773 */
+/* 775 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52038,58 +52050,52 @@ require('source-map-support').install({environment: 'node'});
 	var static_path = 'http://' + hostname + ':' + port;
 
 /***/ },
-/* 774 */
+/* 776 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _graphql=__webpack_require__(775);var _graphqlRelay=__webpack_require__(776);var greetingsType=new _graphql.GraphQLObjectType({name:'Greetings',fields:function fields(){return{hello:{type:_graphql.GraphQLString,args:{message:{type:_graphql.GraphQLString}},resolve:function resolve(parentValue,_ref){var message=_ref.message;return'received: '+message;}}};}});var queryType=new _graphql.GraphQLObjectType({name:'Query',fields:function fields(){return{greetings:{type:greetingsType,resolve:function resolve(){return"";}}};}});var _default=new _graphql.GraphQLSchema({query:queryType});exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(greetingsType,'greetingsType','/Users/zhiyan/Documents/todolist/data/schema.js');__REACT_HOT_LOADER__.register(queryType,'queryType','/Users/zhiyan/Documents/todolist/data/schema.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/todolist/data/schema.js');}();;
+	'use strict';exports.__esModule=true;var _graphql=__webpack_require__(777);var _graphqlRelay=__webpack_require__(778);var greetingsType=new _graphql.GraphQLObjectType({name:'Greetings',fields:function fields(){return{hello:{type:_graphql.GraphQLString,args:{message:{type:_graphql.GraphQLString}},resolve:function resolve(parentValue,_ref){var message=_ref.message;return'received: '+message;}}};}});var queryType=new _graphql.GraphQLObjectType({name:'Query',fields:function fields(){return{greetings:{type:greetingsType,resolve:function resolve(){return"";}}};}});var _default=new _graphql.GraphQLSchema({query:queryType});exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(greetingsType,'greetingsType','/Users/zhiyan/Documents/todolist/data/schema.js');__REACT_HOT_LOADER__.register(queryType,'queryType','/Users/zhiyan/Documents/todolist/data/schema.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/todolist/data/schema.js');}();;
 
 /***/ },
-/* 775 */
+/* 777 */
 /***/ function(module, exports) {
 
 	module.exports = require("graphql");
 
 /***/ },
-/* 776 */
+/* 778 */
 /***/ function(module, exports) {
 
 	module.exports = require("graphql-relay");
 
 /***/ },
-/* 777 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _userReducer=__webpack_require__(778);var _userReducer2=_interopRequireDefault(_userReducer);var _authReducer=__webpack_require__(779);var _authReducer2=_interopRequireDefault(_authReducer);var _locationReducer=__webpack_require__(780);var _locationReducer2=_interopRequireDefault(_locationReducer);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_userReducer2.default,_authReducer2.default,_locationReducer2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
-
-/***/ },
-/* 778 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _from=__webpack_require__(317);var _from2=_interopRequireDefault(_from);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var userReducer=function userReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{users:[]};var action=arguments[1];switch(action.type){case"SET_SEARCH_USERS":state={users:(0,_from2.default)(action.users)};break;case"user.modalDelete":state=JSON.parse((0,_stringify2.default)(state));state.modal=state.modal?state.modal:{};state.modal.list_delete={show:true,id:action.id,phone:action.phone};break;case"user.modalDeleteHide":state=JSON.parse((0,_stringify2.default)(state));state.modal.list_delete={show:false,id:0,phone:''};break;case"user.delete":state=JSON.parse((0,_stringify2.default)(state));for(var index in state.users){if(state.users[index].id===action.id){state.users.splice(index,1);}}break;}return state;};module.exports={userReducer:userReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(userReducer,"userReducer","/Users/zhiyan/Documents/todolist/src/redux/reducers/userReducer.js");}();;
-
-/***/ },
 /* 779 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';var _allActionTypes=__webpack_require__(596);var _isEmpty=__webpack_require__(716);var _isEmpty2=_interopRequireDefault(_isEmpty);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var initialState={isAuthenticated:false,admin:{}};var authReducer=function authReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:initialState;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case _allActionTypes.SET_ADMIN_USER:return{isAuthenticated:!(0,_isEmpty2.default)(action.user),admin:action.admin};default:return state;}};module.exports={authReducer:authReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(initialState,'initialState','/Users/zhiyan/Documents/todolist/src/redux/reducers/authReducer.js');__REACT_HOT_LOADER__.register(authReducer,'authReducer','/Users/zhiyan/Documents/todolist/src/redux/reducers/authReducer.js');}();;
+	"use strict";var _extends2=__webpack_require__(262);var _extends3=_interopRequireDefault(_extends2);var _userReducer=__webpack_require__(780);var _userReducer2=_interopRequireDefault(_userReducer);var _authReducer=__webpack_require__(781);var _authReducer2=_interopRequireDefault(_authReducer);var _locationReducer=__webpack_require__(782);var _locationReducer2=_interopRequireDefault(_locationReducer);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}module.exports=(0,_extends3.default)({},_userReducer2.default,_authReducer2.default,_locationReducer2.default);;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}}();;
 
 /***/ },
 /* 780 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";var _from=__webpack_require__(317);var _from2=_interopRequireDefault(_from);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var locationReducer=function locationReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{locations:[]};var action=arguments[1];switch(action.type){case"SET_SEARCH_LOCATIONS":state={locations:(0,_from2.default)(action.locations)};break;}return state;};module.exports={locationReducer:locationReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(locationReducer,"locationReducer","/Users/zhiyan/Documents/todolist/src/redux/reducers/locationReducer.js");}();;
+	"use strict";var _stringify=__webpack_require__(2);var _stringify2=_interopRequireDefault(_stringify);var _from=__webpack_require__(317);var _from2=_interopRequireDefault(_from);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var userReducer=function userReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{users:[]};var action=arguments[1];switch(action.type){case"SET_SEARCH_USERS":state={users:(0,_from2.default)(action.users)};break;case"user.modalDelete":state=JSON.parse((0,_stringify2.default)(state));state.modal=state.modal?state.modal:{};state.modal.list_delete={show:true,id:action.id,phone:action.phone};break;case"user.modalDeleteHide":state=JSON.parse((0,_stringify2.default)(state));state.modal.list_delete={show:false,id:0,phone:''};break;case"user.delete":state=JSON.parse((0,_stringify2.default)(state));for(var index in state.users){if(state.users[index].id===action.id){state.users.splice(index,1);}}break;}return state;};module.exports={userReducer:userReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(userReducer,"userReducer","/Users/zhiyan/Documents/todolist/src/redux/reducers/userReducer.js");}();;
 
 /***/ },
 /* 781 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
-	module.exports = require("body-parser");
+	'use strict';var _allActionTypes=__webpack_require__(596);var _isEmpty=__webpack_require__(718);var _isEmpty2=_interopRequireDefault(_isEmpty);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var initialState={isAuthenticated:false,admin:{}};var authReducer=function authReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:initialState;var action=arguments.length>1&&arguments[1]!==undefined?arguments[1]:{};switch(action.type){case _allActionTypes.SET_ADMIN_USER:return{isAuthenticated:!(0,_isEmpty2.default)(action.user),admin:action.admin};default:return state;}};module.exports={authReducer:authReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(initialState,'initialState','/Users/zhiyan/Documents/todolist/src/redux/reducers/authReducer.js');__REACT_HOT_LOADER__.register(authReducer,'authReducer','/Users/zhiyan/Documents/todolist/src/redux/reducers/authReducer.js');}();;
 
 /***/ },
 /* 782 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';exports.__esModule=true;var _classCallCheck2=__webpack_require__(181);var _classCallCheck3=_interopRequireDefault(_classCallCheck2);var _possibleConstructorReturn2=__webpack_require__(182);var _possibleConstructorReturn3=_interopRequireDefault(_possibleConstructorReturn2);var _inherits2=__webpack_require__(250);var _inherits3=_interopRequireDefault(_inherits2);var _react=__webpack_require__(10);var _react2=_interopRequireDefault(_react);var _reactRouter=__webpack_require__(259);var _reactBootstrap=__webpack_require__(701);var _reactRedux=__webpack_require__(592);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var LocationListElement=function(_React$Component){(0,_inherits3.default)(LocationListElement,_React$Component);function LocationListElement(props){(0,_classCallCheck3.default)(this,LocationListElement);var _this=(0,_possibleConstructorReturn3.default)(this,_React$Component.call(this,props));_this.modalDeleteShow=_this.modalDeleteShow.bind(_this);return _this;}LocationListElement.prototype.modalDeleteShow=function modalDeleteShow(event){var locationId=Number(event.target.dataset.id);var phoneNumber=event.target.dataset.phone_number;this.props.dispatch({type:'location.modalDelete',id:locationId,phone:phoneNumber});};LocationListElement.prototype.render=function render(){var location=this.props.location;return _react2.default.createElement('tr',null,_react2.default.createElement('td',null,location.id),_react2.default.createElement('td',null,location.formatted_address),_react2.default.createElement('td',null,location.city),_react2.default.createElement('td',null,location.location_name),_react2.default.createElement('td',null,location.member_count),_react2.default.createElement('td',null,_react2.default.createElement(_reactRouter.Link,{to:'/ltr/location/edit/'+location.id},_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-primary',bsSize:'small'},'Edit ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'edit'})))),_react2.default.createElement('td',null,_react2.default.createElement(_reactBootstrap.Button,{type:'button',className:'btn btn-danger',bsSize:'small','data-id':location.id,'data-phone_number':location.phone_number,onClick:this.modalDeleteShow},'Delete ',_react2.default.createElement(_reactBootstrap.Glyphicon,{glyph:'remove-circle'}))));};return LocationListElement;}(_react2.default.Component);var _default=(0,_reactRedux.connect)()(LocationListElement);exports.default=_default;;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(LocationListElement,'LocationListElement','/Users/zhiyan/Documents/todolist/src/components/LocationListElement.js');__REACT_HOT_LOADER__.register(_default,'default','/Users/zhiyan/Documents/todolist/src/components/LocationListElement.js');}();;
+	"use strict";var _from=__webpack_require__(317);var _from2=_interopRequireDefault(_from);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}var locationReducer=function locationReducer(){var state=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{locations:[]};var action=arguments[1];switch(action.type){case"SET_SEARCH_LOCATIONS":state={locations:(0,_from2.default)(action.locations)};break;}return state;};module.exports={locationReducer:locationReducer};;var _temp=function(){if(typeof __REACT_HOT_LOADER__==='undefined'){return;}__REACT_HOT_LOADER__.register(locationReducer,"locationReducer","/Users/zhiyan/Documents/todolist/src/redux/reducers/locationReducer.js");}();;
+
+/***/ },
+/* 783 */
+/***/ function(module, exports) {
+
+	module.exports = require("body-parser");
 
 /***/ }
 /******/ ]);

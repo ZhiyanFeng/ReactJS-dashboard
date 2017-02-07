@@ -35,6 +35,7 @@ class ApplicationSidebar extends React.Component {
 
                                     { /** Pages Section */ }
                                     <div className='sidebar-header'>PAGES</div>
+                                    <SidebarNavItem glyph='icon-fontello-gauge' name='Dashboard' href={::this.getPath('admin/dashboard')} />
 
                                     <SidebarNavItem glyph='glyphicon glyphicon-map-marker' name='Location search' href={::this.getPath('admin/tables/locationList')} />
                                     <SidebarNavItem href={::this.getPath('admin/tables/userList')} glyph='glyphicon glyphicon-user' name='User search' />
@@ -73,7 +74,7 @@ export default class SidebarContainer extends React.Component {
                     <Grid>
                         <Row className='fg-white'>
                             <Col xs={4} collapseRight>
-                                <img src='/imgs/app/avatars/avatar0.png' width='40' height='40' />
+                                <img src='/imgs/app/avatars/admin.ico' width='40' height='40' />
                             </Col>
                             <Col xs={8} collapseLeft id='avatar-col'>
                                 <div style={{top: 23, fontSize: 16, lineHeight: 1, position: 'relative'}}>{localStorage.getItem('admin')}</div>

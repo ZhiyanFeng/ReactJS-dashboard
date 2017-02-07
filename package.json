@@ -68,6 +68,7 @@
     "null-loader": "^0.1.1",
     "postcss-loader": "^0.9.1",
     "raw-loader": "^0.5.1",
+    "react-deploy-s3": "^1.1.1",
     "rimraf": "^2.5.2",
     "rtlcss": "^2.0.5",
     "sass-loader": "^3.2.1",

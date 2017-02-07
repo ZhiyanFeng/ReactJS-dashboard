@@ -1,13 +1,19 @@
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
-import { SET_CURRENT_USER } from './actionTypes/allActionTypes';
+import { SET_SEARCH_USERS, SET_ADMIN_USER } from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 
-export function setCurrentUser(user) {
+export function setAdminUser(admin) {
   return {
-    type: SET_CURRENT_USER,
-    user
+    type: SET_ADMIN_USER,
+    admin
   };
+}
+
+export function setSearchUser(users) {
+    return {
+        type: SET_SEARCH_USERS,
+        users
+    };
 }
 
 export function logout() {
@@ -20,12 +26,16 @@ export function logout() {
 
 export function login(data) {
     return dispatch => {
-        return axios.post('/api/auth', data).then(res => {
-            const token = res.data.token;
-            localStorage.setItem('jwtToken', token);
-            setAuthorizationToken(token);
-            let decoded = jwtDecode(token);
-            dispatch(setCurrentUser(decoded));
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        return axios.post('http://localhost:3000/sessions', {'email': data.email, 'password': data.password}, config).then(res => {
+            localStorage.setItem('admin', res.data.eXpresso.first_name);
+            localStorage.setItem('key', res.data.eXpresso.api_key);
+
+            dispatch(setAdminUser(res.data.eXpresso));
         });
     }
 }

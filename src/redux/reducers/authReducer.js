@@ -1,17 +1,17 @@
-import { SET_CURRENT_USER } from '../actions/actionTypes/allActionTypes';
+import { SET_ADMIN_USER } from '../actions/actionTypes/allActionTypes';
 import isEmpty from 'lodash/isEmpty';
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  admin: {}
 };
 
 const authReducer = (state = initialState, action = {}) => {
   switch(action.type) {
-    case SET_CURRENT_USER:
+    case SET_ADMIN_USER:
       return {
         isAuthenticated: !isEmpty(action.user),
-        user: action.user
+        admin: action.admin
       };
     default: return state;
   }

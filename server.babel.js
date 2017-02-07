@@ -17,8 +17,6 @@ import RubixAssetMiddleware from '@sketchpixy/rubix/lib/node/RubixAssetMiddlewar
 
 import schema from './data/schema.js';
 import reducers from './src/redux/reducers';
-import auth from './server/routes/auth';
-import fetchUsers from './server/routes/fetchUsers';
 var bodyParser = require("body-parser");
 
 setupReducers(reducers);
@@ -35,8 +33,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(process.cwd(), 'public')));
 app.set('views', path.join(process.cwd(), 'views'));
 app.set('view engine', 'pug');
-app.use('/api/auth', auth);
-app.use('/api/fetchUsers', fetchUsers);
 
 function renderHTML(req, res) {
     renderHTMLString(routes, req, (error, redirectLocation, data) => {

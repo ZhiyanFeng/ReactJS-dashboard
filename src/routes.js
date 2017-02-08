@@ -17,7 +17,7 @@ import UserList from './routes/UserList';
 import LocationList from './routes/LocationList';
 import Dashboard from './routes/Dashboard';
 import LoginPage from './components/login/login';
-import XEditable from './routes/XEditable';
+import Social from './routes/Social';
 
 //import Lock from './routes/Lock';
 //import Login from './routes/Login';
@@ -50,7 +50,7 @@ const routes = (
         <Route path='dashboard' component={Dashboard} />
         <Route path='tables/userList' component={UserList} />
         <Route path='tables/locationList' component={LocationList} />
-        <Route path='user/edit(/:id)' component={XEditable} />
+        <Route path='user/edit(/:id)' component={Social} />
     </Route>
 );
 

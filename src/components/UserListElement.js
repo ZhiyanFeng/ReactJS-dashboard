@@ -30,7 +30,7 @@ class UserListElement extends React.Component{
                 <td>{user.last_name}</td>
                 <td>{user.phone_number}</td>
                 <td>
-                    <Link to={'/ltr/user/edit/' + user.id}>
+                    <Link to={'/ltr/admin/user/edit/' + user.id}>
                         <Button type="button" className="btn btn-primary" bsSize="small">Edit <Glyphicon glyph="edit"/></Button>
                     </Link>
                 </td>

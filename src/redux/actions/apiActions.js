@@ -28,7 +28,7 @@ export function searchUsers(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/users/search`, {'user_name': query}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/users/search`, {'user_name': query}, config).then(res => {
             dispatch(setSearchUsers(res.data.eXpresso));
         });
     }
@@ -45,7 +45,7 @@ export function searchLocations(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/locations/search`, {'location_query': query}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/locations/search`, {'location_query': query}, config).then(res => {
             dispatch(setSearchLocations(res.data.eXpresso));
         });
     }

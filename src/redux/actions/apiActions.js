@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { SET_SEARCH_USERS, SET_ADMIN_USER, SET_SEARCH_LOCATIONS} from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
+import Constants from '../../api/constants';
 
 export function setSearchUsers(users) {
     return {
@@ -27,7 +28,7 @@ export function searchUsers(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post('http://internal.coffeemobile.com/api/users/search', {'user_name': query}, config).then(res => {
+        return axios.post(`${Constants.TEST_SERVER_URL}/api/users/search`, {'user_name': query}, config).then(res => {
             dispatch(setSearchUsers(res.data.eXpresso));
         });
     }
@@ -44,7 +45,7 @@ export function searchLocations(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post('http://internal.coffeemobile.com/api/locations/search', {'location_query': query}, config).then(res => {
+        return axios.post(`${Constants.TEST_SERVER_URL}/api/locations/search`, {'location_query': query}, config).then(res => {
             dispatch(setSearchLocations(res.data.eXpresso));
         });
     }

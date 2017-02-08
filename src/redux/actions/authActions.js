@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { SET_SEARCH_USERS, SET_ADMIN_USER } from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
+import Constants from '../../api/constants';
 
 export function setAdminUser(admin) {
   return {
@@ -31,7 +32,7 @@ export function login(data) {
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post('http://internal.coffeemobile.com/sessions', {'email': data.email, 'password': data.password}, config).then(res => {
+        return axios.post(`${Constants.TEST_SERVER_URL}/sessions`, {'email': data.email, 'password': data.password}, config).then(res => {
             localStorage.setItem('admin', res.data.eXpresso.first_name);
             localStorage.setItem('key', res.data.eXpresso.api_key);
 

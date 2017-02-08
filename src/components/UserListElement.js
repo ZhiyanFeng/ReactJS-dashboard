@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
-import {Button, Glyphicon} from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap';
 import { connect  } from 'react-redux';
 
 class UserListElement extends React.Component{
@@ -15,17 +15,16 @@ class UserListElement extends React.Component{
         this.props.dispatch({
             type: 'user.modalDelete',
             id: userId,
-            phone: phoneNumber,  
-
+            phone: phoneNumber,
         })
 
     }
-    
+
     render()
     {
         const user = this.props.user;
         return (
-            <tr> 
+            <tr>
                 <td>{user.id}</td>
                 <td>{user.first_name}</td>
                 <td>{user.last_name}</td>

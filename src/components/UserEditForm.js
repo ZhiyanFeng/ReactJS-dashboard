@@ -3,13 +3,20 @@ import {HelpBlock,PageHeader, Form, FormGroup, Col, Button, FormControl, InputGr
 import { Field, reduxForm} from 'redux-form';
 import { connect } from 'react-redux';
 import { routeActions } from 'react-router-redux';
+import { searchUserDetail } from '../redux/actions/apiActions';
 
 
 class UserEdit extends React.Component{
     constructor(props)
     {
         super(props);
+        let editUser = {};
+        let id=0;
         this.formSubmit = this.formSubmit.bind(this);
+    }
+
+    componentWillMount(){
+        
     }
 
     render(){
@@ -82,22 +89,22 @@ UserEdit = reduxForm({
 })(UserEdit);
 
 function mapStateToProps(state, own_props){
-    let form_data = {
-        firstname: "",
-        phone: "",
-    };
-
-    for(const index in state.userReducer.users){
-        if(state.userReducer.users[index].id === Number(own_props.params.id)){
-            form_data.firstname = state.userReducer.users[index].first_name;
-            form_data.phone = state.userReducer.users[index].phone_number;
-            break;
+    //    let form_data = {
+    //        firstname: "",
+    //        phone: "",
+    //    };
+    //
+    //    for(const index in state.userReducer.users){
+    //        if(state.userReducer.users[index].id === Number(own_props.params.id)){
+    //            form_data.firstname = state.userReducer.users[index].first_name;
+    //            form_data.phone = state.userReducer.users[index].phone_number;
+    //            break;
+    //        }
+    //    }
+    //
+        return{
+            id: own_props,
         }
-    }
-
-    return{
-        initialValues: form_data,
-    }
 }
 
-export default connect(mapStateToProps)(UserEdit);
+export default connect(mapStateToProps, )(UserEdit);

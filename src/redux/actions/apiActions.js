@@ -34,6 +34,23 @@ export function searchUsers(query, admin){
     }
 }
 
+export function searchUserDetail(id, admin){
+    return dispatch => {
+        const config = {
+            headers: {
+                'X-Method': 'pass_verification',
+                'Session-Token': '1333',
+                'Accept': 'application/vnd.Expresso.v1',
+                'Authorization': `Token token=${admin}, nonce="def"`,
+                'Content-Type': 'application/json'
+            }
+        }
+        return axios.post(`${Constants.API_SERVER_URL}/api/users/${id}/user_detail`, config).then(res => {
+            dispatch(setSearchUsers(res.data.eXpresso));
+        });
+    }
+}
+
 export function searchLocations(query, admin){
     return dispatch => {
         const config = {

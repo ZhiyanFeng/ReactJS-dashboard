@@ -12,6 +12,11 @@ class UserEdit extends React.Component{
         this.formSubmit = this.formSubmit.bind(this);
     }
 
+
+    componentWillMount(){
+        
+    }
+
     render(){
         return(
             <div>

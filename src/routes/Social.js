@@ -117,7 +117,7 @@ class SocialBanner extends React.Component {
             </div>
             <Col xs={12}>
               <Row>
-                <Col sm={6} collapseRight>
+                <Col sm={4} collapseRight>
                   <PanelContainer controls={false}>
                     <PanelBody style={{paddingBottom: 12.5}}>
                       <Grid>
@@ -152,7 +152,9 @@ class SocialBanner extends React.Component {
                     </PanelBody>
                   </PanelContainer>
                 </Col>
-                <Col sm={6}>
+                <Col sm={4}>
+                </Col>
+                <Col sm={4}>
                 </Col>
               </Row>
             </Col>

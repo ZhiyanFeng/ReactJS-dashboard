@@ -10,8 +10,6 @@ class UserEdit extends React.Component{
     constructor(props)
     {
         super(props);
-        let editUser = {};
-        let id=0;
         this.formSubmit = this.formSubmit.bind(this);
     }
 

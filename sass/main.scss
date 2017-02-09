@@ -20,5 +20,17 @@
 @import "fonts/Simple-Line-Icons/Simple-Line-Icons";
 @import "fonts/Stroke-Gap-Icons/Stroke-Gap-Icons";
 
+/* Component styles */
+/*@import "components/sidebar";*/
+
 /* Page styles */
-@import "pages/home";
+@import "pages/auth";
+@import "pages/blogs";
+@import "pages/inbox";
+@import "pages/wizard";
+@import "pages/social";
+@import "pages/sliders";
+@import "pages/gallery";
+@import "pages/homepage";
+@import "pages/calendar";
+@import "pages/dashboard";

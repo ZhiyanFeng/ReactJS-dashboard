@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_SEARCH_USERS, SET_ADMIN_USER, SET_SEARCH_LOCATIONS} from './actionTypes/allActionTypes';
+import { SET_SEARCH_USERS, SET_ADMIN_USER, SET_SEARCH_LOCATIONS, SET_ACTIVE_USER} from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import Constants from '../../api/constants';
 
@@ -14,6 +14,12 @@ export function setSearchLocations(locations) {
     return {
         type: SET_SEARCH_LOCATIONS,
         locations
+    };
+}
+export function setActiveUser(activeUser) {
+    return {
+        type: SET_ACTIVE_USER,
+        activeUser
     };
 }
 
@@ -45,8 +51,8 @@ export function searchUserDetail(id, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.API_SERVER_URL}/api/users/${id}/user_detail`, config).then(res => {
-            dispatch(setSearchUsers(res.data.eXpresso));
+        return axios.get(`${Constants.API_SERVER_URL}/api/users/${id}/user_detail`, config).then(res => {
+            dispatch(setActiveUser(res.data.eXpresso));
         });
     }
 }

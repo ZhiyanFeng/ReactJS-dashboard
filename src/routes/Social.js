@@ -60,13 +60,45 @@ class SocialBanner extends React.Component {
                 <div className='social-desc'>
                     <div>
                         <h1 className='fg-white'>Empire State, NY, USA</h1>
-                        <h5 className='fg-white' style={{opacity: 0.8}}>- Aug 20th, 2014</h5>
-                        <div style={{marginTop: 50}}>
+                        <h5 className='fg-white' style={{opacity: 0.8}}>Member Since - Aug 20th, 2014</h5>
+                        <div style={{marginTop: 30}}>
                             <div style={{display: 'inline-block'}}>
-                                <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive} onClick={::this.handleLike}>
+                                <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
+                                    <Icon glyph='icon-fontello-pencil-6' />
+                                </Button>
+                                <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.state.likeCount} posts</span></label>
+                            </div>
+                            <div style={{display: 'inline-block', marginLeft: 30}}>
+                                <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
+                                    <Icon glyph='icon-fontello-comment-1' />
+                                </Button>
+                                <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.state.likeCount} comments</span></label>
+                            </div>
+                            <div style={{display: 'inline-block', marginLeft: 30}}>
+                                <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                     <Icon glyph='icon-fontello-heart-1' />
                                 </Button>
                                 <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.state.likeCount} likes</span></label>
+                            </div>
+                        </div>
+                        <div style={{marginTop: 9}}>
+                            <div style={{display: 'inline-block'}}>
+                                <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
+                                    <Icon glyph='icon-fontello-sort-number-up' />
+                                </Button>
+                                <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.state.likeCount} score</span></label>
+                            </div>
+                            <div style={{display: 'inline-block', marginLeft: 30}}>
+                                <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
+                                    <Icon glyph='icon-fontello-coverflow' />
+                                </Button>
+                                <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.state.likeCount} covers</span></label>
+                            </div>
+                            <div style={{display: 'inline-block', marginLeft: 30}}>
+                                <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
+                                    <Icon glyph='icon-fontello-upload-cloud' />
+                                </Button>
+                                <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.state.likeCount} posts</span></label>
                             </div>
                         </div>
                     </div>
@@ -86,7 +118,39 @@ class SocialBanner extends React.Component {
             <Col xs={12}>
               <Row>
                 <Col sm={6} collapseRight>
-
+                  <PanelContainer controls={false}>
+                    <PanelBody style={{paddingBottom: 12.5}}>
+                      <Grid>
+                        <Row>
+                          <Col xs={12} className='text-center'>
+                            <div className='text-left'>
+                              <div className='text-uppercase blog-sidebar-heading'>
+                                <small>Most Recent Activity</small>
+                              </div>
+                              <div style={{marginBottom: 12.5}}>
+                                <div><small className='fg-darkgray50'><em>2 minutes ago</em> - <span className='fg-lightgreen'>Fetch Counters</span></small></div>
+                              </div>
+                              <div style={{marginBottom: 12.5}}>
+                                <div><small className='fg-darkgray50'><em>5 hours ago</em> - <span className='fg-lightgreen'>Fetch Shifts</span></small></div>
+                              </div>
+                              <div style={{marginBottom: 12.5}}>
+                                <div><small className='fg-darkgray50'><em>3 days ago</em> - <span className='fg-lightgreen'>Fetch Subscriptions</span></small></div>
+                              </div>
+                              <div style={{marginBottom: 12.5}}>
+                                <div><small className='fg-darkgray50'><em>3 days ago</em> - <span className='fg-lightgreen'>Fetch Chat</span></small></div>
+                              </div>
+                              <div style={{marginBottom: 12.5}}>
+                                <div><small className='fg-darkgray50'><em>3 days ago</em> - <span className='fg-lightgreen'>Fetch Schedule</span></small></div>
+                              </div>
+                              <div>
+                                <div><small className='fg-darkgray50'><em>4 months ago</em> - <span className='fg-lightgreen'>Fetch Contact List</span></small></div>
+                              </div>
+                            </div>
+                          </Col>
+                        </Row>
+                      </Grid>
+                    </PanelBody>
+                  </PanelContainer>
                 </Col>
                 <Col sm={6}>
                 </Col>

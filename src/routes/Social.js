@@ -53,6 +53,7 @@ class SocialBanner extends React.Component {
 
     render() {
         return (
+          <Row className='social'>
             <div style={{height: 350, marginTop: -25, backgroundImage: 'url(/imgs/app/shots/Blick_auf_Manhattan.JPG)', backgroundSize: 'cover', position: 'relative', marginBottom: 25, backgroundPosition: 'center'}}>
                 <div className='social-cover' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
                 </div>
@@ -82,6 +83,16 @@ class SocialBanner extends React.Component {
                     </div>
                 </div>
             </div>
+            <Col xs={12}>
+              <Row>
+                <Col sm={6} collapseRight>
+
+                </Col>
+                <Col sm={6}>
+                </Col>
+              </Row>
+            </Col>
+          </Row>
         );
     }
 }

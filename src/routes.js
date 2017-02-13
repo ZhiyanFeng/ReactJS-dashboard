@@ -18,6 +18,11 @@ import LocationList from './routes/LocationList';
 import Dashboard from './routes/Dashboard';
 import LoginPage from './components/login/login';
 import Social from './routes/Social';
+import LineSeries from './routes/LineSeries';
+import AreaSeries from './routes/AreaSeries';
+import BarColSeries from './routes/BarColSeries';
+import MixedSeries from './routes/MixedSeries';
+import PieDonutSeries from './routes/PieDonutSeries';
 
 //import Lock from './routes/Lock';
 //import Login from './routes/Login';
@@ -51,12 +56,17 @@ const routes = (
         <Route path='tables/userList' component={UserList} />
         <Route path='tables/locationList' component={LocationList} />
         <Route path='user/edit(/:id)' component={Social} />
+        <Route path='charts/rubix/line' component={LineSeries} />
+        <Route path='charts/rubix/area' component={AreaSeries} />
+        <Route path='charts/rubix/barcol' component={BarColSeries} />
+        <Route path='charts/rubix/mixed' component={MixedSeries} />
+        <Route path='charts/rubix/piedonut' component={PieDonutSeries} />
     </Route>
 );
 
 /**
-*  * No Sidebar, Header or Footer. Only the Body is rendered.
-    *   */
+ *  * No Sidebar, Header or Footer. Only the Body is rendered.
+ *   */
 
 const combinedRoutes = (
     <Route>

@@ -16,7 +16,6 @@ class LocationListElement extends React.Component{
             type: 'location.modalDelete',
             id: locationId,
             phone: phoneNumber,  
-
         })
 
     }

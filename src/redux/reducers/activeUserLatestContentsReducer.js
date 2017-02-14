@@ -1,5 +1,5 @@
 const activeUserLatestContentsReducer = (state = {
-    activeUserLatestContents: {}
+    activeUserLatestContents: []
 
 }, action)=>{
     switch (action.type){

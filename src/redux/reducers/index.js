@@ -3,6 +3,7 @@ import authReducer from "./authReducer";
 import locationReducer from "./locationReducer";
 import activeUserReducer from "./activeUserReducer";
 import activeUserLatestContents from "./activeUserLatestContentsReducer"
+import dashboardReducer from "./dashboardReducer";
 
 module.exports = {
     ...users,
@@ -10,4 +11,5 @@ module.exports = {
     ...locationReducer,
     ...activeUserReducer,
     ...activeUserLatestContents,
+    ...dashboardReducer,
 };

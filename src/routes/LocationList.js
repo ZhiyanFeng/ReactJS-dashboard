@@ -58,6 +58,8 @@ class  DatatableComponent extends React.Component {
                             <th>City</th>
                             <th>Location Name</th>
                             <th>Member Count</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -74,6 +76,8 @@ class  DatatableComponent extends React.Component {
                             <th>City</th>
                             <th>Location Name</th>
                             <th>Member Count</th>
+                            <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </tfoot>
                 </Table>

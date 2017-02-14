@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect  } from 'react-redux';
-import {bindActionCreators } from "redux";
+import { bindActionCreators } from "redux";
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
 

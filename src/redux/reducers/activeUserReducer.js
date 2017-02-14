@@ -5,7 +5,7 @@ const activeUserReducer = (state = {
     switch (action.type){
         case "SET_ACTIVE_USER":
             state = {
-                activeUser: Array.from(action.activeUser)
+                activeUser: action.activeUser
             };
             break;
     }

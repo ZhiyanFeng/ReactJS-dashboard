@@ -78,6 +78,14 @@ class Dashboard extends React.Component {
                         </PanelTabContainer>
                     </Col>
                 </Row>
+
+                <Row>
+                    <Col sm={12}>
+                        <div style={{height: 450}} className='rubix-panel-container-with-controls' id='reflect-test'>
+
+                        </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

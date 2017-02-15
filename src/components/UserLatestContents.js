@@ -44,25 +44,15 @@ class UserLatestContents extends React.Component{
     render()
     {
         //const contents = this.props.activeUserLatestContents;
+
         if(this.state.latestContents.length !== 0){
             return (
                 <PanelContainer bordered>
 	              	<Panel>
 	                	<PanelBody>
-	                		<Grid>
-                            	<Row>
-                              		<Col xs={12} className='text-center'>
-                                		<div className='text-left'>
-					                		<div className='text-uppercase blog-sidebar-heading'>
-				                            	<small>Most Recent Activity</small>
-				                        	</div>
-				                        </div>
-				                    </Col>
-                            	</Row>
-                          	</Grid>
                             { this.state.latestContents.map((content, index) => {
                                 return(
-                                    <UserLatestContentsElement key={content.id} content={content} />
+                                    <UserLatestContentsElement key={content.id} content={content.content} title={content.title} type={content.type} created={content.created_at} />
                                 );
                             })}
                     	</PanelBody>
@@ -74,17 +64,7 @@ class UserLatestContents extends React.Component{
 	            <PanelContainer bordered>
 		            <Panel>
 		               	<PanelBody>
-		                	<Grid>
-                            	<Row>
-                              		<Col xs={12} className='text-center'>
-                                		<div className='text-left'>
-					                		<div className='text-uppercase blog-sidebar-heading'>
-				                            	<small>Loading...</small>
-				                        	</div>
-				                        </div>
-				                    </Col>
-                            	</Row>
-                          	</Grid>
+		                	Loading...
 		         		</PanelBody>
 	             	</Panel>
 	            </PanelContainer>

@@ -21,6 +21,7 @@ import {
 } from '@sketchpixy/rubix';
 
 import { searchUserLatestContent } from '../redux/actions/apiActions';
+import UserLatestContentsElement from './subcomponents/UserLatestContentsElement';
 
 class UserLatestContents extends React.Component{
     constructor(props){
@@ -45,29 +46,49 @@ class UserLatestContents extends React.Component{
         //const contents = this.props.activeUserLatestContents;
         if(this.state.latestContents.length !== 0){
             return (
-                <PanelContainer controls={false}>
-                    <PanelBody style={{paddingBottom: 12.5}}>
-                        <Grid>
-                            <Row>
-                                <Col xs={12} className='text-center'>
-                                    <div className='text-left'>
-                                        <div className='text-uppercase blog-sidebar-heading'>
-                                            <small>Most Recent Contributions</small>
-                                            {this.state.latestContents.map((id,title,content,type) => {
-                                                return(
-                                                    <UserLatestContentsElement id={id} title={title} content={content} type={type} />
-                                                );
-                                            })}
-                                        </div>
-                                    </div>
-                                </Col>
-                            </Row>
-                        </Grid>
-                    </PanelBody>
-                </PanelContainer>
+                <PanelContainer bordered>
+	              	<Panel>
+	                	<PanelBody>
+	                		<Grid>
+                            	<Row>
+                              		<Col xs={12} className='text-center'>
+                                		<div className='text-left'>
+					                		<div className='text-uppercase blog-sidebar-heading'>
+				                            	<small>Most Recent Activity</small>
+				                        	</div>
+				                        </div>
+				                    </Col>
+                            	</Row>
+                          	</Grid>
+                            { this.state.latestContents.map((content, index) => {
+                                return(
+                                    <UserLatestContentsElement key={content.id} content={content} />
+                                );
+                            })}
+                    	</PanelBody>
+              		</Panel>
+            	</PanelContainer>
             );
-        }else{
-            return <p>isLoading...</p>
+        } else {
+            return (
+	            <PanelContainer bordered>
+		            <Panel>
+		               	<PanelBody>
+		                	<Grid>
+                            	<Row>
+                              		<Col xs={12} className='text-center'>
+                                		<div className='text-left'>
+					                		<div className='text-uppercase blog-sidebar-heading'>
+				                            	<small>Loading...</small>
+				                        	</div>
+				                        </div>
+				                    </Col>
+                            	</Row>
+                          	</Grid>
+		         		</PanelBody>
+	             	</Panel>
+	            </PanelContainer>
+            );
         }
     };
 }

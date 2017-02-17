@@ -15,6 +15,7 @@ import Footer from './common/footer';
 import UserEdit from './components/UserEditForm';
 import UserList from './routes/UserList';
 import LocationList from './routes/LocationList';
+import LocationDetails from './routes/LocationDetails';
 import Dashboard from './routes/Dashboard';
 import LoginPage from './components/login/login';
 import Social from './routes/Social';
@@ -56,6 +57,7 @@ const routes = (
         <Route path='tables/userList' component={UserList} />
         <Route path='tables/locationList' component={LocationList} />
         <Route path='user/edit(/:id)' component={Social} />
+        <Route path='location/edit(/:id)' component={LocationDetails} />
         <Route path='charts/rubix/line' component={LineSeries} />
         <Route path='charts/rubix/area' component={AreaSeries} />
         <Route path='charts/rubix/barcol' component={BarColSeries} />

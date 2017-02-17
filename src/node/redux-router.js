@@ -41,9 +41,11 @@ var isRouterSet = false, history, reducer, store, routes;
 export function setupReducers(reducers) {
   reducer = combineReducers({
       userReducer: reducers.userReducer,
+      storePhotoReducer: reducers.storePhotoReducer,
       activeUserReducer: reducers.activeUserReducer,
       authReducer: reducers.authReducer,
       locationReducer: reducers.locationReducer,
+      locationDetailReducer: reducers.locationDetailReducer,
       activeUserLatestContentsReducer: reducers.activeUserLatestContentsReducer,
       dashboardReducer: reducers.dashboardReducer,
       form: formReducer,

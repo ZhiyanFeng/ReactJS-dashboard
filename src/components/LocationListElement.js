@@ -31,7 +31,7 @@ class LocationListElement extends React.Component{
                 <td>{location.location_name}</td>
                 <td>{location.member_count}</td>
                 <td>
-                    <Link to={'/ltr/location/edit/' + location.id}>
+                    <Link to={'/ltr/admin/location/edit/' + location.id}>
                         <Button type="button" className="btn btn-primary" bsSize="small">Edit <Glyphicon glyph="edit"/></Button>
                     </Link>
                 </td>

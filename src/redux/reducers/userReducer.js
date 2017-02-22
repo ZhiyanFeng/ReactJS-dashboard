@@ -1,11 +1,17 @@
 const userReducer = (state = {
-    users: []
+    users: [],
+    storeEmployees: []
 
 }, action)=>{
     switch (action.type){
         case "SET_SEARCH_USERS":
             state = {
                 users: Array.from(action.users)
+            };
+            break;
+        case "SET_STORE_EMPLOYEES":
+            state = {
+                storeEmployees: action.storeEmployees
             };
             break;
         case "user.modalDelete":

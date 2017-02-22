@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SET_LOCATION_DETAIL,SET_SEARCH_USERS, SET_ADMIN_USER, SET_SEARCH_LOCATIONS, SET_ACTIVE_USER, SET_ACTIVE_USER_LATEST_CONTENTS, SET_DASHBOARD_DATA } from './actionTypes/allActionTypes';
+import { SET_STORE_EMPLOYEES, SET_LOCATION_DETAIL,SET_SEARCH_USERS, SET_ADMIN_USER, SET_SEARCH_LOCATIONS, SET_ACTIVE_USER, SET_ACTIVE_USER_LATEST_CONTENTS, SET_DASHBOARD_DATA } from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import Constants from '../../api/constants';
 
@@ -26,6 +26,13 @@ export function setLocationDetail(locationDetail) {
     return {
         type: SET_LOCATION_DETAIL,
         locationDetail
+    };
+}
+
+export function setStoreEmployees(storeEmployees) {
+    return {
+        type: SET_STORE_EMPLOYEES,
+        storeEmployees
     };
 }
 export function setActiveUserLatestContents(activeUserLatestContents) {
@@ -105,6 +112,23 @@ export function searchLocationDetail(id, admin){
         }
         return axios.get(`${Constants.API_SERVER_URL}/api/locations/${id}/details`, config).then(res => {
             dispatch(setLocationDetail(res.data.eXpresso));
+        });
+    }
+}
+
+export function searchStoreEmployees(id, admin){
+    return dispatch => {
+        const config = {
+            headers: {
+                'X-Method': 'pass_verification',
+                'Session-Token': '1333',
+                'Accept': 'application/vnd.Expresso.v1',
+                'Authorization': `Token token=${admin}, nonce="def"`,
+                'Content-Type': 'application/json'
+            }
+        }
+        return axios.get(`${Constants.API_SERVER_URL}/api/locations/${id}/member_list`, config).then(res => {
+            dispatch(setStoreEmployees(res.data.eXpresso));
         });
     }
 }

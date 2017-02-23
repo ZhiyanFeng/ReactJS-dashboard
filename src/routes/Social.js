@@ -66,19 +66,19 @@ class SocialBanner extends React.Component {
                             <h1 className='fg-white'>{this.props.activeUser.phone_number}</h1>
                             <h5 className='fg-white' style={{opacity: 0.8}}>Member Since - {this.props.activeUser.member_since}</h5>
                             <div style={{marginTop: 30}}>
-                                <div style={{display: 'inline-block', width: 180}}>
+                                <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-pencil-6' />
                                     </Button>
                                     <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.posts_count} posts</span></label>
                                 </div>
-                                <div style={{display: 'inline-block', marginLeft: 30, width: 180}}>
+                                <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-comment-1' />
                                     </Button>
                                     <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.comments_count} comments</span></label>
                                 </div>
-                                <div style={{display: 'inline-block', marginLeft: 30, width: 180}}>
+                                <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-heart-1' />
                                     </Button>
@@ -86,19 +86,19 @@ class SocialBanner extends React.Component {
                                 </div>
                             </div>
                             <div style={{marginTop: 9}}>
-                                <div style={{display: 'inline-block', width: 180}}>
+                                <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-sort-number-up' />
                                     </Button>
                                     <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.shyft_score} score</span></label>
                                 </div>
-                                <div style={{display: 'inline-block', marginLeft: 30, width: 180}}>
+                                <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-coverflow' />
                                     </Button>
                                     <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.number_of_shifts_covered} covers</span></label>
                                 </div>
-                                <div style={{display: 'inline-block', marginLeft: 30, width: 180}}>
+                                <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-upload-cloud' />
                                     </Button>

@@ -22,15 +22,6 @@ class ApplicationSidebar extends React.Component {
             return path;
           
     }
-    //<SidebarNavItem glyph='icon-fontello-chart-area' name='Charts'>
-    //                                   <SidebarNav>
-    //                                       <SidebarNavItem name='Line Series' href={::this.getPath('admin/charts/rubix/line')} />
-    //                                       <SidebarNavItem name='Area Series' href={::this.getPath('admin/charts/rubix/area')} />
-    //                                       <SidebarNavItem name='Bar + Column Series' href={::this.getPath('admin/charts/rubix/barcol')} />
-    //                                       <SidebarNavItem name='Mixed Series' href={::this.getPath('cadmin/harts/rubix/mixed')} />
-    //                                       <SidebarNavItem name='Pie + Donut Series' href={::this.getPath('admin/charts/rubix/piedonut')} />
-    //                                   </SidebarNav>
-    //</SidebarNavItem>
 
     render() {
         return (
@@ -47,6 +38,8 @@ class ApplicationSidebar extends React.Component {
                                     <SidebarNavItem glyph='icon-fontello-gauge' name='Dashboard' href={::this.getPath('admin/dashboard')} />
                                     <SidebarNavItem glyph='glyphicon glyphicon-map-marker' name='Location search' href={::this.getPath('admin/tables/locationList')} />
                                     <SidebarNavItem href={::this.getPath('admin/tables/userList')} glyph='glyphicon glyphicon-user' name='User search' />
+                                    <SidebarDivider />
+                                    <SidebarNavItem glyph='icon-ikons-login' name='Login' href={::this.getPath('login')} />
 
                                 </SidebarNav>
                             </div>

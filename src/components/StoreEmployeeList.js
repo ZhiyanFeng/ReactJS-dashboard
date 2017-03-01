@@ -49,11 +49,11 @@ class DatatableComponent extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.storeEmployees.map((storeEmployee, index) =>{
+                        {this.props.storeEmployees ? this.props.storeEmployees.map((storeEmployee, index) =>{
                             return(
                                 <UserListElement key={storeEmployee.id} user={storeEmployee}/>
                             );
-                        })}
+                        }) : <p></p>}
                     </tbody>
                     <tfoot>
                         <tr>

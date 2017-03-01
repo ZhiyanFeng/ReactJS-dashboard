@@ -73,16 +73,32 @@ const routes = (
  *  * No Sidebar, Header or Footer. Only the Body is rendered.
  *   */
 
-const combinedRoutes = (
-    <Route>
-        {routes}
-    </Route>
-
+const basicRoutes = (
+  <Route>
+    <Route path='login' component={LoginPage} />
+  </Route>
 );
+
+const combinedRoutes = (
+  <Route>
+    <Route>
+      {routes}
+    </Route>
+    <Route>
+      {basicRoutes}
+    </Route>
+  </Route>
+);
+//const combinedRoutes = (
+//    <Route>
+//        {routes}
+//    </Route>
+//
+//);
 
 export default (
     <Route>
-        <Route path='/' component={LoginPage} />
+        <Route path='/' component={App} />
         <Route path='/ltr'>
             {combinedRoutes}
         </Route>

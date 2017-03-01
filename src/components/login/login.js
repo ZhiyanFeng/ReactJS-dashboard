@@ -85,7 +85,7 @@ class LoginForm extends React.Component {
     render() {
         const {email, password, errors, isLoading} = this.state;
         return (
-            <div id='auth-container' className='login' style={{"margin" : "200px auto 0 auto"}}>
+            <div id='auth-container' className='login'>
                 <div id='auth-row'>
                     <div id='auth-cell'>
                         <Grid>
@@ -101,7 +101,7 @@ class LoginForm extends React.Component {
                                                     <div>You need to sign in for those awesome features</div>
                                                 </div>
                                                 <div>
-                                                    <div style={{padding: 0, paddingTop: 0, paddingBottom: 0, margin: 'auto', marginBottom: 0, marginTop: 25}}>
+                                                    <div style={{padding: 25, paddingTop: 0, paddingBottom: 0, margin: 'auto', marginBottom: 0, marginTop: 25}}>
                                                         { errors.form && <div className="alert alert-danger">{errors.form}</div> }
                                                         <Form onSubmit={::this.onSubmit}>
                                                             <TextFieldGroup

@@ -64,11 +64,12 @@ class DatatableComponent extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.props.users.map((user, index) =>{
+                        
+                        {this.props.users ? this.props.users.map((user, index) =>{
                             return(
                                 <UserListElement key={user.id} user={user}/>
                             );
-                        })}
+                        }) : <p>No users</p>}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -84,8 +85,8 @@ class DatatableComponent extends React.Component {
                 <UserDelete/>
             </div>
         );
-}
     }
+}
 
 //@connect((state) => state.userReducer)
 class UserList extends React.Component {

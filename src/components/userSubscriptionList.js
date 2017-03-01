@@ -127,22 +127,22 @@ export default class Inbox extends React.Component {
                   <Grid>
                     <Row>
                       <Col xs={12}>
-                        { this.props.channel.map((channel, index) =>{
-                            var channel=channel.channel;
-                            var src= channel.channel_profile_url!== null ? channel.channel_profile_url : "https://s3.amazonaws.com/shyftassets/avatar1.png";
-                            return(
-                                <InboxItem key={channel.id} unread src={src} type={channel.channel_type} name={channel.channel_name} member={channel.member_count}/>
-                            );
-                        })}
-                    </Col>
-                </Row>
-            </Grid>
-        </PanelBody>
+                          { this.props.channel ? this.props.channel.map((channel, index) =>{
+                                  var channel=channel.channel;
+                                  var src= channel.channel_profile_url!== null ? channel.channel_profile_url : "https://s3.amazonaws.com/shyftassets/avatar1.png";
+                                  return(
+                                      <InboxItem key={channel.id} unread src={src} type={channel.channel_type} name={channel.channel_name} member={channel.member_count}/>
+                                  );
+                              }) : <p>No data</p>}
+                      </Col>
+                  </Row>
+              </Grid>
+          </PanelBody>
+      </Panel>
+  </PanelBody>
     </Panel>
-        </PanelBody>
-    </Panel>
-</PanelContainer>
-  </div>
+        </PanelContainer>
+    </div>
     );
   }
 }

@@ -1,4 +1,4 @@
-#body.social {
+#body.user {
   background: #fff !important;
 
   .rubix-panel-container {
@@ -17,10 +17,10 @@
     border-radius: 0;
   }
 }
-html.social body .sidebar-nav > li.active:after {
+html.user body .sidebar-nav > li.active:after {
   display: none !important;
 }
-.social-desc {
+.user-desc {
   top: 0;
   left: 0;
   bottom: 0;
@@ -48,7 +48,7 @@ html.social body .sidebar-nav > li.active:after {
       display: none;
   }
 }
-.social-avatar {
+.user-avatar {
     top: 0;
     right: 0;
     bottom: 0;
@@ -61,7 +61,7 @@ html.social body .sidebar-nav > li.active:after {
         width: auto;
     }
 }
-.social-like-count {
+.user-like-count {
     cursor: pointer;
     display: inline-block;
 

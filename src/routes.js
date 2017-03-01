@@ -12,18 +12,19 @@ import Footer from './common/footer';
 
 /* Pages */
 
-import UserEdit from './components/UserEditForm';
 import UserList from './routes/UserList';
 import LocationList from './routes/LocationList';
 import LocationDetails from './routes/LocationDetails';
 import Dashboard from './routes/Dashboard';
 import LoginPage from './components/login/login';
-import Social from './routes/Social';
+import AddChannel from './components/addChannelForm';
+import Userdetail from './routes/Userdetail';
 import LineSeries from './routes/LineSeries';
 import AreaSeries from './routes/AreaSeries';
 import BarColSeries from './routes/BarColSeries';
 import MixedSeries from './routes/MixedSeries';
 import PieDonutSeries from './routes/PieDonutSeries';
+//import userSubscriptionList from './components/userSubscriptionList';
 
 //import Lock from './routes/Lock';
 //import Login from './routes/Login';
@@ -50,19 +51,21 @@ class App extends React.Component {
         );
     }
 }
+// <Route path='userSubscriptionList' component={userSubscriptionList} />
+//<Route path='charts/rubix/line' component={LineSeries} />
+//       <Route path='charts/rubix/area' component={AreaSeries} />
+//       <Route path='charts/rubix/barcol' component={BarColSeries} />
+//       <Route path='charts/rubix/mixed' component={MixedSeries} />
+//       <Route path='charts/rubix/piedonut' component={PieDonutSeries} />
 
 const routes = (
     <Route path='admin' component={App}>
         <Route path='dashboard' component={Dashboard} />
         <Route path='tables/userList' component={UserList} />
         <Route path='tables/locationList' component={LocationList} />
-        <Route path='user/edit(/:id)' component={Social} />
+        <Route path='user/edit(/:id)' component={Userdetail} />
+        <Route path='channel/add' component={AddChannel} />
         <Route path='location/edit(/:id)' component={LocationDetails} />
-        <Route path='charts/rubix/line' component={LineSeries} />
-        <Route path='charts/rubix/area' component={AreaSeries} />
-        <Route path='charts/rubix/barcol' component={BarColSeries} />
-        <Route path='charts/rubix/mixed' component={MixedSeries} />
-        <Route path='charts/rubix/piedonut' component={PieDonutSeries} />
     </Route>
 );
 

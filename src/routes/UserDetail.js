@@ -3,7 +3,7 @@ import { connect  } from 'react-redux';
 import {bindActionCreators } from "redux";
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import { searchUserDetail,searchUserLatestContent } from '../redux/actions/apiActions';
+import { searchUserDetail,searchUserLatestContent, searchChannelForUser } from '../redux/actions/apiActions';
 
 import {
     Row,
@@ -21,8 +21,9 @@ import {
 } from '@sketchpixy/rubix';
 
 import UserLatestContents from '../components/UserLatestContents';
+import UserSubscriptionList from '../components/userSubscriptionList';
 
-class SocialBanner extends React.Component {
+class UserDetailBanner extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,10 +34,14 @@ class SocialBanner extends React.Component {
             likeTextStyle: 'fg-white'
         };
     }
-    componentWillMount (){
+    componentDidMount (){
         this.props.searchUserDetail(this.props.id, localStorage.getItem('key'))
             .then(res => {
                 this.setState({src: this.props.activeUser.cover_image.full_url});
+            });
+        this.props.searchChannelForUser(this.props.id, localStorage.getItem('key'))
+            .then(res => {
+                this.setState({chanael: this.props.channel});
             });
     }
 
@@ -57,11 +62,11 @@ class SocialBanner extends React.Component {
 
     render() {
         return (
-            <Row className='social'>
+            <Row className='user'>
                 <div style={{height: 350, marginTop: -25, backgroundImage: 'url(/imgs/app/shots/Blick_auf_Manhattan.JPG)', backgroundSize: 'cover', position: 'relative', marginBottom: 25, backgroundPosition: 'center'}}>
-                    <div className='social-cover' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
+                    <div className='user-cover' style={{position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, backgroundColor: 'rgba(0, 0, 0, 0.7)'}}>
                     </div>
-                    <div className='social-desc'>
+                    <div className='user-desc'>
                         <div>
                             <h1 className='fg-white'>{this.props.activeUser.phone_number}</h1>
                             <h5 className='fg-white' style={{opacity: 0.8}}>Member Since - {this.props.activeUser.member_since}</h5>
@@ -70,19 +75,19 @@ class SocialBanner extends React.Component {
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-pencil-6' />
                                     </Button>
-                                    <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.posts_count} posts</span></label>
+                                    <label className='user-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.posts_count} posts</span></label>
                                 </div>
                                 <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-comment-1' />
                                     </Button>
-                                    <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.comments_count} comments</span></label>
+                                    <label className='user-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.comments_count} comments</span></label>
                                 </div>
                                 <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-heart-1' />
                                     </Button>
-                                    <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.likes_count} likes</span></label>
+                                    <label className='user-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.likes_count} likes</span></label>
                                 </div>
                             </div>
                             <div style={{marginTop: 9}}>
@@ -90,24 +95,24 @@ class SocialBanner extends React.Component {
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-sort-number-up' />
                                     </Button>
-                                    <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.shyft_score} score</span></label>
+                                    <label className='user-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.shyft_score} score</span></label>
                                 </div>
                                 <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-coverflow' />
                                     </Button>
-                                    <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.number_of_shifts_covered} covers</span></label>
+                                    <label className='user-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.number_of_shifts_covered} covers</span></label>
                                 </div>
                                 <div className='desc-item'>
                                     <Button id='likeCount' retainBackground rounded bsStyle='orange75' active={this.state.likeActive}>
                                         <Icon glyph='icon-fontello-upload-cloud' />
                                     </Button>
-                                    <label className='social-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.number_of_shifts_posted} posts</span></label>
+                                    <label className='user-like-count' htmlFor='likeCount'><span className={this.state.likeTextStyle}>{this.props.activeUser.number_of_shifts_posted} posts</span></label>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className='social-avatar'>
+                    <div className='user-avatar'>
                         <Image src={this.state.src} height='100' width='100' style={{display: 'block', borderRadius: 100, border: '2px solid #fff', margin: 'auto', marginTop: 50}} />
                         <h4 className='fg-white text-center'>{this.props.activeUser.first_name} {this.props.activeUser.last_name}</h4>
                         <h5 className='fg-white text-center' style={{opacity: 0.8}}>DevOps Engineer, NY</h5>
@@ -160,6 +165,7 @@ class SocialBanner extends React.Component {
                         <UserLatestContents activeUserId={this.props.id}/>
                     </Col>
                     <Col sm={4}>
+                        <UserSubscriptionList channel={this.props.channel} user={this.props.activeUser}/> 
                     </Col>
                   </Row>
                 </Col>
@@ -168,14 +174,16 @@ class SocialBanner extends React.Component {
     }
 }
 
-SocialBanner.propTypes = {
-    searchUserDetail : React.PropTypes.func.isRequired
+UserDetailBanner.propTypes = {
+    searchUserDetail : React.PropTypes.func.isRequired,
+    searchChannelForUser  : React.PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
         id: ownProps.params.id,
         activeUser: state.activeUserReducer.activeUser,
+        channel: state.userReducer.channel,
     }
 };
 
@@ -184,8 +192,9 @@ const myDispatch =  (dispatch, props) => {
         dispatch,
         ...bindActionCreators({
             searchUserDetail: searchUserDetail,
+            searchChannelForUser: searchChannelForUser
         }, dispatch)
     }
 };
 
-export default connect(mapStateToProps, {searchUserDetail})(SocialBanner);
+export default connect(mapStateToProps, myDispatch)(UserDetailBanner);

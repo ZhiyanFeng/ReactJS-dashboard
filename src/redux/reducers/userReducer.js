@@ -1,6 +1,7 @@
 const userReducer = (state = {
     users: [],
-    storeEmployees: []
+    storeEmployees: [],
+    channel: []
 
 }, action)=>{
     switch (action.type){
@@ -12,6 +13,11 @@ const userReducer = (state = {
         case "SET_STORE_EMPLOYEES":
             state = {
                 storeEmployees: action.storeEmployees
+            };
+            break;
+        case "SET_CHANNEL_FOR_USER":
+            state = {
+                channel: action.channel
             };
             break;
         case "user.modalDelete":

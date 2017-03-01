@@ -40,7 +40,7 @@ class DatatableComponent extends React.Component {
 
     search(query="", key){
         this.props.searchUsers(query, key).then(
-            (err) => this.setState({ errors: err.data.errors, isLoading: false  })
+            //(err) => this.setState({ errors: err.data.errors, isLoading: false  })
         )
     }
 
@@ -64,7 +64,7 @@ class DatatableComponent extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.users.map((user, index) =>{
+                        { this.props.users.map((user, index) =>{
                             return(
                                 <UserListElement key={user.id} user={user}/>
                             );
@@ -84,8 +84,8 @@ class DatatableComponent extends React.Component {
                 <UserDelete/>
             </div>
         );
-    }
 }
+    }
 
 //@connect((state) => state.userReducer)
 class UserList extends React.Component {

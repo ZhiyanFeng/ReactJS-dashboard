@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { IndexRoute, Route } from 'react-router';
+import { withRouter  } from 'react-router';
 
 import { Grid, Row, Col, MainContainer } from '@sketchpixy/rubix';
 
@@ -23,6 +24,13 @@ import AddRegionChannel from './components/addRegionChannelForm';
 import Userdetail from './routes/Userdetail';
 
 class App extends React.Component {
+
+    componentWillMount(){
+        if(!localStorage.getItem('key')){
+            this.props.router.push('/ltr/login');
+        };
+    }   
+
     render() {
         return (
             <MainContainer {...this.props}>
@@ -61,20 +69,20 @@ const routes = (
  *   */
 
 const basicRoutes = (
-  <Route>
-    <Route path='login' component={LoginPage} />
-  </Route>
+    <Route>
+        <Route path='login' component={LoginPage} />
+    </Route>
 );
 
 const combinedRoutes = (
-  <Route>
     <Route>
-      {routes}
+        <Route>
+            {routes}
+        </Route>
+        <Route>
+            {basicRoutes}
+        </Route>
     </Route>
-    <Route>
-      {basicRoutes}
-    </Route>
-  </Route>
 );
 //const combinedRoutes = (
 //    <Route>

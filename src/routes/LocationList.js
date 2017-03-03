@@ -46,8 +46,9 @@ class  DatatableComponent extends React.Component {
         return (
             <div>
                 <div>
-                    <input ref="searchInput" type="text" id="serarchBox"/>
-                    <button id="serachButton" onClick={(e)=>{this.updateSearch();}}>Search</button>
+                    <button onClick={(e)=>{this.updateSearch();}}>
+                        <Icon glyph='icon-fontello-plus'/>
+                    </button>
                 </div>
 
                 <Table ref={(c) => this.example = c} className='display' cellSpacing='0' width='100%'>

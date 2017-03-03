@@ -14,22 +14,13 @@ import Footer from './common/footer';
 
 import UserList from './routes/UserList';
 import LocationList from './routes/LocationList';
+import ChannelList from './routes/ChannelList';
 import LocationDetails from './routes/LocationDetails';
 import Dashboard from './routes/Dashboard';
 import LoginPage from './components/login/login';
 import AddChannel from './components/addChannelForm';
+import AddRegionChannel from './components/addRegionChannelForm';
 import Userdetail from './routes/Userdetail';
-import LineSeries from './routes/LineSeries';
-import AreaSeries from './routes/AreaSeries';
-import BarColSeries from './routes/BarColSeries';
-import MixedSeries from './routes/MixedSeries';
-import PieDonutSeries from './routes/PieDonutSeries';
-//import userSubscriptionList from './components/userSubscriptionList';
-
-//import Lock from './routes/Lock';
-//import Login from './routes/Login';
-//import Signup from './routes/Signup';
-
 
 class App extends React.Component {
     render() {
@@ -51,12 +42,6 @@ class App extends React.Component {
         );
     }
 }
-// <Route path='userSubscriptionList' component={userSubscriptionList} />
-//<Route path='charts/rubix/line' component={LineSeries} />
-//       <Route path='charts/rubix/area' component={AreaSeries} />
-//       <Route path='charts/rubix/barcol' component={BarColSeries} />
-//       <Route path='charts/rubix/mixed' component={MixedSeries} />
-//       <Route path='charts/rubix/piedonut' component={PieDonutSeries} />
 
 const routes = (
     <Route path='admin' component={App}>
@@ -65,6 +50,8 @@ const routes = (
         <Route path='tables/locationList' component={LocationList} />
         <Route path='user/edit(/:id)' component={Userdetail} />
         <Route path='channel/add' component={AddChannel} />
+        <Route path='channel/addRegionChannel' component={AddRegionChannel} />
+        <Route path='channel/list' component={ChannelList} />
         <Route path='location/edit(/:id)' component={LocationDetails} />
     </Route>
 );

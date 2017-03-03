@@ -1,6 +1,7 @@
 import users from "./userReducer";
 import authReducer from "./authReducer";
 import locationReducer from "./locationReducer";
+import channelReducer from "./channelReducer";
 import locationDetailReducer from "./locationDetailReducer";
 import activeUserReducer from "./activeUserReducer";
 import activeUserLatestContents from "./activeUserLatestContentsReducer"
@@ -16,4 +17,5 @@ module.exports = {
     ...activeUserLatestContents,
     ...dashboardReducer,
     ...storePhotoReducer,
+    ...channelReducer
 };

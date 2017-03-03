@@ -45,6 +45,7 @@ export function setupReducers(reducers) {
       activeUserReducer: reducers.activeUserReducer,
       authReducer: reducers.authReducer,
       locationReducer: reducers.locationReducer,
+      channelReducer: reducers.channelReducer,
       locationDetailReducer: reducers.locationDetailReducer,
       activeUserLatestContentsReducer: reducers.activeUserLatestContentsReducer,
       dashboardReducer: reducers.dashboardReducer,

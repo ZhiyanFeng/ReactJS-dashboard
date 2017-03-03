@@ -22,8 +22,6 @@ import UserDelete from '../components/UserDelete';
 import UserListElement from '../components/UserListElement';
 
 class DatatableComponent extends React.Component {
-
-
     componentDidMount() {
         $(ReactDOM.findDOMNode(this.example))
             .addClass('nowrap')
@@ -64,12 +62,11 @@ class DatatableComponent extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        
                         {this.props.users ? this.props.users.map((user, index) =>{
                             return(
                                 <UserListElement key={user.id} user={user}/>
                             );
-                        }) : <p>No users</p>}
+                        }) : <UserListElement user="no user"/>}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -120,7 +117,6 @@ UserList.propTypes = {
 const mapStateToProps = (state) => {
     return {
         users: state.userReducer.users,
-        admin: state.authReducer.admin
     }
 
 };

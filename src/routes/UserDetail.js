@@ -37,7 +37,8 @@ class UserDetailBanner extends React.Component {
     componentDidMount (){
         this.props.searchUserDetail(this.props.id, localStorage.getItem('key'))
             .then(res => {
-                this.setState({src: this.props.activeUser.cover_image.full_url});
+                var url = this.props.activeUser.cover_image !==null ? this.props.activeUser.cover_image.full_url : "";
+                this.setState({src: url});
             });
         this.props.searchChannelForUser(this.props.id, localStorage.getItem('key'))
             .then(res => {

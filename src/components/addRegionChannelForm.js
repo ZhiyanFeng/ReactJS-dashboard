@@ -14,7 +14,7 @@ class AddChannel extends React.Component{
         this.formSubmit = this.formSubmit.bind(this);
     }
 
-    addToChannel(query, admin){
+    AddRegionChannel(query, admin){
             const config = {
                 headers: {
                     'X-Method': 'pass_verification',
@@ -24,7 +24,7 @@ class AddChannel extends React.Component{
                     'Content-Type': 'application/json'
                 }
             }
-        axios.post(`http://internal.coffeemobile.com/api/users/${this.props.activeUser.id}/create_subscription`, {'user_id': this.props.activeUser.id, 'channel_id':query.channel_id, 'is_coffee': query.is_coffee, 'is_invisible': query.is_active}, config).then(res => {
+        axios.post(`http://internal.coffeemobile.com/api/channels/create_region_channel`, {'channel_frequency': query.channel_frequency, 'channel_name':query.channel_name, 'channel_profile': query.channel_profile}, config).then(res => {
             });
         }
 
@@ -32,38 +32,30 @@ class AddChannel extends React.Component{
         const {handleSubmit} = this.props;
         return(
             <div>
-                <PageHeader>Add user to channel</PageHeader>
+                <PageHeader>Create Region Channel</PageHeader>
                 <Form horizontal onSubmit={this.props.handleSubmit(this.formSubmit)}>
                     <div>
-                        <label>First Name</label>
+                        <label>Channel Frequency</label>
                         <div>
-                            <Field name="firstName" component="input" type="text" placeholder={this.props.activeUser.first_name}/>
+                            <Field name="channel_frequency" component="input" type="text" placeholder="Channel Frequency"/>
                         </div>
                     </div>
                     <div>
-                        <label>Channel Id</label>
+                        <label>Channel Name</label>
                         <div>
-                            <Field name="channel_id" component="input" type="text" placeholder="Channel Id"/>
+                            <Field name="channel_name" component="input" type="text" placeholder="Channel Name"/>
                         </div>
                     </div>
                     <div>
-                        <label>Is coffee?</label>
+                        <label>Channel Profile</label>
                         <div>
-                            <label><Field name="is_coffee" component="input" type="radio" value="true"/> True</label>
-                            <label><Field name="is_coffee" component="input" type="radio" value="false"/> False</label>
-                        </div>
-                    </div>
-                    <div>
-                        <label>Is active?</label>
-                        <div>
-                            <label><Field name="is_active" component="input" type="radio" value="true"/> True</label>
-                            <label><Field name="is_active" component="input" type="radio" value="false"/> False</label>
+                            <Field name="channel_profile" component="input" type="text" placeholder="Channel Profile"/>
                         </div>
                     </div>
                     <div></div>
                     <FormGroup>
                         <Col smOffset={0.5} sm={4}>
-                            <Button type="submit" className="btn btn-success" disabled={this.props.invalid || this.props.submitting}>Save</Button>
+                            <Button type="submit" className="btn btn-success" disabled={this.props.invalid || this.props.submitting}>Create Region Channel</Button>
                             <Button className="btn btn-danger" onClick={this.cancel.bind(this)}>Cancel</Button>
                         </Col>
                     </FormGroup>
@@ -99,7 +91,7 @@ class AddChannel extends React.Component{
     }
 
     formSubmit(values){
-        this.addToChannel(values, localStorage.getItem('key'));
+        this.AddRegionChannel(values, localStorage.getItem('key'));
         this.props.router.goBack();
     }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect  } from 'react-redux';
 import classNames from 'classnames';
 import { withRouter } from 'react-router';
 import { Link } from 'react-router';
@@ -93,7 +94,7 @@ class InboxItem extends React.Component {
   }
 }
 
-export default class Inbox extends React.Component {
+class Inbox extends React.Component {
   handleClick(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -127,7 +128,7 @@ export default class Inbox extends React.Component {
                   <Grid>
                     <Row>
                       <Col xs={12}>
-                          {this.props.channel.map((channel, index) =>{
+                          {this.props.channels.map((channel, index) =>{
                                   var channel=channel.channel;
                                   var src= channel.channel_profile_url!== null ? channel.channel_profile_url : "https://s3.amazonaws.com/shyftassets/avatar1.png";
                                   return(
@@ -146,3 +147,13 @@ export default class Inbox extends React.Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        channels: state.channelReducer.channels,
+    }
+};
+
+export default connect(mapStateToProps, null)(Inbox);
+
+

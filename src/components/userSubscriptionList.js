@@ -95,62 +95,66 @@ class InboxItem extends React.Component {
 }
 
 class Inbox extends React.Component {
-  handleClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-      //this.props.router.push('');
-  }
+    handleClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        //this.props.router.push('');
+    }
 
-  render() {
-    return (
-      <div>
-        <PanelContainer className='inbox' collapseBottom>
-          <Panel>
-            <PanelBody style={{paddingTop: 0}}>
-              <Grid>
-                <Row>
-                  <Col xs={8} style={{paddingTop: 12.5}}>
-                    <ButtonToolbar className='inbox-toolbar'>
-                      <ButtonGroup>
-                    <Link to={'/ltr/admin/channel/add/'}>
-                        <Button bsStyle='blue'>
-                          <Icon glyph='icon-fontello-plus'/>
-                        </Button>
-                    </Link>
-                      </ButtonGroup>
-                    </ButtonToolbar>
-                  </Col>
-                </Row>
-              </Grid>
-              <hr style={{margin: 0}}/>
-              <Panel horizontal>
-                <PanelBody className='panel-sm-9 panel-xs-12' style={{ paddingTop: 0 }}>
-                  <Grid>
-                    <Row>
-                      <Col xs={12}>
-                          {this.props.channels.map((channel, index) =>{
-                                  var channel=channel.channel;
-                                  var src= channel.channel_profile_url!== null ? channel.channel_profile_url : "https://s3.amazonaws.com/shyftassets/avatar1.png";
-                                  return(
-                                      <InboxItem key={channel.id} unread src={src} type={channel.channel_type} name={channel.channel_name} member={channel.member_count}/>
-                                  );
-                              })}
-                      </Col>
-                  </Row>
-              </Grid>
-          </PanelBody>
-      </Panel>
-  </PanelBody>
-    </Panel>
-        </PanelContainer>
-    </div>
-    );
-  }
+    render() {
+        if(this.props.channel){
+            return (
+                <div>
+                    <PanelContainer className='inbox' collapseBottom>
+                        <Panel>
+                            <PanelBody style={{paddingTop: 0}}>
+                                <Grid>
+                                    <Row>
+                                        <Col xs={8} style={{paddingTop: 12.5}}>
+                                            <ButtonToolbar className='inbox-toolbar'>
+                                                <ButtonGroup>
+                                                    <Link to={'/ltr/admin/channel/add/'}>
+                                                        <Button bsStyle='blue'>
+                                                            <Icon glyph='icon-fontello-plus'/>
+                                                        </Button>
+                                                    </Link>
+                                                </ButtonGroup>
+                                            </ButtonToolbar>
+                                        </Col>
+                                    </Row>
+                                </Grid>
+                                <hr style={{margin: 0}}/>
+                                <Panel horizontal>
+                                    <PanelBody className='panel-sm-9 panel-xs-12' style={{ paddingTop: 0 }}>
+                                        <Grid>
+                                            <Row>
+                                                <Col xs={12}>
+                                                    {this.props.channel.map((channel, index) =>{
+                                                        var channel=channel.channel;
+                                                        var src= channel.channel_profile_url!== null ? channel.channel_profile_url : "https://s3.amazonaws.com/shyftassets/avatar1.png";
+                                                        return(
+                                                            <InboxItem key={channel.id} unread src={src} type={channel.channel_type} name={channel.channel_name} member={channel.member_count}/>
+                                                        );
+                                                    })}
+                                                </Col>
+                                            </Row>
+                                        </Grid>
+                                    </PanelBody>
+                                </Panel>
+                            </PanelBody>
+                        </Panel>
+                    </PanelContainer>
+                </div>
+            );
+        }else{
+            return <p>Loading...</p>
+        }
+    }
 }
 
 const mapStateToProps = (state) => {
     return {
-        channels: state.channelReducer.channels,
+        channel: state.userReducer.channel,
     }
 };
 

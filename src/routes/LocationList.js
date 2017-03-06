@@ -9,6 +9,7 @@ import {
     Col,
     Grid,
     Panel,
+    Icon,
     Table,
     PanelBody,
     PanelHeader,
@@ -20,6 +21,11 @@ import {searchLocations} from '../redux/actions/apiActions';
 import LocationListElement from '../components/LocationListElement';
 
 class  DatatableComponent extends React.Component {
+    constructor(props){
+        super(props);
+        this.updateSearch = this.updateSearch.bind(this);
+        this._handleKeyPress = this._handleKeyPress.bind(this);
+    }
 
 
     componentDidMount() {
@@ -36,6 +42,12 @@ class  DatatableComponent extends React.Component {
         this.searchLocations(this.refs.searchInput.value, localStorage.getItem('key'));
     }
 
+    _handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            this.updateSearch();
+        }
+    }
+
     searchLocations(query="", key){
         this.props.searchLocations(query, key).then(
             //(err) => this.setState({ errors: err.data.errors, isLoading: false  })
@@ -46,9 +58,10 @@ class  DatatableComponent extends React.Component {
         return (
             <div>
                 <div>
-                    <button onClick={(e)=>{this.updateSearch();}}>
-                        <Icon glyph='icon-fontello-plus'/>
-                    </button>
+                    <div>
+                        <input ref="searchInput" type="text" id="serarchBox" onKeyPress={this._handleKeyPress}/>
+                        <button id="serachButton" onClick={(e)=>{this.updateSearch();}}>Search</button>
+                    </div>
                 </div>
 
                 <Table ref={(c) => this.example = c} className='display' cellSpacing='0' width='100%'>

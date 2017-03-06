@@ -22,6 +22,11 @@ import UserDelete from '../components/UserDelete';
 import UserListElement from '../components/UserListElement';
 
 class DatatableComponent extends React.Component {
+    constructor(props){
+        super(props);
+        this.updateSearch = this.updateSearch.bind(this);
+        this._handleKeyPress = this._handleKeyPress.bind(this);
+    }
     componentDidMount() {
         $(ReactDOM.findDOMNode(this.example))
             .addClass('nowrap')
@@ -41,12 +46,18 @@ class DatatableComponent extends React.Component {
             //(err) => this.setState({ errors: err.data.errors, isLoading: false  })
         )
     }
+    _handleKeyPress(e) {
+        if (e.key === 'Enter') {
+            this.updateSearch();
+        }
+
+    }
 
     render() {
         return (
             <div>
                 <div>
-                    <input ref="searchInput" type="text" id="serarchBox"/>
+                    <input ref="searchInput" type="text" id="serarchBox" onKeyPress={this._handleKeyPress}/>
                     <button id="serachButton" onClick={(e)=>{this.updateSearch();}}>Search</button>
                 </div>
 

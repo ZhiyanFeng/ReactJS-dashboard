@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { searchLocationDetail, searchStoreEmployees} from '../redux/actions/apiActions';
 import { searchStorePhoto} from '../redux/actions/apiGoogleActions';
 import  StoreEmployeeList from '../components/StoreEmployeeList';
+import XEditableLocation from '../components/XEditableLocation';
 
 import {
     Row,
@@ -132,7 +133,7 @@ class LocationBanner extends React.Component {
                     </div>
                     <div className='locationDetail-avatar'>
                         <Image src={this.state.src} height='100' width='100' style={{display: 'block', borderRadius: 100, border: '2px solid #fff', margin: 'auto', marginTop: 50}} />
-                        <h4 className='fg-white text-center'>{this.props.locationDetail.location_name}</h4>
+                        <XEditableLocation location_id={this.props.locationDetail.id} operation='location_name' name={this.props.locationDetail.location_name}/>
                         <h5 className='fg-white text-center' style={{opacity: 0.8}}>DevOps Engineer, NY</h5>
                     </div>
                 </div>

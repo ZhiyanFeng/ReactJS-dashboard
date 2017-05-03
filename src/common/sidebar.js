@@ -38,6 +38,7 @@ class ApplicationSidebar extends React.Component {
                                     <SidebarNavItem glyph='icon-fontello-gauge' name='Dashboard' href={::this.getPath('admin/dashboard')} />
                                     <SidebarNavItem glyph='glyphicon glyphicon-map-marker' name='Location search' href={::this.getPath('admin/tables/locationList')} />
                                     <SidebarNavItem href={::this.getPath('admin/tables/userList')} glyph='glyphicon glyphicon-user' name='User search' />
+                                    <SidebarNavItem href={::this.getPath('admin/adminClaim')} glyph='glyphicon glyphicon-thumbs-up' name='Admin claim' />
                                     <SidebarNavItem href={::this.getPath('admin/channel/list')} glyph='icon-fontello-signal' name='Channel' />
                                     <SidebarDivider />
                                     <SidebarNavItem glyph='icon-ikons-login' name='Login' href={::this.getPath('login')} />

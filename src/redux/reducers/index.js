@@ -7,6 +7,7 @@ import activeUserReducer from "./activeUserReducer";
 import activeUserLatestContents from "./activeUserLatestContentsReducer"
 import dashboardReducer from "./dashboardReducer";
 import storePhotoReducer from "./storePhotoReducer";
+import adminClaimReducer from "./adminClaimReducer";
 
 module.exports = {
     ...users,
@@ -17,5 +18,6 @@ module.exports = {
     ...activeUserLatestContents,
     ...dashboardReducer,
     ...storePhotoReducer,
-    ...channelReducer
+    ...channelReducer,
+    ...adminClaimReducer
 };

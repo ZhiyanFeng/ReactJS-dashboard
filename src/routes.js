@@ -14,6 +14,7 @@ import Footer from './common/footer';
 /* Pages */
 
 import UserList from './routes/UserList';
+import adminClaim from './routes/adminClaim';
 import LocationList from './routes/LocationList';
 import ChannelList from './routes/ChannelList';
 import LocationDetails from './routes/LocationDetails';
@@ -55,6 +56,7 @@ const routes = (
     <Route path='admin' component={App}>
         <Route path='dashboard' component={Dashboard} />
         <Route path='tables/userList' component={UserList} />
+        <Route path='adminClaim' component={adminClaim} />
         <Route path='tables/locationList' component={LocationList} />
         <Route path='user/edit(/:id)' component={Userdetail} />
         <Route path='channel/add' component={AddChannel} />

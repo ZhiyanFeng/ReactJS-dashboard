@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { SET_REGION_CHANNEL, SET_CHANNEL_FOR_USER, SET_STORE_EMPLOYEES, SET_LOCATION_DETAIL,SET_SEARCH_USERS, SET_ADMIN_USER, SET_SEARCH_LOCATIONS, SET_ACTIVE_USER, SET_ACTIVE_USER_LATEST_CONTENTS, SET_DASHBOARD_DATA } from './actionTypes/allActionTypes';
+import { SET_SEARCH_ADMIN_CLAIM, SET_REGION_CHANNEL, SET_CHANNEL_FOR_USER, SET_STORE_EMPLOYEES, SET_LOCATION_DETAIL,SET_SEARCH_USERS} from './actionTypes/allActionTypes';
+import { SET_ADMIN_USER, SET_SEARCH_LOCATIONS, SET_ACTIVE_USER, SET_ACTIVE_USER_LATEST_CONTENTS, SET_DASHBOARD_DATA } from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import Constants from '../../api/constants';
 
@@ -7,6 +8,12 @@ export function setSearchUsers(users) {
     return {
         type: SET_SEARCH_USERS,
         users
+    };
+}
+export function setSearchAdminClaim(info) {
+    return {
+        type: SET_SEARCH_ADMIN_CLAIM,
+        info
     };
 }
 export function setSearchLocations(locations) {
@@ -74,6 +81,40 @@ export function searchUsers(query, admin){
         }
         return axios.post(`${Constants.API_SERVER_URL}/api/users/search`, {'user_name': query}, config).then(res => {
             dispatch(setSearchUsers(res.data.eXpresso));
+        });
+    }
+}
+// for admin claim request
+export function searchAdminClaim(claim_id, admin){
+    return dispatch => {
+        const config = {
+            headers: {
+                'X-Method': 'pass_verification',
+                'Session-Token': '1333',
+                'Accept': 'application/vnd.Expresso.v1',
+                'Authorization': `Token token=${admin}, nonce="def"`,
+                'Content-Type': 'application/json'
+            }
+        }
+        return axios.get(`${Constants.TEST_SERVER_URL}/api/admin_claims/${claim_id}/display`, config).then(res => {
+            dispatch(setSearchAdminClaim(res.data));
+        });
+    }
+}
+
+export function allowClaim(email, userId, locationId, admin){
+    return dispatch => {
+        const config = {
+            headers: {
+                'X-Method': 'pass_verification',
+                'Session-Token': '1333',
+                'Accept': 'application/vnd.Expresso.v1',
+                'Authorization': `Token token=${admin}, nonce="def"`,
+                'Content-Type': 'application/json'
+            }
+        }
+        return axios.post(`${Constants.TEST_SERVER_URL}/api/admin_claims/allowClaim`, {'email': email, 'userId': userId, 'locationId': locationId}, config).then(res => {
+            return res;
         });
     }
 }

@@ -119,6 +119,23 @@ export function allowClaim(email, userId, locationId, admin){
     }
 }
 
+export function sendEmail(email, admin){
+    return dispatch => {
+        const config = {
+            headers: {
+                'X-Method': 'pass_verification',
+                'Session-Token': '1333',
+                'Accept': 'application/vnd.Expresso.v1',
+                'Authorization': `Token token=${admin}, nonce="def"`,
+                'Content-Type': 'application/json'
+            }
+        }
+        return axios.post(`${Constants.TEST_SERVER_URL}/api/admin_claims/sendEmail`, {'email': email}, config).then(res => {
+            return res;
+        });
+    }
+}
+
 export function searchUserLatestContent(id, admin){
     return dispatch => {
         const config = {

@@ -15,7 +15,7 @@ import {
     PanelContainer,
 } from "@sketchpixy/rubix";
 
-import { searchAdminClaim, allowClaim } from "../redux/actions/apiActions";
+import { searchAdminClaim, allowClaim, sendEmail} from "../redux/actions/apiActions";
 
 class DatatableComponent extends React.Component {
 	constructor(props) {
@@ -23,6 +23,7 @@ class DatatableComponent extends React.Component {
 		this.updateSearch = this.updateSearch.bind(this);
 		this._handleKeyPress = this._handleKeyPress.bind(this);
         this.allowClaim = this.allowClaim.bind(this);
+        this.sendEmail = this.sendEmail.bind(this);
 	}
 	updateSearch() {
 		this.search(this.refs.searchInput.value, localStorage.getItem("key"));
@@ -40,6 +41,11 @@ class DatatableComponent extends React.Component {
         var locationId = this.refs.location_id.textContent;
 		this.props.allowClaim(email, userId, locationId, localStorage.getItem("key")).then();
 	}
+
+    sendEmail(){
+		var email= 'zhiyan@myshyft.com';
+		this.props.sendEmail(email, localStorage.getItem("key")).then();
+    }
 	_handleKeyPress(e) {
 		if (e.key === "Enter") {
 			this.updateSearch();
@@ -95,8 +101,8 @@ class DatatableComponent extends React.Component {
                 </Table>
                 <hr />
                 <div className="btn-group" role="group" aria-label="Basic example">
-                    <button id="allow-claim" type="button" className="btn btn-secondary" onClick={(e) => { this.allowClaim(); }}>Allow</button>
-                    <button type="button" className="btn btn-secondary">Send email</button>
+                    <button type="button" className="btn btn-secondary" onClick={(e) => { this.allowClaim(); }}>Allow</button>
+                    <button type="button" className="btn btn-secondary" onClick={(e) => { this.sendEmail(); }}>Send email</button>
                 </div>
             </div>
         );
@@ -131,7 +137,8 @@ class AdminClaimList extends React.Component {
 
 AdminClaimList.propTypes = {
     searchAdminClaim: React.PropTypes.func.isRequired,
-    allowClaim: React.PropTypes.func.isRequired
+    allowClaim: React.PropTypes.func.isRequired,
+    sendEmail: React.PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state) => {
@@ -146,7 +153,8 @@ const myDispatch = (dispatch) => {
         dispatch,
         ...bindActionCreators({
             searchAdminClaim: searchAdminClaim,
-            allowClaim: allowClaim
+            allowClaim: allowClaim,
+            sendEmail: sendEmail
         }, dispatch)
     };
 };

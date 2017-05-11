@@ -43,7 +43,7 @@ class DatatableComponent extends React.Component {
 	}
 
     sendEmail(){
-		var email= 'zhiyan@myshyft.com';
+		var email= this.refs.email.textContent;
 		this.props.sendEmail(email, localStorage.getItem("key")).then();
     }
 	_handleKeyPress(e) {

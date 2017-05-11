@@ -18,7 +18,7 @@ development:
   username: manager
   password: 6P;Jz6Kju^2(
 
-backupt:
+backupp:
   adapter: postgresql
   encoding: unicode
   database: expresso_test

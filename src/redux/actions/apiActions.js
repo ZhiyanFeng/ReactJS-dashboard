@@ -96,7 +96,7 @@ export function searchAdminClaim(claim_id, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/admin_claims/${claim_id}/display`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/admin_claims/${claim_id}/display`, config).then(res => {
             dispatch(setSearchAdminClaim(res.data));
         });
     }
@@ -113,7 +113,7 @@ export function allowClaim(email, userId, locationId, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/admin_claims/allowClaim`, {'email': email, 'userId': userId, 'locationId': locationId}, config).then(res => {
+         return axios.post(`${Constants.API_SERVER_URL}/api/admin_claims/allowClaim`, {'email': email, 'userId': userId, 'locationId': locationId}, config).then(res => {
             return res;
         });
     }
@@ -130,7 +130,7 @@ export function sendEmail(email, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/admin_claims/sendEmail`, {'email': email}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/admin_claims/sendEmail`, {'email': email}, config).then(res => {
             return res;
         });
     }

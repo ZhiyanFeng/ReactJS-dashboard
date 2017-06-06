@@ -1,6 +1,8 @@
 import React from 'react';
 import {Modal, Button, Glyphicon} from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { bindActionCreators } from "redux";
+import { deleteUser } from "../redux/actions/apiActions";
 
 
 class UserDelete extends React.Component {
@@ -8,6 +10,7 @@ class UserDelete extends React.Component {
         super(props);
         this.modalDeleteHide = this.modalDeleteHide.bind(this);
         this.userDelete = this.userDelete.bind(this);
+        this.backendUserDelete = this.backendUserDelete.bind(this);
     }
 
     modalDeleteHide(event){
@@ -17,7 +20,7 @@ class UserDelete extends React.Component {
     };
 
     userDelete(event){
-        //delete the user
+        //delete the user from the store
         this.props.dispatch({
             type: 'user.delete',
             id: this.props.modal_delete.id,
@@ -27,6 +30,14 @@ class UserDelete extends React.Component {
             type: "user.modalDeleteHide",
         })
 
+    }
+
+    backendUserDelete(e){
+        this.props.deleteUser(this.props.modal_delete.id, localStorage.getItem("key")).then(
+            this.props.dispatch({
+                type: "user.modalDeleteHide",
+            })
+        );
     }
 
     render(){
@@ -39,13 +50,25 @@ class UserDelete extends React.Component {
                 </Modal.Header>
                 <Modal.Footer>
                     <Button onClick={this.modalDeleteHide}>No</Button>
-                    <Button bsStyle="primary" onClick={this.userDelete}>Yes</Button>
+                    <Button bsStyle="primary" onClick={this.backendUserDelete}>Yes</Button>
                 </Modal.Footer>
             </Modal>
         )
     }
 }
 
+UserDelete.propTypes = {
+    deleteUser: React.PropTypes.func.isRequired
+};
+
+const myDispatch = (dispatch) => {
+    return {
+        dispatch,
+        ...bindActionCreators({
+            deleteUser: deleteUser,
+        }, dispatch)
+    };
+};
 
 function mapStateToProps(state){
     let modal_delete;
@@ -61,8 +84,9 @@ function mapStateToProps(state){
 
     return{
         modal_delete: modal_delete,
+        users: state.userReducer.users,
     }
 }
 
 
-export default connect(mapStateToProps)(UserDelete);
+export default connect(mapStateToProps, myDispatch)(UserDelete);

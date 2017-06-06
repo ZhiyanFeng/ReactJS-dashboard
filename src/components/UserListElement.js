@@ -30,6 +30,7 @@ class UserListElement extends React.Component{
                     <td>{user.first_name}</td>
                     <td>{user.last_name}</td>
                     <td>{user.phone_number}</td>
+                    <td>{user.is_valid ? 'True' : 'False'}</td>
                     <td>
                         <Link to={'/ltr/admin/user/edit/' + user.id}>
                             <Button type="button" className="btn btn-primary" bsSize="small">Edit <Glyphicon glyph="edit"/></Button>
@@ -43,6 +44,7 @@ class UserListElement extends React.Component{
         }else{
             return (
                 <tr>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

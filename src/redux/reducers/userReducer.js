@@ -41,7 +41,7 @@ const userReducer = (state = {
             state = JSON.parse(JSON.stringify(state)); 
             for (const index in state.users){
                 if(state.users[index].id === action.id){
-                    state.users.splice(index, 1);
+                    state.users[index].is_valid = false;
                 }
             }
             break;

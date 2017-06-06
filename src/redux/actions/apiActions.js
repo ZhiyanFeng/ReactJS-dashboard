@@ -2,7 +2,7 @@ import axios from 'axios';
 import { SET_SEARCH_ADMIN_CLAIM, SET_REGION_CHANNEL, SET_CHANNEL_FOR_USER, SET_STORE_EMPLOYEES, SET_LOCATION_DETAIL,SET_SEARCH_USERS} from './actionTypes/allActionTypes';
 import { SET_ADMIN_USER, SET_SEARCH_LOCATIONS, SET_ACTIVE_USER, SET_ACTIVE_USER_LATEST_CONTENTS, SET_DASHBOARD_DATA } from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
-import Constants from '../../api/constants';
+import Constants from '../../api/constants'; //API_SERVER_URL or TEST_SERVER_URL
 
 export function setSearchUsers(users) {
     return {
@@ -66,6 +66,30 @@ export function setDashboardData(dashboardData) {
         type: SET_DASHBOARD_DATA,
         dashboardData
     };
+}
+
+export function setDeleteUsers(userId) {
+    return {
+            type: 'user.delete',
+            id: userId,
+    };
+}
+
+export function deleteUser(userId, admin){
+    return dispatch => {
+        const config = {
+            headers: {
+                'X-Method': 'pass_verification',
+                'Session-Token': '1333',
+                'Accept': 'application/vnd.Expresso.v1',
+                'Authorization': `Token token=${admin}, nonce="def"`,
+                'Content-Type': 'application/json'
+            }
+        }
+        return axios.get(`${Constants.API_SERVER_URL}/api/users/${userId}/deleteUser`, config).then(res => {
+            dispatch(setDeleteUsers(userId));
+        });
+    }
 }
 
 export function searchUsers(query, admin){

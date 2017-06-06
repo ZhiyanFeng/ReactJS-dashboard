@@ -49,7 +49,6 @@ class DatatableComponent extends React.Component {
         if (e.key === "Enter") {
             this.updateSearch();
         }
-
     }
 
     render() {
@@ -67,6 +66,7 @@ class DatatableComponent extends React.Component {
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
+                            <th>Is Valid</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -84,6 +84,7 @@ class DatatableComponent extends React.Component {
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
+                            <th>Is Valid</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>

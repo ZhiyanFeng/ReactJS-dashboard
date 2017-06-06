@@ -1,0 +1,17 @@
+.youtube_link img {
+	max-height: 100px;
+	z-index: -100;
+    background-position: center;
+    background-size: cover;
+}
+
+.youtube_link img:hover {
+	background-image: url(/assets/img/safety_play.png);
+    background-position: center;
+    background-size: cover;
+}
+
+.pull-center {
+	margin: 0 auto;
+	
+}

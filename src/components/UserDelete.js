@@ -2,15 +2,25 @@ import React from 'react';
 import {Modal, Button, Glyphicon} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from "redux";
-import { deleteUser } from "../redux/actions/apiActions";
+import { deleteUser, removeUserFromLocation } from "../redux/actions/apiActions";
 
 
 class UserDelete extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            for_location : false
+        }
         this.modalDeleteHide = this.modalDeleteHide.bind(this);
         this.userDelete = this.userDelete.bind(this);
         this.backendUserDelete = this.backendUserDelete.bind(this);
+        this.deleteUserFromLocation = this.deleteUserFromLocation.bind(this);
+    }
+
+    componentWillMount() {
+        this.setState({
+            for_location: this.props.for_location
+        });
     }
 
     modalDeleteHide(event){
@@ -29,7 +39,14 @@ class UserDelete extends React.Component {
         this.props.dispatch({
             type: "user.modalDeleteHide",
         })
+    }
 
+    deleteUserFromLocation(event){
+        this.props.removeUserFromLocation(this.props.modal_delete.location_id, this.props.modal_delete.id, localStorage.getItem("key")).then(
+            this.props.dispatch({
+                type: "user.modalDeleteHide",
+            })
+        );
     }
 
     backendUserDelete(e){
@@ -50,7 +67,9 @@ class UserDelete extends React.Component {
                 </Modal.Header>
                 <Modal.Footer>
                     <Button onClick={this.modalDeleteHide}>No</Button>
-                    <Button bsStyle="primary" onClick={this.backendUserDelete}>Yes</Button>
+                    {this.props.modal_delete.for_location
+                            ? <Button bsStyle="primary" onClick={this.deleteUserFromLocation}>Yes</Button>
+                            : <Button bsStyle="primary" onClick={this.backendUserDelete}>Yes</Button>}
                 </Modal.Footer>
             </Modal>
         )
@@ -66,6 +85,7 @@ const myDispatch = (dispatch) => {
         dispatch,
         ...bindActionCreators({
             deleteUser: deleteUser,
+            removeUserFromLocation: removeUserFromLocation,
         }, dispatch)
     };
 };

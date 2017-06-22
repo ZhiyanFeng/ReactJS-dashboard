@@ -2,7 +2,6 @@ import React from 'react';
 import { connect  } from 'react-redux';
 import {bindActionCreators } from "redux";
 import ReactDOM from 'react-dom';
-import _ from 'lodash';
 
 import {
     Row,
@@ -25,17 +24,6 @@ class  DatatableComponent extends React.Component {
         super(props);
         this.updateSearch = this.updateSearch.bind(this);
         this._handleKeyPress = this._handleKeyPress.bind(this);
-    }
-
-
-    componentDidMount() {
-        $(ReactDOM.findDOMNode(this.example))
-            .addClass('nowrap')
-        //.dataTable({
-        //       columnDefs: [
-        //           { targets: [-1, -3], className: 'dt-body-left' }
-        //       ],
-        //   });
     }
 
     updateSearch(){
@@ -72,6 +60,7 @@ class  DatatableComponent extends React.Component {
                             <th>City</th>
                             <th>Location Name</th>
                             <th>Member Count</th>
+                            <th>Created at</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -90,6 +79,7 @@ class  DatatableComponent extends React.Component {
                             <th>City</th>
                             <th>Location Name</th>
                             <th>Member Count</th>
+                            <th>Created at</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -126,6 +116,7 @@ class LocationList extends React.Component {
         );
     }
 }
+
 LocationList.propTypes = {
     searchLocations: React.PropTypes.func.isRequired
 }
@@ -134,7 +125,6 @@ const mapStateToProps = (state) => {
     return {
         locations: state.locationReducer.locations,
     }
-
 };
 
 const myDispatch =  (dispatch, props) => {
@@ -145,5 +135,6 @@ const myDispatch =  (dispatch, props) => {
         }, dispatch)
     }
 };
+
 export default connect(mapStateToProps, myDispatch)(LocationList);
 

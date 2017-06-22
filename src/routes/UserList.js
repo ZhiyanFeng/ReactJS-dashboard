@@ -1,7 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ReactDOM from "react-dom";
+import { searchUsers } from "../redux/actions/apiActions";
+import { ModalDeleteUser } from "../redux/actions/actionTypes/modalDeleteUser";
+import UserDelete from "../components/UserDelete";
+import UserListElement from "../components/UserListElement";
 
 import {
     Row,
@@ -15,25 +18,12 @@ import {
     PanelContainer,
 } from "@sketchpixy/rubix";
 
-import { searchUsers } from "../redux/actions/apiActions";
-import { ModalDeleteUser } from "../redux/actions/actionTypes/modalDeleteUser";
-import UserDelete from "../components/UserDelete";
-import UserListElement from "../components/UserListElement";
 
 class DatatableComponent extends React.Component {
     constructor(props) {
         super(props);
         this.updateSearch = this.updateSearch.bind(this);
         this._handleKeyPress = this._handleKeyPress.bind(this);
-    }
-    componentDidMount() {
-        $(ReactDOM.findDOMNode(this.example))
-            .addClass("nowrap");
-        //.dataTable({
-        //       columnDefs: [
-        //           { targets: [-1, -3], className: 'dt-body-left' }
-        //       ],
-        //   });
     }
 
     updateSearch() {
@@ -42,7 +32,6 @@ class DatatableComponent extends React.Component {
 
     search(query = "", key) {
         this.props.searchUsers(query, key).then(
-            //(err) => this.setState({ errors: err.data.errors, isLoading: false  })
         );
     }
     _handleKeyPress(e) {
@@ -67,16 +56,18 @@ class DatatableComponent extends React.Component {
                             <th>Last Name</th>
                             <th>Phone Number</th>
                             <th>Is Valid</th>
+                            <th>Created at</th>
                             <th>Edit</th>
+                            <th>Details</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.users ? this.props.users.map((user, index) => {
+                        {this.props.users.map((user, index) => {
                             return (
                                 <UserListElement key={user.id} user={user} />
                             );
-                        }) : <UserListElement user="no user" />}
+                        })}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -85,7 +76,9 @@ class DatatableComponent extends React.Component {
                             <th>Last Name</th>
                             <th>Phone Number</th>
                             <th>Is Valid</th>
+                            <th>Created at</th>
                             <th>Edit</th>
+                            <th>Details</th>
                             <th>Delete</th>
                         </tr>
                     </tfoot>
@@ -121,6 +114,7 @@ class UserList extends React.Component {
         );
     }
 }
+
 UserList.propTypes = {
     searchUsers: React.PropTypes.func.isRequired
 };
@@ -128,17 +122,17 @@ UserList.propTypes = {
 const mapStateToProps = (state) => {
     return {
         users: state.userReducer.users,
-    };
-
+    }
 };
 
-const myDispatch = (dispatch) => {
+const myDispatch = (dispatch, props) => {
     return {
         dispatch,
         ...bindActionCreators({
             searchUsers: searchUsers,
         }, dispatch)
-    };
+    }
 };
+
 export default connect(mapStateToProps, myDispatch)(UserList);
 

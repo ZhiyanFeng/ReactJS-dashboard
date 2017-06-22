@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SET_SEARCH_USERS, SET_ADMIN_USER } from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
-import Constants from '../../api/constants';
+import Constants from '../../api/constants'; //API_SERVER_URL or TEST_SERVER_URL
 
 export function setAdminUser(admin) {
   return {

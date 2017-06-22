@@ -71,11 +71,6 @@ function getData() {
 }
 
 var middlewares = [ thunk, createLogger()];
-//export function applyMiddleware(...args) {
-//    if (args.length) {
-//        middlewares = middlewares.concat(args);
-//    }
-//}
 
 function createStoreWithMiddleware() {
     return compose(

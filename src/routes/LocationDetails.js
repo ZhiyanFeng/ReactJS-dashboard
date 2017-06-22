@@ -139,7 +139,7 @@ class LocationBanner extends React.Component {
                 </div>
             </Row>
             <div>
-                <StoreEmployeeList  storeEmployees={this.props.storeEmployees}/>
+                <StoreEmployeeList  storeEmployees={this.props.storeEmployees} storeId={this.props.id}/>
             </div>
         </div>
         );

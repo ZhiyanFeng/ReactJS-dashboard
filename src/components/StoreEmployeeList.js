@@ -22,16 +22,11 @@ import UserDelete from './UserDelete';
 import UserListElement from './UserListElement';
 
 class DatatableComponent extends React.Component {
-
-
-    componentDidMount() {
-        $(ReactDOM.findDOMNode(this.example))
-            .addClass('nowrap')
-        //.dataTable({
-        //       columnDefs: [
-        //           { targets: [-1, -3], className: 'dt-body-left' }
-        //       ],
-        //   });
+    constructor(props){
+        super(props);
+        this.state = {
+            storeId: this.props.id
+        }
     }
 
     render() {
@@ -44,16 +39,20 @@ class DatatableComponent extends React.Component {
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
+                            <th>Is valid</th>
+                            <th>Is approved</th>
+                            <th>Is admin</th>
                             <th>Edit</th>
+                            <th>Details</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.storeEmployees ? this.props.storeEmployees.map((storeEmployee, index) =>{
+                        {this.props.storeEmployees.map((storeEmployee, index) =>{
                             return(
-                                <UserListElement key={storeEmployee.id} user={storeEmployee}/>
+                                <UserListElement key={storeEmployee.id} user={storeEmployee} for_location={true} location_id={this.props.storeId}/>
                             );
-                        }) : <p></p>}
+                        })}
                     </tbody>
                     <tfoot>
                         <tr>
@@ -61,7 +60,11 @@ class DatatableComponent extends React.Component {
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
+                            <th>Is valid</th>
+                            <th>Is approved</th>
+                            <th>Is admin</th>
                             <th>Edit</th>
+                            <th>Details</th>
                             <th>Delete</th>
                         </tr>
                     </tfoot>

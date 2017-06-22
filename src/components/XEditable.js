@@ -1,5 +1,8 @@
 import React from 'react';
 import axios from 'axios';
+import {updateUserApiCall} from '../redux/actions/apiActions.js';
+import { bindActionCreators } from "redux";
+import { connect } from 'react-redux';
 
 import {
   Row,
@@ -23,14 +26,14 @@ import {
   PanelContainer,
 } from '@sketchpixy/rubix';
 
-export default class XEditable extends React.Component {
+class XEditable extends React.Component {
     constructor(props){
         super(props);
         this.state ={
             mode: 'popup',
+            operation: '',
         };
         this.updateUser = this.updateUser.bind(this);
-        this.updateUserApiCall = this.updateUserApiCall.bind(this);
     }
     //static counter: 0;
     //static getCounter = function() {
@@ -41,37 +44,8 @@ export default class XEditable extends React.Component {
     //};
 
     updateUser(value){
-        this.editPhoneApiCall(this.props.operation, this.props.user, value, localStorage.getItem('key'));
+        this.props.updateUserApiCall(this.state.operation, this.props.user, value, localStorage.getItem('key'));
     }
-
-    updateUserApiCall(id, phone, key){
-        const config = {
-            headers: {
-                'X-Method': 'pass_verification',
-                'Session-Token': '1333',
-                'Accept': 'application/vnd.Expresso.v1',
-                'Authorization': `Token token=${key}, nonce="def"`,
-                'Content-Type': 'application/json'
-            }
-        }
-        if(opration === 'phone'){
-            return axios.post(`http://internal.coffeemobile.com/api/users/${id}/update_user`, {'phone_number': query}, config).then(res => {
-                //dispatch(setSearchUsers(res.data.eXpresso));
-            });
-        }
-        if(opration === 'firstname'){
-            return axios.post(`http://internal.coffeemobile.com/api/users/${id}/update_user`, {'first_name': query}, config).then(res => {
-                //dispatch(setSearchUsers(res.data.eXpresso));
-            });
-        }
-        if(opration === 'lastname'){
-            return axios.post(`http://internal.coffeemobile.com/api/users/${id}/update_user`, {'last_name': query}, config).then(res => {
-                //dispatch(setSearchUsers(res.data.eXpresso));
-            });
-        }
-    }
-
-
 
     renderEditable() {
         // $('.xeditable').editable({
@@ -83,6 +57,9 @@ export default class XEditable extends React.Component {
                 if($.trim(value) == ''){ 
                     return 'This field is required';
                 }else{
+                    temp.setState({
+                          operation: "phone"
+                    });
                     temp.updateUser(value);
                 };
             }
@@ -93,6 +70,9 @@ export default class XEditable extends React.Component {
                 if($.trim(value) == ''){ 
                     return 'This field is required';
                 }else{
+                    temp.setState({
+                          operation: "firstname"
+                    });
                     temp.updateUser(value);
                 };
             }
@@ -103,6 +83,9 @@ export default class XEditable extends React.Component {
                 if($.trim(value) == ''){ 
                     return 'This field is required';
                 }else{
+                    temp.setState({
+                          operation: "lastname"
+                    });
                     temp.updateUser(value);
                 };
             }
@@ -141,3 +124,18 @@ export default class XEditable extends React.Component {
         }
     }
 }
+
+XEditable.propTypes = {
+    updateUserApiCall: React.PropTypes.func.isRequired
+};
+
+const myDispatch = (dispatch, props) => {
+    return {
+        dispatch,
+        ...bindActionCreators({
+            updateUserApiCall: updateUserApiCall,
+        }, dispatch)
+    }
+};
+
+export default connect(null, myDispatch)(XEditable);

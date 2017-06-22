@@ -21,6 +21,7 @@ import LocationDetails from './routes/LocationDetails';
 import Dashboard from './routes/Dashboard';
 import LoginPage from './components/login/login';
 import AddChannel from './components/addChannelForm';
+import createLocation from './components/createLocationForm.js';
 import AddRegionChannel from './components/addRegionChannelForm';
 import Userdetail from './routes/Userdetail';
 
@@ -58,6 +59,7 @@ const routes = (
         <Route path='tables/userList' component={UserList} />
         <Route path='adminClaim' component={adminClaim} />
         <Route path='tables/locationList' component={LocationList} />
+        <Route path='locations/create' component={createLocation} />
         <Route path='user/edit(/:id)' component={Userdetail} />
         <Route path='channel/add' component={AddChannel} />
         <Route path='channel/addRegionChannel' component={AddRegionChannel} />

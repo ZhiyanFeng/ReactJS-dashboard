@@ -59,6 +59,7 @@ class LocationListElement extends React.Component{
                 <EditableCell ref="address" data={location.formatted_address} /> 
                 <td>{location.city}</td>
                 <EditableCell ref="location_name" data={location.location_name} /> 
+                <td>{location.swift_code}</td>
                 <td>{location.member_count}</td>
                 <td>{location.created_at}</td>
                 <td>

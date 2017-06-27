@@ -62,11 +62,6 @@ class LoginForm extends React.Component {
     onChange(e){
         this.setState({[e.target.name]: e.target.value});
     }
-    //back(e) {
-    //    e.preventDefault();
-    //    e.stopPropagation();
-    //    this.props.router.goBack();
-    //}
 
     componentDidMount() {
         $('html').addClass('authentication');

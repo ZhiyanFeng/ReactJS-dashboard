@@ -59,8 +59,10 @@ class  DatatableComponent extends React.Component {
                             <th>Formatted Address</th>
                             <th>City</th>
                             <th>Location Name</th>
+                            <th>Swift code</th>
                             <th>Member Count</th>
                             <th>Created at</th>
+                            <th>Details</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -78,8 +80,10 @@ class  DatatableComponent extends React.Component {
                             <th>Formatted Address</th>
                             <th>City</th>
                             <th>Location Name</th>
+                            <th>Swift code</th>
                             <th>Member Count</th>
                             <th>Created at</th>
+                            <th>Details</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>

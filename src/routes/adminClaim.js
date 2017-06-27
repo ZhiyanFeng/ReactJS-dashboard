@@ -39,21 +39,27 @@ class DatatableComponent extends React.Component {
 		var email= this.refs.email.textContent;
         var userId = this.refs.user_id.textContent;
         var locationId = this.refs.location_id.textContent;
-		this.props.allowClaim(email, userId, locationId, localStorage.getItem("key")).then();
-	}
+        this.props.allowClaim(email, userId, locationId, localStorage.getItem("key")).then(
+            (res) => {
+                if(res.data.eXpresso.message){
+                    alert(res.data.eXpresso.message)
+                }
+            }
+        );
+    }
 
     sendEmail(){
-		var email= this.refs.email.textContent;
-		this.props.sendEmail(email, localStorage.getItem("key")).then();
+        var email= this.refs.email.textContent;
+        this.props.sendEmail(email, localStorage.getItem("key")).then();
     }
-	_handleKeyPress(e) {
-		if (e.key === "Enter") {
-			this.updateSearch();
-		}
-	}
+    _handleKeyPress(e) {
+        if (e.key === "Enter") {
+            this.updateSearch();
+        }
+    }
 
-	render() {
-		return (
+    render() {
+        return (
             <div>
                 <div>
                     <input ref="searchInput" type="text" id="serarchBox" onKeyPress={this._handleKeyPress} />

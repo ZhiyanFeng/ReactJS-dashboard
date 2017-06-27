@@ -56,6 +56,16 @@ class UserListElement extends React.Component{
             params['phone_number'] = this.refs.phone_number.getValue(); 
             this.refs.phone_number.setDefault();
         }
+        if(event.target.dataset.email !== this.refs.email.getValue()){
+            params['email'] = this.refs.email.getValue(); 
+            this.refs.email.setDefault();
+        }
+        if(event.target.dataset.is_admin !== this.refs.is_admin.getValue()){
+            params['is_admin'] = this.refs.is_admin.getValue(); 
+            params['location_id'] = this.state.location_id; 
+            this.refs.is_admin.setDefault();
+        }
+
 
         if (!$.isEmptyObject(params)){
             this.updateUser(id, params);
@@ -79,11 +89,12 @@ class UserListElement extends React.Component{
                 <EditableCell ref="first_name" data={user.first_name} /> 
                 <EditableCell ref="last_name" data={user.last_name} /> 
                 <EditableCell ref="phone_number" data={user.phone_number} /> 
+                <EditableCell ref="email" data={user.email} /> 
                 <td>{user.is_valid ? 'True' : 'False'}</td>
                 {this.state.for_location ?
                         [
                             <td>{user.is_approved ? 'True' : 'False'}</td>,
-                            <td>{user.is_admin ? 'True' : 'False'}</td>
+                            <EditableCell ref="is_admin" data={user.is_admin ? 'True' : 'False'} /> 
                         ]
                         : <td>{user.created_at}</td>
                 }

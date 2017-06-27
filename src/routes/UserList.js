@@ -55,6 +55,7 @@ class DatatableComponent extends React.Component {
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
+                            <th>Email</th>
                             <th>Is Valid</th>
                             <th>Created at</th>
                             <th>Edit</th>
@@ -75,6 +76,7 @@ class DatatableComponent extends React.Component {
                             <th>First Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
+                            <th>Email</th>
                             <th>Is Valid</th>
                             <th>Created at</th>
                             <th>Edit</th>

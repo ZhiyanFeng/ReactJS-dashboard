@@ -8,6 +8,38 @@ import { createLocation } from "../redux/actions/apiActions.js";
 import { bindActionCreators } from "redux";
 
 
+//define the constants
+var divStyle = {
+    color: 'red',
+};
+
+const required = value => value ? undefined : 'Required'
+const maxLength = max => value =>
+    value && value.length > max ? `Must be ${max} characters or less` : undefined
+const maxLength15 = maxLength(15)
+const number = value => value && isNaN(Number(value)) ? 'Must be a number' : undefined
+const minValue = min => value =>
+    value && value < min ? `Must be at least ${min}` : undefined
+const minValue18 = minValue(18)
+const email = value =>
+    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
+        'Invalid email address' : undefined
+const tooOld = value =>
+    value && value > 65 ? 'You might be too old for this' : undefined
+const aol = value =>
+    value && /.+@aol\.com/.test(value) ?
+        'Really? You still use AOL for your email?' : undefined
+
+const renderField = ({ input, label, type, meta: { touched, error, warning  }  }) => (
+    <div>
+        <label>{label}</label>
+        <div>
+            <input {...input} placeholder={label} style={{"width" : "100%"}} type={type}/>
+            {touched && ((error && <div style={divStyle}>{error}</div>) || (warning && <div style={divStyle}>{warning}</div>))}
+        </div>
+    </div>
+);
+
 class LocationCreate extends React.Component{
     constructor(props)
     {
@@ -16,26 +48,25 @@ class LocationCreate extends React.Component{
     }
 
     render(){
+
         const {handleSubmit} = this.props;
         return(
             <div>
                 <Panel header={<h1>Create a new location</h1>} bsStyle="info">
                     <Form onSubmit={this.props.handleSubmit(this.formSubmit)}>
                         <FormGroup>
-                            <label>Location name</label>
                             <div>
-                                <Field name="location_name" style={{"width" : "100%"}} component="input" type="text" placeholder="Location name"/>
+                                <Field name="location_name" component={renderField} type="text" label="Location name" validate={[required]}/>
                             </div>
                         </FormGroup>
                         <FormGroup>
-                            <label>Formatted address</label>
                             <div>
-                                <Field name="formatted_address" style={{"width" : "100%"}} component="input" type="text" placeholder="Formatted address"/>
+                                <Field name="formatted_address" component={renderField} type="text" label="Formatted address" validate={[required]} />
                             </div>
                         </FormGroup>
                         <FormGroup>
-                                <Button type="submit" className="btn btn-success" disabled={this.props.invalid || this.props.submitting}>Save</Button>
-                                <Button className="btn btn-danger" onClick={this.cancel.bind(this)}>Cancel</Button>
+                            <Button type="submit" className="btn btn-success" disabled={this.props.invalid || this.props.submitting}>Save</Button>
+                            <Button className="btn btn-danger" onClick={this.cancel.bind(this)}>Cancel</Button>
                         </FormGroup>
                     </Form>
                 </Panel>
@@ -79,16 +110,16 @@ const myDispatch = (dispatch, props) => {
 //decorate the form component
 LocationCreate = reduxForm({
     form: 'locationCreate',
-    validate: function(values){
-        const errors ={};
-        if(!values.location_name){
-            errors.location_name = 'firstname is required';
-        }
-        if(!values.formatted_address){
-            errors.location_name = 'address is required';
-        }
-        return errors;
-    }
+    //validate: function(values){
+    //    const errors ={};
+    //    if(!values.location_name){
+    //        errors.location_name = 'firstname is required';
+    //    }
+    //    if(!values.formatted_address){
+    //        errors.location_name = 'address is required';
+    //    }
+    //    return errors;
+    //}
 })(LocationCreate);
 
 export default connect(null, myDispatch)(LocationCreate);

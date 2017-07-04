@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { Link, withRouter } from 'react-router';
+import { Pagination } from "react-bootstrap";
+import {push, routeActions}  from "react-router-redux";
 import { bindActionCreators } from "redux";
 import { searchUsers } from "../redux/actions/apiActions";
 import { ModalDeleteUser } from "../redux/actions/actionTypes/modalDeleteUser";
@@ -24,6 +27,7 @@ class DatatableComponent extends React.Component {
         super(props);
         this.updateSearch = this.updateSearch.bind(this);
         this._handleKeyPress = this._handleKeyPress.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
 
     updateSearch() {
@@ -34,6 +38,10 @@ class DatatableComponent extends React.Component {
         this.props.searchUsers(query, key).then(
         );
     }
+
+    changePage(page){
+        this.props.router.push(`/ltr/admin/tables/userList/?page=${page}`);
+    }
     _handleKeyPress(e) {
         if (e.key === "Enter") {
             this.updateSearch();
@@ -41,6 +49,11 @@ class DatatableComponent extends React.Component {
     }
 
     render() {
+        const per_page =10;
+        const pages = Math.ceil(this.props.users.length / per_page);
+        const current_page = this.props.page;
+        const start_offset = (current_page -1) * per_page;
+        let start_count = 0;
         return (
             <div>
                 <div>
@@ -65,9 +78,12 @@ class DatatableComponent extends React.Component {
                     </thead>
                     <tbody>
                         {this.props.users.map((user, index) => {
-                            return (
-                                <UserListElement key={user.id} user={user} />
-                            );
+                            if(index >= start_offset && start_count < per_page){
+                                start_count++;
+                                return (
+                                    <UserListElement key={user.id} user={user} />
+                                );
+                            }
                         })}
                     </tbody>
                     <tfoot>
@@ -85,6 +101,11 @@ class DatatableComponent extends React.Component {
                         </tr>
                     </tfoot>
                 </Table>
+                <div className="text-center">
+                    <Pagination className="users-pagination text-center" bsSize="medium"
+                        maxButtons={10} first last next prev boundaryLinks
+                        items={pages} activePage={current_page} onSelect={this.changePage}/>
+                </div>
                 <UserDelete />
             </div>
         );
@@ -118,12 +139,13 @@ class UserList extends React.Component {
 }
 
 UserList.propTypes = {
-    searchUsers: React.PropTypes.func.isRequired
+    searchUsers: React.PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
     return {
         users: state.userReducer.users,
+        page: Number(state.routing.locationBeforeTransitions.query.page) || 1,
     }
 };
 

@@ -32,6 +32,7 @@ class HeaderNavigation extends React.Component {
     logout(e){
         e.preventDefault();
         this.props.logout();
+        this.props.router.push('/ltr/login');
     }
     render() {
         return (
@@ -47,7 +48,8 @@ class HeaderNavigation extends React.Component {
 }
 
 HeaderNavigation.propTypes = {
-    logout: React.PropTypes.func.isRequired
+    logout: React.PropTypes.func.isRequired,
+    router: React.PropTypes.object.isRequired
 }
 
 export default connect(null, {logout})(HeaderNavigation);

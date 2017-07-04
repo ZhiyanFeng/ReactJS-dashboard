@@ -19,9 +19,9 @@ export function setSearchUser(users) {
 
 export function logout() {
     return (dispatch) => {
-        localStorage.removeItem('jwtToken');
-        setAuthorizationToken(false);
-        dispatch(setCurrentUser({}));
+        localStorage.removeItem('key');
+        localStorage.removeItem('admin');
+        dispatch(setAdminUser({}));
     }
 }
 

@@ -70,7 +70,7 @@ function getData() {
     return element ? JSON.parse(element.textContent) : '';
 }
 
-var middlewares = [ thunk, createLogger()];
+var middlewares = [thunk, createLogger()];
 
 function createStoreWithMiddleware() {
     return compose(

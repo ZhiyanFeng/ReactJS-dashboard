@@ -56,16 +56,27 @@ class UserListElement extends React.Component{
             params['phone_number'] = this.refs.phone_number.getValue(); 
             this.refs.phone_number.setDefault();
         }
-        if(event.target.dataset.email !== this.refs.email.getValue()){
-            params['email'] = this.refs.email.getValue(); 
-            this.refs.email.setDefault();
+        if(!this.state.for_location){
+            if(event.target.dataset.email !== this.refs.email.getValue()){
+                let value = this.refs.email.getValue();
+                const email = value =>
+                    value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value) ?
+                        'Invalid email address' : undefined
+                if(value && !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)){
+                    alert("no valid email")
+                }else if(value && /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)){
+                    params['email'] = this.refs.email.getValue(); 
+                    this.refs.email.setDefault();
+                }
+            }
         }
-        if(event.target.dataset.is_admin !== this.refs.is_admin.getValue()){
-            params['is_admin'] = this.refs.is_admin.getValue(); 
-            params['location_id'] = this.state.location_id; 
-            this.refs.is_admin.setDefault();
+        if(this.state.for_location){
+            if(event.target.dataset.is_admin !== this.refs.is_admin.getValue()){
+                params['is_admin'] = this.refs.is_admin.getValue(); 
+                params['location_id'] = this.state.location_id; 
+                this.refs.is_admin.setDefault();
+            }
         }
-
 
         if (!$.isEmptyObject(params)){
             this.updateUser(id, params);
@@ -89,7 +100,7 @@ class UserListElement extends React.Component{
                 <EditableCell ref="first_name" data={user.first_name} /> 
                 <EditableCell ref="last_name" data={user.last_name} /> 
                 <EditableCell ref="phone_number" data={user.phone_number} /> 
-                <EditableCell ref="email" data={user.email} /> 
+                {this.state.for_location ? null: <EditableCell ref="email" data={user.email} />} 
                 <td>{user.is_valid ? 'True' : 'False'}</td>
                 {this.state.for_location ?
                         [
@@ -100,7 +111,7 @@ class UserListElement extends React.Component{
                 }
                 <td>
                     <Button type="button" className="btn btn-success" bsSize="small" data-id={user.id} data-first_name={user.first_name} data-last_name={user.last_name}
-                        data-phone_number={user.phone_number} data-for_location={true} onClick={this.getParams}>Edit <Glyphicon glyph="ok"/></Button>
+                        data-phone_number={user.phone_number} data-email={user.email} data-for_location={true} onClick={this.getParams}>Edit <Glyphicon glyph="ok"/></Button>
                 </td>
                 <td>
                     <Link to={'/ltr/admin/user/edit/' + user.id}>

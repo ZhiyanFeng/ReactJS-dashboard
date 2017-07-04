@@ -2,6 +2,9 @@ import React from 'react';
 import { connect  } from 'react-redux';
 import {bindActionCreators } from "redux";
 import ReactDOM from 'react-dom';
+import { Link, withRouter } from 'react-router';
+import { Pagination } from "react-bootstrap";
+import {push, routeActions}  from "react-router-redux";
 
 import {
     Row,
@@ -24,6 +27,7 @@ class  DatatableComponent extends React.Component {
         super(props);
         this.updateSearch = this.updateSearch.bind(this);
         this._handleKeyPress = this._handleKeyPress.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
 
     updateSearch(){
@@ -42,7 +46,17 @@ class  DatatableComponent extends React.Component {
         )
     }
 
+    changePage(page){
+        this.props.router.push(`/ltr/admin/tables/locationList?page=${page}`);
+    }
+
     render() {
+        //set the pagination variables
+        const per_page =10;
+        const pages = Math.ceil(this.props.locations.length / per_page);
+        const current_page = this.props.page;
+        const start_offset = (current_page -1) * per_page;
+        let start_count = 0;
         return (
             <div>
                 <div>
@@ -69,9 +83,12 @@ class  DatatableComponent extends React.Component {
                     </thead>
                     <tbody>
                         {this.props.locations.map((location, index) =>{
-                            return(
-                                <LocationListElement key={location.id} location={location}/>
-                            );
+                            if(index >= start_offset && start_count < per_page){
+                                start_count++;
+                                return(
+                                    <LocationListElement key={location.id} location={location}/>
+                                );
+                            }
                         })}
                     </tbody>
                     <tfoot>
@@ -89,6 +106,11 @@ class  DatatableComponent extends React.Component {
                         </tr>
                     </tfoot>
                 </Table>
+                <div className="text-center">
+                    <Pagination className="users-pagination text-center" bsSize="medium"
+                        maxButtons={10} first last next prev boundaryLinks
+                        items={pages} activePage={current_page} onSelect={this.changePage}/>
+                </div>
                 <locationDelete/>
             </div>
         );
@@ -128,6 +150,7 @@ LocationList.propTypes = {
 const mapStateToProps = (state) => {
     return {
         locations: state.locationReducer.locations,
+        page: Number(state.routing.locationBeforeTransitions.query.page) || 1,
     }
 };
 

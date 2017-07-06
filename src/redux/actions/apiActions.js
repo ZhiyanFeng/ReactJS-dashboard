@@ -86,7 +86,7 @@ export function deleteUser(userId, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/users/${userId}/deleteUser`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/users/${userId}/deleteUser`, config).then(res => {
             dispatch(setDeleteUsers(userId));
         });
     }
@@ -103,7 +103,7 @@ export function removeUserFromLocation(locationId, userId, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/users/remove_from_location`,{'location_id': locationId, 'id': userId }, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/users/remove_from_location`,{'location_id': locationId, 'id': userId }, config).then(res => {
         });
     }
 }
@@ -119,7 +119,7 @@ export function removeUserFromChannel(channelId, userId, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/users/remove_from_channel`,{'channel_id': channelId, 'id': userId }, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/users/remove_from_channel`,{'channel_id': channelId, 'id': userId }, config).then(res => {
         });
     }
 }
@@ -135,7 +135,7 @@ export function searchUsers(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/users/search`, {'user_name': query}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/users/search`, {'user_name': query}, config).then(res => {
             dispatch(setSearchUsers(res.data.eXpresso));
         });
     }
@@ -152,7 +152,7 @@ export function updateUser(id, params, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/users/${id}/update_user`, params, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/users/${id}/update_user`, params, config).then(res => {
             return res;
         });
     }
@@ -169,7 +169,7 @@ export function updateLocation(id, params, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/locations/${id}/update_location`, params, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/locations/${id}/update_location`, params, config).then(res => {
             return res;
         });
     }
@@ -186,7 +186,7 @@ export function searchAdminClaim(claim_id, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/admin_claims/${claim_id}/display`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/admin_claims/${claim_id}/display`, config).then(res => {
             dispatch(setSearchAdminClaim(res.data));
         });
     }
@@ -203,7 +203,7 @@ export function allowClaim(email, userId, locationId, admin){
                 'Content-Type': 'application/json'
             }
         }
-         return axios.post(`${Constants.TEST_SERVER_URL}/api/admin_claims/allowClaim`, {'email': email, 'userId': userId, 'locationId': locationId}, config).then(res => {
+         return axios.post(`${Constants.API_SERVER_URL}/api/admin_claims/allowClaim`, {'email': email, 'userId': userId, 'locationId': locationId}, config).then(res => {
             return res;
         });
     }
@@ -220,7 +220,7 @@ export function addToChannel(user_id, query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/users/${user_id}/create_subscription`, {'user_id': user_id, 'channel_id':query.channel_id, 'is_coffee': query.is_coffee, 'is_invisible': query.is_invisible}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/users/${user_id}/create_subscription`, {'user_id': user_id, 'channel_id':query.channel_id, 'is_coffee': query.is_coffee, 'is_invisible': query.is_invisible}, config).then(res => {
             return res.data;
         });
     }
@@ -237,7 +237,7 @@ export function sendEmail(email, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/admin_claims/sendEmail`, {'email': email}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/admin_claims/sendEmail`, {'email': email}, config).then(res => {
             return res;
         });
     }
@@ -254,7 +254,7 @@ export function searchUserLatestContent(id, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/users/${id}/latest_contents`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/users/${id}/latest_contents`, config).then(res => {
             dispatch(setActiveUserLatestContents(res.data.eXpresso));
         });
     }
@@ -271,7 +271,7 @@ export function searchUserDetail(id, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/users/${id}/details`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/users/${id}/details`, config).then(res => {
             dispatch(setActiveUser(res.data.eXpresso));
         });
     }
@@ -288,7 +288,7 @@ export function searchLocationDetail(id, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/locations/${id}/details`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/locations/${id}/details`, config).then(res => {
             dispatch(setLocationDetail(res.data.eXpresso));
         });
     }
@@ -305,7 +305,7 @@ export function searchStoreEmployees(id, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/locations/${id}/member_list`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/locations/${id}/member_list`, config).then(res => {
             dispatch(setStoreEmployees(res.data.eXpresso));
         });
     }
@@ -322,7 +322,7 @@ export function searchChannelForUser(id, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/users/${id}/subscriptions`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/users/${id}/subscriptions`, config).then(res => {
             dispatch(setChannelForUser(res.data.eXpresso));
         });
     }
@@ -338,7 +338,7 @@ export function searchLocations(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/locations/search`, {'location_query': query}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/locations/search`, {'location_query': query}, config).then(res => {
             dispatch(setSearchLocations(res.data.eXpresso));
         });
     }
@@ -355,7 +355,7 @@ export function searchRegionChannel(admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.get(`${Constants.TEST_SERVER_URL}/api/channels/list_region`, config).then(res => {
+        return axios.get(`${Constants.API_SERVER_URL}/api/channels/list_region`, config).then(res => {
             dispatch(setRegionChannel(res.data.eXpresso));
         });
     }
@@ -372,7 +372,7 @@ export function createLocation(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/locations/create`, {'LocationName': query.location_name, 'FormattedAddress': query.formatted_address}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/locations/create`, {'LocationName': query.location_name, 'FormattedAddress': query.formatted_address}, config).then(res => {
             return res.data.eXpresso;
         });
     }
@@ -390,17 +390,17 @@ export function updateUserApiCall(operation, id, query, key){
             }
         }
         if(operation === 'phone'){
-            return axios.post(`${Constants.TEST_SERVER_URL}/api/users/${id}/update_user`, {'phone_number': query}, config).then(res => {
+            return axios.post(`${Constants.API_SERVER_URL}/api/users/${id}/update_user`, {'phone_number': query}, config).then(res => {
                 //dispatch(setSearchUsers(res.data.eXpresso));
             });
         }
         if(operation === 'firstname'){
-            return axios.post(`${Constants.TEST_SERVER_URL}/api/users/${id}/update_user`, {'first_name': query}, config).then(res => {
+            return axios.post(`${Constants.API_SERVER_URL}/api/users/${id}/update_user`, {'first_name': query}, config).then(res => {
                 //dispatch(setSearchUsers(res.data.eXpresso));
             });
         }
         if(operation === 'lastname'){
-            return axios.post(`${Constants.TEST_SERVER_URL}/api/users/${id}/update_user`, {'last_name': query}, config).then(res => {
+            return axios.post(`${Constants.API_SERVER_URL}/api/users/${id}/update_user`, {'last_name': query}, config).then(res => {
                 //dispatch(setSearchUsers(res.data.eXpresso));
             });
         }
@@ -418,7 +418,7 @@ export function fetchDashboardData(query, admin){
                 'Content-Type': 'application/json'
             }
         }
-        return axios.post(`${Constants.TEST_SERVER_URL}/api/analytics/new_registration_data`, {'number_of_days': query}, config).then(res => {
+        return axios.post(`${Constants.API_SERVER_URL}/api/analytics/new_registration_data`, {'number_of_days': query}, config).then(res => {
             dispatch(setDashboardData(res.data.eXpresso));
         });
     }

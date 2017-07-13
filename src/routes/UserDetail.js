@@ -23,6 +23,7 @@ import {
 import UserLatestContents from '../components/UserLatestContents';
 import UserSubscriptionList from '../components/userSubscriptionList';
 import XEditable from '../components/XEditable';
+import UserList from './UserList';
 
 class UserDetailBanner extends React.Component {
     constructor(props) {
@@ -142,6 +143,9 @@ class UserDetailBanner extends React.Component {
                 </div>
                 <Col xs={12}>
                     <Row>
+                        <Col sm={12}>
+                            <UserList />
+                        </Col>
                         <Col sm={4} collapseRight>
                             <PanelContainer controls={false}>
                                 <PanelBody style={{paddingBottom: 12.5}}>

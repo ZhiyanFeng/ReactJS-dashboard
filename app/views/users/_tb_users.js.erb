@@ -1,9 +1,0 @@
-<% array = [] %>
-<% @users.each do |user| %>
-	<% array.push({
-		Name: "#{user.first_name} #{user.last_name}",
-		Phone: number_to_phone(user.phone_number, area_code: true),
-		"Update": "https://toolbeam.com/t/wdftwjtc?id=#{user.id}&user[email]=#{user.email}"
-	}) %>
-<% end %>
-<%= array.to_json.html_safe %>

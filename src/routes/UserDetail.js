@@ -23,7 +23,7 @@ import {
 import UserLatestContents from '../components/UserLatestContents';
 import UserSubscriptionList from '../components/userSubscriptionList';
 import XEditable from '../components/XEditable';
-import UserList from './UserList';
+import WorkLocationList from './WorkLocationList';
 
 class UserDetailBanner extends React.Component {
     constructor(props) {
@@ -144,7 +144,7 @@ class UserDetailBanner extends React.Component {
                 <Col xs={12}>
                     <Row>
                         <Col sm={12}>
-                            <UserList />
+                            <WorkLocationList user_id={this.props.id}/>
                         </Col>
                         <Col sm={4} collapseRight>
                             <PanelContainer controls={false}>

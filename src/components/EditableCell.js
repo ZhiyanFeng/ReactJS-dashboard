@@ -19,6 +19,7 @@ class EditableCell extends React.Component{
 
     componentWillMount() {
         this.setState({
+            type: this.props.type,
             ref: this.props.field,
             data: this.props.data,
             originalData: this.props.data
@@ -39,8 +40,11 @@ class EditableCell extends React.Component{
 
     }
     handleChange(evt) {
-        this.setState({data: evt.target.value});
-
+        if(this.state.type === 'checkbox'){
+            this.setState({data: this.state.data === 'on' ? '': 'on'});
+        }else{
+            this.setState({data: evt.target.value});
+        }
     }
 
     getValue() {
@@ -53,12 +57,17 @@ class EditableCell extends React.Component{
 
     render() {
         var cellHtml;
-        if (this.state.isEditMode) {
-            cellHtml = <input type='text' value={this.state.data} onKeyDown={this.handleKeyDown} onChange={this.handleChange} />
+        if(this.state.type ==="checkbox"){
+            cellHtml = <input type={this.state.type} checked={this.state.data} onKeyDown={this.handleKeyDown} onChange={this.handleChange} />
         }
         else {
-            cellHtml = <div onClick={this.handleEditCell}>{this.state.data}</div>
+            if (this.state.isEditMode) {
+                cellHtml = <input type='text' value={this.state.data} onKeyDown={this.handleKeyDown} onChange={this.handleChange} />
+            }
+            else {
+                cellHtml = <div onClick={this.handleEditCell}>{this.state.data}</div>
 
+            }
         }
         return (
             <td>{cellHtml}</td>

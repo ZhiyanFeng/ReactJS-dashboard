@@ -3,7 +3,7 @@ import { SET_SEARCH_ADMIN_CLAIM, SET_REGION_CHANNEL, SET_CHANNEL_FOR_USER, SET_S
 import { SET_ADMIN_USER, SET_SEARCH_LOCATIONS, SET_ACTIVE_USER, SET_ACTIVE_USER_LATEST_CONTENTS, SET_DASHBOARD_DATA } from './actionTypes/allActionTypes';
 import setAuthorizationToken from '../utils/setAuthorizationToken';
 import Constants from '../../api/constants'; //API_SERVER_URL or TEST_SERVER_URL
-//:%s/API_SERVER_URL/TEST_SERVER_URL/gc
+//:
 //:%s/TEST_SERVER_URL/API_SERVER_URL/gc
 
 export function setSearchUsers(users) {

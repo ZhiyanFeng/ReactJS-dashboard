@@ -44,7 +44,7 @@ class LocationListElement extends React.Component{
         }
 
         if(this.refs.sns_text.getValue()){
-            params['sns_text'] == this.refs.sns_text.getValue();
+            params['sns_text'] = this.refs.sns_text.getValue();
             this.pushSNS(user_id, params);
         }
         //if (!$.isEmptyObject(params)){
@@ -52,7 +52,7 @@ class LocationListElement extends React.Component{
     }
 
     pushSNS(userId, params){
-        this.props.pushSNS(id, params, this.state.key).then(
+        this.props.pushSNS(userId, params, this.state.key).then(
             //(err) => this.setState({ errors: err.data.errors, isLoading: false  })
         );
     }
@@ -80,9 +80,7 @@ class LocationListElement extends React.Component{
                         onClick={this.getParams}>Change admin <Glyphicon glyph="ok"/></Button>
                 </td>
                 <td>
-                    <Link to={'/ltr/admin/location/edit/' + location.id}>
-                        <Button type="button" className="btn btn-primary" bsSize="small">Message <Glyphicon glyph="edit"/></Button>
-                    </Link>
+                    <Button type="button" className="btn btn-primary" bsSize="small" onClick={this.getParams}>Message <Glyphicon glyph="edit"/></Button>
                 </td>
             </tr>
         );

@@ -51,10 +51,15 @@ class LoginForm extends React.Component {
     onSubmit(e){
         e.preventDefault();
         if(this.isValid()){
-            this.setState({errors: {}, isLoading: true});
             this.props.login(this.state).then(
-                (res) => this.props.router.push('ltr/admin'),
-                (err) => this.setState({ errors: err.data.errors, isLoading: false })
+                res => {
+                    if(res.code === -1){
+                        alert(res.error);
+                        this.props.router.push('/ltr/login');
+                    }else{
+                        this.props.router.push('ltr/admin');
+                    }
+                }
             );
         }
     }
